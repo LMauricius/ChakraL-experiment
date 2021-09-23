@@ -180,3 +180,11 @@ shiftLChangeVal = <left:expression> ( '<<=' <ONL> <rights:expression> )+
 andChangeVal = <left:expression> ( '&=' <ONL> <rights:expression> )+
 orChangeVal = <left:expression> ( '|=' <ONL> <rights:expression> )+
 xorChangeVal = <left:expression> ( '^=' <ONL> <rights:expression> )+
+
+
+
+
+#	To be considered:
+#		If no argument name is specified (no prefix), the symbol won't be stored
+#		If a instead of a single semicolon, double semicolon ('::') is placed between the name and the symbol,
+#			the argument will be a list in which the symbol will be inserted.
