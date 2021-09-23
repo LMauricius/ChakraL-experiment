@@ -245,37 +245,37 @@ def writeLexerCPP(lexer: Lexer, filename: str, headerfile: str):
 
         TB();TB();TB();TB();LN("")
         TB();TB();TB();TB();LN("// *** choose rule ***")
-        i = 0
 
         # Faster method
+        
+        TB();TB();TB();TB();LN("if (auto res = ctre::starts_with<")
+        i = 0
+        for r in lexer.rulesPerState[s]:
+            i += 1
+            if i == 1:
+                TB();TB();TB();TB();TB();TB();LN("L\"(" + escapeRegexToC(r.regex) + ")\"")
+            else:
+                TB();TB();TB();TB();TB();TB();LN("L\"|(" + escapeRegexToC(r.regex) + ")\"")
+
+        TB();TB();TB();TB();TB();LN(">(std::wstring_view(input.begin()+start, input.end())); res)")
+        TB();TB();TB();TB();LN("{")
+        i = 0
+        for r in lexer.rulesPerState[s]:
+            i += 1
+            TB();TB();TB();TB();TB();LN("if (const auto& subRes = res.get<" + str(i) + ">(); subRes && (int)subRes.size() > (maxEnd-start)) {")
+            TB();TB();TB();TB();TB();TB();LN("choosenRuleInd = " + str(i) + ";")
+            TB();TB();TB();TB();TB();TB();LN("maxEnd = start + res.size();")
+            TB();TB();TB();TB();TB();LN("}")
+        TB();TB();TB();TB();LN("}")
 
         # Slower method
         
-        for r in lexer.rulesPerState[s]:
+        '''for r in lexer.rulesPerState[s]:
             i += 1
-            #TB();TB();TB();TB();LN("{")
-            #TB();TB();TB();TB();TB();LN("std::wstring_view part = std::wstring_view(input.begin()+start, input.end());")
-            #TB();TB();TB();TB();TB();LN("auto res = ctre::starts_with<L\"(" + escapeRegexToC(r.regex) + ")\">(part);")
-            #TB();TB();TB();TB();TB();LN("std::wstring_view str = res.to_view();")
-            #std::wstring_view(input.begin()+start, input.end())
-            # && res.to_view().length() > (maxEnd-start)
             TB();TB();TB();TB();LN("if (auto res = ctre::starts_with<L\"(" + escapeRegexToC(r.regex) + ")\">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {")
-            #TB();TB();TB();TB();LN("int sz = res.size(); int maxL = (maxEnd-start);")
-            #TB();TB();TB();TB();LN("if (res) {")
-            #TB();TB();TB();TB();LN("if ((int)res.size() > (maxEnd-start)) {")
-            #TB();TB();TB();TB();LN("if (res) {")
             TB();TB();TB();TB();TB();LN("choosenRuleInd = " + str(i) + ";")
             TB();TB();TB();TB();TB();LN("maxEnd = start + res.size();")
-            #TB();TB();TB();TB();TB();LN("std::wcout << L\"matched: " + escapeRegexToC(r.regex) + "\" << std::endl;")
-            TB();TB();TB();TB();LN("}")
-            #TB();TB();TB();TB();LN("}")
-            #TB();TB();TB();TB();LN("}")
-            '''
-            TB();TB();TB();TB();LN("if (std::regex_search(input.begin() + start, input.end(), match, " + lexer.regexNames[r.regex] + ", std::regex_constants::match_continuous) && match[0].length() > (maxEnd-start)) {")
-            TB();TB();TB();TB();TB();LN("choosenRuleInd = " + str(i) + ";")
-            TB();TB();TB();TB();TB();LN("maxEnd = start + match[0].length();")
-            TB();TB();TB();TB();LN("}")
-            '''
+            TB();TB();TB();TB();LN("}")'''
              
         
         TB();TB();TB();TB();LN("")

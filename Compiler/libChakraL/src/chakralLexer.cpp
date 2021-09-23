@@ -126,385 +126,484 @@ namespace ChakraL
             case LexerState::S_START:
                 
                 // *** choose rule ***
-                if (auto res = ctre::starts_with<L"([a-zA-Z][a-zA-Z0-9_]*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 1;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"([0-9]+(_[0-9]|[0-9])*(\\.[0-9]+)?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 2;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(0b[01]([_01]|[01])*(\\.[_01]+)?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 3;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(0o[0-7]([_0-7]|[0-7])*(\\.[_0-7]+)?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 4;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(0x[A-Fa-f0-9]([_A-Fa-f0-9]|[A-Fa-f0-9])*(\\.[_A-Fa-f0-9]+)?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 5;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\"([^\\\\\"]|\\\\.)*\")">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 6;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\'([^\\\\\']|\\\\.)\')">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 7;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\n)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 8;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"([ \\t])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 9;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(//)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 10;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(/\\*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 11;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(,)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 12;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(;)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 13;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(:)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 14;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(ok)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 15;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(in)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 16;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\+)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 17;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\-)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 18;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 19;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(/)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 20;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(/%)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 21;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(%)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 22;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(>>)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 23;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(<<)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 24;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(&)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 25;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\|)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 26;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\^)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 27;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 28;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 29;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"([=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 30;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\->)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 31;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\+[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 32;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\+\\+)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 33;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(--)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 34;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\-[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 35;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\*[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 36;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(/[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 37;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(/%[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 38;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(%[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 39;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(>>[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 40;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(<<[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 41;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(&[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 42;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\|[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 43;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\^[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 44;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 45;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 46;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(!)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 47;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\?[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 48;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(![=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 49;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\?\\->)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 50;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(!\\->)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 51;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(<)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 52;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(>)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 53;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(<[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 54;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(>[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 55;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\+&)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 56;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\+\\|)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 57;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\+\\?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 58;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\?\\?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 59;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 60;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\()">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 61;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\))">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 62;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\[)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 63;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 64;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\{)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 65;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\})">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 66;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\.)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 67;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"([=]>)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 68;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(<[=]>)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 69;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(if)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 70;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(else)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 71;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(elif)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 72;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(switch)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 73;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(case)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 74;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(times)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 75;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(for)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 76;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(while)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 77;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(repeat)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 78;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(break)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 79;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(continue)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 80;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(return)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 81;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(yield)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 82;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(with)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 83;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(def)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 84;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(const)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 85;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(var)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 86;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(ref)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 87;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(new)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 88;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(final)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 89;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(mutable)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 90;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(volatile)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 91;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(static)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 92;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(using)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 93;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(include)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 94;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(as)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 95;
-                    maxEnd = start + res.size();
+                if (auto res = ctre::starts_with<
+                        L"([a-zA-Z][a-zA-Z0-9_]*)"
+                        L"|([0-9]+(_[0-9]|[0-9])*(\\.[0-9]+)?)"
+                        L"|(0b[01]([_01]|[01])*(\\.[_01]+)?)"
+                        L"|(0o[0-7]([_0-7]|[0-7])*(\\.[_0-7]+)?)"
+                        L"|(0x[A-Fa-f0-9]([_A-Fa-f0-9]|[A-Fa-f0-9])*(\\.[_A-Fa-f0-9]+)?)"
+                        L"|(\"([^\\\\\"]|\\\\.)*\")"
+                        L"|(\'([^\\\\\']|\\\\.)\')"
+                        L"|(\\n)"
+                        L"|([ \\t])"
+                        L"|(//)"
+                        L"|(/\\*)"
+                        L"|(,)"
+                        L"|(;)"
+                        L"|(:)"
+                        L"|(ok)"
+                        L"|(in)"
+                        L"|(\\+)"
+                        L"|(\\-)"
+                        L"|(\\*)"
+                        L"|(/)"
+                        L"|(/%)"
+                        L"|(%)"
+                        L"|(>>)"
+                        L"|(<<)"
+                        L"|(&)"
+                        L"|(\\|)"
+                        L"|(\\^)"
+                        L"|(×|\\\\cross)"
+                        L"|(⋅|\\\\dot)"
+                        L"|([=])"
+                        L"|(\\->)"
+                        L"|(\\+[=])"
+                        L"|(\\+\\+)"
+                        L"|(--)"
+                        L"|(\\-[=])"
+                        L"|(\\*[=])"
+                        L"|(/[=])"
+                        L"|(/%[=])"
+                        L"|(%[=])"
+                        L"|(>>[=])"
+                        L"|(<<[=])"
+                        L"|(&[=])"
+                        L"|(\\|[=])"
+                        L"|(\\^[=])"
+                        L"|(×|\\\\cross)"
+                        L"|(⋅|\\\\dot)"
+                        L"|(!)"
+                        L"|(\\?[=])"
+                        L"|(![=])"
+                        L"|(\\?\\->)"
+                        L"|(!\\->)"
+                        L"|(<)"
+                        L"|(>)"
+                        L"|(<[=])"
+                        L"|(>[=])"
+                        L"|(\\+&)"
+                        L"|(\\+\\|)"
+                        L"|(\\+\\?)"
+                        L"|(\\?\\?)"
+                        L"|(\\?)"
+                        L"|(\\()"
+                        L"|(\\))"
+                        L"|(\\[)"
+                        L"|(\\])"
+                        L"|(\\{)"
+                        L"|(\\})"
+                        L"|(\\.)"
+                        L"|([=]>)"
+                        L"|(<[=]>)"
+                        L"|(if)"
+                        L"|(else)"
+                        L"|(elif)"
+                        L"|(switch)"
+                        L"|(case)"
+                        L"|(times)"
+                        L"|(for)"
+                        L"|(while)"
+                        L"|(repeat)"
+                        L"|(break)"
+                        L"|(continue)"
+                        L"|(return)"
+                        L"|(yield)"
+                        L"|(with)"
+                        L"|(def)"
+                        L"|(const)"
+                        L"|(var)"
+                        L"|(ref)"
+                        L"|(new)"
+                        L"|(final)"
+                        L"|(mutable)"
+                        L"|(volatile)"
+                        L"|(static)"
+                        L"|(using)"
+                        L"|(include)"
+                        L"|(as)"
+                    >(std::wstring_view(input.begin()+start, input.end())); res)
+                {
+                    if (const auto& subRes = res.get<1>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 1;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<2>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 2;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<3>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 3;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<4>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 4;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<5>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 5;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<6>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 6;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<7>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 7;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<8>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 8;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<9>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 9;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<10>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 10;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<11>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 11;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<12>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 12;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<13>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 13;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<14>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 14;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<15>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 15;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<16>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 16;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<17>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 17;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<18>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 18;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<19>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 19;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<20>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 20;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<21>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 21;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<22>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 22;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<23>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 23;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<24>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 24;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<25>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 25;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<26>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 26;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<27>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 27;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<28>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 28;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<29>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 29;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<30>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 30;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<31>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 31;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<32>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 32;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<33>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 33;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<34>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 34;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<35>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 35;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<36>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 36;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<37>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 37;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<38>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 38;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<39>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 39;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<40>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 40;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<41>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 41;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<42>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 42;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<43>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 43;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<44>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 44;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<45>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 45;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<46>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 46;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<47>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 47;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<48>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 48;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<49>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 49;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<50>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 50;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<51>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 51;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<52>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 52;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<53>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 53;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<54>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 54;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<55>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 55;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<56>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 56;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<57>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 57;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<58>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 58;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<59>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 59;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<60>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 60;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<61>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 61;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<62>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 62;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<63>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 63;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<64>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 64;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<65>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 65;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<66>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 66;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<67>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 67;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<68>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 68;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<69>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 69;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<70>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 70;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<71>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 71;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<72>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 72;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<73>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 73;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<74>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 74;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<75>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 75;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<76>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 76;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<77>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 77;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<78>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 78;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<79>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 79;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<80>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 80;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<81>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 81;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<82>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 82;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<83>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 83;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<84>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 84;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<85>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 85;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<86>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 86;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<87>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 87;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<88>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 88;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<89>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 89;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<90>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 90;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<91>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 91;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<92>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 92;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<93>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 93;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<94>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 94;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<95>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 95;
+                        maxEnd = start + res.size();
+                    }
                 }
                 
                 // *** execute rule commands ***
@@ -812,13 +911,19 @@ namespace ChakraL
             case LexerState::S_LITERAL:
                 
                 // *** choose rule ***
-                if (auto res = ctre::starts_with<L"([a-zA-Z_][a-zA-Z0-9_]*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 1;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"()">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 2;
-                    maxEnd = start + res.size();
+                if (auto res = ctre::starts_with<
+                        L"([a-zA-Z_][a-zA-Z0-9_]*)"
+                        L"|()"
+                    >(std::wstring_view(input.begin()+start, input.end())); res)
+                {
+                    if (const auto& subRes = res.get<1>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 1;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<2>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 2;
+                        maxEnd = start + res.size();
+                    }
                 }
                 
                 // *** execute rule commands ***
@@ -844,13 +949,19 @@ namespace ChakraL
             case LexerState::S_SINGLELINE_COMMENT:
                 
                 // *** choose rule ***
-                if (auto res = ctre::starts_with<L"([^\\n]*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 1;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\n)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 2;
-                    maxEnd = start + res.size();
+                if (auto res = ctre::starts_with<
+                        L"([^\\n]*)"
+                        L"|(\\n)"
+                    >(std::wstring_view(input.begin()+start, input.end())); res)
+                {
+                    if (const auto& subRes = res.get<1>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 1;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<2>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 2;
+                        maxEnd = start + res.size();
+                    }
                 }
                 
                 // *** execute rule commands ***
@@ -874,17 +985,24 @@ namespace ChakraL
             case LexerState::S_MULTILINE_COMMENT:
                 
                 // *** choose rule ***
-                if (auto res = ctre::starts_with<L"(([^*/]|\\*[^/]|/[^\\*])*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 1;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(/\\*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 2;
-                    maxEnd = start + res.size();
-                }
-                if (auto res = ctre::starts_with<L"(\\*/)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
-                    choosenRuleInd = 3;
-                    maxEnd = start + res.size();
+                if (auto res = ctre::starts_with<
+                        L"(([^*/]|\\*[^/]|/[^\\*])*)"
+                        L"|(/\\*)"
+                        L"|(\\*/)"
+                    >(std::wstring_view(input.begin()+start, input.end())); res)
+                {
+                    if (const auto& subRes = res.get<1>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 1;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<2>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 2;
+                        maxEnd = start + res.size();
+                    }
+                    if (const auto& subRes = res.get<3>(); subRes && (int)subRes.size() > (maxEnd-start)) {
+                        choosenRuleInd = 3;
+                        maxEnd = start + res.size();
+                    }
                 }
                 
                 // *** execute rule commands ***
