@@ -62,7 +62,7 @@ def replaceMacros(regex: str, macros: dict[str, str]):
 
 
 def loadLexer(filename: str):
-    print("...Loading lexer ", filename)
+    print("Loading lexer ", filename)
 
     lines = meaningfulLines(filename)
     lexer = Lexer()
@@ -135,7 +135,7 @@ def loadLexer(filename: str):
 
 
 def writeLexerH(lexer: Lexer, filename: str):
-    print("...Writing lexer ", filename)
+    print("Writing lexer ", filename)
     f = open(filename, "wt")
 
     def TB():
@@ -188,7 +188,7 @@ def writeLexerH(lexer: Lexer, filename: str):
     f.close()
 
 
-def writeLexerCPP(lexer: Lexer, filename: str, headerfile: str):
+def writeLexerCPP(lexer: Lexer, filename: str, headerfile: str, useSingleDFA: bool):
     print("...Writing lexer ", filename)
     f = open(filename, "wt")
 
@@ -246,36 +246,33 @@ def writeLexerCPP(lexer: Lexer, filename: str, headerfile: str):
         TB();TB();TB();TB();LN("")
         TB();TB();TB();TB();LN("// *** choose rule ***")
 
-        # Faster method
-        
-        TB();TB();TB();TB();LN("if (auto res = ctre::starts_with<")
-        i = 0
-        for r in lexer.rulesPerState[s]:
-            i += 1
-            if i == 1:
-                TB();TB();TB();TB();TB();TB();LN("L\"(" + escapeRegexToC(r.regex) + ")\"")
-            else:
-                TB();TB();TB();TB();TB();TB();LN("L\"|(" + escapeRegexToC(r.regex) + ")\"")
+        if useSingleDFA:
+            TB();TB();TB();TB();LN("if (auto res = ctre::starts_with<")
+            i = 0
+            for r in lexer.rulesPerState[s]:
+                i += 1
+                if i == 1:
+                    TB();TB();TB();TB();TB();TB();LN("L\"(" + escapeRegexToC(r.regex) + ")\"")
+                else:
+                    TB();TB();TB();TB();TB();TB();LN("L\"|(" + escapeRegexToC(r.regex) + ")\"")
 
-        TB();TB();TB();TB();TB();LN(">(std::wstring_view(input.begin()+start, input.end())); res)")
-        TB();TB();TB();TB();LN("{")
-        i = 0
-        for r in lexer.rulesPerState[s]:
-            i += 1
-            TB();TB();TB();TB();TB();LN("if (const auto& subRes = res.get<" + str(i) + ">(); subRes && (int)subRes.size() > (maxEnd-start)) {")
-            TB();TB();TB();TB();TB();TB();LN("choosenRuleInd = " + str(i) + ";")
-            TB();TB();TB();TB();TB();TB();LN("maxEnd = start + res.size();")
-            TB();TB();TB();TB();TB();LN("}")
-        TB();TB();TB();TB();LN("}")
-
-        # Slower method
-        
-        '''for r in lexer.rulesPerState[s]:
-            i += 1
-            TB();TB();TB();TB();LN("if (auto res = ctre::starts_with<L\"(" + escapeRegexToC(r.regex) + ")\">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {")
-            TB();TB();TB();TB();TB();LN("choosenRuleInd = " + str(i) + ";")
+            TB();TB();TB();TB();TB();LN(">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start))")
+            TB();TB();TB();TB();LN("{")
             TB();TB();TB();TB();TB();LN("maxEnd = start + res.size();")
-            TB();TB();TB();TB();LN("}")'''
+            i = 0
+            for r in lexer.rulesPerState[s]:
+                i += 1
+                TB();TB();TB();TB();TB();LN("if (const auto& subRes = res.get<" + str(i) + ">(); subRes && subRes.size() == res.size()) "+"choosenRuleInd = " + str(i) + ";")
+            TB();TB();TB();TB();LN("}")
+
+        else:
+            i = 0
+            for r in lexer.rulesPerState[s]:
+                i += 1
+                TB();TB();TB();TB();LN("if (auto res = ctre::starts_with<L\"(" + escapeRegexToC(r.regex) + ")\">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {")
+                TB();TB();TB();TB();TB();LN("choosenRuleInd = " + str(i) + ";")
+                TB();TB();TB();TB();TB();LN("maxEnd = start + res.size();")
+                TB();TB();TB();TB();LN("}")
              
         
         TB();TB();TB();TB();LN("")

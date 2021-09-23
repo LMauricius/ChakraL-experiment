@@ -220,7 +220,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
 
 
 def loadParser(lexer: Lexer, filename: str):
-    print("...Loading parser ", filename)
+    print("Loading parser ", filename)
 
     lines = meaningfulLines(filename)
     parser = Parser()
@@ -274,7 +274,7 @@ def loadParser(lexer: Lexer, filename: str):
 
 
 def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
-    print("...Writing parser ", filename)
+    print("Writing parser ", filename)
     f = open(filename, "wt")
 
     def TB():
@@ -301,7 +301,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();TB();LN("std::map<std::string, std::list<std::unique_ptr<ParseNode>>> nodeLists;")
     TB();TB();LN("std::map<std::string, std::list<Token>> tokenLists;")
     TB();LN("};")
-    '''
+    
     for name, node in parser.nodes.items():
         LN("")
         TB();LN("class ParseNode_" + name + " : public ParseNode {")
@@ -309,7 +309,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
         TB();TB();LN("void process();")
         TB();LN("};")
     LN("")
-    '''
+    
     LN("")
     TB();LN("// State utils")
     TB();LN("struct StateData;")
@@ -345,7 +345,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
 
 
 def writeParserCPP(parser: Parser, filename: str, headerfile: str):
-    print("...Writing parser ", filename)
+    print("Writing parser ", filename)
     f = open(filename, "wt")
 
     def TB():
@@ -383,7 +383,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();TB();LN("}")
     TB();LN("};")
     TB();LN("")
-    '''
+    
     for part in parser.productionParts:
         TB();LN("void h_" + part.idName + "(ParserData& parserData, ParserBranch& branch);")
     for part in parser.productionParts:
@@ -392,7 +392,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
         TB();LN("void h_" + part.idName + "(ParserData& parserData, ParserBranch& branch) {")
         # Now do all the checking, depending on the type of production part
         TB();LN("}")
-    '''
+    
     LN("")
     LN("}")
 
