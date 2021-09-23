@@ -1,0 +1,76 @@
+cmake_minimum_required(VERSION 3.0.0)
+
+######################################
+# Setup generator
+######################################
+
+find_package( PythonInterp 3.0 REQUIRED )
+
+add_custom_command(
+	OUTPUT
+		${CMAKE_CURRENT_SOURCE_DIR}/include/chakralLexer.h
+		${CMAKE_CURRENT_SOURCE_DIR}/src/chakralLexer.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/include/chakralParser.h
+		${CMAKE_CURRENT_SOURCE_DIR}/src/chakralParser.cpp
+	COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
+		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/
+		${CMAKE_CURRENT_SOURCE_DIR}/include/
+		${CMAKE_CURRENT_SOURCE_DIR}/src/
+	DEPENDS
+		${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
+		${CMAKE_CURRENT_SOURCE_DIR}/generators/genUtil.py
+		${CMAKE_CURRENT_SOURCE_DIR}/generators/lexerGen.py
+		${CMAKE_CURRENT_SOURCE_DIR}/generators/parserExprGen.py
+		${CMAKE_CURRENT_SOURCE_DIR}/generators/parserGen.py
+		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/lexer.txt
+		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/parser.txt
+		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/operatorTable.txt
+	COMMENT "Generating parser files"
+)
+
+add_custom_target(
+	generate ALL
+	DEPENDS
+		${CMAKE_CURRENT_SOURCE_DIR}/include/chakralLexer.h
+		${CMAKE_CURRENT_SOURCE_DIR}/src/chakralLexer.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/include/chakralParser.h
+		${CMAKE_CURRENT_SOURCE_DIR}/src/chakralParser.cpp
+)
+
+######################################
+# Setup ctre
+######################################
+
+#add_subdirectory("./compile-time-regular-expressions")
+
+######################################
+# Setup target
+######################################
+
+# Files
+file(
+	GLOB_RECURSE
+	SOURCES
+	CONFIGURE_DEPENDS 
+	"./include/*.h"
+	"./src/*.cpp"
+)
+file(
+	GLOB
+	HEADERS
+	"./include/*"
+)
+
+add_library(libChakraL ${CHAKRAL_LIB_TYPE} ${SOURCES})
+set_target_properties(libChakraL PROPERTIES OUTPUT_NAME "ChakraL${OUTPUT_FILE_SUFFIX}")
+target_include_directories(libChakraL PRIVATE "./include" "./ctre")
+#target_include_directories(libChakraL PUBLIC "./include" "./compile-time-regular-expressions/include")
+
+add_dependencies(libChakraL generate)
+#add_dependencies(libChakraL ctre)
+
+# build config
+if (CHAKRAL_STATIC_LIB)
+	target_compile_definitions(libChakraL PUBLIC CHAKRAL_STATIC_LIB)
+endif()
+target_compile_definitions(libChakraL PRIVATE CHAKRAL_BUILD)

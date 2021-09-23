@@ -1,0 +1,459 @@
+# Newlines and leading whitespace chars are skipped in this file
+# Lines starting with a '#' are comments
+# Lines starting with a '[' define reusable regex strings (macros). The macro must be enclosed with '[:' and ':]'.
+    # The line after is the content of the macro
+# Lines starting with '@' define in which lexer state the following rules apply.
+    # States are put on a stack and the last state is the current one whose rules apply
+# Lines starting with a '?' start the definition of a rule.
+    # Following the first '?' is the regex defining the rule. The rule whose regex matches the longest string applies.
+    # The next line should contain only '{'
+    # The definition ends with a line containing only '}'
+    # Between the braces can be several rule commands:
+        # out <Token type name> - adds a token to the list
+        # push <State name> - pushes the state to the stack, making it current
+        # pop - removes the last state from the stack, making the previous state current
+        # swap <State name> - swaps the last state on the stack with the specified one, making the specified one current
+        # throw - doesn't move the current character pointer past the matched string; executes the commands and returns the pointer where it was before the rule applied
+
+#[:alpha:]
+#A-Za-z
+
+#[:alnum:]
+#A-Za-z0-9
+
+#[:digit:]
+#0-9
+
+@S_START
+    # Basics
+
+    ?[[:alpha:]][[:alnum:]_]*
+    {
+        out L_IDENTIFIER
+    }
+    ?[[:digit:]]+(_[[:digit:]]|[[:digit:]])*(\.[[:digit:]]+)?
+    {
+        out L_NUM_LIT
+        push S_LITERAL
+    }
+    ?0b[01]([_01]|[01])*(\.[_01]+)?
+    {
+        out L_NUM_B_LIT
+        push S_LITERAL
+    }
+    ?0o[0-7]([_0-7]|[0-7])*(\.[_0-7]+)?
+    {
+        out L_NUM_O_LIT
+        push S_LITERAL
+    }
+    ?0x[[:xdigit:]]([_[:xdigit:]]|[[:xdigit:]])*(\.[_[:xdigit:]]+)?
+    {
+        out L_NUM_X_LIT
+        push S_LITERAL
+    }
+    ?"([^\\"]|\\.)*"
+    {
+        out L_STR_LIT
+        push S_LITERAL
+    }
+    ?'([^\\']|\\.)'
+    {
+        out L_CHAR_LIT
+    }
+    ?[:newl:]
+    {
+        out L_NEW_LN
+    }
+    ?[[:blank:]]
+    {
+    }
+    ?//
+    {
+        push S_SINGLELINE_COMMENT
+    }
+    ?/\*
+    {
+        push S_MULTILINE_COMMENT
+    }
+
+    # Symbols
+
+    ?,
+    {
+        out L_COMMA
+    }
+    ?;
+    {
+        out L_SEMICOLON
+    }
+    ?:
+    {
+        out L_COLON
+    }
+    ?ok
+    {
+        out L_OK
+    }
+    ?in
+    {
+        out L_IN
+    }
+    
+    ?\+
+    {
+        out L_ADD
+    }
+    ?\-
+    {
+        out L_SUB
+    }
+    ?\*
+    {
+        out L_MUL
+    }
+    ?/
+    {
+        out L_DIV
+    }
+    ?/%
+    {
+        out L_INT_DIV
+    }
+    ?%
+    {
+        out L_MOD
+    }
+    ?>>
+    {
+        out L_SHIFT_RIGHT
+    }
+    ?<<
+    {
+        out L_SHIFT_LEFT
+    }
+    ?&
+    {
+        out L_AND
+    }
+    ?\|
+    {
+        out L_OR
+    }
+    ?\^
+    {
+        out L_XOR
+    }
+    ?×|\\cross
+    {
+        out L_CROSS
+    }
+    ?⋅|\\dot
+    {
+        out L_DOT
+    }
+    
+    ?[=]
+    {
+        out L_CHANGE
+    }
+    ?\->
+    {
+        out L_ASSIGN
+    }
+    ?\+[=]
+    {
+        out L_ADD_CHANGE
+    }
+    ?\+\+
+    {
+        out L_INCREMENT
+    }
+    ?--
+    {
+        out L_DECREMENT
+    }
+    ?\-[=]
+    {
+        out L_SUB_CHANGE
+    }
+    ?\*[=]
+    {
+        out L_MUL_CHANGE
+    }
+    ?/[=]
+    {
+        out L_DIV_CHANGE
+    }
+    ?/%[=]
+    {
+        out L_INT_DIV_CHANGE
+    }
+    ?%[=]
+    {
+        out L_MOD_CHANGE
+    }
+    ?>>[=]
+    {
+        out L_SHIFT_RIGHT_CHANGE
+    }
+    ?<<[=]
+    {
+        out L_SHIFT_LEFT_CHANGE
+    }
+    ?&[=]
+    {
+        out L_AND_CHANGE
+    }
+    ?\|[=]
+    {
+        out L_OR_CHANGE
+    }
+    ?\^[=]
+    {
+        out L_XOR_CHANGE
+    }
+    ?×|\\cross
+    {
+        out L_CROSS_CHANGE
+    }
+    ?⋅|\\dot
+    {
+        out L_DOT_CHANGE
+    }
+
+    ?!
+    {
+        out L_NOT
+    }
+    ?\?[=]
+    {
+        out L_EQUAL
+    }
+    ?![=]
+    {
+        out L_NOTEQ
+    }
+    ?\?\->
+    {
+        out L_ASSIGNED
+    }
+    ?!\->
+    {
+        out L_NOTASS
+    }
+    ?<
+    {
+        out L_LESS
+    }
+    ?>
+    {
+        out L_GREAT
+    }
+    ?<[=]
+    {
+        out L_LEEQ
+    }
+    ?>[=]
+    {
+        out L_GREQ
+    }
+    ?\+&
+    {
+        out L_TRAIT_AND
+    }
+    ?\+\|
+    {
+        out L_TRAIT_OR
+    }
+    ?\+\?
+    {
+        out L_TRAIT_AND_COND
+    }
+    ?\?\?
+    {
+        out L_TRAIT_COND
+    }
+    ?\?
+    {
+        out L_QUEST
+    }
+    ?\(
+    {
+        out L_LEFT_PAR
+    }
+    ?\)
+    {
+        out L_RIGHT_PAR
+    }
+    ?\[
+    {
+        out L_LEFT_BRACK
+    }
+    ?\]
+    {
+        out L_RIGHT_BRACK
+    }
+    ?\{
+    {
+        out L_LEFT_BRACE
+    }
+    ?\}
+    {
+        out L_RIGHT_BRACE
+    }
+    ?\.
+    {
+        out L_MEMBER
+    }
+    ?[=]>
+    {
+        out L_FUNCTION
+    }
+    ?<[=]>
+    {
+        out L_COROUTINE
+    }
+
+
+    # Keywords
+
+    ?if
+    {
+        out L_IF
+    }
+    ?else
+    {
+        out L_ELSE
+    }
+    ?elif
+    {
+        out L_ELIF
+    }
+    ?switch
+    {
+        out L_SWITCH
+    }
+    ?case
+    {
+        out L_CASE
+    }
+    ?times
+    {
+        out L_TIMES
+    }
+    ?for
+    {
+        out L_FOR
+    }
+    ?while
+    {
+        out L_WHILE
+    }
+    ?repeat
+    {
+        out L_REPEAT
+    }
+    ?break
+    {
+        out L_BREAK
+    }
+    ?continue
+    {
+        out L_CONTINUE
+    }
+    ?return
+    {
+        out L_RETURN
+    }
+    ?yield
+    {
+        out L_YIELD
+    }
+    ?with
+    {
+        out L_WITH
+    }
+    ?def
+    {
+        out L_DEF
+    }
+    ?const
+    {
+        out L_CONST
+    }
+    ?var
+    {
+        out L_VAR
+    }
+    ?ref
+    {
+        out L_REF
+    }
+    ?new
+    {
+        out L_NEW
+    }
+    ?final
+    {
+        out L_FINAL
+    }
+    ?mutable
+    {
+        out L_MUTABLE
+    }
+    ?volatile
+    {
+        out L_VOLATILE
+    }
+    ?static
+    {
+        out L_STATIC
+    }
+    ?using
+    {
+        out L_USING
+    }
+    ?include
+    {
+        out L_INCLUDE
+    }
+    ?as
+    {
+        out L_AS
+    }
+
+@S_LITERAL
+    ?[[:alpha:]_][[:alnum:]_]*
+    {
+        out L_LIT_SUFFIX
+        pop
+    }
+    ?
+    {
+        pop
+    }
+
+@S_SINGLELINE_COMMENT
+    # skip all until end of line
+    ?[^[:newl:]]*
+    {
+    }
+
+    ?[:newl:]
+    {
+        pop
+    }
+
+@S_MULTILINE_COMMENT
+    # skip all until end of comment
+    ?([^*/]|\*[^/]|/[^\*])*
+    {
+    }
+    ?/\*
+    {
+        push S_MULTILINE_COMMENT
+    }
+    ?\*/
+    {
+        pop
+    }
