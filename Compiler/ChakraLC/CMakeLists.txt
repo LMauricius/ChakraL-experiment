@@ -18,7 +18,7 @@ target_include_directories(ChakraLC PRIVATE "./include")
 
 add_dependencies(ChakraLC libChakraL)
 target_include_directories(ChakraLC PRIVATE "../libChakraL/include" "../libChakraL/ctre")
-target_link_directories(ChakraLC PRIVATE "../bin")
+target_link_directories(ChakraLC PRIVATE "../bin" "../lib")
 target_link_libraries(ChakraLC PUBLIC "ChakraL${OUTPUT_FILE_SUFFIX}")
 
 # build config

@@ -118,12 +118,12 @@ varRefDeclEntry 	= <equal:varRefDeclEntryEqual>
 varRefDeclEntryEqual = <id:identifier> '=' <ONL> <val:expression>
 varRefDeclEntryAssign = <id:identifier> '->' <ONL> <val:expression>
 
-ifStat 	= 'if' <cond:expression> ':' <exec1:statement> [ <elseStat> ]
-		= 'if' <cond:expression> ':' '\n' <exec1:contextBody> [ <elseStat> ] 'ok'
+ifStat 	= 'if' <cond:expression> ':' <exec1:statement> [ <elseStatPart> ]
+		= 'if' <cond:expression> ':' '\n' <exec1:contextBody> [ <elseStatPart> ] 'ok'
 elseStatPart 	= 'else' ':' <statement>
 				= 'else' ':' '\n' <contextBody>
-				= 'elif' <expression> ':' <statement> [ <elseStat> ]
-				= 'elif' <expression> ':' '\n' <contextBody> [ <elseStat> ] 'ok'
+				= 'elif' <expression> ':' <statement> [ <elseStatPart> ]
+				= 'elif' <expression> ':' '\n' <contextBody> [ <elseStatPart> ] 'ok'
 
 loopStat = 'repeat' <parts:loopStatPart> (';' <parts:loopStatPart>)* ':' <contextBodyClosedBlock>
 loopStatPart 	= <timesLoopStatPart>
@@ -149,21 +149,21 @@ withStatEntry 	= <id:identifier> '=' <val:expression>
 ### *** Assignments *** ###
 ###
 
-assignmentEqual = assignRef
-				= changeVal
-				= addChangeVal
-				= subChangeVal
-				= mulChangeVal
-				= crossChangeVal
-				= dotChangeVal
-				= divChangeVal
-				= intDivChangeVal
-				= modChangeVal
-				= shiftRChangeVal
-				= shiftLChangeVal
-				= andChangeVal
-				= orChangeVal
-				= xorChangeVal
+assignmentEqual = <assignRef>
+				= <changeVal>
+				= <addChangeVal>
+				= <subChangeVal>
+				= <mulChangeVal>
+				= <crossChangeVal>
+				= <dotChangeVal>
+				= <divChangeVal>
+				= <intDivChangeVal>
+				= <modChangeVal>
+				= <shiftRChangeVal>
+				= <shiftLChangeVal>
+				= <andChangeVal>
+				= <orChangeVal>
+				= <xorChangeVal>
 
 assignRef = <left:expression> ( '->' <ONL> <rights:expression> )+
 changeVal = <left:expression> ( '=' <ONL> <rights:expression> )+

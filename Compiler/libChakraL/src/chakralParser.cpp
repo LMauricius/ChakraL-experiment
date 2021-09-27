@@ -8,10 +8,12 @@
 namespace ChakraL
 {
 
+    ParseNode::~ParseNode() {
+    };
     void ParseNode::process() {
     };
     
-    void ParseNode::appendMove(ParseNode& other) {
+    void ParseNode::pullFrom(ParseNode& other) {
         for (auto& varNodesPair : other.nodeLists) {
             const std::string &varName = varNodesPair.first;
             auto &otherList = varNodesPair.second;
@@ -26,2355 +28,9538 @@ namespace ChakraL
         }
     };
     
-    void h_file_1(ParserData& parserData, ParserBranch& branch);
-    void h_ONL_1(ParserData& parserData, ParserBranch& branch);
-    void h_contextBody_1(ParserData& parserData, ParserBranch& branch);
-    void h_contextBody_2(ParserData& parserData, ParserBranch& branch);
-    void h_contextBody_3(ParserData& parserData, ParserBranch& branch);
-    void h_contextBodyClosedBlock_1(ParserData& parserData, ParserBranch& branch);
-    void h_contextBodyClosedBlock_2(ParserData& parserData, ParserBranch& branch);
-    void h_contextBodyClosedBlock_3(ParserData& parserData, ParserBranch& branch);
-    void h_contextBodyClosedBlock_4(ParserData& parserData, ParserBranch& branch);
-    void h_contextDescriptionEntry_1(ParserData& parserData, ParserBranch& branch);
-    void h_contextDescriptionEntry_2(ParserData& parserData, ParserBranch& branch);
-    void h_contextDescriptionEntry_3(ParserData& parserData, ParserBranch& branch);
-    void h_contextDescriptionEntry_4(ParserData& parserData, ParserBranch& branch);
-    void h_traitAssertion_1(ParserData& parserData, ParserBranch& branch);
-    void h_traitAssertion_2(ParserData& parserData, ParserBranch& branch);
-    void h_expression_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr0_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr0_2(ParserData& parserData, ParserBranch& branch);
-    void h_expr0_3(ParserData& parserData, ParserBranch& branch);
-    void h_expr0_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr0_5(ParserData& parserData, ParserBranch& branch);
-    void h_expr0_6(ParserData& parserData, ParserBranch& branch);
-    void h_expr0_7(ParserData& parserData, ParserBranch& branch);
-    void h_identifier_1(ParserData& parserData, ParserBranch& branch);
-    void h_suffixFunction_1(ParserData& parserData, ParserBranch& branch);
-    void h_suffixFunction_2(ParserData& parserData, ParserBranch& branch);
-    void h_suffixFunction_3(ParserData& parserData, ParserBranch& branch);
-    void h_suffixFunction_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr1_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr1_2(ParserData& parserData, ParserBranch& branch);
-    void h_suffixInc_1(ParserData& parserData, ParserBranch& branch);
-    void h_suffixInc_2(ParserData& parserData, ParserBranch& branch);
-    void h_suffixDec_1(ParserData& parserData, ParserBranch& branch);
-    void h_suffixDec_2(ParserData& parserData, ParserBranch& branch);
-    void h_copy_1(ParserData& parserData, ParserBranch& branch);
-    void h_copy_2(ParserData& parserData, ParserBranch& branch);
-    void h_copy_3(ParserData& parserData, ParserBranch& branch);
-    void h_prefixFunction_1(ParserData& parserData, ParserBranch& branch);
-    void h_prefixFunction_2(ParserData& parserData, ParserBranch& branch);
-    void h_expr2_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr2_2(ParserData& parserData, ParserBranch& branch);
-    void h_expr2_3(ParserData& parserData, ParserBranch& branch);
-    void h_expr2_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr2_5(ParserData& parserData, ParserBranch& branch);
-    void h_prefixInc_1(ParserData& parserData, ParserBranch& branch);
-    void h_prefixInc_2(ParserData& parserData, ParserBranch& branch);
-    void h_prefixInc_3(ParserData& parserData, ParserBranch& branch);
-    void h_prefixDec_1(ParserData& parserData, ParserBranch& branch);
-    void h_prefixDec_2(ParserData& parserData, ParserBranch& branch);
-    void h_prefixDec_3(ParserData& parserData, ParserBranch& branch);
-    void h_plus_1(ParserData& parserData, ParserBranch& branch);
-    void h_plus_2(ParserData& parserData, ParserBranch& branch);
-    void h_plus_3(ParserData& parserData, ParserBranch& branch);
-    void h_minus_1(ParserData& parserData, ParserBranch& branch);
-    void h_minus_2(ParserData& parserData, ParserBranch& branch);
-    void h_minus_3(ParserData& parserData, ParserBranch& branch);
-    void h_logNot_1(ParserData& parserData, ParserBranch& branch);
-    void h_logNot_2(ParserData& parserData, ParserBranch& branch);
-    void h_logNot_3(ParserData& parserData, ParserBranch& branch);
-    void h_expr3_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr3_2(ParserData& parserData, ParserBranch& branch);
-    void h_expr3_3(ParserData& parserData, ParserBranch& branch);
-    void h_expr3_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr3_5(ParserData& parserData, ParserBranch& branch);
-    void h_expr3_6(ParserData& parserData, ParserBranch& branch);
-    void h_multiplication_1(ParserData& parserData, ParserBranch& branch);
-    void h_multiplication_2(ParserData& parserData, ParserBranch& branch);
-    void h_multiplication_3(ParserData& parserData, ParserBranch& branch);
-    void h_multiplication_4(ParserData& parserData, ParserBranch& branch);
-    void h_crossProduct_1(ParserData& parserData, ParserBranch& branch);
-    void h_crossProduct_2(ParserData& parserData, ParserBranch& branch);
-    void h_crossProduct_3(ParserData& parserData, ParserBranch& branch);
-    void h_crossProduct_4(ParserData& parserData, ParserBranch& branch);
-    void h_dotProduct_1(ParserData& parserData, ParserBranch& branch);
-    void h_dotProduct_2(ParserData& parserData, ParserBranch& branch);
-    void h_dotProduct_3(ParserData& parserData, ParserBranch& branch);
-    void h_dotProduct_4(ParserData& parserData, ParserBranch& branch);
-    void h_division_1(ParserData& parserData, ParserBranch& branch);
-    void h_division_2(ParserData& parserData, ParserBranch& branch);
-    void h_division_3(ParserData& parserData, ParserBranch& branch);
-    void h_division_4(ParserData& parserData, ParserBranch& branch);
-    void h_divisionInt_1(ParserData& parserData, ParserBranch& branch);
-    void h_divisionInt_2(ParserData& parserData, ParserBranch& branch);
-    void h_divisionInt_3(ParserData& parserData, ParserBranch& branch);
-    void h_divisionInt_4(ParserData& parserData, ParserBranch& branch);
-    void h_modulo_1(ParserData& parserData, ParserBranch& branch);
-    void h_modulo_2(ParserData& parserData, ParserBranch& branch);
-    void h_modulo_3(ParserData& parserData, ParserBranch& branch);
-    void h_modulo_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr4_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr4_2(ParserData& parserData, ParserBranch& branch);
-    void h_expr4_3(ParserData& parserData, ParserBranch& branch);
-    void h_expr4_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr4_5(ParserData& parserData, ParserBranch& branch);
-    void h_expr4_6(ParserData& parserData, ParserBranch& branch);
-    void h_expr4_7(ParserData& parserData, ParserBranch& branch);
-    void h_addition_1(ParserData& parserData, ParserBranch& branch);
-    void h_addition_2(ParserData& parserData, ParserBranch& branch);
-    void h_addition_3(ParserData& parserData, ParserBranch& branch);
-    void h_addition_4(ParserData& parserData, ParserBranch& branch);
-    void h_subtraction_1(ParserData& parserData, ParserBranch& branch);
-    void h_subtraction_2(ParserData& parserData, ParserBranch& branch);
-    void h_subtraction_3(ParserData& parserData, ParserBranch& branch);
-    void h_subtraction_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr5_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr5_2(ParserData& parserData, ParserBranch& branch);
-    void h_expr5_3(ParserData& parserData, ParserBranch& branch);
-    void h_shiftL_1(ParserData& parserData, ParserBranch& branch);
-    void h_shiftL_2(ParserData& parserData, ParserBranch& branch);
-    void h_shiftL_3(ParserData& parserData, ParserBranch& branch);
-    void h_shiftL_4(ParserData& parserData, ParserBranch& branch);
-    void h_shiftR_1(ParserData& parserData, ParserBranch& branch);
-    void h_shiftR_2(ParserData& parserData, ParserBranch& branch);
-    void h_shiftR_3(ParserData& parserData, ParserBranch& branch);
-    void h_shiftR_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr6_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr6_2(ParserData& parserData, ParserBranch& branch);
-    void h_expr6_3(ParserData& parserData, ParserBranch& branch);
-    void h_compLess_1(ParserData& parserData, ParserBranch& branch);
-    void h_compLess_2(ParserData& parserData, ParserBranch& branch);
-    void h_compLess_3(ParserData& parserData, ParserBranch& branch);
-    void h_compLess_4(ParserData& parserData, ParserBranch& branch);
-    void h_compGreat_1(ParserData& parserData, ParserBranch& branch);
-    void h_compGreat_2(ParserData& parserData, ParserBranch& branch);
-    void h_compGreat_3(ParserData& parserData, ParserBranch& branch);
-    void h_compGreat_4(ParserData& parserData, ParserBranch& branch);
-    void h_compLeEq_1(ParserData& parserData, ParserBranch& branch);
-    void h_compLeEq_2(ParserData& parserData, ParserBranch& branch);
-    void h_compLeEq_3(ParserData& parserData, ParserBranch& branch);
-    void h_compLeEq_4(ParserData& parserData, ParserBranch& branch);
-    void h_compGrEq_1(ParserData& parserData, ParserBranch& branch);
-    void h_compGrEq_2(ParserData& parserData, ParserBranch& branch);
-    void h_compGrEq_3(ParserData& parserData, ParserBranch& branch);
-    void h_compGrEq_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr7_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr7_2(ParserData& parserData, ParserBranch& branch);
-    void h_expr7_3(ParserData& parserData, ParserBranch& branch);
-    void h_expr7_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr7_5(ParserData& parserData, ParserBranch& branch);
-    void h_compEqual_1(ParserData& parserData, ParserBranch& branch);
-    void h_compEqual_2(ParserData& parserData, ParserBranch& branch);
-    void h_compEqual_3(ParserData& parserData, ParserBranch& branch);
-    void h_compEqual_4(ParserData& parserData, ParserBranch& branch);
-    void h_compNotEq_1(ParserData& parserData, ParserBranch& branch);
-    void h_compNotEq_2(ParserData& parserData, ParserBranch& branch);
-    void h_compNotEq_3(ParserData& parserData, ParserBranch& branch);
-    void h_compNotEq_4(ParserData& parserData, ParserBranch& branch);
-    void h_compAssigned_1(ParserData& parserData, ParserBranch& branch);
-    void h_compAssigned_2(ParserData& parserData, ParserBranch& branch);
-    void h_compAssigned_3(ParserData& parserData, ParserBranch& branch);
-    void h_compAssigned_4(ParserData& parserData, ParserBranch& branch);
-    void h_compNotAss_1(ParserData& parserData, ParserBranch& branch);
-    void h_compNotAss_2(ParserData& parserData, ParserBranch& branch);
-    void h_compNotAss_3(ParserData& parserData, ParserBranch& branch);
-    void h_compNotAss_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr8_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr8_2(ParserData& parserData, ParserBranch& branch);
-    void h_expr8_3(ParserData& parserData, ParserBranch& branch);
-    void h_expr8_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr8_5(ParserData& parserData, ParserBranch& branch);
-    void h_logAnd_1(ParserData& parserData, ParserBranch& branch);
-    void h_logAnd_2(ParserData& parserData, ParserBranch& branch);
-    void h_logAnd_3(ParserData& parserData, ParserBranch& branch);
-    void h_logAnd_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr9_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr9_2(ParserData& parserData, ParserBranch& branch);
-    void h_logXOr_1(ParserData& parserData, ParserBranch& branch);
-    void h_logXOr_2(ParserData& parserData, ParserBranch& branch);
-    void h_logXOr_3(ParserData& parserData, ParserBranch& branch);
-    void h_logXOr_4(ParserData& parserData, ParserBranch& branch);
-    void h_expr10_1(ParserData& parserData, ParserBranch& branch);
-    void h_expr10_2(ParserData& parserData, ParserBranch& branch);
-    void h_logOr_1(ParserData& parserData, ParserBranch& branch);
-    void h_logOr_2(ParserData& parserData, ParserBranch& branch);
-    void h_logOr_3(ParserData& parserData, ParserBranch& branch);
-    void h_logOr_4(ParserData& parserData, ParserBranch& branch);
-    void h_exprLeast_1(ParserData& parserData, ParserBranch& branch);
-    void h_exprLeast_2(ParserData& parserData, ParserBranch& branch);
-    void h_literal_1(ParserData& parserData, ParserBranch& branch);
-    void h_literal_2(ParserData& parserData, ParserBranch& branch);
-    void h_literal_3(ParserData& parserData, ParserBranch& branch);
-    void h_literal_4(ParserData& parserData, ParserBranch& branch);
-    void h_literal_5(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_1(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_2(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_3(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_4(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_5(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_6(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_7(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_8(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_9(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_10(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_11(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_12(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_13(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_14(ParserData& parserData, ParserBranch& branch);
-    void h_valueLiteral_15(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_1(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_2(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_3(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_4(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_5(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_6(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_7(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_8(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_9(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_10(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_11(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_12(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_13(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_14(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_15(ParserData& parserData, ParserBranch& branch);
-    void h_listLiteral_16(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_1(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_2(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_3(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_4(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_5(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_6(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_7(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_8(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_9(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_10(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_11(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_12(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_13(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_14(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_15(ParserData& parserData, ParserBranch& branch);
-    void h_setLiteral_16(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_1(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_2(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_3(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_4(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_5(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_6(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_7(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_8(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_9(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_10(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_11(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_12(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_13(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_14(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_15(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_16(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_17(ParserData& parserData, ParserBranch& branch);
-    void h_dictLiteral_18(ParserData& parserData, ParserBranch& branch);
-    void h_dictEntry_1(ParserData& parserData, ParserBranch& branch);
-    void h_dictEntry_2(ParserData& parserData, ParserBranch& branch);
-    void h_dictEntry_3(ParserData& parserData, ParserBranch& branch);
-    void h_dictEntry_4(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_1(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_2(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_3(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_4(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_5(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_6(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_7(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_8(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_9(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_10(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_11(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_12(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_13(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_14(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_15(ParserData& parserData, ParserBranch& branch);
-    void h_contextLiteral_16(ParserData& parserData, ParserBranch& branch);
-    void h_memberDecl_1(ParserData& parserData, ParserBranch& branch);
-    void h_memberDecl_2(ParserData& parserData, ParserBranch& branch);
-    void h_memberDecl_3(ParserData& parserData, ParserBranch& branch);
-    void h_statement_1(ParserData& parserData, ParserBranch& branch);
-    void h_statement_2(ParserData& parserData, ParserBranch& branch);
-    void h_statement_3(ParserData& parserData, ParserBranch& branch);
-    void h_statement_4(ParserData& parserData, ParserBranch& branch);
-    void h_statement_5(ParserData& parserData, ParserBranch& branch);
-    void h_statement_6(ParserData& parserData, ParserBranch& branch);
-    void h_statement_7(ParserData& parserData, ParserBranch& branch);
-    void h_statement_8(ParserData& parserData, ParserBranch& branch);
-    void h_definition_1(ParserData& parserData, ParserBranch& branch);
-    void h_definition_2(ParserData& parserData, ParserBranch& branch);
-    void h_definition_3(ParserData& parserData, ParserBranch& branch);
-    void h_definition_4(ParserData& parserData, ParserBranch& branch);
-    void h_definition_5(ParserData& parserData, ParserBranch& branch);
-    void h_definition_6(ParserData& parserData, ParserBranch& branch);
-    void h_definition_7(ParserData& parserData, ParserBranch& branch);
-    void h_definition_8(ParserData& parserData, ParserBranch& branch);
-    void h_definition_9(ParserData& parserData, ParserBranch& branch);
-    void h_definition_10(ParserData& parserData, ParserBranch& branch);
-    void h_varDeclaration_1(ParserData& parserData, ParserBranch& branch);
-    void h_varDeclaration_2(ParserData& parserData, ParserBranch& branch);
-    void h_refDeclaration_1(ParserData& parserData, ParserBranch& branch);
-    void h_refDeclaration_2(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclBody_1(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclBody_2(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclBody_3(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclBody_4(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclBody_5(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntry_1(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntry_2(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntryEqual_1(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntryEqual_2(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntryEqual_3(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntryEqual_4(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntryAssign_1(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntryAssign_2(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntryAssign_3(ParserData& parserData, ParserBranch& branch);
-    void h_varRefDeclEntryAssign_4(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_1(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_2(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_3(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_4(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_5(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_6(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_7(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_8(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_9(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_10(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_11(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_12(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_13(ParserData& parserData, ParserBranch& branch);
-    void h_ifStat_14(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_1(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_2(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_3(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_4(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_5(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_6(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_7(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_8(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_9(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_10(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_11(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_12(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_13(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_14(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_15(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_16(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_17(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_18(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_19(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_20(ParserData& parserData, ParserBranch& branch);
-    void h_elseStatPart_21(ParserData& parserData, ParserBranch& branch);
-    void h_loopStat_1(ParserData& parserData, ParserBranch& branch);
-    void h_loopStat_2(ParserData& parserData, ParserBranch& branch);
-    void h_loopStat_3(ParserData& parserData, ParserBranch& branch);
-    void h_loopStat_4(ParserData& parserData, ParserBranch& branch);
-    void h_loopStat_5(ParserData& parserData, ParserBranch& branch);
-    void h_loopStat_6(ParserData& parserData, ParserBranch& branch);
-    void h_loopStat_7(ParserData& parserData, ParserBranch& branch);
-    void h_loopStatPart_1(ParserData& parserData, ParserBranch& branch);
-    void h_loopStatPart_2(ParserData& parserData, ParserBranch& branch);
-    void h_loopStatPart_3(ParserData& parserData, ParserBranch& branch);
-    void h_timesLoopStatPart_1(ParserData& parserData, ParserBranch& branch);
-    void h_timesLoopStatPart_2(ParserData& parserData, ParserBranch& branch);
-    void h_forLoopStatPart_1(ParserData& parserData, ParserBranch& branch);
-    void h_forLoopStatPart_2(ParserData& parserData, ParserBranch& branch);
-    void h_forLoopStatPart_3(ParserData& parserData, ParserBranch& branch);
-    void h_forLoopStatPart_4(ParserData& parserData, ParserBranch& branch);
-    void h_whileLoopStatPart_1(ParserData& parserData, ParserBranch& branch);
-    void h_whileLoopStatPart_2(ParserData& parserData, ParserBranch& branch);
-    void h_jumpStat_1(ParserData& parserData, ParserBranch& branch);
-    void h_jumpStat_2(ParserData& parserData, ParserBranch& branch);
-    void h_jumpStat_3(ParserData& parserData, ParserBranch& branch);
-    void h_breakStat_1(ParserData& parserData, ParserBranch& branch);
-    void h_continueStat_1(ParserData& parserData, ParserBranch& branch);
-    void h_returnStat_1(ParserData& parserData, ParserBranch& branch);
-    void h_returnStat_2(ParserData& parserData, ParserBranch& branch);
-    void h_returnStat_3(ParserData& parserData, ParserBranch& branch);
-    void h_withStat_1(ParserData& parserData, ParserBranch& branch);
-    void h_withStat_2(ParserData& parserData, ParserBranch& branch);
-    void h_withStat_3(ParserData& parserData, ParserBranch& branch);
-    void h_withStat_4(ParserData& parserData, ParserBranch& branch);
-    void h_withStat_5(ParserData& parserData, ParserBranch& branch);
-    void h_withStat_6(ParserData& parserData, ParserBranch& branch);
-    void h_withStat_7(ParserData& parserData, ParserBranch& branch);
-    void h_withStatEntry_1(ParserData& parserData, ParserBranch& branch);
-    void h_withStatEntry_2(ParserData& parserData, ParserBranch& branch);
-    void h_withStatEntry_3(ParserData& parserData, ParserBranch& branch);
-    void h_withStatEntry_4(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_1(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_2(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_3(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_4(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_5(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_6(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_7(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_8(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_9(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_10(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_11(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_12(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_13(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_14(ParserData& parserData, ParserBranch& branch);
-    void h_assignmentEqual_15(ParserData& parserData, ParserBranch& branch);
-    void h_assignRef_1(ParserData& parserData, ParserBranch& branch);
-    void h_assignRef_2(ParserData& parserData, ParserBranch& branch);
-    void h_assignRef_3(ParserData& parserData, ParserBranch& branch);
-    void h_assignRef_4(ParserData& parserData, ParserBranch& branch);
-    void h_assignRef_5(ParserData& parserData, ParserBranch& branch);
-    void h_changeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_changeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_changeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_changeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_changeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_addChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_addChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_addChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_addChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_addChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_subChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_subChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_subChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_subChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_subChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_mulChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_mulChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_mulChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_mulChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_mulChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_crossChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_crossChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_crossChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_crossChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_crossChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_dotChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_dotChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_dotChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_dotChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_dotChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_divChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_divChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_divChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_divChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_divChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_intDivChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_intDivChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_intDivChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_intDivChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_intDivChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_modChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_modChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_modChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_modChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_modChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_shiftRChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_shiftRChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_shiftRChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_shiftRChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_shiftRChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_shiftLChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_shiftLChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_shiftLChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_shiftLChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_shiftLChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_andChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_andChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_andChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_andChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_andChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_orChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_orChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_orChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_orChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_orChangeVal_5(ParserData& parserData, ParserBranch& branch);
-    void h_xorChangeVal_1(ParserData& parserData, ParserBranch& branch);
-    void h_xorChangeVal_2(ParserData& parserData, ParserBranch& branch);
-    void h_xorChangeVal_3(ParserData& parserData, ParserBranch& branch);
-    void h_xorChangeVal_4(ParserData& parserData, ParserBranch& branch);
-    void h_xorChangeVal_5(ParserData& parserData, ParserBranch& branch);
+    ParseNode_file::~ParseNode_file() {}
+    ParseNode_ONL::~ParseNode_ONL() {}
+    ParseNode_contextBody::~ParseNode_contextBody() {}
+    ParseNode_contextBodyClosedBlock::~ParseNode_contextBodyClosedBlock() {}
+    ParseNode_contextDescriptionEntry::~ParseNode_contextDescriptionEntry() {}
+    ParseNode_traitAssertion::~ParseNode_traitAssertion() {}
+    ParseNode_expression::~ParseNode_expression() {}
+    ParseNode_expr0::~ParseNode_expr0() {}
+    ParseNode_identifier::~ParseNode_identifier() {}
+    ParseNode_suffixFunction::~ParseNode_suffixFunction() {}
+    ParseNode_expr1::~ParseNode_expr1() {}
+    ParseNode_suffixInc::~ParseNode_suffixInc() {}
+    ParseNode_suffixDec::~ParseNode_suffixDec() {}
+    ParseNode_copy::~ParseNode_copy() {}
+    ParseNode_prefixFunction::~ParseNode_prefixFunction() {}
+    ParseNode_expr2::~ParseNode_expr2() {}
+    ParseNode_prefixInc::~ParseNode_prefixInc() {}
+    ParseNode_prefixDec::~ParseNode_prefixDec() {}
+    ParseNode_plus::~ParseNode_plus() {}
+    ParseNode_minus::~ParseNode_minus() {}
+    ParseNode_logNot::~ParseNode_logNot() {}
+    ParseNode_expr3::~ParseNode_expr3() {}
+    ParseNode_multiplication::~ParseNode_multiplication() {}
+    ParseNode_crossProduct::~ParseNode_crossProduct() {}
+    ParseNode_dotProduct::~ParseNode_dotProduct() {}
+    ParseNode_division::~ParseNode_division() {}
+    ParseNode_divisionInt::~ParseNode_divisionInt() {}
+    ParseNode_modulo::~ParseNode_modulo() {}
+    ParseNode_expr4::~ParseNode_expr4() {}
+    ParseNode_addition::~ParseNode_addition() {}
+    ParseNode_subtraction::~ParseNode_subtraction() {}
+    ParseNode_expr5::~ParseNode_expr5() {}
+    ParseNode_shiftL::~ParseNode_shiftL() {}
+    ParseNode_shiftR::~ParseNode_shiftR() {}
+    ParseNode_expr6::~ParseNode_expr6() {}
+    ParseNode_compLess::~ParseNode_compLess() {}
+    ParseNode_compGreat::~ParseNode_compGreat() {}
+    ParseNode_compLeEq::~ParseNode_compLeEq() {}
+    ParseNode_compGrEq::~ParseNode_compGrEq() {}
+    ParseNode_expr7::~ParseNode_expr7() {}
+    ParseNode_compEqual::~ParseNode_compEqual() {}
+    ParseNode_compNotEq::~ParseNode_compNotEq() {}
+    ParseNode_compAssigned::~ParseNode_compAssigned() {}
+    ParseNode_compNotAss::~ParseNode_compNotAss() {}
+    ParseNode_expr8::~ParseNode_expr8() {}
+    ParseNode_logAnd::~ParseNode_logAnd() {}
+    ParseNode_expr9::~ParseNode_expr9() {}
+    ParseNode_logXOr::~ParseNode_logXOr() {}
+    ParseNode_expr10::~ParseNode_expr10() {}
+    ParseNode_logOr::~ParseNode_logOr() {}
+    ParseNode_exprLeast::~ParseNode_exprLeast() {}
+    ParseNode_literal::~ParseNode_literal() {}
+    ParseNode_valueLiteral::~ParseNode_valueLiteral() {}
+    ParseNode_listLiteral::~ParseNode_listLiteral() {}
+    ParseNode_setLiteral::~ParseNode_setLiteral() {}
+    ParseNode_dictLiteral::~ParseNode_dictLiteral() {}
+    ParseNode_dictEntry::~ParseNode_dictEntry() {}
+    ParseNode_contextLiteral::~ParseNode_contextLiteral() {}
+    ParseNode_memberDecl::~ParseNode_memberDecl() {}
+    ParseNode_statement::~ParseNode_statement() {}
+    ParseNode_definition::~ParseNode_definition() {}
+    ParseNode_varDeclaration::~ParseNode_varDeclaration() {}
+    ParseNode_refDeclaration::~ParseNode_refDeclaration() {}
+    ParseNode_varRefDeclBody::~ParseNode_varRefDeclBody() {}
+    ParseNode_varRefDeclEntry::~ParseNode_varRefDeclEntry() {}
+    ParseNode_varRefDeclEntryEqual::~ParseNode_varRefDeclEntryEqual() {}
+    ParseNode_varRefDeclEntryAssign::~ParseNode_varRefDeclEntryAssign() {}
+    ParseNode_ifStat::~ParseNode_ifStat() {}
+    ParseNode_elseStatPart::~ParseNode_elseStatPart() {}
+    ParseNode_loopStat::~ParseNode_loopStat() {}
+    ParseNode_loopStatPart::~ParseNode_loopStatPart() {}
+    ParseNode_timesLoopStatPart::~ParseNode_timesLoopStatPart() {}
+    ParseNode_forLoopStatPart::~ParseNode_forLoopStatPart() {}
+    ParseNode_whileLoopStatPart::~ParseNode_whileLoopStatPart() {}
+    ParseNode_jumpStat::~ParseNode_jumpStat() {}
+    ParseNode_breakStat::~ParseNode_breakStat() {}
+    ParseNode_continueStat::~ParseNode_continueStat() {}
+    ParseNode_returnStat::~ParseNode_returnStat() {}
+    ParseNode_withStat::~ParseNode_withStat() {}
+    ParseNode_withStatEntry::~ParseNode_withStatEntry() {}
+    ParseNode_assignmentEqual::~ParseNode_assignmentEqual() {}
+    ParseNode_assignRef::~ParseNode_assignRef() {}
+    ParseNode_changeVal::~ParseNode_changeVal() {}
+    ParseNode_addChangeVal::~ParseNode_addChangeVal() {}
+    ParseNode_subChangeVal::~ParseNode_subChangeVal() {}
+    ParseNode_mulChangeVal::~ParseNode_mulChangeVal() {}
+    ParseNode_crossChangeVal::~ParseNode_crossChangeVal() {}
+    ParseNode_dotChangeVal::~ParseNode_dotChangeVal() {}
+    ParseNode_divChangeVal::~ParseNode_divChangeVal() {}
+    ParseNode_intDivChangeVal::~ParseNode_intDivChangeVal() {}
+    ParseNode_modChangeVal::~ParseNode_modChangeVal() {}
+    ParseNode_shiftRChangeVal::~ParseNode_shiftRChangeVal() {}
+    ParseNode_shiftLChangeVal::~ParseNode_shiftLChangeVal() {}
+    ParseNode_andChangeVal::~ParseNode_andChangeVal() {}
+    ParseNode_orChangeVal::~ParseNode_orChangeVal() {}
+    ParseNode_xorChangeVal::~ParseNode_xorChangeVal() {}
+    
+    void a_file(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_file_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ONL(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ONL_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextBody(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextBody_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextBody_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextBody_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextBodyClosedBlock(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextBodyClosedBlock_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextBodyClosedBlock_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextBodyClosedBlock_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextBodyClosedBlock_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextDescriptionEntry(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextDescriptionEntry_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextDescriptionEntry_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextDescriptionEntry_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextDescriptionEntry_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_traitAssertion(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_traitAssertion_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_traitAssertion_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expression(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expression_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr0(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr0_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr0_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr0_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr0_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr0_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr0_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr0_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_identifier(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_identifier_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixFunction(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixFunction_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixFunction_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixFunction_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixFunction_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr1_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr1_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixInc(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixInc_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixInc_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixDec(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixDec_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_suffixDec_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_copy(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_copy_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_copy_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_copy_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixFunction(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixFunction_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixFunction_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr2_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr2_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr2_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr2_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr2_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixInc(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixInc_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixInc_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixInc_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixDec(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixDec_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixDec_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_prefixDec_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_plus(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_plus_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_plus_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_plus_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_minus(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_minus_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_minus_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_minus_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logNot(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logNot_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logNot_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logNot_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr3_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr3_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr3_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr3_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr3_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr3_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_multiplication(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_multiplication_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_multiplication_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_multiplication_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_multiplication_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossProduct(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossProduct_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossProduct_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossProduct_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossProduct_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotProduct(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotProduct_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotProduct_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotProduct_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotProduct_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_division(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_division_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_division_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_division_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_division_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divisionInt(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divisionInt_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divisionInt_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divisionInt_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divisionInt_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modulo(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modulo_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modulo_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modulo_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modulo_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr4_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr4_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr4_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr4_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr4_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr4_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr4_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addition(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addition_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addition_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addition_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addition_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subtraction(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subtraction_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subtraction_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subtraction_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subtraction_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr5_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr5_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr5_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftL(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftL_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftL_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftL_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftL_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftR(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftR_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftR_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftR_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftR_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr6_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr6_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr6_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLess(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLess_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLess_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLess_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLess_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGreat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGreat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGreat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGreat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGreat_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLeEq(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLeEq_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLeEq_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLeEq_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compLeEq_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGrEq(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGrEq_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGrEq_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGrEq_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compGrEq_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr7_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr7_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr7_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr7_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr7_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compEqual(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compEqual_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compEqual_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compEqual_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compEqual_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotEq(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotEq_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotEq_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotEq_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotEq_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compAssigned(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compAssigned_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compAssigned_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compAssigned_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compAssigned_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotAss(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotAss_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotAss_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotAss_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_compNotAss_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr8_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr8_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr8_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr8_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr8_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logAnd(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logAnd_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logAnd_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logAnd_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logAnd_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr9_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr9_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logXOr(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logXOr_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logXOr_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logXOr_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logXOr_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr10_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_expr10_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logOr(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logOr_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logOr_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logOr_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_logOr_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_exprLeast(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_exprLeast_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_exprLeast_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_literal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_literal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_literal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_literal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_literal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_literal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_valueLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_listLiteral_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_setLiteral_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_17(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictLiteral_18(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictEntry(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictEntry_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictEntry_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictEntry_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dictEntry_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_contextLiteral_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_memberDecl(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_memberDecl_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_memberDecl_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_memberDecl_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_statement(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_statement_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_statement_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_statement_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_statement_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_statement_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_statement_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_statement_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_statement_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_definition_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varDeclaration(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varDeclaration_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varDeclaration_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_refDeclaration(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_refDeclaration_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_refDeclaration_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclBody(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclBody_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclBody_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclBody_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclBody_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclBody_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntry(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntry_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntry_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryEqual(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryEqual_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryEqual_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryEqual_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryEqual_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryAssign(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryAssign_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryAssign_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryAssign_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_varRefDeclEntryAssign_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_ifStat_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_17(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_18(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_19(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_20(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_elseStatPart_21(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStat_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStat_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStat_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStat_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_loopStatPart_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_timesLoopStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_timesLoopStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_timesLoopStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_forLoopStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_forLoopStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_forLoopStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_forLoopStatPart_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_forLoopStatPart_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_whileLoopStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_whileLoopStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_whileLoopStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_jumpStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_jumpStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_jumpStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_jumpStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_breakStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_breakStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_continueStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_continueStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_returnStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_returnStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_returnStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_returnStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStat_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStat_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStat_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStat_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStatEntry(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStatEntry_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStatEntry_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStatEntry_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_withStatEntry_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignmentEqual_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignRef(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignRef_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignRef_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignRef_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignRef_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_assignRef_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_changeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_changeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_changeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_changeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_changeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_changeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_addChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_subChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_mulChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_mulChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_mulChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_mulChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_mulChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_mulChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_crossChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_dotChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_divChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_intDivChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_intDivChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_intDivChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_intDivChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_intDivChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_intDivChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_modChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftRChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftRChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftRChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftRChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftRChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftRChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftLChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftLChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftLChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftLChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftLChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_shiftLChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_andChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_andChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_andChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_andChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_andChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_andChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_orChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_orChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_orChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_orChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_orChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_orChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_xorChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_xorChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_xorChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_xorChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_xorChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+    void a_xorChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);
+
+    // file
+    bool n_file(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_file(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_file);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_file>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_file_1({state}, nextStates, curNode);
+        }
+    }
 
     // file = _ <:contextBody>
-    void h_file_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_file_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[":"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_file_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_file_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextBody({state}, nextStates, curNode);
+        state->node->nodeLists[":"].push_back(state->subNode);
+        }
+    }
+
+    // ONL
+    bool n_ONL(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_ONL(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ONL);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_ONL>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_ONL_1({state}, nextStates, curNode);
+        }
     }
 
     // ONL = _ '\n'*
-    void h_ONL_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_ONL_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NEW_LN)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_ONL_1(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ONL_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_ONL_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // contextBody
+    bool n_contextBody(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextBody(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextBody);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_contextBody>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_contextBody_1({state}, nextStates, curNode);
+        }
     }
 
     // contextBody = _ ( <descs:contextDescriptionEntry> | '\n')*
-    void h_contextBody_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextBody_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_contextBody_1(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextBody_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextBody_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextBody_2({state}, nextStates, curNode);
+            a_contextBody_3({state}, nextStates, curNode);
+        }
     }
 
     // contextBody = ( _ <descs:contextDescriptionEntry> | '\n')*
-    void h_contextBody_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextBody_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["descs"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextBody_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextBody_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextDescriptionEntry({state}, nextStates, curNode);
+        state->node->nodeLists["descs"].push_back(state->subNode);
+        }
     }
 
     // contextBody = ( <descs:contextDescriptionEntry> | _ '\n')*
-    void h_contextBody_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextBody_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NEW_LN)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextBody_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextBody_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // contextBodyClosedBlock
+    bool n_contextBodyClosedBlock(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextBodyClosedBlock(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextBodyClosedBlock);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_contextBodyClosedBlock>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_contextBodyClosedBlock_1({state}, nextStates, curNode);
+            a_contextBodyClosedBlock_2({state}, nextStates, curNode);
+        }
     }
 
     // contextBodyClosedBlock 	= _ <descs:contextDescriptionEntry>
-    void h_contextBodyClosedBlock_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextBodyClosedBlock_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["descs"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextBodyClosedBlock_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextBodyClosedBlock_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextDescriptionEntry({state}, nextStates, curNode);
+        state->node->nodeLists["descs"].push_back(state->subNode);
+        }
     }
 
     // contextBodyClosedBlock = _ '\n' <:contextBody> 'ok'
-    void h_contextBodyClosedBlock_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextBodyClosedBlock_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NEW_LN)
+            return false;
+        a_contextBodyClosedBlock_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextBodyClosedBlock_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextBodyClosedBlock_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // contextBodyClosedBlock = '\n' _ <:contextBody> 'ok'
-    void h_contextBodyClosedBlock_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextBodyClosedBlock_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[":"].push_back(curState->subNode);
+        a_contextBodyClosedBlock_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextBodyClosedBlock_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextBodyClosedBlock_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextBody({state}, nextStates, curNode);
+        state->node->nodeLists[":"].push_back(state->subNode);
+        }
     }
 
     // contextBodyClosedBlock = '\n' <:contextBody> _ 'ok'
-    void h_contextBodyClosedBlock_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextBodyClosedBlock_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextBodyClosedBlock_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextBodyClosedBlock_4];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // contextDescriptionEntry
+    bool n_contextDescriptionEntry(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextDescriptionEntry(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextDescriptionEntry);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_contextDescriptionEntry>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_contextDescriptionEntry_1({state}, nextStates, curNode);
+            a_contextDescriptionEntry_3({state}, nextStates, curNode);
+        }
     }
 
     // contextDescriptionEntry = _ <statement> '\n'
-    void h_contextDescriptionEntry_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextDescriptionEntry_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_contextDescriptionEntry_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextDescriptionEntry_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextDescriptionEntry_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_statement({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // contextDescriptionEntry = <statement> _ '\n'
-    void h_contextDescriptionEntry_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextDescriptionEntry_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NEW_LN)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextDescriptionEntry_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextDescriptionEntry_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // contextDescriptionEntry = _ <traitAssertion> '\n'
-    void h_contextDescriptionEntry_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextDescriptionEntry_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_contextDescriptionEntry_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextDescriptionEntry_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextDescriptionEntry_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_traitAssertion({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // contextDescriptionEntry = <traitAssertion> _ '\n'
-    void h_contextDescriptionEntry_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextDescriptionEntry_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NEW_LN)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextDescriptionEntry_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextDescriptionEntry_4];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // traitAssertion
+    bool n_traitAssertion(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_traitAssertion(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_traitAssertion);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_traitAssertion>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_traitAssertion_1({state}, nextStates, curNode);
+        }
     }
 
     // traitAssertion = _ '??' <cond:expression>
-    void h_traitAssertion_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_traitAssertion_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_TRAIT_COND)
+            return false;
+        a_traitAssertion_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_traitAssertion_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_traitAssertion_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // traitAssertion = '??' _ <cond:expression>
-    void h_traitAssertion_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_traitAssertion_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["cond"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_traitAssertion_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_traitAssertion_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["cond"].push_back(state->subNode);
+        }
+    }
+
+    // expression
+    bool n_expression(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expression(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expression);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expression>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expression_1({state}, nextStates, curNode);
+        }
     }
 
     // expression = _ <exprLeast>
-    void h_expression_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expression_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expression_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expression_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_exprLeast({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // expr0
+    bool n_expr0(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr0(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr0);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr0>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr0_1({state}, nextStates, curNode);
+            a_expr0_2({state}, nextStates, curNode);
+            a_expr0_7({state}, nextStates, curNode);
+        }
     }
 
     // expr0 	= _ <identifier>
-    void h_expr0_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr0_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr0_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr0_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_identifier({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr0 = _ '(' <ONL> <expression> ')' <ONL>
-    void h_expr0_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr0_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEFT_PAR)
+            return false;
+        a_expr0_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_expr0_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_expr0_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // expr0 = '(' _ <ONL> <expression> ')' <ONL>
-    void h_expr0_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr0_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_expr0_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_expr0_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr0_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr0 = '(' <ONL> _ <expression> ')' <ONL>
-    void h_expr0_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr0_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_expr0_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_expr0_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr0_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr0 = '(' <ONL> <expression> _ ')' <ONL>
-    void h_expr0_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr0_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_RIGHT_PAR)
+            return false;
+        a_expr0_6(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_expr0_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_expr0_5];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // expr0 = '(' <ONL> <expression> ')' _ <ONL>
-    void h_expr0_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr0_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr0_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr0_6);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr0 = _ <literal>
-    void h_expr0_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr0_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr0_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr0_7);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_literal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // identifier
+    bool n_identifier(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_identifier(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_identifier);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_identifier>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_identifier_1({state}, nextStates, curNode);
+        }
     }
 
     // identifier = _ name:L_IDENTIFIER
-    void h_identifier_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_identifier_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        curState->node->tokenLists["name"].push_back(token);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_identifier_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_identifier_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // suffixFunction
+    bool n_suffixFunction(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_suffixFunction(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_suffixFunction);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_suffixFunction>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_suffixFunction_1({state}, nextStates, curNode);
+        }
     }
 
     // suffixFunction = _ <left:expr1> '.' <ONL> <right:expr0>
-    void h_suffixFunction_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_suffixFunction_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_suffixFunction_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_suffixFunction_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_suffixFunction_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr1({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // suffixFunction = <left:expr1> _ '.' <ONL> <right:expr0>
-    void h_suffixFunction_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_suffixFunction_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_MEMBER)
+            return false;
+        a_suffixFunction_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_suffixFunction_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_suffixFunction_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // suffixFunction = <left:expr1> '.' _ <ONL> <right:expr0>
-    void h_suffixFunction_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_suffixFunction_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_suffixFunction_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_suffixFunction_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_suffixFunction_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // suffixFunction = <left:expr1> '.' <ONL> _ <right:expr0>
-    void h_suffixFunction_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_suffixFunction_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_suffixFunction_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_suffixFunction_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr0({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // expr1
+    bool n_expr1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr1>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr1_1({state}, nextStates, curNode);
+            a_expr1_2({state}, nextStates, curNode);
+        }
     }
 
     // expr1 = _ <expr0>
-    void h_expr1_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr1_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr1_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr1_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr0({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr1 = _ <suffixFunction>
-    void h_expr1_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr1_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr1_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr1_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_suffixFunction({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // suffixInc
+    bool n_suffixInc(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_suffixInc(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_suffixInc);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_suffixInc>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_suffixInc_1({state}, nextStates, curNode);
+        }
     }
 
     // suffixInc = _ <val:expr2> '++'
-    void h_suffixInc_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_suffixInc_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        a_suffixInc_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_suffixInc_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_suffixInc_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr2({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
     }
 
     // suffixInc = <val:expr2> _ '++'
-    void h_suffixInc_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_suffixInc_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_INCREMENT)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_suffixInc_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_suffixInc_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // suffixDec
+    bool n_suffixDec(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_suffixDec(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_suffixDec);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_suffixDec>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_suffixDec_1({state}, nextStates, curNode);
+        }
     }
 
     // suffixDec = _ <val:expr2> '--'
-    void h_suffixDec_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_suffixDec_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        a_suffixDec_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_suffixDec_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_suffixDec_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr2({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
     }
 
     // suffixDec = <val:expr2> _ '--'
-    void h_suffixDec_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_suffixDec_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_DECREMENT)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_suffixDec_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_suffixDec_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // copy
+    bool n_copy(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_copy(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_copy);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_copy>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_copy_1({state}, nextStates, curNode);
+        }
     }
 
     // copy = _ 'new' <ONL> <val:expr2>
-    void h_copy_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_copy_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_copy_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_copy_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_copy_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // copy = 'new' _ <ONL> <val:expr2>
-    void h_copy_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_copy_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_copy_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_copy_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_copy_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // copy = 'new' <ONL> _ <val:expr2>
-    void h_copy_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_copy_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_copy_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_copy_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr2({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
+    }
+
+    // prefixFunction
+    bool n_prefixFunction(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_prefixFunction(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_prefixFunction);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_prefixFunction>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_prefixFunction_1({state}, nextStates, curNode);
+        }
     }
 
     // prefixFunction = _ <left:expr1> <right:expr2>
-    void h_prefixFunction_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_prefixFunction_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_prefixFunction_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_prefixFunction_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_prefixFunction_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr1({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // prefixFunction = <left:expr1> _ <right:expr2>
-    void h_prefixFunction_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_prefixFunction_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_prefixFunction_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_prefixFunction_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr2({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // expr2
+    bool n_expr2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr2>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr2_1({state}, nextStates, curNode);
+            a_expr2_2({state}, nextStates, curNode);
+            a_expr2_3({state}, nextStates, curNode);
+            a_expr2_4({state}, nextStates, curNode);
+            a_expr2_5({state}, nextStates, curNode);
+        }
     }
 
     // expr2 = _ <expr1>
-    void h_expr2_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr2_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr2_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr2_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr1({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr2 = _ <suffixInc>
-    void h_expr2_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr2_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr2_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr2_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_suffixInc({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr2 = _ <suffixDec>
-    void h_expr2_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr2_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr2_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr2_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_suffixDec({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr2 = _ <copy>
-    void h_expr2_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr2_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr2_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr2_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_copy({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr2 = _ <prefixFunction>
-    void h_expr2_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr2_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr2_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr2_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_prefixFunction({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // prefixInc
+    bool n_prefixInc(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_prefixInc(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_prefixInc);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_prefixInc>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_prefixInc_1({state}, nextStates, curNode);
+        }
     }
 
     // prefixInc = _ '++' <ONL> <val:expr3>
-    void h_prefixInc_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_prefixInc_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_INCREMENT)
+            return false;
+        a_prefixInc_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_prefixInc_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_prefixInc_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // prefixInc = '++' _ <ONL> <val:expr3>
-    void h_prefixInc_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_prefixInc_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_prefixInc_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_prefixInc_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_prefixInc_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // prefixInc = '++' <ONL> _ <val:expr3>
-    void h_prefixInc_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_prefixInc_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_prefixInc_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_prefixInc_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
+    }
+
+    // prefixDec
+    bool n_prefixDec(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_prefixDec(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_prefixDec);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_prefixDec>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_prefixDec_1({state}, nextStates, curNode);
+        }
     }
 
     // prefixDec = _ '--' <ONL> <val:expr3>
-    void h_prefixDec_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_prefixDec_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_DECREMENT)
+            return false;
+        a_prefixDec_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_prefixDec_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_prefixDec_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // prefixDec = '--' _ <ONL> <val:expr3>
-    void h_prefixDec_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_prefixDec_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_prefixDec_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_prefixDec_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_prefixDec_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // prefixDec = '--' <ONL> _ <val:expr3>
-    void h_prefixDec_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_prefixDec_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_prefixDec_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_prefixDec_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
+    }
+
+    // plus
+    bool n_plus(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_plus(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_plus);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_plus>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_plus_1({state}, nextStates, curNode);
+        }
     }
 
     // plus = _ '+' <ONL> <val:expr3>
-    void h_plus_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_plus_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_ADD)
+            return false;
+        a_plus_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_plus_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_plus_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // plus = '+' _ <ONL> <val:expr3>
-    void h_plus_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_plus_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_plus_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_plus_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_plus_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // plus = '+' <ONL> _ <val:expr3>
-    void h_plus_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_plus_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_plus_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_plus_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
+    }
+
+    // minus
+    bool n_minus(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_minus(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_minus);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_minus>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_minus_1({state}, nextStates, curNode);
+        }
     }
 
     // minus = _ '-' <ONL> <val:expr3>
-    void h_minus_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_minus_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_SUB)
+            return false;
+        a_minus_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_minus_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_minus_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // minus = '-' _ <ONL> <val:expr3>
-    void h_minus_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_minus_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_minus_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_minus_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_minus_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // minus = '-' <ONL> _ <val:expr3>
-    void h_minus_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_minus_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_minus_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_minus_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
+    }
+
+    // logNot
+    bool n_logNot(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_logNot(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logNot);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_logNot>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_logNot_1({state}, nextStates, curNode);
+        }
     }
 
     // logNot = _ '!' <ONL> <val:expr3>
-    void h_logNot_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_logNot_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NOT)
+            return false;
+        a_logNot_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logNot_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_logNot_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // logNot = '!' _ <ONL> <val:expr3>
-    void h_logNot_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_logNot_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_logNot_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logNot_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logNot_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // logNot = '!' <ONL> _ <val:expr3>
-    void h_logNot_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_logNot_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_logNot_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logNot_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
+    }
+
+    // expr3
+    bool n_expr3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr3>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr3_1({state}, nextStates, curNode);
+            a_expr3_2({state}, nextStates, curNode);
+            a_expr3_3({state}, nextStates, curNode);
+            a_expr3_4({state}, nextStates, curNode);
+            a_expr3_5({state}, nextStates, curNode);
+            a_expr3_6({state}, nextStates, curNode);
+        }
     }
 
     // expr3 = _ <expr2>
-    void h_expr3_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr3_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr3_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr3_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr2({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr3 = _ <prefixInc>
-    void h_expr3_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr3_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr3_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr3_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_prefixInc({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr3 = _ <prefixDec>
-    void h_expr3_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr3_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr3_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr3_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_prefixDec({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr3 = _ <plus>
-    void h_expr3_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr3_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr3_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr3_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_plus({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr3 = _ <minus>
-    void h_expr3_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr3_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr3_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr3_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_minus({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr3 = _ <logNot>
-    void h_expr3_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr3_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr3_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr3_6);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_logNot({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // multiplication
+    bool n_multiplication(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_multiplication(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_multiplication);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_multiplication>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_multiplication_1({state}, nextStates, curNode);
+        }
     }
 
     // multiplication = _ <left:expr4> '*' <ONL> <right:expr3>
-    void h_multiplication_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_multiplication_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_multiplication_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_multiplication_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_multiplication_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr4({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // multiplication = <left:expr4> _ '*' <ONL> <right:expr3>
-    void h_multiplication_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_multiplication_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_MUL)
+            return false;
+        a_multiplication_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_multiplication_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_multiplication_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // multiplication = <left:expr4> '*' _ <ONL> <right:expr3>
-    void h_multiplication_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_multiplication_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_multiplication_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_multiplication_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_multiplication_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // multiplication = <left:expr4> '*' <ONL> _ <right:expr3>
-    void h_multiplication_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_multiplication_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_multiplication_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_multiplication_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // crossProduct
+    bool n_crossProduct(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_crossProduct(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_crossProduct);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_crossProduct>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_crossProduct_1({state}, nextStates, curNode);
+        }
     }
 
     // crossProduct = _ <left:expr4> '×' <ONL> <right:expr3>
-    void h_crossProduct_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_crossProduct_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_crossProduct_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_crossProduct_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_crossProduct_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr4({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // crossProduct = <left:expr4> _ '×' <ONL> <right:expr3>
-    void h_crossProduct_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_crossProduct_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_CROSS)
+            return false;
+        a_crossProduct_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_crossProduct_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_crossProduct_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // crossProduct = <left:expr4> '×' _ <ONL> <right:expr3>
-    void h_crossProduct_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_crossProduct_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_crossProduct_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_crossProduct_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_crossProduct_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // crossProduct = <left:expr4> '×' <ONL> _ <right:expr3>
-    void h_crossProduct_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_crossProduct_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_crossProduct_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_crossProduct_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // dotProduct
+    bool n_dotProduct(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dotProduct(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dotProduct);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_dotProduct>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_dotProduct_1({state}, nextStates, curNode);
+        }
     }
 
     // dotProduct = _ <left:expr4> '⋅' <ONL> <right:expr3>
-    void h_dotProduct_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_dotProduct_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_dotProduct_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dotProduct_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dotProduct_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr4({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // dotProduct = <left:expr4> _ '⋅' <ONL> <right:expr3>
-    void h_dotProduct_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_dotProduct_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_DOT)
+            return false;
+        a_dotProduct_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dotProduct_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dotProduct_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dotProduct = <left:expr4> '⋅' _ <ONL> <right:expr3>
-    void h_dotProduct_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_dotProduct_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_dotProduct_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dotProduct_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dotProduct_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // dotProduct = <left:expr4> '⋅' <ONL> _ <right:expr3>
-    void h_dotProduct_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_dotProduct_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dotProduct_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dotProduct_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // division
+    bool n_division(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_division(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_division);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_division>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_division_1({state}, nextStates, curNode);
+        }
     }
 
     // division = _ <left:expr4> '/' <ONL> <right:expr3>
-    void h_division_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_division_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_division_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_division_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_division_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr4({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // division = <left:expr4> _ '/' <ONL> <right:expr3>
-    void h_division_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_division_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_DIV)
+            return false;
+        a_division_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_division_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_division_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // division = <left:expr4> '/' _ <ONL> <right:expr3>
-    void h_division_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_division_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_division_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_division_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_division_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // division = <left:expr4> '/' <ONL> _ <right:expr3>
-    void h_division_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_division_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_division_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_division_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // divisionInt
+    bool n_divisionInt(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_divisionInt(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_divisionInt);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_divisionInt>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_divisionInt_1({state}, nextStates, curNode);
+        }
     }
 
     // divisionInt = _ <left:expr4> '/%' <ONL> <right:expr3>
-    void h_divisionInt_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_divisionInt_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_divisionInt_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_divisionInt_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_divisionInt_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr4({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // divisionInt = <left:expr4> _ '/%' <ONL> <right:expr3>
-    void h_divisionInt_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_divisionInt_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_INT_DIV)
+            return false;
+        a_divisionInt_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_divisionInt_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_divisionInt_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // divisionInt = <left:expr4> '/%' _ <ONL> <right:expr3>
-    void h_divisionInt_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_divisionInt_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_divisionInt_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_divisionInt_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_divisionInt_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // divisionInt = <left:expr4> '/%' <ONL> _ <right:expr3>
-    void h_divisionInt_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_divisionInt_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_divisionInt_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_divisionInt_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // modulo
+    bool n_modulo(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_modulo(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_modulo);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_modulo>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_modulo_1({state}, nextStates, curNode);
+        }
     }
 
     // modulo = _ <left:expr4> '%' <ONL> <right:expr3>
-    void h_modulo_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_modulo_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_modulo_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_modulo_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_modulo_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr4({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // modulo = <left:expr4> _ '%' <ONL> <right:expr3>
-    void h_modulo_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_modulo_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_MOD)
+            return false;
+        a_modulo_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_modulo_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_modulo_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // modulo = <left:expr4> '%' _ <ONL> <right:expr3>
-    void h_modulo_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_modulo_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_modulo_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_modulo_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_modulo_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // modulo = <left:expr4> '%' <ONL> _ <right:expr3>
-    void h_modulo_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_modulo_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_modulo_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_modulo_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // expr4
+    bool n_expr4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr4>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr4_1({state}, nextStates, curNode);
+            a_expr4_2({state}, nextStates, curNode);
+            a_expr4_3({state}, nextStates, curNode);
+            a_expr4_4({state}, nextStates, curNode);
+            a_expr4_5({state}, nextStates, curNode);
+            a_expr4_6({state}, nextStates, curNode);
+            a_expr4_7({state}, nextStates, curNode);
+        }
     }
 
     // expr4 = _ <expr3>
-    void h_expr4_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr4_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr4_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr4_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr3({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr4 = _ <multiplication>
-    void h_expr4_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr4_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr4_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr4_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_multiplication({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr4 = _ <crossProduct>
-    void h_expr4_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr4_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr4_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr4_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_crossProduct({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr4 = _ <dotProduct>
-    void h_expr4_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr4_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr4_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr4_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dotProduct({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr4 = _ <division>
-    void h_expr4_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr4_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr4_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr4_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_division({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr4 = _ <divisionInt>
-    void h_expr4_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr4_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr4_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr4_6);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_divisionInt({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr4 = _ <modulo>
-    void h_expr4_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr4_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr4_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr4_7);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_modulo({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // addition
+    bool n_addition(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_addition(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_addition);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_addition>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_addition_1({state}, nextStates, curNode);
+        }
     }
 
     // addition = _ <left:expr5> '+' <ONL> <right:expr4>
-    void h_addition_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_addition_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_addition_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_addition_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_addition_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr5({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // addition = <left:expr5> _ '+' <ONL> <right:expr4>
-    void h_addition_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_addition_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_ADD)
+            return false;
+        a_addition_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_addition_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_addition_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // addition = <left:expr5> '+' _ <ONL> <right:expr4>
-    void h_addition_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_addition_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_addition_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_addition_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_addition_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // addition = <left:expr5> '+' <ONL> _ <right:expr4>
-    void h_addition_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_addition_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_addition_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_addition_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr4({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // subtraction
+    bool n_subtraction(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_subtraction(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_subtraction);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_subtraction>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_subtraction_1({state}, nextStates, curNode);
+        }
     }
 
     // subtraction = _ <left:expr5> '-' <ONL> <right:expr4>
-    void h_subtraction_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_subtraction_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_subtraction_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_subtraction_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_subtraction_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr5({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // subtraction = <left:expr5> _ '-' <ONL> <right:expr4>
-    void h_subtraction_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_subtraction_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_SUB)
+            return false;
+        a_subtraction_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_subtraction_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_subtraction_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // subtraction = <left:expr5> '-' _ <ONL> <right:expr4>
-    void h_subtraction_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_subtraction_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_subtraction_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_subtraction_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_subtraction_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // subtraction = <left:expr5> '-' <ONL> _ <right:expr4>
-    void h_subtraction_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_subtraction_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_subtraction_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_subtraction_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr4({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // expr5
+    bool n_expr5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr5>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr5_1({state}, nextStates, curNode);
+            a_expr5_2({state}, nextStates, curNode);
+            a_expr5_3({state}, nextStates, curNode);
+        }
     }
 
     // expr5 = _ <expr4>
-    void h_expr5_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr5_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr5_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr5_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr4({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr5 = _ <addition>
-    void h_expr5_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr5_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr5_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr5_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_addition({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr5 = _ <subtraction>
-    void h_expr5_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr5_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr5_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr5_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_subtraction({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // shiftL
+    bool n_shiftL(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_shiftL(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftL);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_shiftL>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_shiftL_1({state}, nextStates, curNode);
+        }
     }
 
     // shiftL = _ <left:expr6> '<<' <ONL> <right:expr5>
-    void h_shiftL_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftL_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_shiftL_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftL_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftL_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr6({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // shiftL = <left:expr6> _ '<<' <ONL> <right:expr5>
-    void h_shiftL_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftL_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_SHIFT_LEFT)
+            return false;
+        a_shiftL_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftL_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_shiftL_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // shiftL = <left:expr6> '<<' _ <ONL> <right:expr5>
-    void h_shiftL_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftL_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_shiftL_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftL_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftL_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // shiftL = <left:expr6> '<<' <ONL> _ <right:expr5>
-    void h_shiftL_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftL_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_shiftL_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftL_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr5({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // shiftR
+    bool n_shiftR(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_shiftR(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftR);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_shiftR>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_shiftR_1({state}, nextStates, curNode);
+        }
     }
 
     // shiftR = _ <left:expr6> '>>' <ONL> <right:expr5>
-    void h_shiftR_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftR_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_shiftR_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftR_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftR_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr6({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // shiftR = <left:expr6> _ '>>' <ONL> <right:expr5>
-    void h_shiftR_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftR_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_SHIFT_RIGHT)
+            return false;
+        a_shiftR_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftR_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_shiftR_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // shiftR = <left:expr6> '>>' _ <ONL> <right:expr5>
-    void h_shiftR_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftR_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_shiftR_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftR_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftR_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // shiftR = <left:expr6> '>>' <ONL> _ <right:expr5>
-    void h_shiftR_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftR_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_shiftR_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftR_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr5({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // expr6
+    bool n_expr6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr6);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr6>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr6_1({state}, nextStates, curNode);
+            a_expr6_2({state}, nextStates, curNode);
+            a_expr6_3({state}, nextStates, curNode);
+        }
     }
 
     // expr6 = _ <expr5>
-    void h_expr6_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr6_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr6_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr6_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr5({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr6 = _ <shiftL>
-    void h_expr6_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr6_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr6_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr6_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_shiftL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr6 = _ <shiftR>
-    void h_expr6_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr6_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr6_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr6_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_shiftR({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // compLess
+    bool n_compLess(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compLess(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compLess);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_compLess>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_compLess_1({state}, nextStates, curNode);
+        }
     }
 
     // compLess = _ <left:expr7> '<' <ONL> <right:expr6>
-    void h_compLess_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_compLess_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_compLess_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compLess_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compLess_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr7({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // compLess = <left:expr7> _ '<' <ONL> <right:expr6>
-    void h_compLess_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_compLess_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LESS)
+            return false;
+        a_compLess_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compLess_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_compLess_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // compLess = <left:expr7> '<' _ <ONL> <right:expr6>
-    void h_compLess_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_compLess_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_compLess_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compLess_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compLess_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // compLess = <left:expr7> '<' <ONL> _ <right:expr6>
-    void h_compLess_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_compLess_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compLess_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compLess_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr6({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // compGreat
+    bool n_compGreat(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compGreat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compGreat);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_compGreat>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_compGreat_1({state}, nextStates, curNode);
+        }
     }
 
     // compGreat = _ <left:expr7> '>' <ONL> <right:expr6>
-    void h_compGreat_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_compGreat_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_compGreat_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compGreat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compGreat_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr7({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // compGreat = <left:expr7> _ '>' <ONL> <right:expr6>
-    void h_compGreat_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_compGreat_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_GREAT)
+            return false;
+        a_compGreat_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compGreat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_compGreat_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // compGreat = <left:expr7> '>' _ <ONL> <right:expr6>
-    void h_compGreat_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_compGreat_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_compGreat_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compGreat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compGreat_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // compGreat = <left:expr7> '>' <ONL> _ <right:expr6>
-    void h_compGreat_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_compGreat_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compGreat_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compGreat_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr6({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // compLeEq
+    bool n_compLeEq(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compLeEq(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compLeEq);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_compLeEq>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_compLeEq_1({state}, nextStates, curNode);
+        }
     }
 
     // compLeEq = _ <left:expr7> '<=' <ONL> <right:expr6>
-    void h_compLeEq_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_compLeEq_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_compLeEq_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compLeEq_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compLeEq_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr7({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // compLeEq = <left:expr7> _ '<=' <ONL> <right:expr6>
-    void h_compLeEq_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_compLeEq_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEEQ)
+            return false;
+        a_compLeEq_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compLeEq_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_compLeEq_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // compLeEq = <left:expr7> '<=' _ <ONL> <right:expr6>
-    void h_compLeEq_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_compLeEq_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_compLeEq_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compLeEq_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compLeEq_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // compLeEq = <left:expr7> '<=' <ONL> _ <right:expr6>
-    void h_compLeEq_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_compLeEq_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compLeEq_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compLeEq_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr6({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // compGrEq
+    bool n_compGrEq(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compGrEq(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compGrEq);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_compGrEq>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_compGrEq_1({state}, nextStates, curNode);
+        }
     }
 
     // compGrEq = _ <left:expr7> '>=' <ONL> <right:expr6>
-    void h_compGrEq_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_compGrEq_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_compGrEq_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compGrEq_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compGrEq_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr7({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // compGrEq = <left:expr7> _ '>=' <ONL> <right:expr6>
-    void h_compGrEq_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_compGrEq_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_GREQ)
+            return false;
+        a_compGrEq_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compGrEq_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_compGrEq_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // compGrEq = <left:expr7> '>=' _ <ONL> <right:expr6>
-    void h_compGrEq_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_compGrEq_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_compGrEq_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compGrEq_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compGrEq_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // compGrEq = <left:expr7> '>=' <ONL> _ <right:expr6>
-    void h_compGrEq_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_compGrEq_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compGrEq_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compGrEq_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr6({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // expr7
+    bool n_expr7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr7);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr7>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr7_1({state}, nextStates, curNode);
+            a_expr7_2({state}, nextStates, curNode);
+            a_expr7_3({state}, nextStates, curNode);
+            a_expr7_4({state}, nextStates, curNode);
+            a_expr7_5({state}, nextStates, curNode);
+        }
     }
 
     // expr7 = _ <expr6>
-    void h_expr7_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr7_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr7_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr7_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr6({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr7 = _ <compLess>
-    void h_expr7_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr7_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr7_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr7_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_compLess({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr7 = _ <compGreat>
-    void h_expr7_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr7_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr7_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr7_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_compGreat({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr7 = _ <compLeEq>
-    void h_expr7_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr7_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr7_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr7_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_compLeEq({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr7 = _ <compGrEq>
-    void h_expr7_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr7_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr7_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr7_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_compGrEq({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // compEqual
+    bool n_compEqual(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compEqual(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compEqual);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_compEqual>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_compEqual_1({state}, nextStates, curNode);
+        }
     }
 
     // compEqual = _ <left:expr8> '?=' <ONL> <right:expr7>
-    void h_compEqual_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_compEqual_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_compEqual_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compEqual_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compEqual_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr8({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // compEqual = <left:expr8> _ '?=' <ONL> <right:expr7>
-    void h_compEqual_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_compEqual_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_EQUAL)
+            return false;
+        a_compEqual_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compEqual_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_compEqual_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // compEqual = <left:expr8> '?=' _ <ONL> <right:expr7>
-    void h_compEqual_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_compEqual_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_compEqual_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compEqual_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compEqual_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // compEqual = <left:expr8> '?=' <ONL> _ <right:expr7>
-    void h_compEqual_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_compEqual_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compEqual_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compEqual_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr7({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // compNotEq
+    bool n_compNotEq(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compNotEq(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compNotEq);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_compNotEq>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_compNotEq_1({state}, nextStates, curNode);
+        }
     }
 
     // compNotEq = _ <left:expr8> '!=' <ONL> <right:expr7>
-    void h_compNotEq_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_compNotEq_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_compNotEq_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compNotEq_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compNotEq_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr8({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // compNotEq = <left:expr8> _ '!=' <ONL> <right:expr7>
-    void h_compNotEq_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_compNotEq_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NOTEQ)
+            return false;
+        a_compNotEq_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compNotEq_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_compNotEq_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // compNotEq = <left:expr8> '!=' _ <ONL> <right:expr7>
-    void h_compNotEq_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_compNotEq_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_compNotEq_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compNotEq_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compNotEq_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // compNotEq = <left:expr8> '!=' <ONL> _ <right:expr7>
-    void h_compNotEq_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_compNotEq_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compNotEq_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compNotEq_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr7({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // compAssigned
+    bool n_compAssigned(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compAssigned(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compAssigned);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_compAssigned>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_compAssigned_1({state}, nextStates, curNode);
+        }
     }
 
     // compAssigned = _ <left:expr8> '?->' <ONL> <right:expr7>
-    void h_compAssigned_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_compAssigned_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_compAssigned_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compAssigned_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compAssigned_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr8({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // compAssigned = <left:expr8> _ '?->' <ONL> <right:expr7>
-    void h_compAssigned_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_compAssigned_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_ASSIGNED)
+            return false;
+        a_compAssigned_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compAssigned_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_compAssigned_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // compAssigned = <left:expr8> '?->' _ <ONL> <right:expr7>
-    void h_compAssigned_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_compAssigned_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_compAssigned_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compAssigned_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compAssigned_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // compAssigned = <left:expr8> '?->' <ONL> _ <right:expr7>
-    void h_compAssigned_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_compAssigned_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compAssigned_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compAssigned_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr7({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // compNotAss
+    bool n_compNotAss(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compNotAss(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compNotAss);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_compNotAss>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_compNotAss_1({state}, nextStates, curNode);
+        }
     }
 
     // compNotAss = _ <left:expr8> '!->' <ONL> <right:expr7>
-    void h_compNotAss_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_compNotAss_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_compNotAss_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compNotAss_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compNotAss_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr8({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // compNotAss = <left:expr8> _ '!->' <ONL> <right:expr7>
-    void h_compNotAss_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_compNotAss_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NOTASS)
+            return false;
+        a_compNotAss_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compNotAss_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_compNotAss_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // compNotAss = <left:expr8> '!->' _ <ONL> <right:expr7>
-    void h_compNotAss_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_compNotAss_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_compNotAss_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_compNotAss_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compNotAss_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // compNotAss = <left:expr8> '!->' <ONL> _ <right:expr7>
-    void h_compNotAss_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_compNotAss_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_compNotAss_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_compNotAss_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr7({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // expr8
+    bool n_expr8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr8);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr8>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr8_1({state}, nextStates, curNode);
+            a_expr8_2({state}, nextStates, curNode);
+            a_expr8_3({state}, nextStates, curNode);
+            a_expr8_4({state}, nextStates, curNode);
+            a_expr8_5({state}, nextStates, curNode);
+        }
     }
 
     // expr8 = _ <expr7>
-    void h_expr8_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr8_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr8_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr8_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr7({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr8 = _ <compEqual>
-    void h_expr8_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr8_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr8_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr8_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_compEqual({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr8 = _ <compNotEq>
-    void h_expr8_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr8_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr8_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr8_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_compNotEq({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr8 = _ <compAssigned>
-    void h_expr8_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr8_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr8_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr8_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_compAssigned({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr8 = _ <compNotAss>
-    void h_expr8_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr8_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr8_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr8_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_compNotAss({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // logAnd
+    bool n_logAnd(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_logAnd(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logAnd);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_logAnd>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_logAnd_1({state}, nextStates, curNode);
+        }
     }
 
     // logAnd = _ <left:expr9> '&' <ONL> <right:expr8>
-    void h_logAnd_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_logAnd_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_logAnd_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logAnd_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logAnd_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr9({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // logAnd = <left:expr9> _ '&' <ONL> <right:expr8>
-    void h_logAnd_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_logAnd_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_AND)
+            return false;
+        a_logAnd_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logAnd_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_logAnd_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // logAnd = <left:expr9> '&' _ <ONL> <right:expr8>
-    void h_logAnd_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_logAnd_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_logAnd_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logAnd_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logAnd_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // logAnd = <left:expr9> '&' <ONL> _ <right:expr8>
-    void h_logAnd_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_logAnd_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_logAnd_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logAnd_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr8({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // expr9
+    bool n_expr9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr9);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr9>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr9_1({state}, nextStates, curNode);
+            a_expr9_2({state}, nextStates, curNode);
+        }
     }
 
     // expr9 = _ <expr8>
-    void h_expr9_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr9_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr9_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr9_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr8({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr9 = _ <logAnd>
-    void h_expr9_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr9_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr9_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr9_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_logAnd({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // logXOr
+    bool n_logXOr(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_logXOr(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logXOr);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_logXOr>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_logXOr_1({state}, nextStates, curNode);
+        }
     }
 
     // logXOr = _ <left:expr10> '^' <ONL> <right:expr9>
-    void h_logXOr_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_logXOr_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_logXOr_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logXOr_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logXOr_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr10({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // logXOr = <left:expr10> _ '^' <ONL> <right:expr9>
-    void h_logXOr_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_logXOr_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_XOR)
+            return false;
+        a_logXOr_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logXOr_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_logXOr_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // logXOr = <left:expr10> '^' _ <ONL> <right:expr9>
-    void h_logXOr_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_logXOr_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_logXOr_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logXOr_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logXOr_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // logXOr = <left:expr10> '^' <ONL> _ <right:expr9>
-    void h_logXOr_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_logXOr_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_logXOr_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logXOr_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr9({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // expr10
+    bool n_expr10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr10);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_expr10>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_expr10_1({state}, nextStates, curNode);
+            a_expr10_2({state}, nextStates, curNode);
+        }
     }
 
     // expr10 = _ <expr9>
-    void h_expr10_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr10_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr10_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr10_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr9({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // expr10 = _ <logXOr>
-    void h_expr10_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_expr10_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_expr10_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_expr10_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_logXOr({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // logOr
+    bool n_logOr(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_logOr(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logOr);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_logOr>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_logOr_1({state}, nextStates, curNode);
+        }
     }
 
     // logOr = _ <left:exprLeast> '|' <ONL> <right:expr10>
-    void h_logOr_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_logOr_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_logOr_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logOr_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logOr_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_exprLeast({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // logOr = <left:exprLeast> _ '|' <ONL> <right:expr10>
-    void h_logOr_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_logOr_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_OR)
+            return false;
+        a_logOr_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logOr_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_logOr_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // logOr = <left:exprLeast> '|' _ <ONL> <right:expr10>
-    void h_logOr_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_logOr_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_logOr_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_logOr_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logOr_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // logOr = <left:exprLeast> '|' <ONL> _ <right:expr10>
-    void h_logOr_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_logOr_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["right"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_logOr_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_logOr_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr10({state}, nextStates, curNode);
+        state->node->nodeLists["right"].push_back(state->subNode);
+        }
+    }
+
+    // exprLeast
+    bool n_exprLeast(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_exprLeast(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_exprLeast);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_exprLeast>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_exprLeast_1({state}, nextStates, curNode);
+            a_exprLeast_2({state}, nextStates, curNode);
+        }
     }
 
     // exprLeast = _ <expr10>
-    void h_exprLeast_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_exprLeast_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_exprLeast_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_exprLeast_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expr10({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // exprLeast = _ <logOr>
-    void h_exprLeast_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_exprLeast_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_exprLeast_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_exprLeast_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_logOr({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // literal
+    bool n_literal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_literal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_literal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_literal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_literal_1({state}, nextStates, curNode);
+            a_literal_2({state}, nextStates, curNode);
+            a_literal_3({state}, nextStates, curNode);
+            a_literal_4({state}, nextStates, curNode);
+            a_literal_5({state}, nextStates, curNode);
+        }
     }
 
     // literal 	= _ <contextLiteral>
-    void h_literal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_literal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_literal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_literal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextLiteral({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // literal = _ <valueLiteral>
-    void h_literal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_literal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_literal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_literal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_valueLiteral({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // literal = _ <listLiteral>
-    void h_literal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_literal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_literal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_literal_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_listLiteral({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // literal = _ <setLiteral>
-    void h_literal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_literal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_literal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_literal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_setLiteral({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // literal = _ <dictLiteral>
-    void h_literal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_literal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_literal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_literal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dictLiteral({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // valueLiteral
+    bool n_valueLiteral(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_valueLiteral);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_valueLiteral>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_valueLiteral_1({state}, nextStates, curNode);
+            a_valueLiteral_4({state}, nextStates, curNode);
+            a_valueLiteral_7({state}, nextStates, curNode);
+            a_valueLiteral_10({state}, nextStates, curNode);
+            a_valueLiteral_13({state}, nextStates, curNode);
+        }
     }
 
     // valueLiteral 	= _ num:L_NUM_LIT [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NUM_LIT)
+            return false;
+        curState->node->tokenLists["num"].push_back(token);
+        a_valueLiteral_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_valueLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // valueLiteral 	= num:L_NUM_LIT _ [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_valueLiteral_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_valueLiteral_3({state}, nextStates, curNode);
+        }
     }
 
     // valueLiteral 	= num:L_NUM_LIT [ _ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LIT_SUFFIX)
+            return false;
+        curState->node->tokenLists["suf"].push_back(token);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // valueLiteral = _ str:L_NUM_B_LIT [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NUM_B_LIT)
+            return false;
+        curState->node->tokenLists["str"].push_back(token);
+        a_valueLiteral_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_valueLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_4];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // valueLiteral = str:L_NUM_B_LIT _ [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_valueLiteral_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_valueLiteral_6({state}, nextStates, curNode);
+        }
     }
 
     // valueLiteral = str:L_NUM_B_LIT [ _ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LIT_SUFFIX)
+            return false;
+        curState->node->tokenLists["suf"].push_back(token);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_6];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // valueLiteral = _ str:L_NUM_O_LIT [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NUM_O_LIT)
+            return false;
+        curState->node->tokenLists["str"].push_back(token);
+        a_valueLiteral_8(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_valueLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_7];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // valueLiteral = str:L_NUM_O_LIT _ [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_8(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_valueLiteral_8);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_valueLiteral_9({state}, nextStates, curNode);
+        }
     }
 
     // valueLiteral = str:L_NUM_O_LIT [ _ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_9(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LIT_SUFFIX)
+            return false;
+        curState->node->tokenLists["suf"].push_back(token);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_9];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // valueLiteral = _ str:L_NUM_X_LIT [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_10(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NUM_X_LIT)
+            return false;
+        curState->node->tokenLists["str"].push_back(token);
+        a_valueLiteral_11(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_valueLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_10];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // valueLiteral = str:L_NUM_X_LIT _ [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_11(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_11(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_valueLiteral_11);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_valueLiteral_12({state}, nextStates, curNode);
+        }
     }
 
     // valueLiteral = str:L_NUM_X_LIT [ _ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_12(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_12(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LIT_SUFFIX)
+            return false;
+        curState->node->tokenLists["suf"].push_back(token);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_12];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // valueLiteral = _ str:L_STR_LIT [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_13(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_13(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_STR_LIT)
+            return false;
+        curState->node->tokenLists["str"].push_back(token);
+        a_valueLiteral_14(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_valueLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_13];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // valueLiteral = str:L_STR_LIT _ [ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_14(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_14(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_valueLiteral_14);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_valueLiteral_15({state}, nextStates, curNode);
+        }
     }
 
     // valueLiteral = str:L_STR_LIT [ _ suf:L_LIT_SUFFIX ]
-    void h_valueLiteral_15(ParserData& parserData, ParserBranch& branch) {
+    bool n_valueLiteral_15(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LIT_SUFFIX)
+            return false;
+        curState->node->tokenLists["suf"].push_back(token);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_valueLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_valueLiteral_15];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // listLiteral
+    bool n_listLiteral(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_listLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_listLiteral>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_listLiteral_1({state}, nextStates, curNode);
+            a_listLiteral_7({state}, nextStates, curNode);
+        }
     }
 
     // listLiteral = _ '[' <items:expression> (',' <items:expression>)* ']'
-    void h_listLiteral_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEFT_BRACK)
+            return false;
+        a_listLiteral_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_listLiteral_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // listLiteral = '[' _ <items:expression> (',' <items:expression>)* ']'
-    void h_listLiteral_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_listLiteral_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // listLiteral = '[' <items:expression> _ (',' <items:expression>)* ']'
-    void h_listLiteral_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_listLiteral_6(curState->parentStates, nextStates, curState->node);
+        a_listLiteral_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_listLiteral_4({state}, nextStates, curNode);
+        }
     }
 
     // listLiteral = '[' <items:expression> (_ ',' <items:expression>)* ']'
-    void h_listLiteral_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_listLiteral_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_listLiteral_4];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // listLiteral = '[' <items:expression> (',' _ <items:expression>)* ']'
-    void h_listLiteral_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_listLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // listLiteral = '[' <items:expression> (',' <items:expression>)* _ ']'
-    void h_listLiteral_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_RIGHT_BRACK)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_listLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_listLiteral_6];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // listLiteral = _ '[' <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> ']'
-    void h_listLiteral_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEFT_BRACK)
+            return false;
+        a_listLiteral_8(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_listLiteral_7];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // listLiteral = '[' _ <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> ']'
-    void h_listLiteral_8(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_listLiteral_9(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral_8);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // listLiteral = '[' <ONL> _ <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> ']'
-    void h_listLiteral_9(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_listLiteral_10(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral_9);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // listLiteral = '[' <ONL> <items:expression> _ ',' (<ONL> <items:expression> ',')* <ONL> ']'
-    void h_listLiteral_10(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_listLiteral_11(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_listLiteral_10];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // listLiteral = '[' <ONL> <items:expression> ',' _ (<ONL> <items:expression> ',')* <ONL> ']'
-    void h_listLiteral_11(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_11(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_listLiteral_15(curState->parentStates, nextStates, curState->node);
+        a_listLiteral_11(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral_11);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_listLiteral_12({state}, nextStates, curNode);
+        }
     }
 
     // listLiteral = '[' <ONL> <items:expression> ',' (_ <ONL> <items:expression> ',')* <ONL> ']'
-    void h_listLiteral_12(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_12(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_listLiteral_13(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral_12);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // listLiteral = '[' <ONL> <items:expression> ',' (<ONL> _ <items:expression> ',')* <ONL> ']'
-    void h_listLiteral_13(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_13(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_listLiteral_14(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral_13);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // listLiteral = '[' <ONL> <items:expression> ',' (<ONL> <items:expression> _ ',')* <ONL> ']'
-    void h_listLiteral_14(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_14(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_listLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_listLiteral_14];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // listLiteral = '[' <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* _ <ONL> ']'
-    void h_listLiteral_15(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_15(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_listLiteral_16(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_listLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_listLiteral_15);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // listLiteral = '[' <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> _ ']'
-    void h_listLiteral_16(ParserData& parserData, ParserBranch& branch) {
+    bool n_listLiteral_16(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_RIGHT_BRACK)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_listLiteral_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_listLiteral_16];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // setLiteral
+    bool n_setLiteral(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_setLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_setLiteral>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_setLiteral_1({state}, nextStates, curNode);
+            a_setLiteral_7({state}, nextStates, curNode);
+        }
     }
 
     // setLiteral 	= _ '{' <items:expression> (',' <items:expression>)* '}'
-    void h_setLiteral_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEFT_BRACE)
+            return false;
+        a_setLiteral_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_setLiteral_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // setLiteral 	= '{' _ <items:expression> (',' <items:expression>)* '}'
-    void h_setLiteral_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_setLiteral_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // setLiteral 	= '{' <items:expression> _ (',' <items:expression>)* '}'
-    void h_setLiteral_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_setLiteral_6(curState->parentStates, nextStates, curState->node);
+        a_setLiteral_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_setLiteral_4({state}, nextStates, curNode);
+        }
     }
 
     // setLiteral 	= '{' <items:expression> (_ ',' <items:expression>)* '}'
-    void h_setLiteral_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_setLiteral_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_setLiteral_4];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // setLiteral 	= '{' <items:expression> (',' _ <items:expression>)* '}'
-    void h_setLiteral_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_setLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // setLiteral 	= '{' <items:expression> (',' <items:expression>)* _ '}'
-    void h_setLiteral_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_RIGHT_BRACE)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_setLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_setLiteral_6];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // setLiteral = _ '{' <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> '}'
-    void h_setLiteral_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEFT_BRACE)
+            return false;
+        a_setLiteral_8(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_setLiteral_7];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // setLiteral = '{' _ <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> '}'
-    void h_setLiteral_8(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_setLiteral_9(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral_8);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // setLiteral = '{' <ONL> _ <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> '}'
-    void h_setLiteral_9(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_setLiteral_10(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral_9);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // setLiteral = '{' <ONL> <items:expression> _ ',' (<ONL> <items:expression> ',')* <ONL> '}'
-    void h_setLiteral_10(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_setLiteral_11(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_setLiteral_10];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // setLiteral = '{' <ONL> <items:expression> ',' _ (<ONL> <items:expression> ',')* <ONL> '}'
-    void h_setLiteral_11(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_11(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_setLiteral_15(curState->parentStates, nextStates, curState->node);
+        a_setLiteral_11(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral_11);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_setLiteral_12({state}, nextStates, curNode);
+        }
     }
 
     // setLiteral = '{' <ONL> <items:expression> ',' (_ <ONL> <items:expression> ',')* <ONL> '}'
-    void h_setLiteral_12(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_12(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_setLiteral_13(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral_12);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // setLiteral = '{' <ONL> <items:expression> ',' (<ONL> _ <items:expression> ',')* <ONL> '}'
-    void h_setLiteral_13(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_13(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_setLiteral_14(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral_13);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // setLiteral = '{' <ONL> <items:expression> ',' (<ONL> <items:expression> _ ',')* <ONL> '}'
-    void h_setLiteral_14(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_14(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_setLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_setLiteral_14];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // setLiteral = '{' <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* _ <ONL> '}'
-    void h_setLiteral_15(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_15(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_setLiteral_16(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_setLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_setLiteral_15);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // setLiteral = '{' <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> _ '}'
-    void h_setLiteral_16(ParserData& parserData, ParserBranch& branch) {
+    bool n_setLiteral_16(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_RIGHT_BRACE)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_setLiteral_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_setLiteral_16];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // dictLiteral
+    bool n_dictLiteral(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dictLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_dictLiteral>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_dictLiteral_1({state}, nextStates, curNode);
+            a_dictLiteral_8({state}, nextStates, curNode);
+        }
     }
 
     // dictLiteral = _ '{' ':' <items:dictEntry> (',' <items:dictEntry>)* '}'
-    void h_dictLiteral_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEFT_BRACE)
+            return false;
+        a_dictLiteral_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictLiteral_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dictLiteral = '{' _ ':' <items:dictEntry> (',' <items:dictEntry>)* '}'
-    void h_dictLiteral_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_dictLiteral_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictLiteral_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dictLiteral = '{' ':' _ <items:dictEntry> (',' <items:dictEntry>)* '}'
-    void h_dictLiteral_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_dictLiteral_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dictEntry({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // dictLiteral = '{' ':' <items:dictEntry> _ (',' <items:dictEntry>)* '}'
-    void h_dictLiteral_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_dictLiteral_7(curState->parentStates, nextStates, curState->node);
+        a_dictLiteral_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dictLiteral_5({state}, nextStates, curNode);
+        }
     }
 
     // dictLiteral = '{' ':' <items:dictEntry> (_ ',' <items:dictEntry>)* '}'
-    void h_dictLiteral_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_dictLiteral_6(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictLiteral_5];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dictLiteral = '{' ':' <items:dictEntry> (',' _ <items:dictEntry>)* '}'
-    void h_dictLiteral_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dictLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral_6);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dictEntry({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // dictLiteral = '{' ':' <items:dictEntry> (',' <items:dictEntry>)* _ '}'
-    void h_dictLiteral_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_RIGHT_BRACE)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dictLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictLiteral_7];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dictLiteral = _ '{' ':' <ONL> <items:dictEntry> ',' (<ONL> <items:dictEntry> ',')* <ONL> '}'
-    void h_dictLiteral_8(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEFT_BRACE)
+            return false;
+        a_dictLiteral_9(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictLiteral_8];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dictLiteral = '{' _ ':' <ONL> <items:dictEntry> ',' (<ONL> <items:dictEntry> ',')* <ONL> '}'
-    void h_dictLiteral_9(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_dictLiteral_10(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictLiteral_9];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dictLiteral = '{' ':' _ <ONL> <items:dictEntry> ',' (<ONL> <items:dictEntry> ',')* <ONL> '}'
-    void h_dictLiteral_10(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_dictLiteral_11(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral_10);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // dictLiteral = '{' ':' <ONL> _ <items:dictEntry> ',' (<ONL> <items:dictEntry> ',')* <ONL> '}'
-    void h_dictLiteral_11(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_11(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_dictLiteral_12(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral_11);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dictEntry({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // dictLiteral = '{' ':' <ONL> <items:dictEntry> _ ',' (<ONL> <items:dictEntry> ',')* <ONL> '}'
-    void h_dictLiteral_12(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_12(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_dictLiteral_13(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictLiteral_12];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dictLiteral = '{' ':' <ONL> <items:dictEntry> ',' _ (<ONL> <items:dictEntry> ',')* <ONL> '}'
-    void h_dictLiteral_13(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_13(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_dictLiteral_17(curState->parentStates, nextStates, curState->node);
+        a_dictLiteral_13(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral_13);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dictLiteral_14({state}, nextStates, curNode);
+        }
     }
 
     // dictLiteral = '{' ':' <ONL> <items:dictEntry> ',' (_ <ONL> <items:dictEntry> ',')* <ONL> '}'
-    void h_dictLiteral_14(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_14(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_dictLiteral_15(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral_14);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // dictLiteral = '{' ':' <ONL> <items:dictEntry> ',' (<ONL> _ <items:dictEntry> ',')* <ONL> '}'
-    void h_dictLiteral_15(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_15(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_dictLiteral_16(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral_15);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dictEntry({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // dictLiteral = '{' ':' <ONL> <items:dictEntry> ',' (<ONL> <items:dictEntry> _ ',')* <ONL> '}'
-    void h_dictLiteral_16(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_16(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dictLiteral_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictLiteral_16];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dictLiteral = '{' ':' <ONL> <items:dictEntry> ',' (<ONL> <items:dictEntry> ',')* _ <ONL> '}'
-    void h_dictLiteral_17(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_17(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_dictLiteral_18(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictLiteral_17(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictLiteral_17);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // dictLiteral = '{' ':' <ONL> <items:dictEntry> ',' (<ONL> <items:dictEntry> ',')* <ONL> _ '}'
-    void h_dictLiteral_18(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictLiteral_18(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_RIGHT_BRACE)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dictLiteral_18(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictLiteral_18];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // dictEntry
+    bool n_dictEntry(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dictEntry(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictEntry);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_dictEntry>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_dictEntry_1({state}, nextStates, curNode);
+        }
     }
 
     // dictEntry = _ <key:expression> ':' <ONL> <value:expression>
-    void h_dictEntry_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictEntry_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["key"].push_back(curState->subNode);
+        a_dictEntry_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictEntry_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictEntry_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["key"].push_back(state->subNode);
+        }
     }
 
     // dictEntry = <key:expression> _ ':' <ONL> <value:expression>
-    void h_dictEntry_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictEntry_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_dictEntry_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictEntry_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dictEntry_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dictEntry = <key:expression> ':' _ <ONL> <value:expression>
-    void h_dictEntry_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictEntry_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_dictEntry_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dictEntry_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictEntry_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // dictEntry = <key:expression> ':' <ONL> _ <value:expression>
-    void h_dictEntry_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_dictEntry_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["value"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dictEntry_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dictEntry_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["value"].push_back(state->subNode);
+        }
+    }
+
+    // contextLiteral
+    bool n_contextLiteral(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextLiteral(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_contextLiteral>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_contextLiteral_1({state}, nextStates, curNode);
+            a_contextLiteral_7({state}, nextStates, curNode);
+        }
     }
 
     // contextLiteral 	= _ '(' <items:memberDecl> (',' <items:memberDecl>)* ')'
-    void h_contextLiteral_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEFT_PAR)
+            return false;
+        a_contextLiteral_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextLiteral_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // contextLiteral 	= '(' _ <items:memberDecl> (',' <items:memberDecl>)* ')'
-    void h_contextLiteral_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_contextLiteral_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_memberDecl({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // contextLiteral 	= '(' <items:memberDecl> _ (',' <items:memberDecl>)* ')'
-    void h_contextLiteral_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_contextLiteral_6(curState->parentStates, nextStates, curState->node);
+        a_contextLiteral_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextLiteral_4({state}, nextStates, curNode);
+        }
     }
 
     // contextLiteral 	= '(' <items:memberDecl> (_ ',' <items:memberDecl>)* ')'
-    void h_contextLiteral_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_contextLiteral_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextLiteral_4];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // contextLiteral 	= '(' <items:memberDecl> (',' _ <items:memberDecl>)* ')'
-    void h_contextLiteral_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextLiteral_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_memberDecl({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // contextLiteral 	= '(' <items:memberDecl> (',' <items:memberDecl>)* _ ')'
-    void h_contextLiteral_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_RIGHT_PAR)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextLiteral_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextLiteral_6];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // contextLiteral = _ '(' <ONL> <items:memberDecl> (',' <ONL> <items:memberDecl>)* ',' <ONL> ')'
-    void h_contextLiteral_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_LEFT_PAR)
+            return false;
+        a_contextLiteral_8(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextLiteral_7];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // contextLiteral = '(' _ <ONL> <items:memberDecl> (',' <ONL> <items:memberDecl>)* ',' <ONL> ')'
-    void h_contextLiteral_8(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_contextLiteral_9(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral_8);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // contextLiteral = '(' <ONL> _ <items:memberDecl> (',' <ONL> <items:memberDecl>)* ',' <ONL> ')'
-    void h_contextLiteral_9(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_contextLiteral_10(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral_9);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_memberDecl({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // contextLiteral = '(' <ONL> <items:memberDecl> _ (',' <ONL> <items:memberDecl>)* ',' <ONL> ')'
-    void h_contextLiteral_10(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_contextLiteral_14(curState->parentStates, nextStates, curState->node);
+        a_contextLiteral_10(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral_10);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextLiteral_11({state}, nextStates, curNode);
+        }
     }
 
     // contextLiteral = '(' <ONL> <items:memberDecl> (_ ',' <ONL> <items:memberDecl>)* ',' <ONL> ')'
-    void h_contextLiteral_11(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_11(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_contextLiteral_12(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextLiteral_11];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // contextLiteral = '(' <ONL> <items:memberDecl> (',' _ <ONL> <items:memberDecl>)* ',' <ONL> ')'
-    void h_contextLiteral_12(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_12(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_contextLiteral_13(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral_12);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // contextLiteral = '(' <ONL> <items:memberDecl> (',' <ONL> _ <items:memberDecl>)* ',' <ONL> ')'
-    void h_contextLiteral_13(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_13(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextLiteral_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral_13);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_memberDecl({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // contextLiteral = '(' <ONL> <items:memberDecl> (',' <ONL> <items:memberDecl>)* _ ',' <ONL> ')'
-    void h_contextLiteral_14(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_14(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_contextLiteral_15(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextLiteral_14];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // contextLiteral = '(' <ONL> <items:memberDecl> (',' <ONL> <items:memberDecl>)* ',' _ <ONL> ')'
-    void h_contextLiteral_15(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_15(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_contextLiteral_16(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_contextLiteral_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_contextLiteral_15);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // contextLiteral = '(' <ONL> <items:memberDecl> (',' <ONL> <items:memberDecl>)* ',' <ONL> _ ')'
-    void h_contextLiteral_16(ParserData& parserData, ParserBranch& branch) {
+    bool n_contextLiteral_16(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_RIGHT_PAR)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_contextLiteral_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_contextLiteral_16];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // memberDecl
+    bool n_memberDecl(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_memberDecl(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_memberDecl);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_memberDecl>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_memberDecl_1({state}, nextStates, curNode);
+        }
     }
 
     // memberDecl = _ member:L_IDENTIFIER '=' <value:expression>
-    void h_memberDecl_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_memberDecl_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        curState->node->tokenLists["member"].push_back(token);
+        a_memberDecl_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_memberDecl_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_memberDecl_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // memberDecl = member:L_IDENTIFIER _ '=' <value:expression>
-    void h_memberDecl_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_memberDecl_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_CHANGE)
+            return false;
+        a_memberDecl_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_memberDecl_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_memberDecl_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // memberDecl = member:L_IDENTIFIER '=' _ <value:expression>
-    void h_memberDecl_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_memberDecl_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["value"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_memberDecl_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_memberDecl_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["value"].push_back(state->subNode);
+        }
+    }
+
+    // statement
+    bool n_statement(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_statement(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_statement);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_statement>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_statement_1({state}, nextStates, curNode);
+            a_statement_2({state}, nextStates, curNode);
+            a_statement_3({state}, nextStates, curNode);
+            a_statement_4({state}, nextStates, curNode);
+            a_statement_5({state}, nextStates, curNode);
+            a_statement_6({state}, nextStates, curNode);
+            a_statement_7({state}, nextStates, curNode);
+            a_statement_8({state}, nextStates, curNode);
+        }
     }
 
     // statement 	= _ <expression>
-    void h_statement_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_statement_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_statement_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_statement_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // statement = _ <definition>
-    void h_statement_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_statement_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_statement_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_statement_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_definition({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // statement = _ <varDeclaration>
-    void h_statement_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_statement_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_statement_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_statement_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_varDeclaration({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // statement = _ <assignmentEqual>
-    void h_statement_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_statement_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_statement_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_statement_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_assignmentEqual({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // statement = _ <ifStat>
-    void h_statement_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_statement_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_statement_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_statement_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ifStat({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // statement = _ <loopStat>
-    void h_statement_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_statement_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_statement_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_statement_6);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_loopStat({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // statement = _ <jumpStat>
-    void h_statement_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_statement_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_statement_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_statement_7);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_jumpStat({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // statement = _ <withStat>
-    void h_statement_8(ParserData& parserData, ParserBranch& branch) {
+    bool n_statement_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_statement_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_statement_8);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_withStat({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // definition
+    bool n_definition(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_definition(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_definition);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_definition>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_definition_1({state}, nextStates, curNode);
+            a_definition_6({state}, nextStates, curNode);
+        }
     }
 
     // definition 	= _ 'def' <id:identifier> '='? <ONL> <val:expression>
-    void h_definition_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_definition_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_definition_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_definition_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // definition 	= 'def' _ <id:identifier> '='? <ONL> <val:expression>
-    void h_definition_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["id"].push_back(curState->subNode);
+        a_definition_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_definition_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_definition_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_identifier({state}, nextStates, curNode);
+        state->node->nodeLists["id"].push_back(state->subNode);
+        }
     }
 
     // definition 	= 'def' <id:identifier> _ '='? <ONL> <val:expression>
-    void h_definition_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_CHANGE)
+            return false;
+        a_definition_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_definition_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_definition_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // definition 	= 'def' <id:identifier> '='? _ <ONL> <val:expression>
-    void h_definition_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_definition_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_definition_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_definition_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // definition 	= 'def' <id:identifier> '='? <ONL> _ <val:expression>
-    void h_definition_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_definition_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_definition_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
     }
 
     // definition = _ 'def' <id:identifier> ':' '\n' <contextBodyClosedBlock>
-    void h_definition_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_definition_7(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_definition_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_definition_6];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // definition = 'def' _ <id:identifier> ':' '\n' <contextBodyClosedBlock>
-    void h_definition_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["id"].push_back(curState->subNode);
+        a_definition_8(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_definition_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_definition_7);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_identifier({state}, nextStates, curNode);
+        state->node->nodeLists["id"].push_back(state->subNode);
+        }
     }
 
     // definition = 'def' <id:identifier> _ ':' '\n' <contextBodyClosedBlock>
-    void h_definition_8(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_definition_9(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_definition_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_definition_8];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // definition = 'def' <id:identifier> ':' _ '\n' <contextBodyClosedBlock>
-    void h_definition_9(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NEW_LN)
+            return false;
+        a_definition_10(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_definition_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_definition_9];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // definition = 'def' <id:identifier> ':' '\n' _ <contextBodyClosedBlock>
-    void h_definition_10(ParserData& parserData, ParserBranch& branch) {
+    bool n_definition_10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_definition_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_definition_10);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextBodyClosedBlock({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // varDeclaration
+    bool n_varDeclaration(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varDeclaration(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varDeclaration);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_varDeclaration>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_varDeclaration_1({state}, nextStates, curNode);
+        }
     }
 
     // varDeclaration 	= _ 'var' <body:varRefDeclBody>
-    void h_varDeclaration_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_varDeclaration_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_varDeclaration_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varDeclaration_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_varDeclaration_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // varDeclaration 	= 'var' _ <body:varRefDeclBody>
-    void h_varDeclaration_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_varDeclaration_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["body"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varDeclaration_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varDeclaration_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_varRefDeclBody({state}, nextStates, curNode);
+        state->node->nodeLists["body"].push_back(state->subNode);
+        }
+    }
+
+    // refDeclaration
+    bool n_refDeclaration(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_refDeclaration(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_refDeclaration);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_refDeclaration>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_refDeclaration_1({state}, nextStates, curNode);
+        }
     }
 
     // refDeclaration 	= _ 'ref' <body:varRefDeclBody>
-    void h_refDeclaration_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_refDeclaration_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_refDeclaration_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_refDeclaration_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_refDeclaration_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // refDeclaration 	= 'ref' _ <body:varRefDeclBody>
-    void h_refDeclaration_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_refDeclaration_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["body"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_refDeclaration_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_refDeclaration_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_varRefDeclBody({state}, nextStates, curNode);
+        state->node->nodeLists["body"].push_back(state->subNode);
+        }
+    }
+
+    // varRefDeclBody
+    bool n_varRefDeclBody(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varRefDeclBody(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclBody);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_varRefDeclBody>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_varRefDeclBody_1({state}, nextStates, curNode);
+        }
     }
 
     // varRefDeclBody = _ <items:varRefDeclEntry> (',' <ONL> <items:varRefDeclEntry>)*
-    void h_varRefDeclBody_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclBody_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        a_varRefDeclBody_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclBody_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclBody_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_varRefDeclEntry({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
     }
 
     // varRefDeclBody = <items:varRefDeclEntry> _ (',' <ONL> <items:varRefDeclEntry>)*
-    void h_varRefDeclBody_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclBody_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_varRefDeclBody_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclBody_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclBody_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_varRefDeclBody_3({state}, nextStates, curNode);
+        }
     }
 
     // varRefDeclBody = <items:varRefDeclEntry> (_ ',' <ONL> <items:varRefDeclEntry>)*
-    void h_varRefDeclBody_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclBody_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_varRefDeclBody_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclBody_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_varRefDeclBody_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // varRefDeclBody = <items:varRefDeclEntry> (',' _ <ONL> <items:varRefDeclEntry>)*
-    void h_varRefDeclBody_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclBody_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_varRefDeclBody_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclBody_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclBody_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // varRefDeclBody = <items:varRefDeclEntry> (',' <ONL> _ <items:varRefDeclEntry>)*
-    void h_varRefDeclBody_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclBody_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["items"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varRefDeclBody_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclBody_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_varRefDeclEntry({state}, nextStates, curNode);
+        state->node->nodeLists["items"].push_back(state->subNode);
+        }
+    }
+
+    // varRefDeclEntry
+    bool n_varRefDeclEntry(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varRefDeclEntry(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntry);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_varRefDeclEntry>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_varRefDeclEntry_1({state}, nextStates, curNode);
+            a_varRefDeclEntry_2({state}, nextStates, curNode);
+        }
     }
 
     // varRefDeclEntry 	= _ <equal:varRefDeclEntryEqual>
-    void h_varRefDeclEntry_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntry_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["equal"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varRefDeclEntry_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntry_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_varRefDeclEntryEqual({state}, nextStates, curNode);
+        state->node->nodeLists["equal"].push_back(state->subNode);
+        }
     }
 
     // varRefDeclEntry = _ <assign:varRefDeclEntryAssign>
-    void h_varRefDeclEntry_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntry_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["assign"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varRefDeclEntry_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntry_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_varRefDeclEntryAssign({state}, nextStates, curNode);
+        state->node->nodeLists["assign"].push_back(state->subNode);
+        }
+    }
+
+    // varRefDeclEntryEqual
+    bool n_varRefDeclEntryEqual(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varRefDeclEntryEqual(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntryEqual);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_varRefDeclEntryEqual>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_varRefDeclEntryEqual_1({state}, nextStates, curNode);
+        }
     }
 
     // varRefDeclEntryEqual = _ <id:identifier> '=' <ONL> <val:expression>
-    void h_varRefDeclEntryEqual_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntryEqual_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["id"].push_back(curState->subNode);
+        a_varRefDeclEntryEqual_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclEntryEqual_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntryEqual_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_identifier({state}, nextStates, curNode);
+        state->node->nodeLists["id"].push_back(state->subNode);
+        }
     }
 
     // varRefDeclEntryEqual = <id:identifier> _ '=' <ONL> <val:expression>
-    void h_varRefDeclEntryEqual_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntryEqual_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_CHANGE)
+            return false;
+        a_varRefDeclEntryEqual_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclEntryEqual_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_varRefDeclEntryEqual_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // varRefDeclEntryEqual = <id:identifier> '=' _ <ONL> <val:expression>
-    void h_varRefDeclEntryEqual_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntryEqual_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_varRefDeclEntryEqual_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclEntryEqual_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntryEqual_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // varRefDeclEntryEqual = <id:identifier> '=' <ONL> _ <val:expression>
-    void h_varRefDeclEntryEqual_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntryEqual_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varRefDeclEntryEqual_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntryEqual_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
+    }
+
+    // varRefDeclEntryAssign
+    bool n_varRefDeclEntryAssign(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varRefDeclEntryAssign(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntryAssign);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_varRefDeclEntryAssign>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_varRefDeclEntryAssign_1({state}, nextStates, curNode);
+        }
     }
 
     // varRefDeclEntryAssign = _ <id:identifier> '->' <ONL> <val:expression>
-    void h_varRefDeclEntryAssign_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntryAssign_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["id"].push_back(curState->subNode);
+        a_varRefDeclEntryAssign_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclEntryAssign_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntryAssign_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_identifier({state}, nextStates, curNode);
+        state->node->nodeLists["id"].push_back(state->subNode);
+        }
     }
 
     // varRefDeclEntryAssign = <id:identifier> _ '->' <ONL> <val:expression>
-    void h_varRefDeclEntryAssign_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntryAssign_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_ASSIGN)
+            return false;
+        a_varRefDeclEntryAssign_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclEntryAssign_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_varRefDeclEntryAssign_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // varRefDeclEntryAssign = <id:identifier> '->' _ <ONL> <val:expression>
-    void h_varRefDeclEntryAssign_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntryAssign_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_varRefDeclEntryAssign_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_varRefDeclEntryAssign_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntryAssign_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // varRefDeclEntryAssign = <id:identifier> '->' <ONL> _ <val:expression>
-    void h_varRefDeclEntryAssign_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_varRefDeclEntryAssign_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_varRefDeclEntryAssign_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_varRefDeclEntryAssign_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
     }
 
-    // ifStat 	= _ 'if' <cond:expression> ':' <exec1:statement> [ <elseStat> ]
-    void h_ifStat_1(ParserData& parserData, ParserBranch& branch) {
+    // ifStat
+    bool n_ifStat(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_ifStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ifStat);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_ifStat>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_ifStat_1({state}, nextStates, curNode);
+            a_ifStat_7({state}, nextStates, curNode);
+        }
     }
 
-    // ifStat 	= 'if' _ <cond:expression> ':' <exec1:statement> [ <elseStat> ]
-    void h_ifStat_2(ParserData& parserData, ParserBranch& branch) {
+    // ifStat 	= _ 'if' <cond:expression> ':' <exec1:statement> [ <elseStatPart> ]
+    bool n_ifStat_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_ifStat_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_ifStat_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // ifStat 	= 'if' <cond:expression> _ ':' <exec1:statement> [ <elseStat> ]
-    void h_ifStat_3(ParserData& parserData, ParserBranch& branch) {
+    // ifStat 	= 'if' _ <cond:expression> ':' <exec1:statement> [ <elseStatPart> ]
+    bool n_ifStat_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["cond"].push_back(curState->subNode);
+        a_ifStat_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ifStat_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["cond"].push_back(state->subNode);
+        }
     }
 
-    // ifStat 	= 'if' <cond:expression> ':' _ <exec1:statement> [ <elseStat> ]
-    void h_ifStat_4(ParserData& parserData, ParserBranch& branch) {
+    // ifStat 	= 'if' <cond:expression> _ ':' <exec1:statement> [ <elseStatPart> ]
+    bool n_ifStat_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_ifStat_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_ifStat_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // ifStat 	= 'if' <cond:expression> ':' <exec1:statement> _ [ <elseStat> ]
-    void h_ifStat_5(ParserData& parserData, ParserBranch& branch) {
+    // ifStat 	= 'if' <cond:expression> ':' _ <exec1:statement> [ <elseStatPart> ]
+    bool n_ifStat_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["exec1"].push_back(curState->subNode);
+        a_ifStat_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ifStat_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_statement({state}, nextStates, curNode);
+        state->node->nodeLists["exec1"].push_back(state->subNode);
+        }
     }
 
-    // ifStat 	= 'if' <cond:expression> ':' <exec1:statement> [ _ <elseStat> ]
-    void h_ifStat_6(ParserData& parserData, ParserBranch& branch) {
+    // ifStat 	= 'if' <cond:expression> ':' <exec1:statement> _ [ <elseStatPart> ]
+    bool n_ifStat_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_ifStat_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ifStat_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ifStat_6({state}, nextStates, curNode);
+        }
     }
 
-    // ifStat = _ 'if' <cond:expression> ':' '\n' <exec1:contextBody> [ <elseStat> ] 'ok'
-    void h_ifStat_7(ParserData& parserData, ParserBranch& branch) {
+    // ifStat 	= 'if' <cond:expression> ':' <exec1:statement> [ _ <elseStatPart> ]
+    bool n_ifStat_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_ifStat_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ifStat_6);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_elseStatPart({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // ifStat = 'if' _ <cond:expression> ':' '\n' <exec1:contextBody> [ <elseStat> ] 'ok'
-    void h_ifStat_8(ParserData& parserData, ParserBranch& branch) {
+    // ifStat = _ 'if' <cond:expression> ':' '\n' <exec1:contextBody> [ <elseStatPart> ] 'ok'
+    bool n_ifStat_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_ifStat_8(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_ifStat_7];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // ifStat = 'if' <cond:expression> _ ':' '\n' <exec1:contextBody> [ <elseStat> ] 'ok'
-    void h_ifStat_9(ParserData& parserData, ParserBranch& branch) {
+    // ifStat = 'if' _ <cond:expression> ':' '\n' <exec1:contextBody> [ <elseStatPart> ] 'ok'
+    bool n_ifStat_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["cond"].push_back(curState->subNode);
+        a_ifStat_9(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ifStat_8);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["cond"].push_back(state->subNode);
+        }
     }
 
-    // ifStat = 'if' <cond:expression> ':' _ '\n' <exec1:contextBody> [ <elseStat> ] 'ok'
-    void h_ifStat_10(ParserData& parserData, ParserBranch& branch) {
+    // ifStat = 'if' <cond:expression> _ ':' '\n' <exec1:contextBody> [ <elseStatPart> ] 'ok'
+    bool n_ifStat_9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_ifStat_10(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_ifStat_9];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // ifStat = 'if' <cond:expression> ':' '\n' _ <exec1:contextBody> [ <elseStat> ] 'ok'
-    void h_ifStat_11(ParserData& parserData, ParserBranch& branch) {
+    // ifStat = 'if' <cond:expression> ':' _ '\n' <exec1:contextBody> [ <elseStatPart> ] 'ok'
+    bool n_ifStat_10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NEW_LN)
+            return false;
+        a_ifStat_11(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_ifStat_10];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // ifStat = 'if' <cond:expression> ':' '\n' <exec1:contextBody> _ [ <elseStat> ] 'ok'
-    void h_ifStat_12(ParserData& parserData, ParserBranch& branch) {
+    // ifStat = 'if' <cond:expression> ':' '\n' _ <exec1:contextBody> [ <elseStatPart> ] 'ok'
+    bool n_ifStat_11(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["exec1"].push_back(curState->subNode);
+        a_ifStat_12(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ifStat_11);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextBody({state}, nextStates, curNode);
+        state->node->nodeLists["exec1"].push_back(state->subNode);
+        }
     }
 
-    // ifStat = 'if' <cond:expression> ':' '\n' <exec1:contextBody> [ _ <elseStat> ] 'ok'
-    void h_ifStat_13(ParserData& parserData, ParserBranch& branch) {
+    // ifStat = 'if' <cond:expression> ':' '\n' <exec1:contextBody> _ [ <elseStatPart> ] 'ok'
+    bool n_ifStat_12(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_ifStat_14(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_ifStat_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ifStat_12);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ifStat_13({state}, nextStates, curNode);
+        }
     }
 
-    // ifStat = 'if' <cond:expression> ':' '\n' <exec1:contextBody> [ <elseStat> ] _ 'ok'
-    void h_ifStat_14(ParserData& parserData, ParserBranch& branch) {
+    // ifStat = 'if' <cond:expression> ':' '\n' <exec1:contextBody> [ _ <elseStatPart> ] 'ok'
+    bool n_ifStat_13(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_ifStat_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_ifStat_13);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_elseStatPart({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // ifStat = 'if' <cond:expression> ':' '\n' <exec1:contextBody> [ <elseStatPart> ] _ 'ok'
+    bool n_ifStat_14(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_ifStat_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_ifStat_14];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // elseStatPart
+    bool n_elseStatPart(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_elseStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_elseStatPart>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_elseStatPart_1({state}, nextStates, curNode);
+            a_elseStatPart_4({state}, nextStates, curNode);
+            a_elseStatPart_8({state}, nextStates, curNode);
+            a_elseStatPart_14({state}, nextStates, curNode);
+        }
     }
 
     // elseStatPart 	= _ 'else' ':' <statement>
-    void h_elseStatPart_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_elseStatPart_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_elseStatPart_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // elseStatPart 	= 'else' _ ':' <statement>
-    void h_elseStatPart_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_elseStatPart_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_elseStatPart_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // elseStatPart 	= 'else' ':' _ <statement>
-    void h_elseStatPart_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_elseStatPart_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_elseStatPart_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_statement({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // elseStatPart = _ 'else' ':' '\n' <contextBody>
-    void h_elseStatPart_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_elseStatPart_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_elseStatPart_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_4];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // elseStatPart = 'else' _ ':' '\n' <contextBody>
-    void h_elseStatPart_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_elseStatPart_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_elseStatPart_6(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_5];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // elseStatPart = 'else' ':' _ '\n' <contextBody>
-    void h_elseStatPart_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_elseStatPart_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NEW_LN)
+            return false;
+        a_elseStatPart_7(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_6];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // elseStatPart = 'else' ':' '\n' _ <contextBody>
-    void h_elseStatPart_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_elseStatPart_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_elseStatPart_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_7);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextBody({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // elseStatPart = _ 'elif' <expression> ':' <statement> [ <elseStat> ]
-    void h_elseStatPart_8(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = _ 'elif' <expression> ':' <statement> [ <elseStatPart> ]
+    bool n_elseStatPart_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_elseStatPart_9(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_8];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // elseStatPart = 'elif' _ <expression> ':' <statement> [ <elseStat> ]
-    void h_elseStatPart_9(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' _ <expression> ':' <statement> [ <elseStatPart> ]
+    bool n_elseStatPart_9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_elseStatPart_10(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_9);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // elseStatPart = 'elif' <expression> _ ':' <statement> [ <elseStat> ]
-    void h_elseStatPart_10(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> _ ':' <statement> [ <elseStatPart> ]
+    bool n_elseStatPart_10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_elseStatPart_11(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_10];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // elseStatPart = 'elif' <expression> ':' _ <statement> [ <elseStat> ]
-    void h_elseStatPart_11(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> ':' _ <statement> [ <elseStatPart> ]
+    bool n_elseStatPart_11(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_elseStatPart_12(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_11);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_statement({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // elseStatPart = 'elif' <expression> ':' <statement> _ [ <elseStat> ]
-    void h_elseStatPart_12(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> ':' <statement> _ [ <elseStatPart> ]
+    bool n_elseStatPart_12(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_elseStatPart_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_12);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_elseStatPart_13({state}, nextStates, curNode);
+        }
     }
 
-    // elseStatPart = 'elif' <expression> ':' <statement> [ _ <elseStat> ]
-    void h_elseStatPart_13(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> ':' <statement> [ _ <elseStatPart> ]
+    bool n_elseStatPart_13(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_elseStatPart_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_13);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_elseStatPart({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // elseStatPart = _ 'elif' <expression> ':' '\n' <contextBody> [ <elseStat> ] 'ok'
-    void h_elseStatPart_14(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = _ 'elif' <expression> ':' '\n' <contextBody> [ <elseStatPart> ] 'ok'
+    bool n_elseStatPart_14(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_elseStatPart_15(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_14];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // elseStatPart = 'elif' _ <expression> ':' '\n' <contextBody> [ <elseStat> ] 'ok'
-    void h_elseStatPart_15(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' _ <expression> ':' '\n' <contextBody> [ <elseStatPart> ] 'ok'
+    bool n_elseStatPart_15(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_elseStatPart_16(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_15);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // elseStatPart = 'elif' <expression> _ ':' '\n' <contextBody> [ <elseStat> ] 'ok'
-    void h_elseStatPart_16(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> _ ':' '\n' <contextBody> [ <elseStatPart> ] 'ok'
+    bool n_elseStatPart_16(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_elseStatPart_17(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_16(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_16];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // elseStatPart = 'elif' <expression> ':' _ '\n' <contextBody> [ <elseStat> ] 'ok'
-    void h_elseStatPart_17(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> ':' _ '\n' <contextBody> [ <elseStatPart> ] 'ok'
+    bool n_elseStatPart_17(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_NEW_LN)
+            return false;
+        a_elseStatPart_18(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_17(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_17];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
-    // elseStatPart = 'elif' <expression> ':' '\n' _ <contextBody> [ <elseStat> ] 'ok'
-    void h_elseStatPart_18(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> ':' '\n' _ <contextBody> [ <elseStatPart> ] 'ok'
+    bool n_elseStatPart_18(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_elseStatPart_19(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_18(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_18);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextBody({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // elseStatPart = 'elif' <expression> ':' '\n' <contextBody> _ [ <elseStat> ] 'ok'
-    void h_elseStatPart_19(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> ':' '\n' <contextBody> _ [ <elseStatPart> ] 'ok'
+    bool n_elseStatPart_19(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_elseStatPart_21(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_elseStatPart_19(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_19);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_elseStatPart_20({state}, nextStates, curNode);
+        }
     }
 
-    // elseStatPart = 'elif' <expression> ':' '\n' <contextBody> [ _ <elseStat> ] 'ok'
-    void h_elseStatPart_20(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> ':' '\n' <contextBody> [ _ <elseStatPart> ] 'ok'
+    bool n_elseStatPart_20(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_elseStatPart_20(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_elseStatPart_20);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_elseStatPart({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // elseStatPart = 'elif' <expression> ':' '\n' <contextBody> [ <elseStat> ] _ 'ok'
-    void h_elseStatPart_21(ParserData& parserData, ParserBranch& branch) {
+    // elseStatPart = 'elif' <expression> ':' '\n' <contextBody> [ <elseStatPart> ] _ 'ok'
+    bool n_elseStatPart_21(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_elseStatPart_21(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_elseStatPart_21];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // loopStat
+    bool n_loopStat(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_loopStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_loopStat);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_loopStat>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_loopStat_1({state}, nextStates, curNode);
+        }
     }
 
     // loopStat = _ 'repeat' <parts:loopStatPart> (';' <parts:loopStatPart>)* ':' <contextBodyClosedBlock>
-    void h_loopStat_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStat_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_loopStat_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_loopStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_loopStat_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // loopStat = 'repeat' _ <parts:loopStatPart> (';' <parts:loopStatPart>)* ':' <contextBodyClosedBlock>
-    void h_loopStat_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStat_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["parts"].push_back(curState->subNode);
+        a_loopStat_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_loopStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_loopStat_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_loopStatPart({state}, nextStates, curNode);
+        state->node->nodeLists["parts"].push_back(state->subNode);
+        }
     }
 
     // loopStat = 'repeat' <parts:loopStatPart> _ (';' <parts:loopStatPart>)* ':' <contextBodyClosedBlock>
-    void h_loopStat_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStat_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_loopStat_6(curState->parentStates, nextStates, curState->node);
+        a_loopStat_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_loopStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_loopStat_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_loopStat_4({state}, nextStates, curNode);
+        }
     }
 
     // loopStat = 'repeat' <parts:loopStatPart> (_ ';' <parts:loopStatPart>)* ':' <contextBodyClosedBlock>
-    void h_loopStat_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStat_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_SEMICOLON)
+            return false;
+        a_loopStat_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_loopStat_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_loopStat_4];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // loopStat = 'repeat' <parts:loopStatPart> (';' _ <parts:loopStatPart>)* ':' <contextBodyClosedBlock>
-    void h_loopStat_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStat_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["parts"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_loopStat_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_loopStat_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_loopStatPart({state}, nextStates, curNode);
+        state->node->nodeLists["parts"].push_back(state->subNode);
+        }
     }
 
     // loopStat = 'repeat' <parts:loopStatPart> (';' <parts:loopStatPart>)* _ ':' <contextBodyClosedBlock>
-    void h_loopStat_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStat_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_loopStat_7(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_loopStat_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_loopStat_6];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // loopStat = 'repeat' <parts:loopStatPart> (';' <parts:loopStatPart>)* ':' _ <contextBodyClosedBlock>
-    void h_loopStat_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStat_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_loopStat_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_loopStat_7);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextBodyClosedBlock({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // loopStatPart
+    bool n_loopStatPart(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_loopStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_loopStatPart);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_loopStatPart>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_loopStatPart_1({state}, nextStates, curNode);
+            a_loopStatPart_2({state}, nextStates, curNode);
+            a_loopStatPart_3({state}, nextStates, curNode);
+        }
     }
 
     // loopStatPart 	= _ <timesLoopStatPart>
-    void h_loopStatPart_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStatPart_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_loopStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_loopStatPart_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_timesLoopStatPart({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // loopStatPart = _ <forLoopStatPart>
-    void h_loopStatPart_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStatPart_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_loopStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_loopStatPart_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_forLoopStatPart({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // loopStatPart = _ <whileLoopStatPart>
-    void h_loopStatPart_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_loopStatPart_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_loopStatPart_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_loopStatPart_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_whileLoopStatPart({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // timesLoopStatPart
+    bool n_timesLoopStatPart(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_timesLoopStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_timesLoopStatPart);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_timesLoopStatPart>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_timesLoopStatPart_1({state}, nextStates, curNode);
+        }
     }
 
     // timesLoopStatPart = _ 'times' <count:expression>
-    void h_timesLoopStatPart_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_timesLoopStatPart_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_timesLoopStatPart_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_timesLoopStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_timesLoopStatPart_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // timesLoopStatPart = 'times' _ <count:expression>
-    void h_timesLoopStatPart_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_timesLoopStatPart_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["count"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_timesLoopStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_timesLoopStatPart_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["count"].push_back(state->subNode);
+        }
+    }
+
+    // forLoopStatPart
+    bool n_forLoopStatPart(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_forLoopStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_forLoopStatPart);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_forLoopStatPart>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_forLoopStatPart_1({state}, nextStates, curNode);
+        }
     }
 
     // forLoopStatPart = _ 'for' <id:identifier> 'in' <iterator:expression>
-    void h_forLoopStatPart_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_forLoopStatPart_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_forLoopStatPart_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_forLoopStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_forLoopStatPart_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // forLoopStatPart = 'for' _ <id:identifier> 'in' <iterator:expression>
-    void h_forLoopStatPart_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_forLoopStatPart_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["id"].push_back(curState->subNode);
+        a_forLoopStatPart_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_forLoopStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_forLoopStatPart_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_identifier({state}, nextStates, curNode);
+        state->node->nodeLists["id"].push_back(state->subNode);
+        }
     }
 
     // forLoopStatPart = 'for' <id:identifier> _ 'in' <iterator:expression>
-    void h_forLoopStatPart_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_forLoopStatPart_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_forLoopStatPart_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_forLoopStatPart_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_forLoopStatPart_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // forLoopStatPart = 'for' <id:identifier> 'in' _ <iterator:expression>
-    void h_forLoopStatPart_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_forLoopStatPart_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["iterator"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_forLoopStatPart_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_forLoopStatPart_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["iterator"].push_back(state->subNode);
+        }
+    }
+
+    // whileLoopStatPart
+    bool n_whileLoopStatPart(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_whileLoopStatPart(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_whileLoopStatPart);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_whileLoopStatPart>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_whileLoopStatPart_1({state}, nextStates, curNode);
+        }
     }
 
     // whileLoopStatPart = _ 'while' <cond:expression>
-    void h_whileLoopStatPart_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_whileLoopStatPart_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_whileLoopStatPart_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_whileLoopStatPart_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_whileLoopStatPart_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // whileLoopStatPart = 'while' _ <cond:expression>
-    void h_whileLoopStatPart_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_whileLoopStatPart_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["cond"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_whileLoopStatPart_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_whileLoopStatPart_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["cond"].push_back(state->subNode);
+        }
+    }
+
+    // jumpStat
+    bool n_jumpStat(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_jumpStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_jumpStat);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_jumpStat>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_jumpStat_1({state}, nextStates, curNode);
+            a_jumpStat_2({state}, nextStates, curNode);
+            a_jumpStat_3({state}, nextStates, curNode);
+        }
     }
 
     // jumpStat 	= _ <breakStat>
-    void h_jumpStat_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_jumpStat_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_jumpStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_jumpStat_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_breakStat({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // jumpStat = _ <continueStat>
-    void h_jumpStat_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_jumpStat_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_jumpStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_jumpStat_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_continueStat({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // jumpStat = _ <returnStat>
-    void h_jumpStat_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_jumpStat_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_jumpStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_jumpStat_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_returnStat({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // breakStat
+    bool n_breakStat(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_breakStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_breakStat);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_breakStat>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_breakStat_1({state}, nextStates, curNode);
+        }
     }
 
     // breakStat = _ 'break'
-    void h_breakStat_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_breakStat_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_breakStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_breakStat_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // continueStat
+    bool n_continueStat(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_continueStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_continueStat);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_continueStat>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_continueStat_1({state}, nextStates, curNode);
+        }
     }
 
     // continueStat = _ 'continue'
-    void h_continueStat_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_continueStat_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_continueStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_continueStat_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
+    }
+
+    // returnStat
+    bool n_returnStat(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_returnStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_returnStat);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_returnStat>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_returnStat_1({state}, nextStates, curNode);
+        }
     }
 
     // returnStat = _ 'return' [ <val:expression> ]
-    void h_returnStat_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_returnStat_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_returnStat_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_returnStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_returnStat_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // returnStat = 'return' _ [ <val:expression> ]
-    void h_returnStat_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_returnStat_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_returnStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_returnStat_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_returnStat_3({state}, nextStates, curNode);
+        }
     }
 
     // returnStat = 'return' [ _ <val:expression> ]
-    void h_returnStat_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_returnStat_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_returnStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_returnStat_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
+    }
+
+    // withStat
+    bool n_withStat(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_withStat(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_withStat);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_withStat>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_withStat_1({state}, nextStates, curNode);
+        }
     }
 
     // withStat = _ 'with' <entries:withStatEntry> [ ',' <entries:withStatEntry> ] ':' <contextBodyClosedBlock>
-    void h_withStat_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStat_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_IDENTIFIER)
+            return false;
+        a_withStat_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_withStat_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_withStat_1];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // withStat = 'with' _ <entries:withStatEntry> [ ',' <entries:withStatEntry> ] ':' <contextBodyClosedBlock>
-    void h_withStat_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStat_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["entries"].push_back(curState->subNode);
+        a_withStat_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_withStat_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_withStat_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_withStatEntry({state}, nextStates, curNode);
+        state->node->nodeLists["entries"].push_back(state->subNode);
+        }
     }
 
     // withStat = 'with' <entries:withStatEntry> _ [ ',' <entries:withStatEntry> ] ':' <contextBodyClosedBlock>
-    void h_withStat_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStat_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        a_withStat_6(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_withStat_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_withStat_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_withStat_4({state}, nextStates, curNode);
+        }
     }
 
     // withStat = 'with' <entries:withStatEntry> [ _ ',' <entries:withStatEntry> ] ':' <contextBodyClosedBlock>
-    void h_withStat_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStat_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COMMA)
+            return false;
+        a_withStat_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_withStat_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_withStat_4];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // withStat = 'with' <entries:withStatEntry> [ ',' _ <entries:withStatEntry> ] ':' <contextBodyClosedBlock>
-    void h_withStat_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStat_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["entries"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_withStat_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_withStat_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_withStatEntry({state}, nextStates, curNode);
+        state->node->nodeLists["entries"].push_back(state->subNode);
+        }
     }
 
     // withStat = 'with' <entries:withStatEntry> [ ',' <entries:withStatEntry> ] _ ':' <contextBodyClosedBlock>
-    void h_withStat_6(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStat_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_COLON)
+            return false;
+        a_withStat_7(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_withStat_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_withStat_6];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // withStat = 'with' <entries:withStatEntry> [ ',' <entries:withStatEntry> ] ':' _ <contextBodyClosedBlock>
-    void h_withStat_7(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStat_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_withStat_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_withStat_7);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_contextBodyClosedBlock({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // withStatEntry
+    bool n_withStatEntry(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_withStatEntry(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_withStatEntry);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_withStatEntry>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_withStatEntry_1({state}, nextStates, curNode);
+            a_withStatEntry_4({state}, nextStates, curNode);
+        }
     }
 
     // withStatEntry 	= _ <id:identifier> '=' <val:expression>
-    void h_withStatEntry_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStatEntry_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["id"].push_back(curState->subNode);
+        a_withStatEntry_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_withStatEntry_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_withStatEntry_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_identifier({state}, nextStates, curNode);
+        state->node->nodeLists["id"].push_back(state->subNode);
+        }
     }
 
     // withStatEntry 	= <id:identifier> _ '=' <val:expression>
-    void h_withStatEntry_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStatEntry_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_CHANGE)
+            return false;
+        a_withStatEntry_3(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_withStatEntry_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_withStatEntry_2];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // withStatEntry 	= <id:identifier> '=' _ <val:expression>
-    void h_withStatEntry_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStatEntry_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_withStatEntry_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_withStatEntry_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
     }
 
     // withStatEntry = _ <val:expression>
-    void h_withStatEntry_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_withStatEntry_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["val"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_withStatEntry_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_withStatEntry_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["val"].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ assignRef
-    void h_assignmentEqual_1(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual
+    bool n_assignmentEqual(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_assignmentEqual>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_assignmentEqual_1({state}, nextStates, curNode);
+            a_assignmentEqual_2({state}, nextStates, curNode);
+            a_assignmentEqual_3({state}, nextStates, curNode);
+            a_assignmentEqual_4({state}, nextStates, curNode);
+            a_assignmentEqual_5({state}, nextStates, curNode);
+            a_assignmentEqual_6({state}, nextStates, curNode);
+            a_assignmentEqual_7({state}, nextStates, curNode);
+            a_assignmentEqual_8({state}, nextStates, curNode);
+            a_assignmentEqual_9({state}, nextStates, curNode);
+            a_assignmentEqual_10({state}, nextStates, curNode);
+            a_assignmentEqual_11({state}, nextStates, curNode);
+            a_assignmentEqual_12({state}, nextStates, curNode);
+            a_assignmentEqual_13({state}, nextStates, curNode);
+            a_assignmentEqual_14({state}, nextStates, curNode);
+            a_assignmentEqual_15({state}, nextStates, curNode);
+        }
     }
 
-    // assignmentEqual = _ changeVal
-    void h_assignmentEqual_2(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <assignRef>
+    bool n_assignmentEqual_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_assignRef({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ addChangeVal
-    void h_assignmentEqual_3(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <changeVal>
+    bool n_assignmentEqual_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_changeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ subChangeVal
-    void h_assignmentEqual_4(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <addChangeVal>
+    bool n_assignmentEqual_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_3);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_addChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ mulChangeVal
-    void h_assignmentEqual_5(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <subChangeVal>
+    bool n_assignmentEqual_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_subChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ crossChangeVal
-    void h_assignmentEqual_6(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <mulChangeVal>
+    bool n_assignmentEqual_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_mulChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ dotChangeVal
-    void h_assignmentEqual_7(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <crossChangeVal>
+    bool n_assignmentEqual_6(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_6(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_6);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_crossChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ divChangeVal
-    void h_assignmentEqual_8(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <dotChangeVal>
+    bool n_assignmentEqual_7(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_7(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_7);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dotChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ intDivChangeVal
-    void h_assignmentEqual_9(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <divChangeVal>
+    bool n_assignmentEqual_8(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_8(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_8);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_divChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ modChangeVal
-    void h_assignmentEqual_10(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <intDivChangeVal>
+    bool n_assignmentEqual_9(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_9(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_9);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_intDivChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ shiftRChangeVal
-    void h_assignmentEqual_11(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <modChangeVal>
+    bool n_assignmentEqual_10(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_10(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_10);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_modChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ shiftLChangeVal
-    void h_assignmentEqual_12(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <shiftRChangeVal>
+    bool n_assignmentEqual_11(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_11(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_11);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_shiftRChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ andChangeVal
-    void h_assignmentEqual_13(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <shiftLChangeVal>
+    bool n_assignmentEqual_12(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_12(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_12);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_shiftLChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ orChangeVal
-    void h_assignmentEqual_14(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <andChangeVal>
+    bool n_assignmentEqual_13(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_13(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_13);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_andChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
-    // assignmentEqual = _ xorChangeVal
-    void h_assignmentEqual_15(ParserData& parserData, ParserBranch& branch) {
+    // assignmentEqual = _ <orChangeVal>
+    bool n_assignmentEqual_14(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_14(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_14);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_orChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // assignmentEqual = _ <xorChangeVal>
+    bool n_assignmentEqual_15(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignmentEqual_15(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignmentEqual_15);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_xorChangeVal({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
+    }
+
+    // assignRef
+    bool n_assignRef(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignRef(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignRef);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_assignRef>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_assignRef_1({state}, nextStates, curNode);
+        }
     }
 
     // assignRef = _ <left:expression> ( '->' <ONL> <rights:expression> )+
-    void h_assignRef_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_assignRef_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_assignRef_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_assignRef_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignRef_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // assignRef = <left:expression> _ ( '->' <ONL> <rights:expression> )+
-    void h_assignRef_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_assignRef_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_assignRef_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_assignRef_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignRef_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_assignRef_3({state}, nextStates, curNode);
+        }
     }
 
     // assignRef = <left:expression> ( _ '->' <ONL> <rights:expression> )+
-    void h_assignRef_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_assignRef_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_ASSIGN)
+            return false;
+        a_assignRef_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_assignRef_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_assignRef_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // assignRef = <left:expression> ( '->' _ <ONL> <rights:expression> )+
-    void h_assignRef_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_assignRef_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_assignRef_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_assignRef_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignRef_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // assignRef = <left:expression> ( '->' <ONL> _ <rights:expression> )+
-    void h_assignRef_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_assignRef_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_assignRef_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_assignRef_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // changeVal
+    bool n_changeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_changeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_changeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_changeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_changeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // changeVal = _ <left:expression> ( '=' <ONL> <rights:expression> )+
-    void h_changeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_changeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_changeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_changeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_changeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // changeVal = <left:expression> _ ( '=' <ONL> <rights:expression> )+
-    void h_changeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_changeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_changeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_changeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_changeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_changeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // changeVal = <left:expression> ( _ '=' <ONL> <rights:expression> )+
-    void h_changeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_changeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_CHANGE)
+            return false;
+        a_changeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_changeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_changeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // changeVal = <left:expression> ( '=' _ <ONL> <rights:expression> )+
-    void h_changeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_changeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_changeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_changeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_changeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // changeVal = <left:expression> ( '=' <ONL> _ <rights:expression> )+
-    void h_changeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_changeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_changeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_changeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // addChangeVal
+    bool n_addChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_addChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_addChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_addChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_addChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // addChangeVal = _ <left:expression> ( '+=' <ONL> <rights:expression> )+
-    void h_addChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_addChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_addChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_addChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_addChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // addChangeVal = <left:expression> _ ( '+=' <ONL> <rights:expression> )+
-    void h_addChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_addChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_addChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_addChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_addChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_addChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // addChangeVal = <left:expression> ( _ '+=' <ONL> <rights:expression> )+
-    void h_addChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_addChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_ADD_CHANGE)
+            return false;
+        a_addChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_addChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_addChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // addChangeVal = <left:expression> ( '+=' _ <ONL> <rights:expression> )+
-    void h_addChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_addChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_addChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_addChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_addChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // addChangeVal = <left:expression> ( '+=' <ONL> _ <rights:expression> )+
-    void h_addChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_addChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_addChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_addChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // subChangeVal
+    bool n_subChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_subChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_subChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_subChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_subChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // subChangeVal = _ <left:expression> ( '-=' <ONL> <rights:expression> )+
-    void h_subChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_subChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_subChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_subChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_subChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // subChangeVal = <left:expression> _ ( '-=' <ONL> <rights:expression> )+
-    void h_subChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_subChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_subChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_subChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_subChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_subChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // subChangeVal = <left:expression> ( _ '-=' <ONL> <rights:expression> )+
-    void h_subChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_subChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_SUB_CHANGE)
+            return false;
+        a_subChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_subChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_subChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // subChangeVal = <left:expression> ( '-=' _ <ONL> <rights:expression> )+
-    void h_subChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_subChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_subChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_subChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_subChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // subChangeVal = <left:expression> ( '-=' <ONL> _ <rights:expression> )+
-    void h_subChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_subChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_subChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_subChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // mulChangeVal
+    bool n_mulChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_mulChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_mulChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_mulChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_mulChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // mulChangeVal = _ <left:expression> ( '*=' <ONL> <rights:expression> )+
-    void h_mulChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_mulChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_mulChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_mulChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_mulChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // mulChangeVal = <left:expression> _ ( '*=' <ONL> <rights:expression> )+
-    void h_mulChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_mulChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_mulChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_mulChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_mulChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_mulChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // mulChangeVal = <left:expression> ( _ '*=' <ONL> <rights:expression> )+
-    void h_mulChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_mulChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_MUL_CHANGE)
+            return false;
+        a_mulChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_mulChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_mulChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // mulChangeVal = <left:expression> ( '*=' _ <ONL> <rights:expression> )+
-    void h_mulChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_mulChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_mulChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_mulChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_mulChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // mulChangeVal = <left:expression> ( '*=' <ONL> _ <rights:expression> )+
-    void h_mulChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_mulChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_mulChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_mulChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // crossChangeVal
+    bool n_crossChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_crossChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_crossChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_crossChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_crossChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // crossChangeVal = _ <left:expression> ( '×=' <ONL> <rights:expression> )+
-    void h_crossChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_crossChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_crossChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_crossChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_crossChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // crossChangeVal = <left:expression> _ ( '×=' <ONL> <rights:expression> )+
-    void h_crossChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_crossChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_crossChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_crossChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_crossChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_crossChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // crossChangeVal = <left:expression> ( _ '×=' <ONL> <rights:expression> )+
-    void h_crossChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_crossChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_CROSS)
+            return false;
+        a_crossChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_crossChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_crossChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // crossChangeVal = <left:expression> ( '×=' _ <ONL> <rights:expression> )+
-    void h_crossChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_crossChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_crossChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_crossChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_crossChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // crossChangeVal = <left:expression> ( '×=' <ONL> _ <rights:expression> )+
-    void h_crossChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_crossChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_crossChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_crossChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // dotChangeVal
+    bool n_dotChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dotChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dotChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_dotChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_dotChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // dotChangeVal = _ <left:expression> ( '⋅=' <ONL> <rights:expression> )+
-    void h_dotChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_dotChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_dotChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dotChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dotChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // dotChangeVal = <left:expression> _ ( '⋅=' <ONL> <rights:expression> )+
-    void h_dotChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_dotChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_dotChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dotChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dotChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_dotChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // dotChangeVal = <left:expression> ( _ '⋅=' <ONL> <rights:expression> )+
-    void h_dotChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_dotChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_DOT)
+            return false;
+        a_dotChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dotChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_dotChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // dotChangeVal = <left:expression> ( '⋅=' _ <ONL> <rights:expression> )+
-    void h_dotChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_dotChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_dotChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_dotChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dotChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // dotChangeVal = <left:expression> ( '⋅=' <ONL> _ <rights:expression> )+
-    void h_dotChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_dotChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_dotChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_dotChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // divChangeVal
+    bool n_divChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_divChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_divChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_divChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_divChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // divChangeVal = _ <left:expression> ( '/=' <ONL> <rights:expression> )+
-    void h_divChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_divChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_divChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_divChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_divChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // divChangeVal = <left:expression> _ ( '/=' <ONL> <rights:expression> )+
-    void h_divChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_divChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_divChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_divChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_divChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_divChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // divChangeVal = <left:expression> ( _ '/=' <ONL> <rights:expression> )+
-    void h_divChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_divChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_DIV_CHANGE)
+            return false;
+        a_divChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_divChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_divChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // divChangeVal = <left:expression> ( '/=' _ <ONL> <rights:expression> )+
-    void h_divChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_divChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_divChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_divChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_divChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // divChangeVal = <left:expression> ( '/=' <ONL> _ <rights:expression> )+
-    void h_divChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_divChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_divChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_divChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // intDivChangeVal
+    bool n_intDivChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_intDivChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_intDivChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_intDivChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_intDivChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // intDivChangeVal = _ <left:expression> ( '/%=' <ONL> <rights:expression> )+
-    void h_intDivChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_intDivChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_intDivChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_intDivChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_intDivChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // intDivChangeVal = <left:expression> _ ( '/%=' <ONL> <rights:expression> )+
-    void h_intDivChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_intDivChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_intDivChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_intDivChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_intDivChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_intDivChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // intDivChangeVal = <left:expression> ( _ '/%=' <ONL> <rights:expression> )+
-    void h_intDivChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_intDivChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_INT_DIV_CHANGE)
+            return false;
+        a_intDivChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_intDivChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_intDivChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // intDivChangeVal = <left:expression> ( '/%=' _ <ONL> <rights:expression> )+
-    void h_intDivChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_intDivChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_intDivChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_intDivChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_intDivChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // intDivChangeVal = <left:expression> ( '/%=' <ONL> _ <rights:expression> )+
-    void h_intDivChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_intDivChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_intDivChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_intDivChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // modChangeVal
+    bool n_modChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_modChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_modChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_modChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_modChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // modChangeVal = _ <left:expression> ( '%=' <ONL> <rights:expression> )+
-    void h_modChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_modChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_modChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_modChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_modChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // modChangeVal = <left:expression> _ ( '%=' <ONL> <rights:expression> )+
-    void h_modChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_modChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_modChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_modChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_modChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_modChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // modChangeVal = <left:expression> ( _ '%=' <ONL> <rights:expression> )+
-    void h_modChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_modChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_MOD_CHANGE)
+            return false;
+        a_modChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_modChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_modChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // modChangeVal = <left:expression> ( '%=' _ <ONL> <rights:expression> )+
-    void h_modChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_modChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_modChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_modChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_modChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // modChangeVal = <left:expression> ( '%=' <ONL> _ <rights:expression> )+
-    void h_modChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_modChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_modChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_modChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // shiftRChangeVal
+    bool n_shiftRChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_shiftRChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftRChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_shiftRChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_shiftRChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // shiftRChangeVal = _ <left:expression> ( '>>=' <ONL> <rights:expression> )+
-    void h_shiftRChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftRChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_shiftRChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftRChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftRChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // shiftRChangeVal = <left:expression> _ ( '>>=' <ONL> <rights:expression> )+
-    void h_shiftRChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftRChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_shiftRChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftRChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftRChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_shiftRChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // shiftRChangeVal = <left:expression> ( _ '>>=' <ONL> <rights:expression> )+
-    void h_shiftRChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftRChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_SHIFT_RIGHT_CHANGE)
+            return false;
+        a_shiftRChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftRChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_shiftRChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // shiftRChangeVal = <left:expression> ( '>>=' _ <ONL> <rights:expression> )+
-    void h_shiftRChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftRChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_shiftRChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftRChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftRChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // shiftRChangeVal = <left:expression> ( '>>=' <ONL> _ <rights:expression> )+
-    void h_shiftRChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftRChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_shiftRChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftRChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // shiftLChangeVal
+    bool n_shiftLChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_shiftLChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftLChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_shiftLChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_shiftLChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // shiftLChangeVal = _ <left:expression> ( '<<=' <ONL> <rights:expression> )+
-    void h_shiftLChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftLChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_shiftLChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftLChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftLChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // shiftLChangeVal = <left:expression> _ ( '<<=' <ONL> <rights:expression> )+
-    void h_shiftLChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftLChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_shiftLChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftLChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftLChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_shiftLChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // shiftLChangeVal = <left:expression> ( _ '<<=' <ONL> <rights:expression> )+
-    void h_shiftLChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftLChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_SHIFT_LEFT_CHANGE)
+            return false;
+        a_shiftLChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftLChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_shiftLChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // shiftLChangeVal = <left:expression> ( '<<=' _ <ONL> <rights:expression> )+
-    void h_shiftLChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftLChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_shiftLChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_shiftLChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftLChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // shiftLChangeVal = <left:expression> ( '<<=' <ONL> _ <rights:expression> )+
-    void h_shiftLChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_shiftLChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_shiftLChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_shiftLChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // andChangeVal
+    bool n_andChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_andChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_andChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_andChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_andChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // andChangeVal = _ <left:expression> ( '&=' <ONL> <rights:expression> )+
-    void h_andChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_andChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_andChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_andChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_andChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // andChangeVal = <left:expression> _ ( '&=' <ONL> <rights:expression> )+
-    void h_andChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_andChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_andChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_andChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_andChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_andChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // andChangeVal = <left:expression> ( _ '&=' <ONL> <rights:expression> )+
-    void h_andChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_andChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_AND_CHANGE)
+            return false;
+        a_andChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_andChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_andChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // andChangeVal = <left:expression> ( '&=' _ <ONL> <rights:expression> )+
-    void h_andChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_andChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_andChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_andChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_andChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // andChangeVal = <left:expression> ( '&=' <ONL> _ <rights:expression> )+
-    void h_andChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_andChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_andChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_andChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // orChangeVal
+    bool n_orChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_orChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_orChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_orChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_orChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // orChangeVal = _ <left:expression> ( '|=' <ONL> <rights:expression> )+
-    void h_orChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_orChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_orChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_orChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_orChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // orChangeVal = <left:expression> _ ( '|=' <ONL> <rights:expression> )+
-    void h_orChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_orChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_orChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_orChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_orChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_orChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // orChangeVal = <left:expression> ( _ '|=' <ONL> <rights:expression> )+
-    void h_orChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_orChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_OR_CHANGE)
+            return false;
+        a_orChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_orChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_orChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // orChangeVal = <left:expression> ( '|=' _ <ONL> <rights:expression> )+
-    void h_orChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_orChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_orChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_orChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_orChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // orChangeVal = <left:expression> ( '|=' <ONL> _ <rights:expression> )+
-    void h_orChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_orChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_orChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_orChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    // xorChangeVal
+    bool n_xorChangeVal(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_xorChangeVal(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_xorChangeVal);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = std::make_shared<ParseNode_xorChangeVal>();
+            for (auto par : parentStates) par->subNode = state->node;
+            a_xorChangeVal_1({state}, nextStates, curNode);
+        }
     }
 
     // xorChangeVal = _ <left:expression> ( '^=' <ONL> <rights:expression> )+
-    void h_xorChangeVal_1(ParserData& parserData, ParserBranch& branch) {
+    bool n_xorChangeVal_1(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["left"].push_back(curState->subNode);
+        a_xorChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_xorChangeVal_1(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_xorChangeVal_1);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["left"].push_back(state->subNode);
+        }
     }
 
     // xorChangeVal = <left:expression> _ ( '^=' <ONL> <rights:expression> )+
-    void h_xorChangeVal_2(ParserData& parserData, ParserBranch& branch) {
+    bool n_xorChangeVal_2(StatePtr curState, StateSet& nextStates, const Token& token) {
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        a_xorChangeVal_2(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_xorChangeVal_2(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_xorChangeVal_2);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_xorChangeVal_3({state}, nextStates, curNode);
+        }
     }
 
     // xorChangeVal = <left:expression> ( _ '^=' <ONL> <rights:expression> )+
-    void h_xorChangeVal_3(ParserData& parserData, ParserBranch& branch) {
+    bool n_xorChangeVal_3(StatePtr curState, StateSet& nextStates, const Token& token) {
+        if (token.type != TokenType::L_XOR_CHANGE)
+            return false;
+        a_xorChangeVal_4(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_xorChangeVal_3(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates[&n_xorChangeVal_3];
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+        }
     }
 
     // xorChangeVal = <left:expression> ( '^=' _ <ONL> <rights:expression> )+
-    void h_xorChangeVal_4(ParserData& parserData, ParserBranch& branch) {
+    bool n_xorChangeVal_4(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists[""].push_back(curState->subNode);
+        a_xorChangeVal_5(curState->parentStates, nextStates, curState->node);
+        return true;
+    }
+    void a_xorChangeVal_4(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_xorChangeVal_4);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_ONL({state}, nextStates, curNode);
+        state->node->nodeLists[""].push_back(state->subNode);
+        }
     }
 
     // xorChangeVal = <left:expression> ( '^=' <ONL> _ <rights:expression> )+
-    void h_xorChangeVal_5(ParserData& parserData, ParserBranch& branch) {
+    bool n_xorChangeVal_5(StatePtr curState, StateSet& nextStates, const Token& token) {
+        curState->node->nodeLists["rights"].push_back(curState->subNode);
+        for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);
+        return true;
+    }
+    void a_xorChangeVal_5(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {
+        StatePtr state = nextStates.getHidden(&n_xorChangeVal_5);
+        state->parentStates.insert(parentStates.begin(), parentStates.end());
+        if (state->node == nullptr) {// The state is newly added
+            state->node = curNode;
+            a_expression({state}, nextStates, curNode);
+        state->node->nodeLists["rights"].push_back(state->subNode);
+        }
+    }
+
+    std::list<Token> parse(const std::list<Token> &input, std::list<ParserError>& outErrors)
+    {
     }
 
 }

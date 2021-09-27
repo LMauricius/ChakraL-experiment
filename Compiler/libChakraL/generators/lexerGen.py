@@ -1,3 +1,4 @@
+from __future__ import annotations
 import os
 from genUtil import *
 from typing import Tuple
@@ -10,17 +11,17 @@ class Command:
 class Rule:
     def __init__(self, regex: str):
         self.regex = regex
-        self.commands = list[Command]()
+        self.commands: list[Command] = []
 
 class Lexer:
     def __init__(self):
-        self.macros = dict[str, str]()
-        self.regexNames = dict[str, str]()
-        self.regexTokenPairs = list[Tuple[str, str]]()
-        self.tokenTypes = list[str]()
-        self.states = list[str]()
+        self.macros: dict[str, str] = {}
+        self.regexNames: dict[str, str] = {}
+        self.regexTokenPairs: list[Tuple[str, str]] = []
+        self.tokenTypes: list[str] = []
+        self.states: list[str] = []
         self.starting = ""
-        self.rulesPerState = dict[str, list[Rule]]()
+        self.rulesPerState: dict[str, list[Rule]] = {}
 
         self.macros["[:newl:]"] = "\\n"
         self.macros["[:alnum:]"] = "a-zA-Z0-9"
@@ -181,7 +182,7 @@ def writeLexerH(lexer: Lexer, filename: str):
     TB();TB();LN('int character;')
     TB();LN("};")
     LN("")
-    TB();LN("std::list<Token> tokenize(const std::wstring &input, std::list<LexerError>& outErrors);")
+    TB();LN("std::list<Token> tokenize(std::wstring &input, std::list<LexerError>& outErrors);")
     LN("")
     LN("}")
 
@@ -222,7 +223,7 @@ def writeLexerCPP(lexer: Lexer, filename: str, headerfile: str, useSingleDFA: bo
         TB();TB();LN('"'+t+'",')
     TB();LN("};")
     LN("")
-    TB();LN("std::list<Token> tokenize(const std::wstring &input, std::list<LexerError>& outErrors)")
+    TB();LN("std::list<Token> tokenize(std::wstring &input, std::list<LexerError>& outErrors)")
     TB();LN("{")
     TB();TB();LN("int line = 1, character = 1;")
     TB();TB();LN("int start = 0, maxEnd = -1;")
@@ -269,7 +270,7 @@ def writeLexerCPP(lexer: Lexer, filename: str, headerfile: str, useSingleDFA: bo
             i = 0
             for r in lexer.rulesPerState[s]:
                 i += 1
-                TB();TB();TB();TB();LN("if (auto res = ctre::starts_with<L\"(" + escapeRegexToC(r.regex) + ")\">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {")
+                TB();TB();TB();TB();LN("if (auto res = ctre::starts_with<L\"(" + escapeRegexToC(r.regex) + ")\">(\nstd::wstring_view(input).substr(start, input.size()-start)\n);\n res && \n(int)res.size() > \n(maxEnd-start)\n) {")
                 TB();TB();TB();TB();TB();LN("choosenRuleInd = " + str(i) + ";")
                 TB();TB();TB();TB();TB();LN("maxEnd = start + res.size();")
                 TB();TB();TB();TB();LN("}")

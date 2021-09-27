@@ -128,6 +128,6 @@ namespace ChakraL {
         int character;
     };
 
-    std::list<Token> tokenize(const std::wstring &input, std::list<LexerError>& outErrors);
+    std::list<Token> tokenize(std::wstring &input, std::list<LexerError>& outErrors);
 
 }

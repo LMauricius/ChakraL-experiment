@@ -108,7 +108,7 @@ namespace ChakraL
         "L_LIT_SUFFIX",
     };
 
-    std::list<Token> tokenize(const std::wstring &input, std::list<LexerError>& outErrors)
+    std::list<Token> tokenize(std::wstring &input, std::list<LexerError>& outErrors)
     {
         int line = 1, character = 1;
         int start = 0, maxEnd = -1;
@@ -126,383 +126,953 @@ namespace ChakraL
             case LexerState::S_START:
                 
                 // *** choose rule ***
-                if (auto res = ctre::starts_with<L"([a-zA-Z][a-zA-Z0-9_]*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"([a-zA-Z][a-zA-Z0-9_]*)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 1;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"([0-9]+(_[0-9]|[0-9])*(\\.[0-9]+)?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"([0-9]+(_[0-9]|[0-9])*(\\.[0-9]+)?)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 2;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(0b[01]([_01]|[01])*(\\.[_01]+)?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(0b[01]([_01]|[01])*(\\.[_01]+)?)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 3;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(0o[0-7]([_0-7]|[0-7])*(\\.[_0-7]+)?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(0o[0-7]([_0-7]|[0-7])*(\\.[_0-7]+)?)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 4;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(0x[A-Fa-f0-9]([_A-Fa-f0-9]|[A-Fa-f0-9])*(\\.[_A-Fa-f0-9]+)?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(0x[A-Fa-f0-9]([_A-Fa-f0-9]|[A-Fa-f0-9])*(\\.[_A-Fa-f0-9]+)?)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 5;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\"([^\\\\\"]|\\\\.)*\")">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\"([^\\\\\"]|\\\\.)*\")">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 6;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\'([^\\\\\']|\\\\.)\')">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\'([^\\\\\']|\\\\.)\')">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 7;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\n)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\n)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 8;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"([ \\t])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"([ \\t])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 9;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(//)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(//)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 10;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/\\*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(/\\*)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 11;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(,)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(,)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 12;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(;)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(;)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 13;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(:)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(:)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 14;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(ok)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(ok)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 15;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(in)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(in)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 16;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\+)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 17;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\-)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\-)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 18;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\*)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 19;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(/)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 20;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/%)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(/%)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 21;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(%)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(%)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 22;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(>>)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(>>)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 23;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<<)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(<<)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 24;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(&)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(&)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 25;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\|)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\|)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 26;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\^)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\^)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 27;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 28;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 29;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"([=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"([=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 30;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\->)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\->)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 31;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\+[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 32;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+\\+)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\+\\+)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 33;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(--)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(--)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 34;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\-[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\-[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 35;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\*[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\*[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 36;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(/[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 37;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/%[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(/%[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 38;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(%[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(%[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 39;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(>>[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(>>[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 40;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<<[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(<<[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 41;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(&[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(&[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 42;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\|[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\|[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 43;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\^[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\^[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 44;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 45;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 46;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(!)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(!)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 47;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\?[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\?[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 48;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(![=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(![=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 49;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\?\\->)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\?\\->)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 50;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(!\\->)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(!\\->)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 51;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(<)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 52;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(>)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(>)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 53;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(<[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 54;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(>[=])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(>[=])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 55;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+&)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\+&)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 56;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+\\|)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\+\\|)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 57;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+\\?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\+\\?)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 58;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\?\\?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\?\\?)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 59;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\?)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\?)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 60;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\()">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\()">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 61;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\))">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\))">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 62;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\[)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\[)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 63;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\])">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\])">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 64;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\{)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\{)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 65;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\})">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\})">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 66;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\.)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\.)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 67;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"([=]>)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"([=]>)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 68;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<[=]>)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(<[=]>)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 69;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(if)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(if)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 70;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(else)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(else)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 71;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(elif)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(elif)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 72;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(switch)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(switch)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 73;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(case)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(case)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 74;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(times)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(times)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 75;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(for)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(for)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 76;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(while)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(while)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 77;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(repeat)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(repeat)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 78;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(break)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(break)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 79;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(continue)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(continue)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 80;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(return)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(return)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 81;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(yield)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(yield)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 82;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(with)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(with)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 83;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(def)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(def)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 84;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(const)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(const)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 85;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(var)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(var)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 86;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(ref)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(ref)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 87;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(new)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(new)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 88;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(final)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(final)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 89;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(mutable)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(mutable)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 90;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(volatile)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(volatile)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 91;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(static)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(static)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 92;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(using)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(using)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 93;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(include)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(include)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 94;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(as)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(as)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 95;
                     maxEnd = start + res.size();
                 }
@@ -812,11 +1382,23 @@ namespace ChakraL
             case LexerState::S_LITERAL:
                 
                 // *** choose rule ***
-                if (auto res = ctre::starts_with<L"([a-zA-Z_][a-zA-Z0-9_]*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"([a-zA-Z_][a-zA-Z0-9_]*)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 1;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"()">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"()">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 2;
                     maxEnd = start + res.size();
                 }
@@ -844,11 +1426,23 @@ namespace ChakraL
             case LexerState::S_SINGLELINE_COMMENT:
                 
                 // *** choose rule ***
-                if (auto res = ctre::starts_with<L"([^\\n]*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"([^\\n]*)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 1;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\n)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\n)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 2;
                     maxEnd = start + res.size();
                 }
@@ -874,15 +1468,33 @@ namespace ChakraL
             case LexerState::S_MULTILINE_COMMENT:
                 
                 // *** choose rule ***
-                if (auto res = ctre::starts_with<L"(([^*/]|\\*[^/]|/[^\\*])*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(([^*/]|\\*[^/]|/[^\\*])*)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 1;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/\\*)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(/\\*)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 2;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\*/)">(std::wstring_view(input.begin()+start, input.end())); res && (int)res.size() > (maxEnd-start)) {
+                if (auto res = ctre::starts_with<L"(\\*/)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
                     choosenRuleInd = 3;
                     maxEnd = start + res.size();
                 }

@@ -1,3 +1,4 @@
+from __future__ import annotations
 import sys
 from lexerGen import *
 from parserGen import *
@@ -11,7 +12,7 @@ def main():
     # arg1 = definition folder
     # arg2 = header folder
     # arg3 = cpp folder
-    argMap = dict[str, str]()
+    argMap: dict[str, str] = {}
     curArg = ""
 
     def argget(*names):
@@ -66,6 +67,10 @@ def main():
             argget("--inparser")
             writeParserCPP(pars, argget("--outparsercpp"), argget("--inparserh", "--outparserh"))
             print("Generated parser source file: " + argget("--outparsercpp"))
+        if "--outparserprocesscpp" in argMap:
+            argget("--inparser")
+            writeParserProcessCPP(pars, argget("--outparserprocesscpp"), argget("--inparserh", "--outparserh"))
+            print("Generated parser process definitions source file: " + argget("--outparserprocesscpp"))
     except ArgumentError as e:
         print("Error: " + e.message)
         return 1
