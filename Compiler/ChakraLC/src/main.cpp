@@ -6,6 +6,40 @@
 #include <iterator>
 #include <chrono>
 
+void printTabs(int tabs)
+{
+    for (int i=0; i < tabs; i++) std::cout << "    ";
+}
+void printNode(ChakraL::ParseNodePtr nodePtr, int tabs)
+{
+    for (auto& nameListPair : nodePtr->nodeLists)
+    {
+        //printTabs(tabs); std::cout << "'" << nameListPair.first << "'" << "(nodes): ";
+        for (auto np : nameListPair.second)
+        {
+            printTabs(tabs); std::cout << "'" << nameListPair.first << "': " << np->name() << " {" << std::endl;
+            printNode(np, tabs + 1);
+            printTabs(tabs); std::cout << "}";
+            std::cout << std::endl;
+        }
+    }
+    for (auto& nameListPair : nodePtr->tokenLists)
+    {
+        //printTabs(tabs); std::cout << "'" << nameListPair.first << "'" << "(tokens): ";
+        for (auto& t : nameListPair.second)
+        {
+            printTabs(tabs);
+            std::cout << "'" << nameListPair.first << "': " << ChakraL::TokenNames[(int)t.type] << "-" << t.line << "," << t.character << ": ";
+            std::wcout << t.str;
+            std::cout << std::endl;
+        }
+    }
+    if (nodePtr->continuationNode)
+    {
+        printNode(nodePtr->continuationNode, tabs);
+    }
+}
+
 int main(int argc, char** argv)
 {
     /*std::wstring s = L"2021/9/12";
@@ -57,6 +91,7 @@ int main(int argc, char** argv)
         ChakraL::ParseNodePtr node = ChakraL::parse(tokens, perrors);
         auto endParsTime = high_resolution_clock::now();
         std::cout << "Parser finished in " << duration<double>(endParsTime - startParsTime).count() << "s" << std::endl;
+        printNode(node, 1);
 
         /*for (auto& t : tokens)
         {

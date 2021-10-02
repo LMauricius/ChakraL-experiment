@@ -103,6 +103,7 @@ def loadLexer(filename: str):
                     raise FormatError("Expected a '{', got '"+l+"'", lineInd)
                 
                 # commands
+                noAutoDetect = False
                 l, lineInd = next(lines, ("",-1))
                 while l != '}':
                     spl = l.split()
@@ -114,7 +115,10 @@ def loadLexer(filename: str):
                     if spl[0] == 'out':
                         if not spl[1] in lexer.tokenTypes:
                             lexer.tokenTypes.append(spl[1])
-                        lexer.regexTokenPairs.append((regex, spl[1]))
+                        if not noAutoDetect:
+                            lexer.regexTokenPairs.append((regex, spl[1]))
+                    elif spl[0] == 'noAutoDetect':
+                        noAutoDetect = True
 
                     l, lineInd = next(lines, ("",-1))
                     if len(l) == 0:

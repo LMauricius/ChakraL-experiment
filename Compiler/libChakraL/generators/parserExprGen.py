@@ -34,7 +34,7 @@ def outputExprProductions(filenameIn: str, filenameOut: str):
 
 			# Allow lower priority exprs
 			if prevNodeName is not None:
-				productions.append("<"+prevNodeName+">")
+				productions.append("<operands:"+prevNodeName+">")
 
 			# Add operators
 			if template is not None and len(operators)>0:
@@ -82,17 +82,17 @@ def outputExprProductions(filenameIn: str, filenameOut: str):
 				
 				if optype == 'BINARY':
 					if assoc == '>':
-						template = "{cur} = <operands:{prev}> ( {op} <operands:{prev}> )+"
+						template = "<operands:{prev}> ( {op} <operands:{prev}> )+"
 					else:
-						template = "{cur} = <operands:{prev}> ( {op} <operands:{prev}> )+"
+						template = "<operands:{prev}> ( {op} <operands:{prev}> )+"
 				elif optype == 'RUNARY':
 					if assoc != '>':
 						raise FormatError("RUNARY can't be <", lineInd)
-					template = "{cur} = <operands:{prev}> {op}+"
+					template = "<operands:{prev}> {op}+"
 				elif optype == 'LUNARY':
 					if assoc != '<':
 						raise FormatError("LUNARY can't be >", lineInd)
-					template = "{cur} = {op}+ <operands:{prev}>"
+					template = "{op}+ <operands:{prev}>"
 				else:
 					raise FormatError("Expected BINARY or RUNARY or LUNARY", lineInd)
 			else:

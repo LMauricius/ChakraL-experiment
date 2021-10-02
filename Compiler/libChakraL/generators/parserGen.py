@@ -125,6 +125,8 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
     retState : ParserState = None# if retState == None, the newState will be stored in retState and returned
     storeState : ParserState = None# if storeState != None, the newState will be stored in storeState.branchStart instead of newState
     newState : ParserState = None
+
+    #insertPos = len(outParserStates)
     
     # = Manage repeating =
     if part.repeatCount == RepeatType.Single:
@@ -133,9 +135,12 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         selectState = ParserState(part.idName+"__select", part.hint, StateType.Proxy, part.nodeName)
         outParserStates.append(selectState)
 
-        skipBranch = ParserState(part.idName+f"__cont", part.hint, StateType.Branch, part.nodeName)
-        outParserStates.append(skipBranch)
-        skipBranch.branchStart = nextState
+        if nextState is not None and nextState.type == StateType.Branch:
+            skipBranch = nextState
+        else:
+            skipBranch = ParserState(part.idName+f"__cont", part.hint, StateType.Branch, part.nodeName)
+            outParserStates.append(skipBranch)
+            skipBranch.branchStart = nextState
 
         acceptBranch = ParserState(part.idName+f"__accept", part.hint, StateType.Branch, part.nodeName)
         outParserStates.append(acceptBranch)
@@ -149,9 +154,12 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         repeatState = ParserState(part.idName+"__repeat", part.hint, StateType.Proxy, part.nodeName)
         outParserStates.append(repeatState)
 
-        skipBranch = ParserState(part.idName+f"__cont", part.hint, StateType.Branch, part.nodeName)
-        outParserStates.append(skipBranch)
-        skipBranch.branchStart = nextState
+        if nextState is not None and nextState.type == StateType.Branch:
+            skipBranch = nextState
+        else:
+            skipBranch = ParserState(part.idName+f"__cont", part.hint, StateType.Branch, part.nodeName)
+            outParserStates.append(skipBranch)
+            skipBranch.branchStart = nextState
 
         cycleBranch = ParserState(part.idName+f"__cycle", part.hint, StateType.Branch, part.nodeName)
         outParserStates.append(cycleBranch)
@@ -165,9 +173,12 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         repeatState = ParserState(part.idName+"__repeat", part.hint, StateType.Proxy, part.nodeName)
         outParserStates.append(repeatState)
 
-        skipBranch = ParserState(part.idName+f"__cont", part.hint, StateType.Branch, part.nodeName)
-        outParserStates.append(skipBranch)
-        skipBranch.branchStart = nextState
+        if nextState is not None and nextState.type == StateType.Branch:
+            skipBranch = nextState
+        else:
+            skipBranch = ParserState(part.idName+f"__cont", part.hint, StateType.Branch, part.nodeName)
+            outParserStates.append(skipBranch)
+            skipBranch.branchStart = nextState
 
         cycleBranch = ParserState(part.idName+f"__cycle", part.hint, StateType.Branch, part.nodeName)
         outParserStates.append(cycleBranch)
@@ -186,9 +197,14 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         for poss in part.possibilities:
             branch = ParserState(part.idName+f"__poss{i}", part.hint, StateType.Branch, part.nodeName)
             outParserStates.append(branch)
+
+            insertInd = len(outParserStates)
             for subpart in reversed(poss):
-                subState = convertToStates(subpart, nextState, outParserStates)
+                tmpOutParserStates = []
+                subState = convertToStates(subpart, nextState, tmpOutParserStates)
                 nextState = subState
+                outParserStates[insertInd:insertInd] = tmpOutParserStates
+
             assert(nextState is not None)
             branch.branchStart = nextState
             newState.proxyForStates.append(branch)
@@ -198,11 +214,13 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         outParserStates.append(newState)
         newState.variable = part.variable
         newState.symbol = part.symbol
+        newState.nextState = nextState
     elif part.type == ProductionType.Node:
         newState = ParserState(part.idName, part.hint, StateType.Node, part.nodeName)
         outParserStates.append(newState)
         newState.variable = part.variable
         newState.symbol = part.symbol
+        newState.nextState = nextState
 
     # = Store new state =
     if retState is None:
@@ -340,9 +358,9 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                         # find corresponding lexeme
                         lexeme = ""
                         #print((qStr))
-                        for regexTokenPair in lexer.regexTokenPairs:
-                            if re.match("^"+regexTokenPair[0]+"$", qStr, re.M):
-                                lexeme = regexTokenPair[1]
+                        for regex, token in lexer.regexTokenPairs:
+                            if re.match("^"+regex+"$", qStr, re.M):
+                                lexeme = token
                                 break
                         if len(lexeme) == 0:
                             raise FormatError("Don't know what '" + safeStrConvert(qStr) + "' is", lineInd)
@@ -481,7 +499,8 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();LN("class ParseNode {")
     TB();LN("public:")
     TB();TB();LN("virtual ~ParseNode();")
-    TB();TB();LN("virtual void process();")
+    TB();TB();LN("virtual void process() = 0;")
+    TB();TB();LN("virtual std::string_view name() const = 0;")
     TB();TB();LN("void pullFrom(ParseNode& other);")
     TB();TB();LN("")
     TB();TB();LN("std::map<std::string, std::list<ParseNodePtr>> nodeLists;")
@@ -490,7 +509,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();LN("};")
     
     for name, node in parser.nodes.items():
-        TB();LN("class ParseNode_" + name + " : public ParseNode { public: ~ParseNode_" + name + "(); void process(); };")
+        TB();LN("class ParseNode_" + name + " : public ParseNode { public: ~ParseNode_" + name + "(); void process(); std::string_view name() const; };")
     LN("")
     
     LN("")
@@ -498,7 +517,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();LN("struct StateSet;")
     TB();LN("struct State;")
     TB();LN("using StatePtr = std::shared_ptr<State>;")
-    TB();LN("using NextFuncT = bool (*)(StatePtr curState, StateSet& nextStates, const Token& token);// returns whether the token matches")
+    TB();LN("using NextFuncT = bool (*)(StatePtr curState, StateSet& nextStates, const Token& token, ParseNodePtr node);// returns whether the token matches. Node must be used instead of state.node for new states")
     TB();LN("")
     TB();LN("struct State {")
     TB();TB();LN("NextFuncT nextFunc;")
@@ -598,7 +617,7 @@ def writeParserProcessCPP(parser: Parser, filename: str, headerfile: str):
                     curDef = ""
                 elif len(curDef) > 0:
                     definitions[curDef] += line
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         print("No old parser nodes process definitions found")
 
     print("Writing new parser nodes process definitions ", filename)
@@ -667,8 +686,8 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
         # *** Next state func ***
         #
 
-        if not (state.type == StateType.Node or state.type == StateType.Proxy):
-            TB();TB();LN("bool n_" + state.name + "(StatePtr curState, StateSet& nextStates, const Token& token) {")
+        if state.type != StateType.Proxy:
+            TB();TB();LN("bool n_" + state.name + "(StatePtr curState, StateSet& nextStates, const Token& token, ParseNodePtr node) {")
 
             if state.type == StateType.Token:
                 TB();TB();TB();LN("if (token.type != TokenType::" + state.symbol + ")")
@@ -682,11 +701,11 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
             
             # Add next state
             if state.nextState is None:
-                TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);")
-            elif state.type == StateType.Branch or state.type == StateType.Proxy:
-                TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, &(curState->node->continuationNode));")
+                TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token, node);")
+            elif state.nextState.type == StateType.Branch or state.nextState.type == StateType.Proxy:
+                TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, &(node->continuationNode));")
             else:
-                TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, curState->node);")
+                TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, node);")
 
             TB();TB();TB();LN("return true;")
             TB();TB();LN("}")
@@ -701,14 +720,14 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
             TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {")
 
         # add new state if needed
-        if state.type == StateType.Token or (state.type == StateType.Branch and state.branchStart is None):
+        if state.type == StateType.Token:
             TB();TB();TB();LN("StatePtr state = nextStates[&n_" + state.name + "];")
-        elif not (state.type == StateType.Node or state.type == StateType.Proxy):
+        elif state.type != StateType.Proxy:
             TB();TB();TB();LN("StatePtr state = nextStates.getHidden(&n_" + state.name + ");")
         
         if state.type == StateType.Node:
             assert(parser.nodes[state.symbol].startingParserState.type == StateType.Proxy)
-            TB();TB();TB();LN("a_" + state.symbol + "(parentStates, nextStates, &(curNode->nodeLists[\"" + state.variable + "\"].emplace_back(nullptr)));")
+            TB();TB();TB();LN("a_" + state.symbol + "({state}, nextStates, &(curNode->nodeLists[\"" + state.variable + "\"].emplace_back(nullptr)));")
         elif state.type == StateType.Proxy:
             for subState in state.proxyForStates:
                 TB();TB();TB();LN("a_" + subState.name + "(parentStates, nextStates, outputVar);")
@@ -725,8 +744,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
             if state.type == StateType.Branch:
                 TB();TB();TB();TB();LN("state->node = std::make_shared<ParseNode_"+state.nodeName+">();")
                 if state.branchStart is None:
-                    pass
-                #    TB();TB();TB();TB();LN("for (auto par : state->parentStates) par->nextFunc(par, nextStates, Token());")
+                    TB();TB();TB();TB();LN("for (auto par : state->parentStates) par->nextFunc(par, nextStates, Token(), state->node);")
                 elif state.branchStart.type == StateType.Branch or state.branchStart.type == StateType.Proxy:
                     TB();TB();TB();TB();LN("a_" + state.branchStart.name + "({state}, nextStates, &(state->node->continuationNode));")
                 else:
@@ -742,6 +760,9 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();LN("ParseNode::~ParseNode() {")
     TB();LN("};")
     TB();LN("void ParseNode::process() {")
+    TB();LN("};")
+    TB();LN("std::string_view ParseNode::name() const {")
+    TB();TB();LN("return \"UNDEFINED_NODE\";")
     TB();LN("};")
     TB();LN("")
     TB();LN("void ParseNode::pullFrom(ParseNode& other) {")
@@ -761,6 +782,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();LN("")
     for name, node in parser.nodes.items():
         TB();LN("ParseNode_" + name + "::~ParseNode_" + name + "() {}")
+        TB();LN("std::string_view ParseNode_" + name + "::name() const { return \"" + name + "\"; }")
     LN("")
     TB();LN("ParseNodePtr parse(const std::list<Token> &input, std::list<ParserError>& outErrors)")
     TB();LN("{")
@@ -775,7 +797,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();TB();TB();LN("nextStates.stdSetHidden.clear();")
     TB();TB();TB();LN("nextStates.stdSet.clear();")
     TB();TB();TB();LN("for (auto& state : curStates) {")
-    TB();TB();TB();TB();LN("state->nextFunc(state, nextStates, *tokenIt);")
+    TB();TB();TB();TB();LN("state->nextFunc(state, nextStates, *tokenIt, state->node);")
     TB();TB();TB();LN("}")
     TB();TB();TB();LN("std::wcout << \"Parsed \" << tokenIt->line << L\", position \" << tokenIt->character << L\", token \" << tokenIt->str << std::endl;")
     TB();TB();TB();LN("tokenIt++;")
