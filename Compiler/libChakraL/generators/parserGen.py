@@ -61,6 +61,65 @@ class Parser:
         self.nodes: dict[str, ParseNode] = {}
         self.parserStates: list[ParserState] = []
 
+def detectAndMarkRecursions(poss : list[ProductionPart], nodeName: str):
+    poss.isRecursive = None
+
+    if len(poss) > 0:
+        part = poss[0]
+
+        if part.type == ProductionType.Token:
+            poss.isRecursive = False
+        elif part.type == ProductionType.Node:
+            poss.isRecursive = (part.symbol == nodeName)
+        elif part.type == ProductionType.SubProd:
+            for subPoss in part.possibilities:
+                detectAndMarkRecursions(subPoss, nodeName)
+                if subPoss.isRecursive:
+                    poss.isRecursive = True
+    else:
+        poss.isRecursive = False
+
+def detectRecursionsAndCrash(poss : list[ProductionPart], path: list[str], parser: Parser, nodeName: str):
+    if len(poss) > 0:
+        part = poss[0]
+
+        if part.type == ProductionType.Token:
+            pass
+        elif part.type == ProductionType.Node:
+            if part.symbol in path:
+                pass# this is a recursion, but will be more precisely blamed later
+            elif part.symbol == nodeName:
+                pathStr = ""
+                for n in path:
+                    if len(pathStr):
+                        pathStr += "->"
+                    else:
+                        pathStr += n
+                raise SemanticError(f"At node '{nodeName}': Detected recursion through nodes {pathStr}->*{nodeName}*")
+            else:
+                detectRecursionsAndCrash([parser.nodes[part.symbol].mainPart], path + [part.symbol], parser, nodeName)
+        elif part.type == ProductionType.SubProd:
+            for subPoss in part.possibilities:
+                detectRecursionsAndCrash(subPoss, path, parser, nodeName)
+
+# Will be allowed
+'''def detectForbiddenRecursionsAndCrash(poss : list[ProductionPart], nodeName: str):
+
+    if len(poss) > 0:
+        part = poss[0]
+
+        if part.type == ProductionType.Token:
+            pass
+        elif part.type == ProductionType.Node:
+            if part.symbol == nodeName and part.nodeName != nodeName:
+                raise FormatError(f"Detected forbidden recursion through node '{part.nodeName}'", f"node '{nodeName}'")
+            detectForbiddenRecursionsAndCrash()
+        elif part.type == ProductionType.SubProd:
+            for subPoss in part.possibilities:
+                detectRecursionsAndCrash(subPoss, nodeName)
+    else:
+        poss.isRecursive = False'''
+
 def convertToStates(part : ProductionPart, nextState: ParserState, outParserStates: list[ParserState]):
     retState : ParserState = None# if retState == None, the newState will be stored in retState and returned
     storeState : ParserState = None# if storeState != None, the newState will be stored in storeState.branchStart instead of newState
@@ -73,7 +132,7 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         selectState = ParserState(part.idName+"__select", part.hint, StateType.Proxy, part.nodeName)
         outParserStates.append(selectState)
 
-        skipBranch = ParserState(part.idName+f"__skip", part.hint, StateType.Branch, part.nodeName)
+        skipBranch = ParserState(part.idName+f"__cont", part.hint, StateType.Branch, part.nodeName)
         outParserStates.append(skipBranch)
         skipBranch.branchStart = nextState
 
@@ -89,7 +148,7 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         repeatState = ParserState(part.idName+"__repeat", part.hint, StateType.Proxy, part.nodeName)
         outParserStates.append(repeatState)
 
-        skipBranch = ParserState(part.idName+f"__skip", part.hint, StateType.Branch, part.nodeName)
+        skipBranch = ParserState(part.idName+f"__cont", part.hint, StateType.Branch, part.nodeName)
         outParserStates.append(skipBranch)
         skipBranch.branchStart = nextState
 
@@ -105,7 +164,7 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         repeatState = ParserState(part.idName+"__repeat", part.hint, StateType.Proxy, part.nodeName)
         outParserStates.append(repeatState)
 
-        skipBranch = ParserState(part.idName+f"__skip", part.hint, StateType.Branch, part.nodeName)
+        skipBranch = ParserState(part.idName+f"__cont", part.hint, StateType.Branch, part.nodeName)
         outParserStates.append(skipBranch)
         skipBranch.branchStart = nextState
 
@@ -366,12 +425,18 @@ def loadParser(lexer: Lexer, filename: str):
 
             l, lineInd = next(lines, ("",-1))
     except FormatError as e:
-        print("At line " + str(e.lineInd) + ": " + e.message)
+        print("ERROR At line " + str(e.lineInd) + ": " + e.message)
+        sys.exit(1)
     except StopIteration:
         pass
     
-    for name, node in parser.nodes.items():
-        node.startingParserState = convertToStates(node.mainPart, None, parser.parserStates)
+    try:
+        for name, node in parser.nodes.items():
+            detectRecursionsAndCrash([node.mainPart], [], parser, name)
+            node.startingParserState = convertToStates(node.mainPart, None, parser.parserStates)
+    except SemanticError as e:
+        print("ERROR " + e.message)
+        sys.exit(1)
     
     return parser
 

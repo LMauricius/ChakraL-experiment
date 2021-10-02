@@ -127,6 +127,7 @@ def loadLexer(filename: str):
             l, lineInd = next(lines, ("",-1))
     except FormatError as e:
         print("At line " + str(e.line) + ": " + e.message)
+        sys.exit(1)
     except StopIteration:
         pass
     

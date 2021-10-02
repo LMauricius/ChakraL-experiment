@@ -78,5 +78,6 @@ def outputExprProductions(filenameIn: str, filenameOut: str):
 
 	except FormatError as e:
 		print(e.message)
+		sys.exit(1)
 
 	f.close()

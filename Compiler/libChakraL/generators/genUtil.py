@@ -24,6 +24,10 @@ class FormatError(Exception):
         self.message = message
         self.lineInd = lineInd
 
+class SemanticError(Exception):
+    def __init__(self, message):
+        self.message = message
+
 def safeStrConvert(s: str):
     return s.encode(sys.stdout.encoding, errors='replace').decode(sys.stdout.encoding)
 
