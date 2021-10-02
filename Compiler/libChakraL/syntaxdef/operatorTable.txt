@@ -1,57 +1,85 @@
-# operators are defined like this:
+# operator groups (expressions/node productions) are defined like this:
+# associativity('<' | '>') type('BINARY' | 'LUNARY' | 'RUNARY') nodeName
+#
+# operators in a group are defined like this:
+# token|regex
+#
+# @ symbol marks an externally defined production
+# @nodeName
+# if the nodeName is put before any other operator group, 
+# 	the next group will treat it as an expression of previous lower priority and a production will be added:
+#	next = <operands:nodeName>
+# if the nodeName is put after another operator group,
+# 	it will be treated as an expression of next higher priority and a production will be added:
+#	nodeName = <operands:prev>
+
+@exprHighest
+
+> BINARY exprSuffixFunction 
+'.'
+
+< LUNARY exprPrefix
+'++'
+'+'
+'-'
+'!'
+
+> RUNARY exprSuffix
+'++'
+'--'
+
+< BINARY exprPrefixFunction
+''
+
+< LUNARY exprCopy
+'new'
+
+> BINARY exprExponent
+'^'
+
+> BINARY exprMultiplication
+'*'
+'×'
+'⋅'
+'/'
+'/%'
+'%'
+
+> BINARY exprAddition
+'+'
+'-'
+
+> BINARY exprShift
+'<<'
+'>>'
+
+> BINARY exprComparison
+'<'
+'>'
+'<='
+'>='
+'?='
+'!='
+
+> BINARY exprCompAssigned assignmentCheck
+'?->'
+'!->'
+
+> BINARY exprLogAnd 
+'&'
+
+> BINARY exprLogXOr 
+'<>'
+
+> BINARY exprLogOr 
+'|'
+
+: exprLeast = <exprLogOr>
+
+
+
+
+
+
+# old version:
 # associativity('<' | '>') type('BINARY' | 'LUNARY' | 'RUNARY') productionName token|regex
-
-@expr0
-
-@expr1
-> BINARY suffixFunction '.'
-
-@expr2
-> RUNARY suffixInc '++'
-> RUNARY suffixDec '--'
-< LUNARY copy 'new'
-< BINARY prefixFunction ''
-
-@expr3
-< LUNARY prefixInc '++'
-< LUNARY prefixDec '--'
-< LUNARY plus '+'
-< LUNARY minus '-'
-< LUNARY logNot '!'
-
-@expr4
-> BINARY multiplication '*'
-> BINARY crossProduct '×'
-> BINARY dotProduct '⋅'
-> BINARY division '/'
-> BINARY divisionInt '/%'
-> BINARY modulo '%'
-
-@expr5
-> BINARY addition '+'
-> BINARY subtraction '-'
-
-@expr6
-> BINARY shiftL '<<'
-> BINARY shiftR '>>'
-
-@expr7
-> BINARY compLess '<'
-> BINARY compGreat '>'
-> BINARY compLeEq '<='
-> BINARY compGrEq '>='
-
-@expr8
-> BINARY compEqual '?='
-> BINARY compNotEq '!='
-> BINARY compAssigned '?->'
-> BINARY compNotAss '!->'
-
-@expr9
-> BINARY logAnd '&'
-
-@expr10
-> BINARY logXOr '^'
-
-@exprLeast
-> BINARY logOr '|'

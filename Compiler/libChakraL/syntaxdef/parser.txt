@@ -60,9 +60,9 @@ traitAssertion = '??' <cond:expression>
 expression = <exprLeast>
 
 # 0th priority expression
-expr0 	= <identifier>
-		= '(' <ONL> <expression> ')' <ONL>
-		= <literal>
+exprHighest = <identifier>
+			= '(' <ONL> <expression> ')' <ONL>
+			= <literal>
 
 identifier = name:L_IDENTIFIER
 

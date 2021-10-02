@@ -126,7 +126,7 @@ def loadLexer(filename: str):
 
             l, lineInd = next(lines, ("",-1))
     except FormatError as e:
-        print("At line " + str(e.line) + ": " + e.message)
+        print("At line " + str(e.lineInd) + ": " + e.message)
         sys.exit(1)
     except StopIteration:
         pass
@@ -193,7 +193,7 @@ def writeLexerH(lexer: Lexer, filename: str):
 
 
 def writeLexerCPP(lexer: Lexer, filename: str, headerfile: str, useSingleDFA: bool):
-    print("...Writing lexer ", filename)
+    print("Writing lexer ", filename)
     f = open(filename, "wt")
 
     def TB():

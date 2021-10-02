@@ -5,6 +5,7 @@ from enum import Enum
 from typing import Iterator
 from genUtil import *
 from lexerGen import *
+import time
 
 class RepeatType(Enum):
     Optional = 0
@@ -79,28 +80,28 @@ def detectAndMarkRecursions(poss : list[ProductionPart], nodeName: str):
     else:
         poss.isRecursive = False
 
-def detectRecursionsAndCrash(poss : list[ProductionPart], path: list[str], parser: Parser, nodeName: str):
-    if len(poss) > 0:
-        part = poss[0]
+def detectRecursionsAndCrash(part : ProductionPart, path, visited: set[ParseNode], parser: Parser, nodeName: str):
+    if part.type == ProductionType.Token:
+        pass
+    elif part.type == ProductionType.Node:
+        node = parser.nodes[part.symbol]
+        if not node in visited:
+            visited.add(node)
 
-        if part.type == ProductionType.Token:
-            pass
-        elif part.type == ProductionType.Node:
             if part.symbol in path:
                 pass# this is a recursion, but will be more precisely blamed later
             elif part.symbol == nodeName:
-                pathStr = ""
-                for n in path:
-                    if len(pathStr):
-                        pathStr += "->"
-                    else:
-                        pathStr += n
+                pathStr = str(path)
+                pathStr.replace("(", "")
+                pathStr.replace(")", "")
+                pathStr.replace(",", "->")
                 raise SemanticError(f"At node '{nodeName}': Detected recursion through nodes {pathStr}->*{nodeName}*")
             else:
-                detectRecursionsAndCrash([parser.nodes[part.symbol].mainPart], path + [part.symbol], parser, nodeName)
-        elif part.type == ProductionType.SubProd:
-            for subPoss in part.possibilities:
-                detectRecursionsAndCrash(subPoss, path, parser, nodeName)
+                detectRecursionsAndCrash(node.mainPart, (path, part.symbol), visited, parser, nodeName)
+    elif part.type == ProductionType.SubProd:
+        for subPoss in part.possibilities:
+            if len(subPoss) > 0:
+                detectRecursionsAndCrash(subPoss[0], path, visited, parser, nodeName)
 
 # Will be allowed
 '''def detectForbiddenRecursionsAndCrash(poss : list[ProductionPart], nodeName: str):
@@ -431,9 +432,17 @@ def loadParser(lexer: Lexer, filename: str):
         pass
     
     try:
+        print("Converting to state machine...")
+        startTime = time.time()
         for name, node in parser.nodes.items():
-            detectRecursionsAndCrash([node.mainPart], [], parser, name)
             node.startingParserState = convertToStates(node.mainPart, None, parser.parserStates)
+        print("Converted to state machine in " + str(time.time()-startTime) + "s!")
+        
+        print("Checking for recursions...")
+        startTime = time.time()
+        for name, node in parser.nodes.items():
+            detectRecursionsAndCrash(node.mainPart, [], set(), parser, name)
+        print("No recursions found in " + str(time.time()-startTime) + "s!")
     except SemanticError as e:
         print("ERROR " + e.message)
         sys.exit(1)

@@ -29,6 +29,7 @@ namespace ChakraL {
         L_DIV,
         L_INT_DIV,
         L_MOD,
+        L_EXP,
         L_SHIFT_RIGHT,
         L_SHIFT_LEFT,
         L_AND,
@@ -46,6 +47,7 @@ namespace ChakraL {
         L_DIV_CHANGE,
         L_INT_DIV_CHANGE,
         L_MOD_CHANGE,
+        L_EXP_CHANGE,
         L_SHIFT_RIGHT_CHANGE,
         L_SHIFT_LEFT_CHANGE,
         L_AND_CHANGE,
@@ -105,7 +107,7 @@ namespace ChakraL {
         L_LIT_SUFFIX,
     };
 
-    extern const std::array<std::string, 93> TokenNames;
+    extern const std::array<std::string, 95> TokenNames;
 
     enum class LexerState {
         S_START,
