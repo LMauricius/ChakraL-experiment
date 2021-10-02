@@ -17,6 +17,12 @@ class ProductionType(Enum):
     Node = 1
     SubProd = 2
 
+class StateType(Enum):
+    Token = 0
+    Node = 1
+    Proxy = 2
+    Branch = 3
+
 class ProductionPart:
     def __init__(self, idName: str, hint: str, variable: str, symbol: str, type: ProductionType, nodeName: str, isMainPart: bool = False):
         self.idName = idName
@@ -31,10 +37,25 @@ class ProductionPart:
         self.nextStateName: str = ""
         #self.altStatePartNames: set[str] = set() # epsilon transitions
 
+class ParserState:
+    def __init__(self, name: str, hint: str, type: StateType, nodeName: str):
+        self.name = name
+        self.hint = hint
+        self.variable: str = None
+        self.symbol: str = None
+        self.type = type
+        self.nodeName = nodeName
+        self.repeatCount = -1
+        self.nextState: ParserState = None
+        self.branchStart: ParserState = None
+        self.proxyForStates: list[ParserState] = []
+        #self.altStatePartNames: set[str] = set() # epsilon transitions
+
 class ParseNode:
     def __init__(self, name: str):
         self.name = name
         self.mainPart = ProductionPart(name, name, "<>", "<>", ProductionType.SubProd, name, True)
+        self.startingParserState : ParserState = None
         #self.possibilities: list[list[ProductionPart]] = []
         self.partCounter = 1
 
@@ -42,7 +63,8 @@ class Parser:
     def __init__(self):
         self.startNode = ""
         self.nodes: dict[str, ParseNode] = {}
-        self.productionParts: dict[str, ProductionPart] = {}
+        #self.productionParts: dict[str, ProductionPart] = {}
+        self.parserStates: dict[str, ParserState] = {}
 
 def iterSubProductionParts(part : ProductionPart) -> Iterator[ProductionPart]:
     if part.type == ProductionType.SubProd:
@@ -55,6 +77,78 @@ def iterProductionParts(node : ParseNode) -> Iterator[ProductionPart]:
     #print(node.possibilities)
     yield node.mainPart
     yield from iterSubProductionParts(node.mainPart)
+
+def convertToStates(part : ProductionPart, nextState: ParserState):
+    retState : ParserState = None# if retState == None, the newState will be stored in retState and returned
+    storeState : ParserState = None# if storeState != None, the newState will be stored in storeState.branchStart instead of newState
+    newState : ParserState = None
+    
+    # = Manage repeating =
+    if part.repeatCount == RepeatType.Single:
+        pass
+    elif part.repeatCount == RepeatType.Optional:
+        selectState = ParserState(part.idName+"__select", part.hint, StateType.Proxy, part.nodeName)
+
+        skipBranch = ParserState(part.idName+f"__skip", part.hint, StateType.Branch, part.nodeName)
+        skipBranch.branchStart = nextState
+
+        acceptBranch = ParserState(part.idName+f"__accept", part.hint, StateType.Branch, part.nodeName)
+        storeState = acceptBranch
+
+        nextState = skipBranch
+        retState = selectState
+    elif part.repeatCount == RepeatType.ZeroOrMore:
+        repeatState = ParserState(part.idName+"__repeat", part.hint, StateType.Proxy, part.nodeName)
+
+        skipBranch = ParserState(part.idName+f"__skip", part.hint, StateType.Branch, part.nodeName)
+        skipBranch.branchStart = nextState
+
+        cycleBranch = ParserState(part.idName+f"__cycle", part.hint, StateType.Branch, part.nodeName)
+        storeState = cycleBranch
+
+        nextState = repeatState
+        retState = repeatState
+    elif part.repeatCount == RepeatType.SingleOrMore:
+        repeatState = ParserState(part.idName+"__repeat", part.hint, StateType.Proxy, part.nodeName)
+
+        skipBranch = ParserState(part.idName+f"__skip", part.hint, StateType.Branch, part.nodeName)
+        skipBranch.branchStart = nextState
+
+        cycleBranch = ParserState(part.idName+f"__cycle", part.hint, StateType.Branch, part.nodeName)
+        storeState = cycleBranch
+
+        nextState = repeatState
+        retState = None # We want to directly enter the new state
+
+    # = Create new state =
+    if part.type == ProductionType.SubProd:
+        newState = ParserState(part.idName, part.hint, StateType.Proxy, part.nodeName)
+        i = 1
+        for poss in part.possibilities:
+            branch = ParserState(part.idName+f"__poss{i}", part.hint, StateType.Branch, part.nodeName)
+            for subpart in reversed(poss):
+                subState = convertToStates(subpart, nextState)
+                nextState = subState
+            branch.branchStart = nextState
+            newState.proxyForStates.append(branch)
+            i += 1
+    elif part.type == ProductionType.Token:
+        newState = ParserState(part.idName, part.hint, StateType.Token, part.nodeName)
+        newState.variable = part.variable
+        newState.symbol = part.symbol
+    elif part.type == ProductionType.Node:
+        newState = ParserState(part.idName, part.hint, StateType.Node, part.nodeName)
+        newState.variable = part.variable
+        newState.symbol = part.symbol
+
+    # = Store new state =
+    if retState == None:
+        retState = newState
+    if storeState != None:
+        storeState.branchStart = newState
+        
+    # = Return states =
+    return retState
 
 def setTransitions(production : list[ProductionPart]):
     nextStateName: str = ""
@@ -293,11 +387,12 @@ def loadParser(lexer: Lexer, filename: str):
         pass
     
     for name, node in parser.nodes.items():
+        node.startingParserState = convertToStates(node.mainPart, None)
         #print(name, node)
-        for part in iterProductionParts(node):
-            parser.productionParts[part.idName] = part
+        #for part in iterProductionParts(node):
+        #    parser.productionParts[part.idName] = part
         
-        setTransitions([node.mainPart])
+        #setTransitions([node.mainPart])
         #for poss in node.mainPart.possibilities:
         #    setTransitions(poss)
     
@@ -317,6 +412,8 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
         f.write('\n')
 
     LN("// This file is autogenerated. Do not edit!")
+    LN("")
+    LN('#pragma once')
     LN("")
     LN('#include <list>')
     LN('#include <string>')
@@ -424,7 +521,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();TB();LN('Token token;')
     TB();LN("};")
     LN("")
-    TB();LN("std::list<Token> parse(const std::list<Token> &input, std::list<ParserError>& outErrors);")
+    TB();LN("ParseNodePtr parse(const std::list<Token> &input, std::list<ParserError>& outErrors);")
     LN("")
     LN("}")
 
@@ -493,13 +590,100 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     LN("")
     LN('#include "' + os.path.basename(headerfile) + '"')
     
-    LN('#include <vector>')
-    LN('#include <string_view>')
-    LN('#include <regex>')
     LN("")
     LN("namespace ChakraL")
     LN("{")
     LN("")
+    TB();LN("namespace")
+    TB();LN("{")
+    TB();TB();LN("")
+    
+    # Declarations
+    for name, part in parser.productionParts.items():
+        #TB();LN("bool n_" + part.idName + "(StatePtr curState, StateSet& nextStates, const Token& token);")
+        TB();TB();LN("void a_" + part.idName + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);")
+
+    for name, part in parser.productionParts.items():
+        TB();LN("")
+        TB();TB();LN("// " + part.hint)
+
+        #
+        # *** Next state func ***
+        #
+
+        TB();TB();LN("bool n_" + part.idName + "(StatePtr curState, StateSet& nextStates, const Token& token) {")
+
+        if part.type == ProductionType.Token:
+            TB();TB();TB();LN("if (token.type != TokenType::" + part.symbol + ")")
+            TB();TB();TB();TB();LN("return false;")
+            if len(part.variable) > 0:
+                TB();TB();TB();LN("curState->node->tokenLists[\"" + part.variable + "\"].push_back(token);")
+        elif part.type == ProductionType.Node:
+            TB();TB();TB();LN("curState->node->nodeLists[\"" + part.variable + "\"].push_back(curState->subNode);")
+            #TB();TB();LN("curState.node->nodeLists[\"" + part.variable + "\"].push_back(curState.subNode);")
+            '''TB();TB();LN("if (curState.subNode) {")
+            TB();TB();TB();LN("curState.node->nodeLists[\"" + part.variable + "\"].push_back(curState.subNode);")
+            TB();TB();TB();LN("curState.subNode = nullptr;// prevent from adding same node multiple times")
+            TB();TB();LN("}")'''
+
+        # The following happens after confirming the prod part matches:
+        
+        # Add next state(s)
+        if part.nextStateName == "":
+            TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);")
+        else:
+            TB();TB();TB();LN("a_" + part.nextStateName + "(curState->parentStates, nextStates, curState->node);")
+
+        # Repeat current state if needed
+        if part.repeatCount == RepeatType.SingleOrMore or part.repeatCount == RepeatType.ZeroOrMore:
+            TB();TB();TB();LN("a_" + part.idName + "(curState->parentStates, nextStates, curState->node);")
+
+        TB();TB();TB();LN("return true;")
+        TB();TB();LN("}")
+
+        #
+        # *** Add state func ***
+        #
+
+        TB();TB();LN("void a_" + part.idName + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {")
+
+        # add new state if needed
+        if part.type == ProductionType.SubProd or part.type == ProductionType.Node:
+            TB();TB();TB();LN("StatePtr state = nextStates.getHidden(&n_" + part.idName + ");")
+        else:
+            TB();TB();TB();LN("StatePtr state = nextStates[&n_" + part.idName + "];")
+
+        # add parents
+        TB();TB();TB();LN("state->parentStates.insert(parentStates.begin(), parentStates.end());")
+
+        # If the state is new, set its parameters
+        TB();TB();TB();LN("if (state->node == nullptr) {// The state is newly added")
+        if part.isMainPart:
+            TB();TB();TB();TB();LN("state->node = std::make_shared<ParseNode_"+part.idName+">();")
+            TB();TB();TB();TB();LN("for (auto par : parentStates) par->subNode = state->node;")
+        else:
+            TB();TB();TB();TB();LN("state->node = curNode;")
+
+        if part.type == ProductionType.SubProd:
+            for poss in part.possibilities:
+                TB();TB();TB();TB();LN("a_" + poss[0].idName + "({state}, nextStates, curNode);")
+        elif part.type == ProductionType.Node:
+            TB();TB();TB();TB();LN("a_" + part.symbol + "({state}, nextStates, curNode);")
+            TB();TB();TB();LN("state->node->nodeLists[\"" + part.variable + "\"].push_back(state->subNode);")
+        TB();TB();TB();LN("}")
+
+        if part.repeatCount == RepeatType.SingleOrMore or part.repeatCount == RepeatType.ZeroOrMore:
+            pass
+        '''for altName in part.altStatePartNames:
+            if nextName == "_return_parent_":
+                TB();TB();LN("for (auto par : parentStates) par->nextFunc(par, nextStates, token);")
+            else:
+                TB();TB();LN("a_" + nextName + "(parentStates, nextStates, curNode);")'''
+        #TB();TB();LN("return state;")
+        TB();TB();LN("}")
+    
+    TB();LN("}")
+    TB();LN("")
     TB();LN("ParseNode::~ParseNode() {")
     TB();LN("};")
     TB();LN("void ParseNode::process() {")
@@ -522,95 +706,11 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();LN("")
     for name, node in parser.nodes.items():
         TB();LN("ParseNode_" + name + "::~ParseNode_" + name + "() {}")
-    TB();LN("")
-    
-    # Declarations
-    for name, part in parser.productionParts.items():
-        #TB();LN("bool n_" + part.idName + "(StatePtr curState, StateSet& nextStates, const Token& token);")
-        TB();LN("void a_" + part.idName + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);")
-
-    for name, part in parser.productionParts.items():
-        LN("")
-        TB();LN("// " + part.hint)
-
-        #
-        # *** Next state func ***
-        #
-
-        TB();LN("bool n_" + part.idName + "(StatePtr curState, StateSet& nextStates, const Token& token) {")
-
-        if part.type == ProductionType.Token:
-            TB();TB();LN("if (token.type != TokenType::" + part.symbol + ")")
-            TB();TB();TB();LN("return false;")
-            if len(part.variable) > 0:
-                TB();TB();LN("curState->node->tokenLists[\"" + part.variable + "\"].push_back(token);")
-        elif part.type == ProductionType.Node:
-            TB();TB();LN("curState->node->nodeLists[\"" + part.variable + "\"].push_back(curState->subNode);")
-            #TB();TB();LN("curState.node->nodeLists[\"" + part.variable + "\"].push_back(curState.subNode);")
-            '''TB();TB();LN("if (curState.subNode) {")
-            TB();TB();TB();LN("curState.node->nodeLists[\"" + part.variable + "\"].push_back(curState.subNode);")
-            TB();TB();TB();LN("curState.subNode = nullptr;// prevent from adding same node multiple times")
-            TB();TB();LN("}")'''
-
-        # The following happens after confirming the prod part matches:
-        
-        # Add next state(s)
-        if part.nextStateName == "":
-            TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);")
-        else:
-            TB();TB();LN("a_" + part.nextStateName + "(curState->parentStates, nextStates, curState->node);")
-
-        # Repeat current state if needed
-        if part.repeatCount == RepeatType.SingleOrMore or part.repeatCount == RepeatType.ZeroOrMore:
-            TB();TB();LN("a_" + part.idName + "(curState->parentStates, nextStates, curState->node);")
-
-        TB();TB();LN("return true;")
-        TB();LN("}")
-
-        #
-        # *** Add state func ***
-        #
-
-        TB();LN("void a_" + part.idName + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {")
-
-        # add new state if needed
-        if part.type == ProductionType.SubProd or part.type == ProductionType.Node:
-            TB();TB();LN("StatePtr state = nextStates.getHidden(&n_" + part.idName + ");")
-        else:
-            TB();TB();LN("StatePtr state = nextStates[&n_" + part.idName + "];")
-
-        # add parents
-        TB();TB();LN("state->parentStates.insert(parentStates.begin(), parentStates.end());")
-
-        # If the state is new, set its parameters
-        TB();TB();LN("if (state->node == nullptr) {// The state is newly added")
-        if part.isMainPart:
-            TB();TB();TB();LN("state->node = std::make_shared<ParseNode_"+part.idName+">();")
-            TB();TB();TB();LN("for (auto par : parentStates) par->subNode = state->node;")
-        else:
-            TB();TB();TB();LN("state->node = curNode;")
-
-        if part.type == ProductionType.SubProd:
-            for poss in part.possibilities:
-                TB();TB();TB();LN("a_" + poss[0].idName + "({state}, nextStates, curNode);")
-        elif part.type == ProductionType.Node:
-            TB();TB();TB();LN("a_" + part.symbol + "({state}, nextStates, curNode);")
-            TB();TB();LN("state->node->nodeLists[\"" + part.variable + "\"].push_back(state->subNode);")
-        TB();TB();LN("}")
-
-        if part.repeatCount == RepeatType.SingleOrMore or part.repeatCount == RepeatType.ZeroOrMore:
-            pass
-        '''for altName in part.altStatePartNames:
-            if nextName == "_return_parent_":
-                TB();TB();LN("for (auto par : parentStates) par->nextFunc(par, nextStates, token);")
-            else:
-                TB();TB();LN("a_" + nextName + "(parentStates, nextStates, curNode);")'''
-        #TB();TB();LN("return state;")
-        TB();LN("}")
-    
     LN("")
-    TB();LN("std::list<Token> parse(const std::list<Token> &input, std::list<ParserError>& outErrors)")
+    TB();LN("ParseNodePtr parse(const std::list<Token> &input, std::list<ParserError>& outErrors)")
     TB();LN("{")
+    TB();TB();LN("ParseNodePtr res;")
+    TB();TB();LN("return res;")
     TB();LN("}")
     LN("")
     LN("}")
