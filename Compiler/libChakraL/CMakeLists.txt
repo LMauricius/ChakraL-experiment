@@ -40,7 +40,7 @@ add_custom_command(
 	OUTPUT
 		${CMAKE_CURRENT_SOURCE_DIR}/include/chakralParser.h
 		${CMAKE_CURRENT_SOURCE_DIR}/src/chakralParser.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/src/chakralParserNodes.cpp
+		#${CMAKE_CURRENT_SOURCE_DIR}/src/chakralParserNodes.cpp
 	COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
 		--inlexer ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/lexer.txt
 		--inparser ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/parser.txt
