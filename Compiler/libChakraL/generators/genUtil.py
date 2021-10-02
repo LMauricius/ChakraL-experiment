@@ -3,7 +3,7 @@ import os
 import sys
 from typing import Iterator
 
-def meaningfulLines(filename: str) -> Iterator[str]:
+def meaningfulLines(filename: str) -> Iterator[(str, any)]:
     with open(filename, "rt") as f:
         lineInd = 0
         for line in f:
