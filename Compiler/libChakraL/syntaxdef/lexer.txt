@@ -27,6 +27,11 @@
 @S_START
     # Basics
 
+    # Get rid of carriage return in case of windows text file on unix
+    ?\r
+    {
+    }
+
     ?[[:alpha:]][[:alnum:]_]*
     {
         out L_IDENTIFIER

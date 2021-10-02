@@ -1,4 +1,5 @@
 #include "chakralLexer.h"
+#include "chakralParser.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -34,9 +35,9 @@ int main(int argc, char** argv)
 
         //text = std::wstring(std::istream_iterator<wchar_t, wchar_t>(file), std::istream_iterator<wchar_t, wchar_t>());
 
-        std::list<ChakraL::LexerError> errors;
+        std::list<ChakraL::LexerError> lerrors;
         auto startLexTime = high_resolution_clock::now();
-        std::list<ChakraL::Token> tokens = ChakraL::tokenize(text, errors);
+        std::list<ChakraL::Token> tokens = ChakraL::tokenize(text, lerrors);
         auto endLexTime = high_resolution_clock::now();
         std::cout << "Lexer finished in " << duration<double>(endLexTime - startLexTime).count() << "s" << std::endl;
 
@@ -45,9 +46,26 @@ int main(int argc, char** argv)
             std::cout << ChakraL::TokenNames[(int)t.type] << "-" << t.line << "," << t.character << ": ";
             std::wcout << t.str << std::endl;
         }
-        for (auto& e : errors)
+        for (auto& e : lerrors)
         {
             std::cout << "Error at line " << e.line << ", position " << e.character << ": ";
+            std::wcout << e.msg << std::endl;
+        }
+        
+        std::list<ChakraL::ParserError> perrors;
+        auto startParsTime = high_resolution_clock::now();
+        ChakraL::ParseNodePtr node = ChakraL::parse(tokens, perrors);
+        auto endParsTime = high_resolution_clock::now();
+        std::cout << "Parser finished in " << duration<double>(endParsTime - startParsTime).count() << "s" << std::endl;
+
+        /*for (auto& t : tokens)
+        {
+            std::cout << ChakraL::TokenNames[(int)t.type] << "-" << t.line << "," << t.character << ": ";
+            std::wcout << t.str << std::endl;
+        }*/
+        for (auto& e : perrors)
+        {
+            std::wcout << L"Error at line " << e.token.line << L", position " << e.token.character << L", token " << e.token.str << L": ";
             std::wcout << e.msg << std::endl;
         }
 

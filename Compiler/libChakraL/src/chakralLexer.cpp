@@ -126,7 +126,7 @@ namespace ChakraL
             case LexerState::S_START:
                 
                 // *** choose rule ***
-                if (auto res = ctre::starts_with<L"([a-zA-Z][a-zA-Z0-9_]*)">(
+                if (auto res = ctre::starts_with<L"(\\r)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -136,7 +136,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 1;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"([0-9]+(_[0-9]|[0-9])*(\\.[0-9]+)?)">(
+                if (auto res = ctre::starts_with<L"([a-zA-Z][a-zA-Z0-9_]*)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -146,7 +146,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 2;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(0b[01]([_01]|[01])*(\\.[_01]+)?)">(
+                if (auto res = ctre::starts_with<L"([0-9]+(_[0-9]|[0-9])*(\\.[0-9]+)?)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -156,7 +156,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 3;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(0o[0-7]([_0-7]|[0-7])*(\\.[_0-7]+)?)">(
+                if (auto res = ctre::starts_with<L"(0b[01]([_01]|[01])*(\\.[_01]+)?)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -166,7 +166,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 4;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(0x[A-Fa-f0-9]([_A-Fa-f0-9]|[A-Fa-f0-9])*(\\.[_A-Fa-f0-9]+)?)">(
+                if (auto res = ctre::starts_with<L"(0o[0-7]([_0-7]|[0-7])*(\\.[_0-7]+)?)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -176,7 +176,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 5;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\"([^\\\\\"]|\\\\.)*\")">(
+                if (auto res = ctre::starts_with<L"(0x[A-Fa-f0-9]([_A-Fa-f0-9]|[A-Fa-f0-9])*(\\.[_A-Fa-f0-9]+)?)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -186,7 +186,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 6;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\'([^\\\\\']|\\\\.)\')">(
+                if (auto res = ctre::starts_with<L"(\"([^\\\\\"]|\\\\.)*\")">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -196,7 +196,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 7;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\n)">(
+                if (auto res = ctre::starts_with<L"(\'([^\\\\\']|\\\\.)\')">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -206,7 +206,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 8;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"([ \\t])">(
+                if (auto res = ctre::starts_with<L"(\\n)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -216,7 +216,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 9;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(//)">(
+                if (auto res = ctre::starts_with<L"([ \\t])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -226,7 +226,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 10;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/\\*)">(
+                if (auto res = ctre::starts_with<L"(//)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -236,7 +236,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 11;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(,)">(
+                if (auto res = ctre::starts_with<L"(/\\*)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -246,7 +246,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 12;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(;)">(
+                if (auto res = ctre::starts_with<L"(,)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -256,7 +256,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 13;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(:)">(
+                if (auto res = ctre::starts_with<L"(;)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -266,7 +266,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 14;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(ok)">(
+                if (auto res = ctre::starts_with<L"(:)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -276,7 +276,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 15;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(in)">(
+                if (auto res = ctre::starts_with<L"(ok)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -286,7 +286,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 16;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+)">(
+                if (auto res = ctre::starts_with<L"(in)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -296,7 +296,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 17;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\-)">(
+                if (auto res = ctre::starts_with<L"(\\+)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -306,7 +306,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 18;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\*)">(
+                if (auto res = ctre::starts_with<L"(\\-)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -316,7 +316,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 19;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/)">(
+                if (auto res = ctre::starts_with<L"(\\*)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -326,7 +326,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 20;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/%)">(
+                if (auto res = ctre::starts_with<L"(/)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -336,7 +336,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 21;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(%)">(
+                if (auto res = ctre::starts_with<L"(/%)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -346,7 +346,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 22;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(>>)">(
+                if (auto res = ctre::starts_with<L"(%)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -356,7 +356,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 23;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<<)">(
+                if (auto res = ctre::starts_with<L"(>>)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -366,7 +366,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 24;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(&)">(
+                if (auto res = ctre::starts_with<L"(<<)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -376,7 +376,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 25;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\|)">(
+                if (auto res = ctre::starts_with<L"(&)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -386,7 +386,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 26;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\^)">(
+                if (auto res = ctre::starts_with<L"(\\|)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -396,7 +396,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 27;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(
+                if (auto res = ctre::starts_with<L"(\\^)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -406,7 +406,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 28;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(
+                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -416,7 +416,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 29;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"([=])">(
+                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -426,7 +426,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 30;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\->)">(
+                if (auto res = ctre::starts_with<L"([=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -436,7 +436,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 31;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+[=])">(
+                if (auto res = ctre::starts_with<L"(\\->)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -446,7 +446,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 32;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+\\+)">(
+                if (auto res = ctre::starts_with<L"(\\+[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -456,7 +456,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 33;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(--)">(
+                if (auto res = ctre::starts_with<L"(\\+\\+)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -466,7 +466,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 34;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\-[=])">(
+                if (auto res = ctre::starts_with<L"(--)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -476,7 +476,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 35;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\*[=])">(
+                if (auto res = ctre::starts_with<L"(\\-[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -486,7 +486,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 36;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/[=])">(
+                if (auto res = ctre::starts_with<L"(\\*[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -496,7 +496,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 37;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(/%[=])">(
+                if (auto res = ctre::starts_with<L"(/[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -506,7 +506,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 38;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(%[=])">(
+                if (auto res = ctre::starts_with<L"(/%[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -516,7 +516,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 39;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(>>[=])">(
+                if (auto res = ctre::starts_with<L"(%[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -526,7 +526,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 40;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<<[=])">(
+                if (auto res = ctre::starts_with<L"(>>[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -536,7 +536,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 41;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(&[=])">(
+                if (auto res = ctre::starts_with<L"(<<[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -546,7 +546,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 42;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\|[=])">(
+                if (auto res = ctre::starts_with<L"(&[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -556,7 +556,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 43;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\^[=])">(
+                if (auto res = ctre::starts_with<L"(\\|[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -566,7 +566,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 44;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(
+                if (auto res = ctre::starts_with<L"(\\^[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -576,7 +576,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 45;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(
+                if (auto res = ctre::starts_with<L"(×|\\\\cross)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -586,7 +586,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 46;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(!)">(
+                if (auto res = ctre::starts_with<L"(⋅|\\\\dot)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -596,7 +596,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 47;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\?[=])">(
+                if (auto res = ctre::starts_with<L"(!)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -606,7 +606,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 48;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(![=])">(
+                if (auto res = ctre::starts_with<L"(\\?[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -616,7 +616,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 49;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\?\\->)">(
+                if (auto res = ctre::starts_with<L"(![=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -626,7 +626,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 50;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(!\\->)">(
+                if (auto res = ctre::starts_with<L"(\\?\\->)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -636,7 +636,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 51;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<)">(
+                if (auto res = ctre::starts_with<L"(!\\->)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -646,7 +646,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 52;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(>)">(
+                if (auto res = ctre::starts_with<L"(<)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -656,7 +656,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 53;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<[=])">(
+                if (auto res = ctre::starts_with<L"(>)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -666,7 +666,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 54;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(>[=])">(
+                if (auto res = ctre::starts_with<L"(<[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -676,7 +676,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 55;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+&)">(
+                if (auto res = ctre::starts_with<L"(>[=])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -686,7 +686,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 56;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+\\|)">(
+                if (auto res = ctre::starts_with<L"(\\+&)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -696,7 +696,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 57;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\+\\?)">(
+                if (auto res = ctre::starts_with<L"(\\+\\|)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -706,7 +706,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 58;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\?\\?)">(
+                if (auto res = ctre::starts_with<L"(\\+\\?)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -716,7 +716,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 59;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\?)">(
+                if (auto res = ctre::starts_with<L"(\\?\\?)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -726,7 +726,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 60;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\()">(
+                if (auto res = ctre::starts_with<L"(\\?)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -736,7 +736,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 61;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\))">(
+                if (auto res = ctre::starts_with<L"(\\()">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -746,7 +746,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 62;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\[)">(
+                if (auto res = ctre::starts_with<L"(\\))">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -756,7 +756,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 63;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\])">(
+                if (auto res = ctre::starts_with<L"(\\[)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -766,7 +766,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 64;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\{)">(
+                if (auto res = ctre::starts_with<L"(\\])">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -776,7 +776,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 65;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\})">(
+                if (auto res = ctre::starts_with<L"(\\{)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -786,7 +786,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 66;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(\\.)">(
+                if (auto res = ctre::starts_with<L"(\\})">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -796,7 +796,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 67;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"([=]>)">(
+                if (auto res = ctre::starts_with<L"(\\.)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -806,7 +806,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 68;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(<[=]>)">(
+                if (auto res = ctre::starts_with<L"([=]>)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -816,7 +816,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 69;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(if)">(
+                if (auto res = ctre::starts_with<L"(<[=]>)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -826,7 +826,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 70;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(else)">(
+                if (auto res = ctre::starts_with<L"(if)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -836,7 +836,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 71;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(elif)">(
+                if (auto res = ctre::starts_with<L"(else)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -846,7 +846,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 72;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(switch)">(
+                if (auto res = ctre::starts_with<L"(elif)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -856,7 +856,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 73;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(case)">(
+                if (auto res = ctre::starts_with<L"(switch)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -866,7 +866,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 74;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(times)">(
+                if (auto res = ctre::starts_with<L"(case)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -876,7 +876,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 75;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(for)">(
+                if (auto res = ctre::starts_with<L"(times)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -886,7 +886,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 76;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(while)">(
+                if (auto res = ctre::starts_with<L"(for)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -896,7 +896,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 77;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(repeat)">(
+                if (auto res = ctre::starts_with<L"(while)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -906,7 +906,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 78;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(break)">(
+                if (auto res = ctre::starts_with<L"(repeat)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -916,7 +916,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 79;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(continue)">(
+                if (auto res = ctre::starts_with<L"(break)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -926,7 +926,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 80;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(return)">(
+                if (auto res = ctre::starts_with<L"(continue)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -936,7 +936,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 81;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(yield)">(
+                if (auto res = ctre::starts_with<L"(return)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -946,7 +946,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 82;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(with)">(
+                if (auto res = ctre::starts_with<L"(yield)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -956,7 +956,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 83;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(def)">(
+                if (auto res = ctre::starts_with<L"(with)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -966,7 +966,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 84;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(const)">(
+                if (auto res = ctre::starts_with<L"(def)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -976,7 +976,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 85;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(var)">(
+                if (auto res = ctre::starts_with<L"(const)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -986,7 +986,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 86;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(ref)">(
+                if (auto res = ctre::starts_with<L"(var)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -996,7 +996,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 87;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(new)">(
+                if (auto res = ctre::starts_with<L"(ref)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -1006,7 +1006,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 88;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(final)">(
+                if (auto res = ctre::starts_with<L"(new)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -1016,7 +1016,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 89;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(mutable)">(
+                if (auto res = ctre::starts_with<L"(final)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -1026,7 +1026,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 90;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(volatile)">(
+                if (auto res = ctre::starts_with<L"(mutable)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -1036,7 +1036,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 91;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(static)">(
+                if (auto res = ctre::starts_with<L"(volatile)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -1046,7 +1046,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 92;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(using)">(
+                if (auto res = ctre::starts_with<L"(static)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -1056,7 +1056,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 93;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(include)">(
+                if (auto res = ctre::starts_with<L"(using)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -1066,7 +1066,7 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 94;
                     maxEnd = start + res.size();
                 }
-                if (auto res = ctre::starts_with<L"(as)">(
+                if (auto res = ctre::starts_with<L"(include)">(
 std::wstring_view(input).substr(start, input.size()-start)
 );
  res && 
@@ -1076,297 +1076,309 @@ std::wstring_view(input).substr(start, input.size()-start)
                     choosenRuleInd = 95;
                     maxEnd = start + res.size();
                 }
+                if (auto res = ctre::starts_with<L"(as)">(
+std::wstring_view(input).substr(start, input.size()-start)
+);
+ res && 
+(int)res.size() > 
+(maxEnd-start)
+) {
+                    choosenRuleInd = 96;
+                    maxEnd = start + res.size();
+                }
                 
                 // *** execute rule commands ***
                 switch (choosenRuleInd)
                 {
-                case 1:// [a-zA-Z][a-zA-Z0-9_]*
+                case 1:// \r
+                    break;
+                case 2:// [a-zA-Z][a-zA-Z0-9_]*
                     ret.push_back(Token{TokenType::L_IDENTIFIER, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 2:// [0-9]+(_[0-9]|[0-9])*(\.[0-9]+)?
+                case 3:// [0-9]+(_[0-9]|[0-9])*(\.[0-9]+)?
                     ret.push_back(Token{TokenType::L_NUM_LIT, input.substr(start, maxEnd-start), line, character});
                     states.push_back(LexerState::S_LITERAL);
                     break;
-                case 3:// 0b[01]([_01]|[01])*(\.[_01]+)?
+                case 4:// 0b[01]([_01]|[01])*(\.[_01]+)?
                     ret.push_back(Token{TokenType::L_NUM_B_LIT, input.substr(start, maxEnd-start), line, character});
                     states.push_back(LexerState::S_LITERAL);
                     break;
-                case 4:// 0o[0-7]([_0-7]|[0-7])*(\.[_0-7]+)?
+                case 5:// 0o[0-7]([_0-7]|[0-7])*(\.[_0-7]+)?
                     ret.push_back(Token{TokenType::L_NUM_O_LIT, input.substr(start, maxEnd-start), line, character});
                     states.push_back(LexerState::S_LITERAL);
                     break;
-                case 5:// 0x[A-Fa-f0-9]([_A-Fa-f0-9]|[A-Fa-f0-9])*(\.[_A-Fa-f0-9]+)?
+                case 6:// 0x[A-Fa-f0-9]([_A-Fa-f0-9]|[A-Fa-f0-9])*(\.[_A-Fa-f0-9]+)?
                     ret.push_back(Token{TokenType::L_NUM_X_LIT, input.substr(start, maxEnd-start), line, character});
                     states.push_back(LexerState::S_LITERAL);
                     break;
-                case 6:// "([^\\"]|\\.)*"
+                case 7:// "([^\\"]|\\.)*"
                     ret.push_back(Token{TokenType::L_STR_LIT, input.substr(start, maxEnd-start), line, character});
                     states.push_back(LexerState::S_LITERAL);
                     break;
-                case 7:// '([^\\']|\\.)'
+                case 8:// '([^\\']|\\.)'
                     ret.push_back(Token{TokenType::L_CHAR_LIT, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 8:// \n
+                case 9:// \n
                     ret.push_back(Token{TokenType::L_NEW_LN, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 9:// [ \t]
+                case 10:// [ \t]
                     break;
-                case 10:// //
+                case 11:// //
                     states.push_back(LexerState::S_SINGLELINE_COMMENT);
                     break;
-                case 11:// /\*
+                case 12:// /\*
                     states.push_back(LexerState::S_MULTILINE_COMMENT);
                     break;
-                case 12:// ,
+                case 13:// ,
                     ret.push_back(Token{TokenType::L_COMMA, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 13:// ;
+                case 14:// ;
                     ret.push_back(Token{TokenType::L_SEMICOLON, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 14:// :
+                case 15:// :
                     ret.push_back(Token{TokenType::L_COLON, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 15:// ok
+                case 16:// ok
                     ret.push_back(Token{TokenType::L_OK, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 16:// in
+                case 17:// in
                     ret.push_back(Token{TokenType::L_IN, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 17:// \+
+                case 18:// \+
                     ret.push_back(Token{TokenType::L_ADD, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 18:// \-
+                case 19:// \-
                     ret.push_back(Token{TokenType::L_SUB, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 19:// \*
+                case 20:// \*
                     ret.push_back(Token{TokenType::L_MUL, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 20:// /
+                case 21:// /
                     ret.push_back(Token{TokenType::L_DIV, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 21:// /%
+                case 22:// /%
                     ret.push_back(Token{TokenType::L_INT_DIV, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 22:// %
+                case 23:// %
                     ret.push_back(Token{TokenType::L_MOD, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 23:// >>
+                case 24:// >>
                     ret.push_back(Token{TokenType::L_SHIFT_RIGHT, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 24:// <<
+                case 25:// <<
                     ret.push_back(Token{TokenType::L_SHIFT_LEFT, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 25:// &
+                case 26:// &
                     ret.push_back(Token{TokenType::L_AND, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 26:// \|
+                case 27:// \|
                     ret.push_back(Token{TokenType::L_OR, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 27:// \^
+                case 28:// \^
                     ret.push_back(Token{TokenType::L_XOR, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 28:// ×|\\cross
+                case 29:// ×|\\cross
                     ret.push_back(Token{TokenType::L_CROSS, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 29:// ⋅|\\dot
+                case 30:// ⋅|\\dot
                     ret.push_back(Token{TokenType::L_DOT, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 30:// [=]
+                case 31:// [=]
                     ret.push_back(Token{TokenType::L_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 31:// \->
+                case 32:// \->
                     ret.push_back(Token{TokenType::L_ASSIGN, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 32:// \+[=]
+                case 33:// \+[=]
                     ret.push_back(Token{TokenType::L_ADD_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 33:// \+\+
+                case 34:// \+\+
                     ret.push_back(Token{TokenType::L_INCREMENT, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 34:// --
+                case 35:// --
                     ret.push_back(Token{TokenType::L_DECREMENT, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 35:// \-[=]
+                case 36:// \-[=]
                     ret.push_back(Token{TokenType::L_SUB_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 36:// \*[=]
+                case 37:// \*[=]
                     ret.push_back(Token{TokenType::L_MUL_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 37:// /[=]
+                case 38:// /[=]
                     ret.push_back(Token{TokenType::L_DIV_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 38:// /%[=]
+                case 39:// /%[=]
                     ret.push_back(Token{TokenType::L_INT_DIV_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 39:// %[=]
+                case 40:// %[=]
                     ret.push_back(Token{TokenType::L_MOD_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 40:// >>[=]
+                case 41:// >>[=]
                     ret.push_back(Token{TokenType::L_SHIFT_RIGHT_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 41:// <<[=]
+                case 42:// <<[=]
                     ret.push_back(Token{TokenType::L_SHIFT_LEFT_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 42:// &[=]
+                case 43:// &[=]
                     ret.push_back(Token{TokenType::L_AND_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 43:// \|[=]
+                case 44:// \|[=]
                     ret.push_back(Token{TokenType::L_OR_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 44:// \^[=]
+                case 45:// \^[=]
                     ret.push_back(Token{TokenType::L_XOR_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 45:// ×|\\cross
+                case 46:// ×|\\cross
                     ret.push_back(Token{TokenType::L_CROSS_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 46:// ⋅|\\dot
+                case 47:// ⋅|\\dot
                     ret.push_back(Token{TokenType::L_DOT_CHANGE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 47:// !
+                case 48:// !
                     ret.push_back(Token{TokenType::L_NOT, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 48:// \?[=]
+                case 49:// \?[=]
                     ret.push_back(Token{TokenType::L_EQUAL, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 49:// ![=]
+                case 50:// ![=]
                     ret.push_back(Token{TokenType::L_NOTEQ, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 50:// \?\->
+                case 51:// \?\->
                     ret.push_back(Token{TokenType::L_ASSIGNED, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 51:// !\->
+                case 52:// !\->
                     ret.push_back(Token{TokenType::L_NOTASS, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 52:// <
+                case 53:// <
                     ret.push_back(Token{TokenType::L_LESS, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 53:// >
+                case 54:// >
                     ret.push_back(Token{TokenType::L_GREAT, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 54:// <[=]
+                case 55:// <[=]
                     ret.push_back(Token{TokenType::L_LEEQ, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 55:// >[=]
+                case 56:// >[=]
                     ret.push_back(Token{TokenType::L_GREQ, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 56:// \+&
+                case 57:// \+&
                     ret.push_back(Token{TokenType::L_TRAIT_AND, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 57:// \+\|
+                case 58:// \+\|
                     ret.push_back(Token{TokenType::L_TRAIT_OR, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 58:// \+\?
+                case 59:// \+\?
                     ret.push_back(Token{TokenType::L_TRAIT_AND_COND, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 59:// \?\?
+                case 60:// \?\?
                     ret.push_back(Token{TokenType::L_TRAIT_COND, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 60:// \?
+                case 61:// \?
                     ret.push_back(Token{TokenType::L_QUEST, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 61:// \(
+                case 62:// \(
                     ret.push_back(Token{TokenType::L_LEFT_PAR, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 62:// \)
+                case 63:// \)
                     ret.push_back(Token{TokenType::L_RIGHT_PAR, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 63:// \[
+                case 64:// \[
                     ret.push_back(Token{TokenType::L_LEFT_BRACK, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 64:// \]
+                case 65:// \]
                     ret.push_back(Token{TokenType::L_RIGHT_BRACK, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 65:// \{
+                case 66:// \{
                     ret.push_back(Token{TokenType::L_LEFT_BRACE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 66:// \}
+                case 67:// \}
                     ret.push_back(Token{TokenType::L_RIGHT_BRACE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 67:// \.
+                case 68:// \.
                     ret.push_back(Token{TokenType::L_MEMBER, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 68:// [=]>
+                case 69:// [=]>
                     ret.push_back(Token{TokenType::L_FUNCTION, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 69:// <[=]>
+                case 70:// <[=]>
                     ret.push_back(Token{TokenType::L_COROUTINE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 70:// if
+                case 71:// if
                     ret.push_back(Token{TokenType::L_IF, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 71:// else
+                case 72:// else
                     ret.push_back(Token{TokenType::L_ELSE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 72:// elif
+                case 73:// elif
                     ret.push_back(Token{TokenType::L_ELIF, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 73:// switch
+                case 74:// switch
                     ret.push_back(Token{TokenType::L_SWITCH, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 74:// case
+                case 75:// case
                     ret.push_back(Token{TokenType::L_CASE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 75:// times
+                case 76:// times
                     ret.push_back(Token{TokenType::L_TIMES, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 76:// for
+                case 77:// for
                     ret.push_back(Token{TokenType::L_FOR, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 77:// while
+                case 78:// while
                     ret.push_back(Token{TokenType::L_WHILE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 78:// repeat
+                case 79:// repeat
                     ret.push_back(Token{TokenType::L_REPEAT, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 79:// break
+                case 80:// break
                     ret.push_back(Token{TokenType::L_BREAK, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 80:// continue
+                case 81:// continue
                     ret.push_back(Token{TokenType::L_CONTINUE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 81:// return
+                case 82:// return
                     ret.push_back(Token{TokenType::L_RETURN, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 82:// yield
+                case 83:// yield
                     ret.push_back(Token{TokenType::L_YIELD, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 83:// with
+                case 84:// with
                     ret.push_back(Token{TokenType::L_WITH, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 84:// def
+                case 85:// def
                     ret.push_back(Token{TokenType::L_DEF, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 85:// const
+                case 86:// const
                     ret.push_back(Token{TokenType::L_CONST, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 86:// var
+                case 87:// var
                     ret.push_back(Token{TokenType::L_VAR, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 87:// ref
+                case 88:// ref
                     ret.push_back(Token{TokenType::L_REF, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 88:// new
+                case 89:// new
                     ret.push_back(Token{TokenType::L_NEW, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 89:// final
+                case 90:// final
                     ret.push_back(Token{TokenType::L_FINAL, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 90:// mutable
+                case 91:// mutable
                     ret.push_back(Token{TokenType::L_MUTABLE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 91:// volatile
+                case 92:// volatile
                     ret.push_back(Token{TokenType::L_VOLATILE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 92:// static
+                case 93:// static
                     ret.push_back(Token{TokenType::L_STATIC, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 93:// using
+                case 94:// using
                     ret.push_back(Token{TokenType::L_USING, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 94:// include
+                case 95:// include
                     ret.push_back(Token{TokenType::L_INCLUDE, input.substr(start, maxEnd-start), line, character});
                     break;
-                case 95:// as
+                case 96:// as
                     ret.push_back(Token{TokenType::L_AS, input.substr(start, maxEnd-start), line, character});
                     break;
                 default:

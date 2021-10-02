@@ -22,7 +22,7 @@ namespace ChakraL {
         
         std::map<std::string, std::list<ParseNodePtr>> nodeLists;
         std::map<std::string, std::list<Token>> tokenLists;
-        ParseNodePtr contToNode = nullptr;
+        ParseNodePtr continuationNode = nullptr;
     };
     class ParseNode_file : public ParseNode { public: ~ParseNode_file(); void process(); };
     class ParseNode_ONL : public ParseNode { public: ~ParseNode_ONL(); void process(); };
@@ -133,12 +133,10 @@ namespace ChakraL {
         std::set<StatePtr> parentStates;
         // This points to the current node, where we store the variables
         ParseNodePtr node = nullptr;
-        // Used only if the state represents a sub-node part; this points to the sub-node, that will be stored in a variable of the current node
-        ParseNodePtr subNode = nullptr;
-        std::set<ParseNodePtr> contFromNodes;
+        std::list<ParseNodePtr*> outputVars;// save to vars on confirm
         size_t childStateCtr = 0;
         
-        inline State(NextFuncT nextFunc): nextFunc(nextFunc) {{}}
+        inline State(NextFuncT nextFunc): nextFunc(nextFunc) {}
         State() = default;
         State(const State&) = default;
         State(State&&) = default;
@@ -190,6 +188,10 @@ namespace ChakraL {
             }
             return *it;
         }
+        
+        inline size_t size() const {return stdSet.size();}
+        inline std::set<StatePtr, StateComparatorLess>::iterator begin() {return stdSet.begin();}
+        inline std::set<StatePtr, StateComparatorLess>::iterator end() {return stdSet.end();}
         
     };
 

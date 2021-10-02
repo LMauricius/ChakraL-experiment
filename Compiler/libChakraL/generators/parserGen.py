@@ -80,6 +80,8 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         acceptBranch = ParserState(part.idName+f"__accept", part.hint, StateType.Branch, part.nodeName)
         outParserStates.append(acceptBranch)
         storeState = acceptBranch
+        
+        selectState.proxyForStates = [skipBranch, acceptBranch]
 
         nextState = skipBranch
         retState = selectState
@@ -94,6 +96,8 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         cycleBranch = ParserState(part.idName+f"__cycle", part.hint, StateType.Branch, part.nodeName)
         outParserStates.append(cycleBranch)
         storeState = cycleBranch
+        
+        repeatState.proxyForStates = [skipBranch, cycleBranch]
 
         nextState = repeatState
         retState = repeatState
@@ -108,6 +112,8 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         cycleBranch = ParserState(part.idName+f"__cycle", part.hint, StateType.Branch, part.nodeName)
         outParserStates.append(cycleBranch)
         storeState = cycleBranch
+        
+        repeatState.proxyForStates = [skipBranch, cycleBranch]
 
         nextState = repeatState
         retState = None # We want to directly enter the new state
@@ -121,8 +127,9 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
             branch = ParserState(part.idName+f"__poss{i}", part.hint, StateType.Branch, part.nodeName)
             outParserStates.append(branch)
             for subpart in reversed(poss):
-                subState = convertToStates(subpart, nextState)
+                subState = convertToStates(subpart, nextState, outParserStates)
                 nextState = subState
+            assert(nextState is not None)
             branch.branchStart = nextState
             newState.proxyForStates.append(branch)
             i += 1
@@ -138,9 +145,10 @@ def convertToStates(part : ProductionPart, nextState: ParserState, outParserStat
         newState.symbol = part.symbol
 
     # = Store new state =
-    if retState == None:
+    if retState is None:
         retState = newState
-    if storeState != None:
+    if storeState is not None:
+        assert(newState is not None)
         storeState.branchStart = newState
         
     # = Return states =
@@ -346,6 +354,8 @@ def loadParser(lexer: Lexer, filename: str):
             # check if node exists
             if not curNodeName in parser.nodes:
                 parser.nodes[curNodeName] = ParseNode(curNodeName)
+                if len(parser.startNode) == 0:
+                    parser.startNode = curNodeName
             curNode = parser.nodes[curNodeName]
             
             # add production
@@ -361,7 +371,7 @@ def loadParser(lexer: Lexer, filename: str):
         pass
     
     for name, node in parser.nodes.items():
-        node.startingParserState = convertToStates(node.mainPart, None)
+        node.startingParserState = convertToStates(node.mainPart, None, parser.parserStates)
     
     return parser
 
@@ -402,7 +412,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();TB();LN("")
     TB();TB();LN("std::map<std::string, std::list<ParseNodePtr>> nodeLists;")
     TB();TB();LN("std::map<std::string, std::list<Token>> tokenLists;")
-    TB();TB();LN("ParseNodePtr contToNode = nullptr;")
+    TB();TB();LN("ParseNodePtr continuationNode = nullptr;")
     TB();LN("};")
     
     for name, node in parser.nodes.items():
@@ -421,12 +431,10 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();TB();LN("std::set<StatePtr> parentStates;")
     TB();TB();LN("// This points to the current node, where we store the variables")
     TB();TB();LN("ParseNodePtr node = nullptr;")
-    TB();TB();LN("// Used only if the state represents a sub-node part; this points to the sub-node, that will be stored in a variable of the current node")
-    TB();TB();LN("ParseNodePtr subNode = nullptr;")
-    TB();TB();LN("std::set<ParseNodePtr> contFromNodes;")
+    TB();TB();LN("std::list<ParseNodePtr*> outputVars;// save to vars on confirm")
     TB();TB();LN("size_t childStateCtr = 0;")
     TB();TB();LN("")
-    TB();TB();LN("inline State(NextFuncT nextFunc): nextFunc(nextFunc) {{}}")
+    TB();TB();LN("inline State(NextFuncT nextFunc): nextFunc(nextFunc) {}")
     TB();TB();LN("State() = default;")
     TB();TB();LN("State(const State&) = default;")
     TB();TB();LN("State(State&&) = default;")
@@ -478,6 +486,10 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();TB();TB();LN("}")
     TB();TB();TB();LN("return *it;")
     TB();TB();LN("}")
+    TB();TB();LN("")
+    TB();TB();LN("inline size_t size() const {return stdSet.size();}")
+    TB();TB();LN("inline std::set<StatePtr, StateComparatorLess>::iterator begin() {return stdSet.begin();}")
+    TB();TB();LN("inline std::set<StatePtr, StateComparatorLess>::iterator end() {return stdSet.end();}")
     TB();TB();LN("")
     TB();LN("};")
     LN("")
@@ -556,6 +568,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     LN("// This file is autogenerated. Do not edit!")
     LN("")
     LN('#include "' + os.path.basename(headerfile) + '"')
+    LN('#include <iostream>')
     
     LN("")
     LN("namespace ChakraL")
@@ -566,87 +579,88 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();TB();LN("")
     
     # Declarations
-    for name, part in parser.productionParts.items():
-        #TB();LN("bool n_" + part.idName + "(StatePtr curState, StateSet& nextStates, const Token& token);")
-        TB();TB();LN("void a_" + part.idName + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);")
+    for state in parser.parserStates:
+        if state.type == StateType.Branch or state.type == StateType.Proxy:
+            TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr* outputVar);")
+        else:
+            TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode);")
 
-    for name, part in parser.productionParts.items():
+    for state in parser.parserStates:
         TB();LN("")
-        TB();TB();LN("// " + part.hint)
+        TB();TB();LN("// " + state.hint)
 
         #
         # *** Next state func ***
         #
 
-        TB();TB();LN("bool n_" + part.idName + "(StatePtr curState, StateSet& nextStates, const Token& token) {")
+        if not (state.type == StateType.Node or state.type == StateType.Proxy):
+            TB();TB();LN("bool n_" + state.name + "(StatePtr curState, StateSet& nextStates, const Token& token) {")
 
-        if part.type == ProductionType.Token:
-            TB();TB();TB();LN("if (token.type != TokenType::" + part.symbol + ")")
-            TB();TB();TB();TB();LN("return false;")
-            if len(part.variable) > 0:
-                TB();TB();TB();LN("curState->node->tokenLists[\"" + part.variable + "\"].push_back(token);")
-        elif part.type == ProductionType.Node:
-            TB();TB();TB();LN("curState->node->nodeLists[\"" + part.variable + "\"].push_back(curState->subNode);")
-            #TB();TB();LN("curState.node->nodeLists[\"" + part.variable + "\"].push_back(curState.subNode);")
-            '''TB();TB();LN("if (curState.subNode) {")
-            TB();TB();TB();LN("curState.node->nodeLists[\"" + part.variable + "\"].push_back(curState.subNode);")
-            TB();TB();TB();LN("curState.subNode = nullptr;// prevent from adding same node multiple times")
-            TB();TB();LN("}")'''
+            if state.type == StateType.Token:
+                TB();TB();TB();LN("if (token.type != TokenType::" + state.symbol + ")")
+                TB();TB();TB();TB();LN("return false;")
+                if state.variable is not None:
+                    TB();TB();TB();LN("curState->node->tokenLists[\"" + state.variable + "\"].push_back(token);")
+            elif state.type == StateType.Branch:
+                TB();TB();TB();LN("for (auto var : curState->outputVars) *var = curState->node;")
 
-        # The following happens after confirming the prod part matches:
-        
-        # Add next state(s)
-        if part.nextStateName == "":
-            TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);")
-        else:
-            TB();TB();TB();LN("a_" + part.nextStateName + "(curState->parentStates, nextStates, curState->node);")
+            # The following happens after confirming the prod part matches:
+            
+            # Add next state
+            if state.nextState is None:
+                TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);")
+            elif state.type == StateType.Branch or state.type == StateType.Proxy:
+                TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, &(curState->node->continuationNode));")
+            else:
+                TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, curState->node);")
 
-        # Repeat current state if needed
-        if part.repeatCount == RepeatType.SingleOrMore or part.repeatCount == RepeatType.ZeroOrMore:
-            TB();TB();TB();LN("a_" + part.idName + "(curState->parentStates, nextStates, curState->node);")
-
-        TB();TB();TB();LN("return true;")
-        TB();TB();LN("}")
+            TB();TB();TB();LN("return true;")
+            TB();TB();LN("}")
 
         #
         # *** Add state func ***
         #
 
-        TB();TB();LN("void a_" + part.idName + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {")
+        if state.type == StateType.Branch or state.type == StateType.Proxy:
+            TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr* outputVar) {")
+        else:
+            TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, ParseNodePtr curNode) {")
 
         # add new state if needed
-        if part.type == ProductionType.SubProd or part.type == ProductionType.Node:
-            TB();TB();TB();LN("StatePtr state = nextStates.getHidden(&n_" + part.idName + ");")
-        else:
-            TB();TB();TB();LN("StatePtr state = nextStates[&n_" + part.idName + "];")
+        if state.type == StateType.Token or (state.type == StateType.Branch and state.branchStart is None):
+            TB();TB();TB();LN("StatePtr state = nextStates[&n_" + state.name + "];")
+        elif not (state.type == StateType.Node or state.type == StateType.Proxy):
+            TB();TB();TB();LN("StatePtr state = nextStates.getHidden(&n_" + state.name + ");")
+        
+        if state.type == StateType.Node:
+            assert(parser.nodes[state.symbol].startingParserState.type == StateType.Proxy)
+            TB();TB();TB();LN("a_" + state.symbol + "(parentStates, nextStates, &(curNode->nodeLists[\"" + state.variable + "\"].emplace_back(nullptr)));")
+        elif state.type == StateType.Proxy:
+            for subState in state.proxyForStates:
+                TB();TB();TB();LN("a_" + subState.name + "(parentStates, nextStates, outputVar);")
+        else:# Branch or Token
 
-        # add parents
-        TB();TB();TB();LN("state->parentStates.insert(parentStates.begin(), parentStates.end());")
+            # add parents
+            TB();TB();TB();LN("state->parentStates.insert(parentStates.begin(), parentStates.end());")
+            
+            if state.type == StateType.Branch:
+                TB();TB();TB();LN("state->outputVars.push_back(outputVar);")
 
-        # If the state is new, set its parameters
-        TB();TB();TB();LN("if (state->node == nullptr) {// The state is newly added")
-        if part.isMainPart:
-            TB();TB();TB();TB();LN("state->node = std::make_shared<ParseNode_"+part.idName+">();")
-            TB();TB();TB();TB();LN("for (auto par : parentStates) par->subNode = state->node;")
-        else:
-            TB();TB();TB();TB();LN("state->node = curNode;")
-
-        if part.type == ProductionType.SubProd:
-            for poss in part.possibilities:
-                TB();TB();TB();TB();LN("a_" + poss[0].idName + "({state}, nextStates, curNode);")
-        elif part.type == ProductionType.Node:
-            TB();TB();TB();TB();LN("a_" + part.symbol + "({state}, nextStates, curNode);")
-            TB();TB();TB();LN("state->node->nodeLists[\"" + part.variable + "\"].push_back(state->subNode);")
-        TB();TB();TB();LN("}")
-
-        if part.repeatCount == RepeatType.SingleOrMore or part.repeatCount == RepeatType.ZeroOrMore:
-            pass
-        '''for altName in part.altStatePartNames:
-            if nextName == "_return_parent_":
-                TB();TB();LN("for (auto par : parentStates) par->nextFunc(par, nextStates, token);")
+            # If the state is new, set its parameters
+            TB();TB();TB();LN("if (state->node == nullptr) {// The state is newly added")
+            if state.type == StateType.Branch:
+                TB();TB();TB();TB();LN("state->node = std::make_shared<ParseNode_"+state.nodeName+">();")
+                if state.branchStart is None:
+                    pass
+                #    TB();TB();TB();TB();LN("for (auto par : state->parentStates) par->nextFunc(par, nextStates, Token());")
+                elif state.branchStart.type == StateType.Branch or state.branchStart.type == StateType.Proxy:
+                    TB();TB();TB();TB();LN("a_" + state.branchStart.name + "({state}, nextStates, &(state->node->continuationNode));")
+                else:
+                    TB();TB();TB();TB();LN("a_" + state.branchStart.name + "({state}, nextStates, state->node);")
             else:
-                TB();TB();LN("a_" + nextName + "(parentStates, nextStates, curNode);")'''
-        #TB();TB();LN("return state;")
+                TB();TB();TB();TB();LN("state->node = curNode;")
+            TB();TB();TB();LN("}")
+
         TB();TB();LN("}")
     
     TB();LN("}")
@@ -676,7 +690,23 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     LN("")
     TB();LN("ParseNodePtr parse(const std::list<Token> &input, std::list<ParserError>& outErrors)")
     TB();LN("{")
-    TB();TB();LN("ParseNodePtr res;")
+    TB();TB();LN("ParseNodePtr res = std::make_shared<ParseNode_"+parser.startNode+">();;")
+    TB();TB();LN("StateSet curStates, nextStates;")
+    TB();TB();LN("")
+    TB();TB();LN("a_" + parser.startNode + "({}, nextStates, &(res->continuationNode));")
+    TB();TB();LN("")
+    TB();TB();LN("auto tokenIt = input.begin();")
+    TB();TB();LN("while (nextStates.size() > 0) {")
+    TB();TB();TB();LN("curStates.stdSet = nextStates.stdSet;")
+    TB();TB();TB();LN("nextStates.stdSetHidden.clear();")
+    TB();TB();TB();LN("nextStates.stdSet.clear();")
+    TB();TB();TB();LN("for (auto& state : curStates) {")
+    TB();TB();TB();TB();LN("state->nextFunc(state, nextStates, *tokenIt);")
+    TB();TB();TB();LN("}")
+    TB();TB();TB();LN("std::wcout << \"Parsed \" << tokenIt->line << L\", position \" << tokenIt->character << L\", token \" << tokenIt->str << std::endl;")
+    TB();TB();TB();LN("tokenIt++;")
+    TB();TB();TB();LN("if (tokenIt == input.end()) {outErrors.emplace_back(Token(), L\"Parser reached the end of token list.\"); break;}")
+    TB();TB();LN("}")
     TB();TB();LN("return res;")
     TB();LN("}")
     LN("")
