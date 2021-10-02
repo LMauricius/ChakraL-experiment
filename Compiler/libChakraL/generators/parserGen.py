@@ -35,7 +35,6 @@ class ProductionPart:
         self.nodeName = nodeName
         self.repeatCount = -1
         self.nextStateName: str = ""
-        #self.altStatePartNames: set[str] = set() # epsilon transitions
 
 class ParserState:
     def __init__(self, name: str, hint: str, type: StateType, nodeName: str):
@@ -45,40 +44,24 @@ class ParserState:
         self.symbol: str = None
         self.type = type
         self.nodeName = nodeName
-        self.repeatCount = -1
         self.nextState: ParserState = None
         self.branchStart: ParserState = None
         self.proxyForStates: list[ParserState] = []
-        #self.altStatePartNames: set[str] = set() # epsilon transitions
 
 class ParseNode:
     def __init__(self, name: str):
         self.name = name
         self.mainPart = ProductionPart(name, name, "<>", "<>", ProductionType.SubProd, name, True)
         self.startingParserState : ParserState = None
-        #self.possibilities: list[list[ProductionPart]] = []
         self.partCounter = 1
 
 class Parser:
     def __init__(self):
         self.startNode = ""
         self.nodes: dict[str, ParseNode] = {}
-        #self.productionParts: dict[str, ProductionPart] = {}
-        self.parserStates: dict[str, ParserState] = {}
+        self.parserStates: list[ParserState] = []
 
-def iterSubProductionParts(part : ProductionPart) -> Iterator[ProductionPart]:
-    if part.type == ProductionType.SubProd:
-        for poss in part.possibilities:
-            for subpart in poss:
-                yield subpart
-                yield from iterSubProductionParts(subpart)
-
-def iterProductionParts(node : ParseNode) -> Iterator[ProductionPart]:
-    #print(node.possibilities)
-    yield node.mainPart
-    yield from iterSubProductionParts(node.mainPart)
-
-def convertToStates(part : ProductionPart, nextState: ParserState):
+def convertToStates(part : ProductionPart, nextState: ParserState, outParserStates: list[ParserState]):
     retState : ParserState = None# if retState == None, the newState will be stored in retState and returned
     storeState : ParserState = None# if storeState != None, the newState will be stored in storeState.branchStart instead of newState
     newState : ParserState = None
@@ -88,33 +71,42 @@ def convertToStates(part : ProductionPart, nextState: ParserState):
         pass
     elif part.repeatCount == RepeatType.Optional:
         selectState = ParserState(part.idName+"__select", part.hint, StateType.Proxy, part.nodeName)
+        outParserStates.append(selectState)
 
         skipBranch = ParserState(part.idName+f"__skip", part.hint, StateType.Branch, part.nodeName)
+        outParserStates.append(skipBranch)
         skipBranch.branchStart = nextState
 
         acceptBranch = ParserState(part.idName+f"__accept", part.hint, StateType.Branch, part.nodeName)
+        outParserStates.append(acceptBranch)
         storeState = acceptBranch
 
         nextState = skipBranch
         retState = selectState
     elif part.repeatCount == RepeatType.ZeroOrMore:
         repeatState = ParserState(part.idName+"__repeat", part.hint, StateType.Proxy, part.nodeName)
+        outParserStates.append(repeatState)
 
         skipBranch = ParserState(part.idName+f"__skip", part.hint, StateType.Branch, part.nodeName)
+        outParserStates.append(skipBranch)
         skipBranch.branchStart = nextState
 
         cycleBranch = ParserState(part.idName+f"__cycle", part.hint, StateType.Branch, part.nodeName)
+        outParserStates.append(cycleBranch)
         storeState = cycleBranch
 
         nextState = repeatState
         retState = repeatState
     elif part.repeatCount == RepeatType.SingleOrMore:
         repeatState = ParserState(part.idName+"__repeat", part.hint, StateType.Proxy, part.nodeName)
+        outParserStates.append(repeatState)
 
         skipBranch = ParserState(part.idName+f"__skip", part.hint, StateType.Branch, part.nodeName)
+        outParserStates.append(skipBranch)
         skipBranch.branchStart = nextState
 
         cycleBranch = ParserState(part.idName+f"__cycle", part.hint, StateType.Branch, part.nodeName)
+        outParserStates.append(cycleBranch)
         storeState = cycleBranch
 
         nextState = repeatState
@@ -123,9 +115,11 @@ def convertToStates(part : ProductionPart, nextState: ParserState):
     # = Create new state =
     if part.type == ProductionType.SubProd:
         newState = ParserState(part.idName, part.hint, StateType.Proxy, part.nodeName)
+        outParserStates.append(newState)
         i = 1
         for poss in part.possibilities:
             branch = ParserState(part.idName+f"__poss{i}", part.hint, StateType.Branch, part.nodeName)
+            outParserStates.append(branch)
             for subpart in reversed(poss):
                 subState = convertToStates(subpart, nextState)
                 nextState = subState
@@ -134,10 +128,12 @@ def convertToStates(part : ProductionPart, nextState: ParserState):
             i += 1
     elif part.type == ProductionType.Token:
         newState = ParserState(part.idName, part.hint, StateType.Token, part.nodeName)
+        outParserStates.append(newState)
         newState.variable = part.variable
         newState.symbol = part.symbol
     elif part.type == ProductionType.Node:
         newState = ParserState(part.idName, part.hint, StateType.Node, part.nodeName)
+        outParserStates.append(newState)
         newState.variable = part.variable
         newState.symbol = part.symbol
 
@@ -149,28 +145,6 @@ def convertToStates(part : ProductionPart, nextState: ParserState):
         
     # = Return states =
     return retState
-
-def setTransitions(production : list[ProductionPart]):
-    nextStateName: str = ""
-    #possAltStates: set[str] = {nextState}
-
-    for part in reversed(production):
-        if part.type == ProductionType.SubProd:
-            for poss in part.possibilities:
-                setTransitions(poss)
-
-        part.nextStateName = nextStateName
-
-        '''if part.repeatCount == RepeatType.Optional or part.repeatCount == RepeatType.ZeroOrMore:
-            part.altStatePartNames.update(possAltStates)
-        else:
-            possAltStates = set()'''
-            
-        '''if part.repeatCount == RepeatType.SingleOrMore or part.repeatCount == RepeatType.ZeroOrMore:
-            part.nextStatePartNames.add(part.idName)'''
-
-        #possAltStates.add(part.idName)
-        nextStateName = part.idName
 
 
 def iterParserLine(line : str) -> Iterator[str]:
@@ -388,13 +362,6 @@ def loadParser(lexer: Lexer, filename: str):
     
     for name, node in parser.nodes.items():
         node.startingParserState = convertToStates(node.mainPart, None)
-        #print(name, node)
-        #for part in iterProductionParts(node):
-        #    parser.productionParts[part.idName] = part
-        
-        #setTransitions([node.mainPart])
-        #for poss in node.mainPart.possibilities:
-        #    setTransitions(poss)
     
     return parser
 
