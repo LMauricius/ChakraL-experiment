@@ -573,7 +573,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
 
 
 def writeParserProcessCPP(parser: Parser, filename: str, headerfile: str):
-    definitions: map[str, str] = {}
+    definitions: dict[str, str] = {}
     for name, node in parser.nodes.items():
         #declarations[name] = "    ParseNode_" + name + "::process("
         definitions[name] = ""
