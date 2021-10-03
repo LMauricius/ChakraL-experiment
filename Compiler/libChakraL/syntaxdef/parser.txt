@@ -91,7 +91,8 @@ dictEntry = <key:expression> ':' <ONL> <value:expression>
 
 contextLiteral 	= '(' <items:memberDecl> (',' <items:memberDecl>)* ')'
 				= '(' <ONL> <items:memberDecl> (',' <ONL> <items:memberDecl>)* ',' <ONL> ')'
-memberDecl = member:L_IDENTIFIER '=' <value:expression>
+memberDecl 	= member:L_IDENTIFIER '=' <value:expression>
+			= <value:expression>
 
 
 ###
@@ -140,7 +141,7 @@ breakStat = 'break'
 continueStat = 'continue'
 returnStat = 'return' [ <val:expression> ]
 
-withStat = 'with' <entries:withStatEntry> [ ',' <entries:withStatEntry> ] ':' <contextBodyClosedBlock>
+withStat = 'with' <entries:withStatEntry> ( ',' <entries:withStatEntry> )* ':' <contextBodyClosedBlock>
 withStatEntry 	= <id:identifier> '=' <val:expression>
 				= <val:expression>
 
@@ -175,11 +176,12 @@ dotChangeVal = <left:expression> ( '⋅=' <ONL> <rights:expression> )+
 divChangeVal = <left:expression> ( '/=' <ONL> <rights:expression> )+
 intDivChangeVal = <left:expression> ( '/%=' <ONL> <rights:expression> )+
 modChangeVal = <left:expression> ( '%=' <ONL> <rights:expression> )+
+expChangeVal = <left:expression> ( '^=' <ONL> <rights:expression> )+
 shiftRChangeVal = <left:expression> ( '>>=' <ONL> <rights:expression> )+
 shiftLChangeVal = <left:expression> ( '<<=' <ONL> <rights:expression> )+
 andChangeVal = <left:expression> ( '&=' <ONL> <rights:expression> )+
 orChangeVal = <left:expression> ( '|=' <ONL> <rights:expression> )+
-xorChangeVal = <left:expression> ( '^=' <ONL> <rights:expression> )+
+xorChangeVal = <left:expression> ( '<>=' <ONL> <rights:expression> )+
 
 
 

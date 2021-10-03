@@ -1,5 +1,6 @@
 # operator groups (expressions/node productions) are defined like this:
-# associativity('<' | '>') type('BINARY' | 'LUNARY' | 'RUNARY') nodeName
+# associativity('<' | '>') type('BINARY' | 'LUNARY' | 'RUNARY') nodeName [semNodeName]
+# if the semantic node name is not specified, it will be set to the parse node name
 #
 # operators in a group are defined like this:
 # token|regex
@@ -15,29 +16,29 @@
 
 @exprHighest
 
-> BINARY exprSuffixFunction 
+> BINARY exprSuffixFunction exprBinaryL2R
 '.'
 
-< LUNARY exprPrefix
+< LUNARY exprPrefix exprLUnary
 '++'
 '+'
 '-'
 '!'
 
-> RUNARY exprSuffix
+> RUNARY exprSuffix exprRUnary
 '++'
 '--'
 
-< BINARY exprPrefixFunction
+< BINARY exprPrefixFunction exprPrefixFunction
 ''
 
-< LUNARY exprCopy
+< LUNARY exprCopy exprLUnary
 'new'
 
-> BINARY exprExponent
+> BINARY exprExponent exprBinaryL2R
 '^'
 
-> BINARY exprMultiplication
+> BINARY exprMultiplication exprBinaryL2R
 '*'
 '×'
 '⋅'
@@ -45,15 +46,15 @@
 '/%'
 '%'
 
-> BINARY exprAddition
+> BINARY exprAddition exprBinaryL2R
 '+'
 '-'
 
-> BINARY exprShift
+> BINARY exprShift exprBinaryL2R
 '<<'
 '>>'
 
-> BINARY exprComparison
+> BINARY exprComparison exprBinaryL2R
 '<'
 '>'
 '<='
@@ -61,20 +62,20 @@
 '?='
 '!='
 
-> BINARY exprCompAssigned assignmentCheck
+> BINARY exprCompAssigned assignmentCheck exprBinaryL2R
 '?->'
 '!->'
 
-> BINARY exprLogAnd 
+> BINARY exprLogAnd  exprBinaryL2R
 '&'
 
-> BINARY exprLogXOr 
+> BINARY exprLogXOr  exprBinaryL2R
 '<>'
 
-> BINARY exprLogOr 
+> BINARY exprLogOr  exprBinaryL2R
 '|'
 
-: exprLeast = <exprLogOr>
+: exprLeast = <:exprLogOr>
 
 
 

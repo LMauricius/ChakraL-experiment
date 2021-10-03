@@ -8,19 +8,26 @@
 
 void printTabs(int tabs)
 {
-    for (int i=0; i < tabs; i++) std::cout << "    ";
+    for (int i=0; i < tabs; i++) std::cout << "  ";
 }
-void printNode(ChakraL::ParseNodePtr nodePtr, int tabs)
+void printNode(ChakraL::SemanticNodePtr nodePtr, int tabs)
 {
     for (auto& nameListPair : nodePtr->nodeLists)
     {
         //printTabs(tabs); std::cout << "'" << nameListPair.first << "'" << "(nodes): ";
         for (auto np : nameListPair.second)
         {
-            printTabs(tabs); std::cout << "'" << nameListPair.first << "': " << np->name() << " {" << std::endl;
-            printNode(np, tabs + 1);
-            printTabs(tabs); std::cout << "}";
-            std::cout << std::endl;
+            if (np)
+            {
+                printTabs(tabs); std::cout << "'" << nameListPair.first << "': " << np->name() << " {" << std::endl;
+                printNode(np, tabs + 1);
+                printTabs(tabs); std::cout << "}";
+                std::cout << std::endl;
+            }
+            else
+            {
+                printTabs(tabs); std::cout << "'" << nameListPair.first << "': ERROR-nullptr" << std::endl;
+            }
         }
     }
     for (auto& nameListPair : nodePtr->tokenLists)
@@ -88,7 +95,7 @@ int main(int argc, char** argv)
         
         std::list<ChakraL::ParserError> perrors;
         auto startParsTime = high_resolution_clock::now();
-        ChakraL::ParseNodePtr node = ChakraL::parse(tokens, perrors);
+        ChakraL::SemanticNodePtr node = ChakraL::parse(tokens, perrors);
         auto endParsTime = high_resolution_clock::now();
         std::cout << "Parser finished in " << duration<double>(endParsTime - startParsTime).count() << "s" << std::endl;
         printNode(node, 1);
