@@ -167,6 +167,7 @@ def writeLexerH(lexer: Lexer, filename: str):
     TB();LN("};")
     LN("")
     TB();LN("extern const std::array<std::string, "+str(len(lexer.tokenTypes))+"> TokenNames;")
+    TB();LN("extern const std::array<std::wstring, "+str(len(lexer.tokenTypes))+"> WTokenNames;")
     LN("")
     TB();LN("enum class LexerState {")
     for t in lexer.states:
@@ -228,6 +229,10 @@ def writeLexerCPP(lexer: Lexer, filename: str, headerfile: str, useSingleDFA: bo
     TB();LN("const std::array<std::string, "+str(len(lexer.tokenTypes))+"> TokenNames {")
     for t in lexer.tokenTypes:
         TB();TB();LN('"'+t+'",')
+    TB();LN("};")
+    TB();LN("const std::array<std::wstring, "+str(len(lexer.tokenTypes))+"> WTokenNames {")
+    for t in lexer.tokenTypes:
+        TB();TB();LN('L"'+t+'",')
     TB();LN("};")
     LN("")
     TB();LN("std::list<Token> tokenize(std::wstring &input, std::list<LexerError>& outErrors)")

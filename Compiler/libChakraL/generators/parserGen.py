@@ -544,7 +544,33 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     LN("")
     TB();LN("class SemanticNode;")
     TB();LN("using SemanticNodePtr = std::shared_ptr<SemanticNode>;")
-    LN("")
+    TB();LN("")
+    TB();LN("class ParserError {")
+    TB();LN('public:')
+    TB();TB();LN('inline ParserError(Token token, std::wstring msg): token(token), msg(msg) {}')
+    TB();TB();LN('std::wstring msg;')
+    TB();TB();LN('Token token;')
+    TB();LN("};")
+    TB();LN("class SemanticNodeVariable {")
+    TB();LN('public:')
+    TB();TB();LN('SemanticNodePtr ptr;')
+    TB();TB();LN('bool trySet(SemanticNodePtr newPtr);')
+    TB();TB();LN('')
+    TB();TB();LN('inline SemanticNodeVariable(): ptr(nullptr) {}')
+    TB();TB();LN('SemanticNodeVariable(const SemanticNodeVariable&) = default;')
+    TB();TB();LN('SemanticNodeVariable(SemanticNodeVariable&&) = default;')
+    TB();TB();LN('SemanticNodeVariable(nullptr_t) {ptr = nullptr;}')
+    TB();TB();LN('SemanticNodeVariable(SemanticNodePtr newPtr) {ptr = newPtr;}')
+    TB();TB();LN('SemanticNodeVariable& operator = (const SemanticNodeVariable&) = default;')
+    TB();TB();LN('SemanticNodeVariable& operator = (SemanticNodeVariable&&) = default;')
+    TB();TB();LN('inline SemanticNodeVariable& operator = (nullptr_t) {ptr = nullptr; return *this;}')
+    TB();TB();LN('inline SemanticNodeVariable& operator = (SemanticNodePtr newPtr) {ptr = newPtr; return *this;}')
+    TB();TB();LN('inline SemanticNode& operator *() {return *ptr;}')
+    TB();TB();LN('inline operator SemanticNodePtr&() {return ptr;}')
+    TB();TB();LN('inline operator bool() {return (ptr != nullptr);}')
+    TB();TB();LN('inline SemanticNodePtr operator ->() {return ptr;}')
+    TB();LN("};")
+    TB();LN("")
     TB();LN("class SemanticNode {")
     TB();LN("public:")
     TB();TB();LN("virtual ~SemanticNode();")
@@ -552,9 +578,13 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();TB();LN("virtual std::string_view name() const = 0;")
     TB();TB();LN("void pullFrom(SemanticNode& other);")
     TB();TB();LN("")
-    TB();TB();LN("std::map<std::string, std::list<SemanticNodePtr>> nodeLists;")
+    TB();TB();LN("std::map<std::string, std::list<SemanticNodeVariable>> nodeLists;")
     TB();TB();LN("std::map<std::string, std::list<Token>> tokenLists;")
-    TB();TB();LN("SemanticNodePtr continuationNode = nullptr;")
+    TB();TB();LN("SemanticNodeVariable continuationNode = nullptr;")
+    TB();TB();LN("SemanticNodeVariable replacementNode = nullptr;")
+    TB();TB();LN('bool isSuccessful = true;')
+    TB();TB();LN("")
+    TB();TB();LN("std::list<ParserError> errors;")
     TB();LN("};")
     
     for name in parser.semNodeNames:
@@ -566,14 +596,14 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();LN("struct StateSet;")
     TB();LN("struct State;")
     TB();LN("using StatePtr = std::shared_ptr<State>;")
-    TB();LN("using NextFuncT = bool (*)(StatePtr curState, StateSet& nextStates, const Token& token);// returns whether the token matches. Node must be used instead of state.node for new states")
+    TB();LN("using NextFuncT = bool (*)(StatePtr curState, StateSet& nextStates, const Token& token, bool isSuccessful);// returns whether the token matches. Node must be used instead of state.node for new states")
     TB();LN("")
     TB();LN("struct State {")
     TB();TB();LN("NextFuncT nextFunc;")
     TB();TB();LN("std::set<StatePtr> parentStates;")
     TB();TB();LN("// This points to the current node, where we store the variables")
     TB();TB();LN("SemanticNodePtr node = nullptr;")
-    TB();TB();LN("std::list<SemanticNodePtr*> outputVars;// save to vars on confirm")
+    TB();TB();LN("std::list<SemanticNodeVariable*> outputVars;// save to vars on confirm")
     TB();TB();LN("size_t childStateCtr = 0;")
     TB();TB();LN("")
     TB();TB();LN("inline State(NextFuncT nextFunc): nextFunc(nextFunc) {}")
@@ -635,13 +665,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();TB();LN("")
     TB();LN("};")
     LN("")
-    TB();LN("class ParserError {")
-    TB();LN('public:')
-    TB();TB();LN('inline ParserError(Token token, std::wstring msg): token(token), msg(msg) {{}}')
-    TB();TB();LN('std::wstring msg;')
-    TB();TB();LN('Token token;')
-    TB();LN("};")
-    LN("")
+    TB();LN("SemanticNodePtr getOrganized(SemanticNodePtr node, bool checkReplacement = true);")
     TB();LN("SemanticNodePtr parse(const std::list<Token> &input, std::list<ParserError>& outErrors);")
     LN("")
     LN("}")
@@ -723,7 +747,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     # Declarations
     for state in parser.parserStates:
         if state.type == StateType.Branch or state.type == StateType.Proxy:
-            TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, SemanticNodePtr* outputVar);")
+            TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, SemanticNodeVariable* outputVar);")
         else:
             TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, SemanticNodePtr curNode);")
 
@@ -736,35 +760,42 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
         #
 
         if state.type != StateType.Proxy:
-            TB();TB();LN("bool n_" + state.name + "(StatePtr curState, StateSet& nextStates, const Token& token) {")
+            TB();TB();LN("bool n_" + state.name + "(StatePtr curState, StateSet& nextStates, const Token& token, bool isSuccessful) {")
 
             if state.type == StateType.Token:
-                TB();TB();TB();LN("if (token.type != TokenType::" + state.symbol + ")")
+                TB();TB();TB();LN("if (token.type != TokenType::" + state.symbol + ") {")
+                TB();TB();TB();TB();LN("curState->node->errors.emplace_back(token, std::wstring(L\"Expected " + state.symbol + ", got \")+WTokenNames[(int)token.type]);")
+                TB();TB();TB();TB();LN("curState->node->isSuccessful = false;")
+                TB();TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token, false);")
                 TB();TB();TB();TB();LN("return false;")
-                if state.variable is not None:
+                TB();TB();TB();LN("}")
+                if state.variable is not None and state.variable != "":
                     TB();TB();TB();LN("curState->node->tokenLists[\"" + state.variable + "\"].push_back(token);")
             elif state.type == StateType.Branch:
-                TB();TB();TB();LN("for (auto var : curState->outputVars) *var = curState->node;")
+                '''TB();TB();TB();LN("bool isRelevant = false;")
+                TB();TB();TB();LN("for (auto var : curState->outputVars) isRelevant = isRelevant || var->trySet(curState->node);")
+                TB();TB();TB();LN("if (!isRelevant) return false;")'''
+                TB();TB();TB();LN("for (auto var : curState->outputVars) var->trySet(curState->node);")
+
+            if state.type == StateType.Branch or state.type == StateType.Node or True:
+                TB();TB();TB();LN("curState->childStateCtr--;")
+                TB();TB();TB();LN("if (!isSuccessful) {")
+                TB();TB();TB();TB();LN("if (curState->childStateCtr == 0) {")
+                TB();TB();TB();TB();TB();LN("curState->node->isSuccessful = false;")
+                TB();TB();TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token, false);")
+                TB();TB();TB();TB();LN("}")
+                TB();TB();TB();TB();LN("return false;")
+                TB();TB();TB();LN("}")
 
             # The following happens after confirming the prod part matches:
             
             # Add next state
             if state.nextState is None:
-                TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token);")
+                TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token, true);")
             elif state.nextState.type == StateType.Branch or state.nextState.type == StateType.Proxy:
-                if state.type == StateType.Node and state.variable == ":":
-                    TB();TB();TB();LN("auto lastNode = curState->node;")
-                    TB();TB();TB();LN("while (lastNode->continuationNode) lastNode = lastNode->continuationNode;")
-                    TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, &(lastNode->continuationNode));")
-                else:
-                    TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, &(curState->node->continuationNode));")
+                TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, &(curState->node->continuationNode));")
             else:
-                if state.type == StateType.Node and state.variable == ":":
-                    TB();TB();TB();LN("auto lastNode = curState->node;")
-                    TB();TB();TB();LN("while (lastNode->continuationNode) lastNode = lastNode->continuationNode;")
-                    TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, lastNode);")
-                else:
-                    TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, curState->node);")
+                TB();TB();TB();LN("a_" + state.nextState.name + "(curState->parentStates, nextStates, curState->node);")
 
             TB();TB();TB();LN("return true;")
             TB();TB();LN("}")
@@ -774,7 +805,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
         #
 
         if state.type == StateType.Branch or state.type == StateType.Proxy:
-            TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, SemanticNodePtr* outputVar) {")
+            TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, SemanticNodeVariable* outputVar) {")
         else:
             TB();TB();LN("void a_" + state.name + "(const std::set<StatePtr>& parentStates, StateSet& nextStates, SemanticNodePtr curNode) {")
 
@@ -788,8 +819,8 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
             for subState in state.proxyForStates:
                 if subState is None:
                     TB();TB();TB();LN("Token token = Token();")
-                    TB();TB();TB();LN("for (auto par : parentStates) par->nextFunc(par, nextStates, token);")
-                    break;
+                    TB();TB();TB();LN("for (auto par : parentStates) par->nextFunc(par, nextStates, token, true);")
+                    break
             for subState in state.proxyForStates:
                 if subState is not None:
                     TB();TB();TB();LN("a_" + subState.name + "(parentStates, nextStates, outputVar);")
@@ -797,6 +828,8 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
 
             # add parents
             TB();TB();TB();LN("state->parentStates.insert(parentStates.begin(), parentStates.end());")
+            TB();TB();TB();TB();LN("for (auto par : state->parentStates) par->childStateCtr++;")
+                
             
             if state.type == StateType.Branch:
                 TB();TB();TB();LN("state->outputVars.push_back(outputVar);")
@@ -807,7 +840,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
                 TB();TB();TB();TB();LN("state->node = std::make_shared<SemanticNode_"+state.semNodeName+">();")
                 if state.branchStart is None:
                     TB();TB();TB();TB();LN("Token token = Token();")
-                    TB();TB();TB();TB();LN("for (auto par : state->parentStates) par->nextFunc(par, nextStates, token);")
+                    TB();TB();TB();TB();LN("for (auto par : state->parentStates) par->nextFunc(par, nextStates, token, true);")
                 elif state.branchStart.type == StateType.Branch or state.branchStart.type == StateType.Proxy:
                     TB();TB();TB();TB();LN("a_" + state.branchStart.name + "({state}, nextStates, &(state->node->continuationNode));")
                 else:
@@ -818,7 +851,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
                 if state.type == StateType.Node:
                     assert(parser.nodes[state.symbol].startingParserState.type == StateType.Proxy or parser.nodes[state.symbol].startingParserState.type == StateType.Branch)
                     if state.variable == ":":
-                        TB();TB();TB();TB();LN("a_" + state.symbol + "({state}, nextStates, &(curNode->continuationNode));")
+                        TB();TB();TB();TB();LN("a_" + state.symbol + "({state}, nextStates, &(curNode->replacementNode));")
                     else:
                         TB();TB();TB();TB();LN("a_" + state.symbol + "({state}, nextStates, &(curNode->nodeLists[\"" + state.variable + "\"].emplace_back(nullptr)));")
                 
@@ -835,6 +868,10 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();LN("std::string_view SemanticNode::name() const {")
     TB();TB();LN("return \"UNDEFINED_NODE\";")
     TB();LN("};")
+    TB();LN("")
+    TB();TB();LN('bool SemanticNodeVariable::trySet(SemanticNodePtr newPtr) {')
+    TB();TB();TB();LN("if (ptr == nullptr || newPtr->isSuccessful || !ptr->isSuccessful) {ptr = newPtr; return true;} else {return false;}")
+    TB();LN("}")
     TB();LN("")
     TB();LN("void SemanticNode::pullFrom(SemanticNode& other) {")
     TB();TB();LN("for (auto& varNodesPair : other.nodeLists) {")
@@ -855,6 +892,27 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
         TB();LN("SemanticNode_" + name + "::~SemanticNode_" + name + "() {}")
         TB();LN("std::string_view SemanticNode_" + name + "::name() const { return \"" + name + "\"; }")
     LN("")
+    TB();LN("SemanticNodePtr getOrganized(SemanticNodePtr node, bool checkReplacement)")
+    TB();LN("{")
+    TB();TB();LN("if (checkReplacement) {")
+    TB();TB();TB();LN("for (auto cNode = node; cNode != nullptr; cNode = cNode->continuationNode) {")
+    TB();TB();TB();TB();LN("if (cNode->replacementNode) return getOrganized(cNode->replacementNode, true);")
+    TB();TB();TB();LN("}")
+    TB();TB();LN("}")
+    TB();TB();LN("for (auto& nameListPair : node->nodeLists) {")
+    TB();TB();TB();LN("for (auto& nodePtrRef : nameListPair.second) {")
+    TB();TB();TB();TB();LN("if (nodePtrRef) nodePtrRef = getOrganized(nodePtrRef, true);")
+    TB();TB();TB();LN("}")
+    TB();TB();LN("}")
+    TB();TB();LN("if (node->continuationNode) {")
+    TB();TB();TB();LN("//auto contNodePtr = getOrganized(node->continuationNode, false);")
+    TB();TB();TB();LN("//node->pullFrom(*getOrganized(node->continuationNode, false));")
+    TB();TB();TB();LN("//node->continuationNode = nullptr;")
+    TB();TB();TB();LN("node->continuationNode = getOrganized(node->continuationNode, false);")
+    TB();TB();LN("}")
+    TB();TB();LN("return node;")
+    TB();LN("}")
+    LN("")
     TB();LN("SemanticNodePtr parse(const std::list<Token> &input, std::list<ParserError>& outErrors)")
     TB();LN("{")
     TB();TB();LN("SemanticNodePtr res = std::make_shared<SemanticNode_"+parser.nodes[parser.startNode].semNodeName+">();")
@@ -868,7 +926,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();TB();TB();LN("nextStates.stdSetHidden.clear();")
     TB();TB();TB();LN("nextStates.stdSet.clear();")
     TB();TB();TB();LN("for (auto& state : curStates) {")
-    TB();TB();TB();TB();LN("state->nextFunc(state, nextStates, *tokenIt);")
+    TB();TB();TB();TB();LN("state->nextFunc(state, nextStates, *tokenIt, true);")
     TB();TB();TB();LN("}")
     #TB();TB();TB();LN("std::wcout << \"Parsed \" << tokenIt->line << L\", position \" << tokenIt->character << L\", token \" << tokenIt->str << std::endl;")
     TB();TB();TB();LN("tokenIt++;")

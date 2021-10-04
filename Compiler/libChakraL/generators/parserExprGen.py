@@ -36,7 +36,7 @@ def outputExprProductions(filenameIn: str, filenameOut: str):
 
 			# Allow lower priority exprs
 			if prevNodeName is not None:
-				if semNodenames[nodeName] == semNodenames[prevNodeName]:
+				if semNodenames[nodeName] == semNodenames[prevNodeName] or True:
 					productions.append("<:"+prevNodeName+">")
 				else:
 					productions.append("<operands:"+prevNodeName+">")

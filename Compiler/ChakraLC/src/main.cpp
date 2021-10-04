@@ -17,18 +17,28 @@ void printNode(ChakraL::SemanticNodePtr nodePtr, int tabs)
         //printTabs(tabs); std::cout << "'" << nameListPair.first << "'" << "(nodes): ";
         for (auto np : nameListPair.second)
         {
-            if (np)
+            if (nameListPair.first.size())
             {
-                printTabs(tabs); std::cout << "'" << nameListPair.first << "': " << np->name() << " {" << std::endl;
-                printNode(np, tabs + 1);
-                printTabs(tabs); std::cout << "}";
-                std::cout << std::endl;
-            }
-            else
-            {
-                printTabs(tabs); std::cout << "'" << nameListPair.first << "': ERROR-nullptr" << std::endl;
+                if (np)
+                {
+                    printTabs(tabs); std::cout << "'" << nameListPair.first << "': " << np->name() << " {" << std::endl;
+                    printNode(np, tabs + 1);
+                    printTabs(tabs); std::cout << "}";
+                    std::cout << std::endl;
+                }
+                else
+                {
+                    printTabs(tabs); std::cout << "'" << nameListPair.first << "': ERROR-nullptr" << std::endl;
+                }
             }
         }
+    }
+    if (nodePtr->replacementNode)
+    {
+        printTabs(tabs); std::cout << "REPLACEMENT: " << nodePtr->replacementNode->name() << " {" << std::endl;
+        printNode(nodePtr->replacementNode, tabs + 1);
+        printTabs(tabs); std::cout << "}";
+        std::cout << std::endl;
     }
     for (auto& nameListPair : nodePtr->tokenLists)
     {
@@ -98,6 +108,12 @@ int main(int argc, char** argv)
         ChakraL::SemanticNodePtr node = ChakraL::parse(tokens, perrors);
         auto endParsTime = high_resolution_clock::now();
         std::cout << "Parser finished in " << duration<double>(endParsTime - startParsTime).count() << "s" << std::endl;
+
+        auto startOrgTime = high_resolution_clock::now();
+        node = ChakraL::getOrganized(node, true);
+        auto endOrgTime = high_resolution_clock::now();
+        std::cout << "Nodes organized in " << duration<double>(endOrgTime - startOrgTime).count() << "s" << std::endl;
+
         printNode(node, 1);
 
         /*for (auto& t : tokens)

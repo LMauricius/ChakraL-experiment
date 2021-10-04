@@ -108,6 +108,7 @@ namespace ChakraL {
     };
 
     extern const std::array<std::string, 95> TokenNames;
+    extern const std::array<std::wstring, 95> WTokenNames;
 
     enum class LexerState {
         S_START,
