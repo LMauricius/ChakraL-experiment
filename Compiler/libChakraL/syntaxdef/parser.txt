@@ -25,7 +25,7 @@
 # 	are alternate definitions for the last specified symbol.
 #	This is a cleaner way than using '|'
 # Instead of lexeme names, strings corresponding to a specific lexer rule's regex can be used,
-# 	enclosed with single quotes. The first regex that the string fits is used and
+# 	enclosed with double quotes. The first regex that the string fits is used and
 # 	the string is replaced with the lexeme that the rule outputs.
 #	The string allows c-like escape characters
 
@@ -36,21 +36,21 @@ file = <:contextBody>
 ###
 ### *** utils *** ###
 ###
-ONL = '\n'*
+ONL = "\n"*
 
 
 ###
 ### *** Context definitions *** ###
 ###
 
-contextBody = ( <descs:contextDescriptionEntry> | '\n')*
+contextBody = ( <descs:contextDescriptionEntry> | "\n")*
 contextBodyClosedBlock 	= <descs:contextDescriptionEntry>
-						= '\n' <:contextBody> 'ok'
+						= "\n" <:contextBody> "ok"
 
-contextDescriptionEntry = <:statement> '\n'
-						= <:traitAssertion> '\n'
+contextDescriptionEntry = <:statement> "\n"
+						= <:traitAssertion> "\n"
 
-traitAssertion = '??' <cond:expression>
+traitAssertion = "??" <cond:expression>
 
 
 ###
@@ -61,7 +61,7 @@ expression = <:exprLeast>
 
 # 0th priority expression
 exprHighest = <:identifier>
-			= '(' <ONL> <:expression> ')' <ONL>
+			= "(" <ONL> <:expression> ")" <ONL>
 			= <:literal>
 
 identifier = name:L_IDENTIFIER
@@ -81,17 +81,17 @@ valueLiteral 	= val:L_NUM_LIT [ suf:L_LIT_SUFFIX ]
 				= val:L_NUM_X_LIT [ suf:L_LIT_SUFFIX ]
 				= val:L_STR_LIT [ suf:L_LIT_SUFFIX ]
 
-listLiteral = '[' <items:expression> (',' <items:expression>)* ']'
-			= '[' <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> ']'
-setLiteral 	= '{' <items:expression> (',' <items:expression>)* '}'
-			= '{' <ONL> <items:expression> ',' (<ONL> <items:expression> ',')* <ONL> '}'
-dictLiteral = '{' ':' <items:dictEntry> (',' <items:dictEntry>)* '}'
-			= '{' ':' <ONL> <items:dictEntry> ',' (<ONL> <items:dictEntry> ',')* <ONL> '}'
-dictEntry = <key:expression> ':' <ONL> <value:expression>
+listLiteral = "[" <items:expression> ("," <items:expression>)* "]"
+			= "[" <ONL> <items:expression> "," (<ONL> <items:expression> ",")* <ONL> "]"
+setLiteral 	= "{" <items:expression> ("," <items:expression>)* "}"
+			= "{" <ONL> <items:expression> "," (<ONL> <items:expression> ",")* <ONL> "}"
+dictLiteral = "{" ":" <items:dictEntry> ("," <items:dictEntry>)* "}"
+			= "{" ":" <ONL> <items:dictEntry> "," (<ONL> <items:dictEntry> ",")* <ONL> "}"
+dictEntry = <key:expression> ":" <ONL> <value:expression>
 
-contextLiteral 	= '(' <items:memberDecl> (',' <items:memberDecl>)* ')'
-				= '(' <ONL> <items:memberDecl> (',' <ONL> <items:memberDecl>)* ',' <ONL> ')'
-memberDecl 	= member:L_IDENTIFIER '=' <value:expression>
+contextLiteral 	= "(" <items:memberDecl> ("," <items:memberDecl>)* ")"
+				= "(" <ONL> <items:memberDecl> ("," <ONL> <items:memberDecl>)* "," <ONL> ")"
+memberDecl 	= member:L_IDENTIFIER "=" <value:expression>
 			= <value:expression>
 
 
@@ -108,41 +108,41 @@ statement 	= <:expression>
 			= <:jumpStat>
 			= <:withStat>
 
-definition 	= 'def' <id:identifier> '='? <ONL> <val:expression>
-			= 'def' <id:identifier> ':' <block:contextBodyClosedBlock>
+definition 	= "def" <id:identifier> "="? <ONL> <val:expression>
+			= "def" <id:identifier> ":" <block:contextBodyClosedBlock>
 
-varDeclaration 	= 'var' <body:varRefDeclBody>
-refDeclaration 	= 'ref' <body:varRefDeclBody>
-varRefDeclBody = <items:varRefDeclEntry> (',' <ONL> <items:varRefDeclEntry>)*
+varDeclaration 	= "var" <body:varRefDeclBody>
+refDeclaration 	= "ref" <body:varRefDeclBody>
+varRefDeclBody = <items:varRefDeclEntry> ("," <ONL> <items:varRefDeclEntry>)*
 varRefDeclEntry 	= <equal:varRefDeclEntryEqual>
 				= <assign:varRefDeclEntryAssign>
-varRefDeclEntryEqual = <id:identifier> '=' <ONL> <val:expression>
-varRefDeclEntryAssign = <id:identifier> '->' <ONL> <val:expression>
+varRefDeclEntryEqual = <id:identifier> "=" <ONL> <val:expression>
+varRefDeclEntryAssign = <id:identifier> "->" <ONL> <val:expression>
 
-ifStat 	= 'if' <cond:expression> ':' <exec:statement> [ <elseStatPart> ]
-		= 'if' <cond:expression> ':' '\n' <exec:contextBody> [ <elseStatPart> ] 'ok'
-elseStatPart 	= 'else' ':' <exec:statement>
-				= 'else' ':' '\n' <exec:contextBody>
-				= 'elif' <expression> ':' <exec:statement> [ <elseStatPart> ]
-				= 'elif' <expression> ':' '\n' <exec:contextBody> [ <elseStatPart> ] 'ok'
+ifStat 	= "if" <cond:expression> ":" <exec:statement> [ <elseStatPart> ]
+		= "if" <cond:expression> ":" "\n" <exec:contextBody> [ <elseStatPart> ] "ok"
+elseStatPart 	= "else" ":" <exec:statement>
+				= "else" ":" "\n" <exec:contextBody>
+				= "elif" <expression> ":" <exec:statement> [ <elseStatPart> ]
+				= "elif" <expression> ":" "\n" <exec:contextBody> [ <elseStatPart> ] "ok"
 
-loopStat = 'repeat' <parts:loopStatPart> (';' <parts:loopStatPart>)* ':' <exec:contextBodyClosedBlock>
+loopStat = "repeat" <parts:loopStatPart> (";" <parts:loopStatPart>)* ":" <exec:contextBodyClosedBlock>
 loopStatPart 	= <:timesLoopStatPart>
 				= <:forLoopStatPart>
 				= <:whileLoopStatPart>
-timesLoopStatPart = 'times' <count:expression>
-forLoopStatPart = 'for' <id:identifier> 'in' <iterator:expression>
-whileLoopStatPart = 'while' <cond:expression>
+timesLoopStatPart = "times" <count:expression>
+forLoopStatPart = "for" <id:identifier> "in" <iterator:expression>
+whileLoopStatPart = "while" <cond:expression>
 
 jumpStat 	= <:breakStat>
 			= <:continueStat>
 			= <:returnStat>
-breakStat = 'break'
-continueStat = 'continue'
-returnStat = 'return' [ <val:expression> ]
+breakStat = "break"
+continueStat = "continue"
+returnStat = "return" [ <val:expression> ]
 
-withStat = 'with' <entries:withStatEntry> ( ',' <entries:withStatEntry> )* ':' <exec:contextBodyClosedBlock>
-withStatEntry 	= <id:identifier> '=' <val:expression>
+withStat = "with" <entries:withStatEntry> ( "," <entries:withStatEntry> )* ":" <exec:contextBodyClosedBlock>
+withStatEntry 	= <id:identifier> "=" <val:expression>
 				= <val:expression>
 
 
@@ -166,22 +166,22 @@ assignmentEqual = <:assignRef>
 				= <:orChangeVal>
 				= <:xorChangeVal>
 
-assignRef = <left:expression> ( '->' <ONL> <rights:expression> )+
-changeVal = <left:expression> ( '=' <ONL> <rights:expression> )+
-addChangeVal = <left:expression> ( '+=' <ONL> <rights:expression> )+
-subChangeVal = <left:expression> ( '-=' <ONL> <rights:expression> )+
-mulChangeVal = <left:expression> ( '*=' <ONL> <rights:expression> )+
-crossChangeVal = <left:expression> ( '×=' <ONL> <rights:expression> )+
-dotChangeVal = <left:expression> ( '⋅=' <ONL> <rights:expression> )+
-divChangeVal = <left:expression> ( '/=' <ONL> <rights:expression> )+
-intDivChangeVal = <left:expression> ( '/%=' <ONL> <rights:expression> )+
-modChangeVal = <left:expression> ( '%=' <ONL> <rights:expression> )+
-expChangeVal = <left:expression> ( '^=' <ONL> <rights:expression> )+
-shiftRChangeVal = <left:expression> ( '>>=' <ONL> <rights:expression> )+
-shiftLChangeVal = <left:expression> ( '<<=' <ONL> <rights:expression> )+
-andChangeVal = <left:expression> ( '&=' <ONL> <rights:expression> )+
-orChangeVal = <left:expression> ( '|=' <ONL> <rights:expression> )+
-xorChangeVal = <left:expression> ( '<>=' <ONL> <rights:expression> )+
+assignRef = <left:expression> ( "->" <ONL> <rights:expression> )+
+changeVal = <left:expression> ( "=" <ONL> <rights:expression> )+
+addChangeVal = <left:expression> ( "+=" <ONL> <rights:expression> )+
+subChangeVal = <left:expression> ( "-=" <ONL> <rights:expression> )+
+mulChangeVal = <left:expression> ( "*=" <ONL> <rights:expression> )+
+crossChangeVal = <left:expression> ( "×=" <ONL> <rights:expression> )+
+dotChangeVal = <left:expression> ( "⋅=" <ONL> <rights:expression> )+
+divChangeVal = <left:expression> ( "/=" <ONL> <rights:expression> )+
+intDivChangeVal = <left:expression> ( "/%=" <ONL> <rights:expression> )+
+modChangeVal = <left:expression> ( "%=" <ONL> <rights:expression> )+
+expChangeVal = <left:expression> ( "^=" <ONL> <rights:expression> )+
+shiftRChangeVal = <left:expression> ( ">>=" <ONL> <rights:expression> )+
+shiftLChangeVal = <left:expression> ( "<<=" <ONL> <rights:expression> )+
+andChangeVal = <left:expression> ( "&=" <ONL> <rights:expression> )+
+orChangeVal = <left:expression> ( "|=" <ONL> <rights:expression> )+
+xorChangeVal = <left:expression> ( "<>=" <ONL> <rights:expression> )+
 
 
 

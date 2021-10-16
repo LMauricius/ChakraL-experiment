@@ -1,5 +1,5 @@
 // ---Hello world---
-console <<= "Hello world!"
+console <<= a + "Hello world!"
 
 
 // ---State changes---
@@ -41,6 +41,7 @@ push(a, 9)
 lst = List
 // argument 'struct' will be 'lst' for all 'push' calls in the block below
 // specifically, (struct: lst) will be unionized with other arguments
+
 with struct = lst:
     // The only remaining argument is 'value', (value = 5)
     // Final argument for 'push' will be (struct = lst) && (value = 5) = (struct = lst, value = 5)

@@ -278,6 +278,7 @@ def iterParserLine(line : str) -> Iterator[str]:
     subStrStartPos = 0
     pos = 0
     insideQuotes = False
+    quoteTerm = " "
     insideEscape = False
 
     for c in line:
@@ -287,7 +288,7 @@ def iterParserLine(line : str) -> Iterator[str]:
             insideEscape = False
             if c == "\\":
                 insideEscape = True
-            elif c == "\'" and not insideEscape:
+            elif c == quoteTerm and not insideEscape:
                 insideQuotes = False
         elif c == '=' or c == '(' or c == ')' or c == '[' or c == ']' or c == '|' or c == '+' or c == '*' or c == '?':
             if len(subStr) > 0:
@@ -302,8 +303,9 @@ def iterParserLine(line : str) -> Iterator[str]:
             subStrStartPos = pos
         else:
             subStr += c
-            if c == "\'":
+            if c == "\'" or c == "\"":
                 insideQuotes = True
+                quoteTerm = c
 
     if len(subStr) > 0:
         yield subStr, subStrStartPos
@@ -385,12 +387,14 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                     curPart.type = ProductionType.Token
 
                     # quoted lexemes
-                    if "\'" in curStr:
-                        if curStr[-1] != '\'':
+                    if "\'" in curStr or "\"" in curStr:
+                        if curStr[-1] != '\'' and curStr[-1] != '\"':
                             raise FormatError("Expected a '\\''", lineInd)
 
                         # find quote
-                        startQ = curStr.find("\'")+1
+                        qPos = curStr.find("\'")
+                        if qPos == -1: qPos = curStr.find("\"")
+                        startQ = qPos+1
                         endQ = len(curStr)-1
                         qStr = unescapeString(curStr[startQ : endQ])
                         #print(curStr, qStr)
@@ -407,9 +411,9 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                         curPart.symbol = lexeme
 
                         # argument
-                        semicInd = curStr.find(':', 1)
+                        semicInd = curStr.find(':', 0)
                         if semicInd != -1 and semicInd < startQ:
-                            curPart.variable = curStr[1:semicInd]
+                            curPart.variable = curStr[0:semicInd]
                             if curPart.variable == "":
                                 raise FormatError("Lexemes can't have only semicolons for prefix", lineInd)
 
@@ -582,7 +586,7 @@ def writeParserH(parser: Parser, filename: str, lexerHeaderfile: str):
     TB();TB();LN("std::map<std::string, std::list<Token>> tokenLists;")
     TB();TB();LN("SemanticNodeVariable continuationNode = nullptr;")
     TB();TB();LN("SemanticNodeVariable replacementNode = nullptr;")
-    TB();TB();LN('bool isSuccessful = true;')
+    TB();TB();LN('size_t errorSubnodesNum = 0;')
     TB();TB();LN("")
     TB();TB();LN("std::list<ParserError> errors;")
     TB();LN("};")
@@ -762,9 +766,20 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
         if state.type != StateType.Proxy:
             TB();TB();LN("bool n_" + state.name + "(StatePtr curState, StateSet& nextStates, const Token& token, bool isSuccessful) {")
 
+            if state.type == StateType.Branch or state.type == StateType.Node:
+                TB();TB();TB();LN("curState->childStateCtr--;")
+                TB();TB();TB();LN("if (!isSuccessful) {")
+                TB();TB();TB();TB();LN("if (curState->childStateCtr == 0) {")
+                TB();TB();TB();TB();TB();LN("curState->node->isSuccessful = false;")
+                TB();TB();TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token, false);")
+                TB();TB();TB();TB();LN("}")
+                TB();TB();TB();TB();LN("return false;")
+                TB();TB();TB();LN("}")
+                TB();TB();TB();LN("curState->node->isSuccessful = true;")
+
             if state.type == StateType.Token:
                 TB();TB();TB();LN("if (token.type != TokenType::" + state.symbol + ") {")
-                TB();TB();TB();TB();LN("curState->node->errors.emplace_back(token, std::wstring(L\"Expected " + state.symbol + ", got \")+WTokenNames[(int)token.type]);")
+                TB();TB();TB();TB();LN("curState->node->errors.emplace_back(token, std::wstring(L\"("+state.name+") Expected " + state.symbol + ", got \")+WTokenNames[(int)token.type]);")
                 TB();TB();TB();TB();LN("curState->node->isSuccessful = false;")
                 TB();TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token, false);")
                 TB();TB();TB();TB();LN("return false;")
@@ -776,16 +791,6 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
                 TB();TB();TB();LN("for (auto var : curState->outputVars) isRelevant = isRelevant || var->trySet(curState->node);")
                 TB();TB();TB();LN("if (!isRelevant) return false;")'''
                 TB();TB();TB();LN("for (auto var : curState->outputVars) var->trySet(curState->node);")
-
-            if state.type == StateType.Branch or state.type == StateType.Node or True:
-                TB();TB();TB();LN("curState->childStateCtr--;")
-                TB();TB();TB();LN("if (!isSuccessful) {")
-                TB();TB();TB();TB();LN("if (curState->childStateCtr == 0) {")
-                TB();TB();TB();TB();TB();LN("curState->node->isSuccessful = false;")
-                TB();TB();TB();TB();TB();LN("for (auto par : curState->parentStates) par->nextFunc(par, nextStates, token, false);")
-                TB();TB();TB();TB();LN("}")
-                TB();TB();TB();TB();LN("return false;")
-                TB();TB();TB();LN("}")
 
             # The following happens after confirming the prod part matches:
             
@@ -828,7 +833,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
 
             # add parents
             TB();TB();TB();LN("state->parentStates.insert(parentStates.begin(), parentStates.end());")
-            TB();TB();TB();TB();LN("for (auto par : state->parentStates) par->childStateCtr++;")
+            TB();TB();TB();LN("for (auto par : state->parentStates) par->childStateCtr++;")
                 
             
             if state.type == StateType.Branch:
@@ -913,6 +918,22 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();TB();LN("return node;")
     TB();LN("}")
     LN("")
+    TB();LN("void extractErrors(SemanticNodePtr node, std::list<ParserError>& outErrors)")
+    TB();LN("{")
+    TB();TB();LN("for (auto& nameListPair : node->nodeLists) {")
+    TB();TB();TB();LN("for (auto& nodePtrRef : nameListPair.second) {")
+    TB();TB();TB();TB();LN("if (nodePtrRef) extractErrors(nodePtrRef, outErrors);")
+    TB();TB();TB();LN("}")
+    TB();TB();LN("}")
+    TB();TB();LN("if (node->continuationNode) {")
+    TB();TB();TB();LN("extractErrors(node->continuationNode, outErrors);")
+    TB();TB();LN("}")
+    TB();TB();LN("if (node->replacementNode) {")
+    TB();TB();TB();LN("extractErrors(node->replacementNode, outErrors);")
+    TB();TB();LN("}")
+    TB();TB();LN("for (auto& e : node->errors) outErrors.push_back(e);")
+    TB();LN("}")
+    LN("")
     TB();LN("SemanticNodePtr parse(const std::list<Token> &input, std::list<ParserError>& outErrors)")
     TB();LN("{")
     TB();TB();LN("SemanticNodePtr res = std::make_shared<SemanticNode_"+parser.nodes[parser.startNode].semNodeName+">();")
@@ -932,6 +953,7 @@ def writeParserCPP(parser: Parser, filename: str, headerfile: str):
     TB();TB();TB();LN("tokenIt++;")
     TB();TB();TB();LN("if (tokenIt == input.end()) {outErrors.emplace_back(Token(), L\"Parser reached the end of token list.\"); break;}")
     TB();TB();LN("}")
+    TB();TB();LN("extractErrors(res, outErrors);")
     TB();TB();LN("return res;")
     TB();LN("}")
     LN("")

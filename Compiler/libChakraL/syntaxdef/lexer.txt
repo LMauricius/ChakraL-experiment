@@ -26,12 +26,121 @@
 #0-9
 
 @S_START
-    # Basics
 
     # Get rid of carriage return in case of windows text file on unix
     ?\r
     {
     }
+
+    # Keywords
+
+    ?if
+    {
+        out L_IF
+    }
+    ?else
+    {
+        out L_ELSE
+    }
+    ?elif
+    {
+        out L_ELIF
+    }
+    ?switch
+    {
+        out L_SWITCH
+    }
+    ?case
+    {
+        out L_CASE
+    }
+    ?times
+    {
+        out L_TIMES
+    }
+    ?for
+    {
+        out L_FOR
+    }
+    ?while
+    {
+        out L_WHILE
+    }
+    ?repeat
+    {
+        out L_REPEAT
+    }
+    ?break
+    {
+        out L_BREAK
+    }
+    ?continue
+    {
+        out L_CONTINUE
+    }
+    ?return
+    {
+        out L_RETURN
+    }
+    ?yield
+    {
+        out L_YIELD
+    }
+    ?with
+    {
+        out L_WITH
+    }
+    ?def
+    {
+        out L_DEF
+    }
+    ?const
+    {
+        out L_CONST
+    }
+    ?var
+    {
+        out L_VAR
+    }
+    ?ref
+    {
+        out L_REF
+    }
+    ?new
+    {
+        out L_NEW
+    }
+    ?final
+    {
+        out L_FINAL
+    }
+    ?mutable
+    {
+        out L_MUTABLE
+    }
+    ?volatile
+    {
+        out L_VOLATILE
+    }
+    ?static
+    {
+        out L_STATIC
+    }
+    ?using
+    {
+        out L_USING
+    }
+    ?include
+    {
+        out L_INCLUDE
+    }
+    ?as
+    {
+        out L_AS
+    }
+
+
+    # Words and values
 
     ?[[:alpha:]][[:alnum:]_]*
     {
@@ -335,113 +444,6 @@
         out L_COROUTINE
     }
 
-
-    # Keywords
-
-    ?if
-    {
-        out L_IF
-    }
-    ?else
-    {
-        out L_ELSE
-    }
-    ?elif
-    {
-        out L_ELIF
-    }
-    ?switch
-    {
-        out L_SWITCH
-    }
-    ?case
-    {
-        out L_CASE
-    }
-    ?times
-    {
-        out L_TIMES
-    }
-    ?for
-    {
-        out L_FOR
-    }
-    ?while
-    {
-        out L_WHILE
-    }
-    ?repeat
-    {
-        out L_REPEAT
-    }
-    ?break
-    {
-        out L_BREAK
-    }
-    ?continue
-    {
-        out L_CONTINUE
-    }
-    ?return
-    {
-        out L_RETURN
-    }
-    ?yield
-    {
-        out L_YIELD
-    }
-    ?with
-    {
-        out L_WITH
-    }
-    ?def
-    {
-        out L_DEF
-    }
-    ?const
-    {
-        out L_CONST
-    }
-    ?var
-    {
-        out L_VAR
-    }
-    ?ref
-    {
-        out L_REF
-    }
-    ?new
-    {
-        out L_NEW
-    }
-    ?final
-    {
-        out L_FINAL
-    }
-    ?mutable
-    {
-        out L_MUTABLE
-    }
-    ?volatile
-    {
-        out L_VOLATILE
-    }
-    ?static
-    {
-        out L_STATIC
-    }
-    ?using
-    {
-        out L_USING
-    }
-    ?include
-    {
-        out L_INCLUDE
-    }
-    ?as
-    {
-        out L_AS
-    }
 
 @S_LITERAL
     ?[[:alpha:]_][[:alnum:]_]*
