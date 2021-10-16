@@ -45,7 +45,7 @@ ONL = "\n"*
 
 contextBody = ( <descs:contextDescriptionEntry> | "\n")*
 contextBodyClosedBlock 	= <descs:contextDescriptionEntry>
-						= "\n" <:contextBody> "ok"
+						= "\n" <:contextBody> "\n" "ok"
 
 contextDescriptionEntry = <:statement> "\n"
 						= <:traitAssertion> "\n"

@@ -12,6 +12,11 @@ void printTabs(int tabs)
 }
 void printNode(ChakraL::SemanticNodePtr nodePtr, int tabs)
 {
+    for (auto& e : nodePtr->errors)
+    {
+        printTabs(tabs); std::wcout << L"Error at line " << e.token.line << L", position " << e.token.character << L", token " << e.token.str << L": ";
+        std::wcout << e.msg << std::endl;
+    }
     for (auto& nameListPair : nodePtr->nodeLists)
     {
         //printTabs(tabs); std::cout << "'" << nameListPair.first << "'" << "(nodes): ";
@@ -121,6 +126,8 @@ int main(int argc, char** argv)
             std::cout << ChakraL::TokenNames[(int)t.type] << "-" << t.line << "," << t.character << ": ";
             std::wcout << t.str << std::endl;
         }*/
+        perrors.clear();
+        ChakraL::extractErrors(node, perrors);
         for (auto& e : perrors)
         {
             std::wcout << L"Error at line " << e.token.line << L", position " << e.token.character << L", token " << e.token.str << L": ";

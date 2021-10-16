@@ -8,187 +8,187 @@
 namespace ChakraL
 {
     
-    void SemanticNode_varRefDeclEntry::process() {
-    }
-    
-    void SemanticNode_assignRef::process() {
-    }
-    
-    void SemanticNode_changeVal::process() {
-    }
-    
-    void SemanticNode_subChangeVal::process() {
-    }
-    
-    void SemanticNode_expChangeVal::process() {
-    }
-    
-    void SemanticNode_contextBody::process() {
-    }
-    
-    void SemanticNode_contextBodyClosedBlock::process() {
-    }
-    
-    void SemanticNode_traitAssertion::process() {
-    }
-    
-    void SemanticNode_loopStat::process() {
-    }
-    
-    void SemanticNode_loopStatPart::process() {
-    }
-    
-    void SemanticNode_exprLUnary::process() {
-    }
-    
-    void SemanticNode_contextDescriptionEntry::process() {
-    }
-    
-    void SemanticNode_breakStat::process() {
-    }
-    
-    void SemanticNode_forLoopStatPart::process() {
-    }
-    
-    void SemanticNode_varDeclaration::process() {
-    }
-    
     void SemanticNode_andChangeVal::process() {
-    }
-    
-    void SemanticNode_varRefDeclEntryAssign::process() {
-    }
-    
-    void SemanticNode_timesLoopStatPart::process() {
-    }
-    
-    void SemanticNode_literal::process() {
-    }
-    
-    void SemanticNode_definition::process() {
-    }
-    
-    void SemanticNode_xorChangeVal::process() {
-    }
-    
-    void SemanticNode_exprPrefixFunction::process() {
-    }
-    
-    void SemanticNode_contextLiteral::process() {
-    }
-    
-    void SemanticNode_exprHighest::process() {
-    }
-    
-    void SemanticNode_varRefDeclBody::process() {
-    }
-    
-    void SemanticNode_dictEntry::process() {
-    }
-    
-    void SemanticNode_expression::process() {
-    }
-    
-    void SemanticNode_dotChangeVal::process() {
-    }
-    
-    void SemanticNode_valueLiteral::process() {
-    }
-    
-    void SemanticNode_setLiteral::process() {
-    }
-    
-    void SemanticNode_varRefDeclEntryEqual::process() {
-    }
-    
-    void SemanticNode_ifStat::process() {
-    }
-    
-    void SemanticNode_identifier::process() {
-    }
-    
-    void SemanticNode_withStat::process() {
-    }
-    
-    void SemanticNode_mulChangeVal::process() {
-    }
-    
-    void SemanticNode_crossChangeVal::process() {
-    }
-    
-    void SemanticNode_dictLiteral::process() {
-    }
-    
-    void SemanticNode_whileLoopStatPart::process() {
-    }
-    
-    void SemanticNode_divChangeVal::process() {
-    }
-    
-    void SemanticNode_shiftRChangeVal::process() {
-    }
-    
-    void SemanticNode_exprBinaryL2R::process() {
-    }
-    
-    void SemanticNode_file::process() {
-    }
-    
-    void SemanticNode_elseStatPart::process() {
-    }
-    
-    void SemanticNode_exprRUnary::process() {
-    }
-    
-    void SemanticNode_ONL::process() {
-    }
-    
-    void SemanticNode_statement::process() {
-    }
-    
-    void SemanticNode_withStatEntry::process() {
-    }
-    
-    void SemanticNode_assignmentCheck::process() {
-    }
-    
-    void SemanticNode_addChangeVal::process() {
-    }
-    
-    void SemanticNode_modChangeVal::process() {
-    }
-    
-    void SemanticNode_orChangeVal::process() {
-    }
-    
-    void SemanticNode_refDeclaration::process() {
-    }
-    
-    void SemanticNode_exprLeast::process() {
-    }
-    
-    void SemanticNode_intDivChangeVal::process() {
     }
     
     void SemanticNode_jumpStat::process() {
     }
     
-    void SemanticNode_shiftLChangeVal::process() {
+    void SemanticNode_statement::process() {
     }
     
-    void SemanticNode_assignmentEqual::process() {
-    }
-    
-    void SemanticNode_returnStat::process() {
+    void SemanticNode_dictLiteral::process() {
     }
     
     void SemanticNode_memberDecl::process() {
     }
     
+    void SemanticNode_varDeclaration::process() {
+    }
+    
+    void SemanticNode_expression::process() {
+    }
+    
+    void SemanticNode_returnStat::process() {
+    }
+    
+    void SemanticNode_loopStat::process() {
+    }
+    
+    void SemanticNode_subChangeVal::process() {
+    }
+    
+    void SemanticNode_changeVal::process() {
+    }
+    
+    void SemanticNode_setLiteral::process() {
+    }
+    
+    void SemanticNode_valueLiteral::process() {
+    }
+    
+    void SemanticNode_refDeclaration::process() {
+    }
+    
+    void SemanticNode_exprHighest::process() {
+    }
+    
+    void SemanticNode_divChangeVal::process() {
+    }
+    
+    void SemanticNode_orChangeVal::process() {
+    }
+    
+    void SemanticNode_traitAssertion::process() {
+    }
+    
+    void SemanticNode_exprLUnary::process() {
+    }
+    
+    void SemanticNode_loopStatPart::process() {
+    }
+    
+    void SemanticNode_ifStat::process() {
+    }
+    
+    void SemanticNode_crossChangeVal::process() {
+    }
+    
+    void SemanticNode_contextBodyClosedBlock::process() {
+    }
+    
+    void SemanticNode_forLoopStatPart::process() {
+    }
+    
+    void SemanticNode_literal::process() {
+    }
+    
+    void SemanticNode_breakStat::process() {
+    }
+    
+    void SemanticNode_contextDescriptionEntry::process() {
+    }
+    
+    void SemanticNode_varRefDeclEntry::process() {
+    }
+    
+    void SemanticNode_varRefDeclEntryEqual::process() {
+    }
+    
+    void SemanticNode_assignRef::process() {
+    }
+    
+    void SemanticNode_elseStatPart::process() {
+    }
+    
+    void SemanticNode_mulChangeVal::process() {
+    }
+    
+    void SemanticNode_dictEntry::process() {
+    }
+    
+    void SemanticNode_identifier::process() {
+    }
+    
+    void SemanticNode_varRefDeclEntryAssign::process() {
+    }
+    
+    void SemanticNode_contextBody::process() {
+    }
+    
+    void SemanticNode_modChangeVal::process() {
+    }
+    
+    void SemanticNode_exprBinaryL2R::process() {
+    }
+    
+    void SemanticNode_assignmentCheck::process() {
+    }
+    
+    void SemanticNode_expChangeVal::process() {
+    }
+    
+    void SemanticNode_intDivChangeVal::process() {
+    }
+    
+    void SemanticNode_contextLiteral::process() {
+    }
+    
+    void SemanticNode_withStat::process() {
+    }
+    
+    void SemanticNode_xorChangeVal::process() {
+    }
+    
+    void SemanticNode_addChangeVal::process() {
+    }
+    
+    void SemanticNode_whileLoopStatPart::process() {
+    }
+    
+    void SemanticNode_exprPrefixFunction::process() {
+    }
+    
+    void SemanticNode_withStatEntry::process() {
+    }
+    
+    void SemanticNode_exprLeast::process() {
+    }
+    
+    void SemanticNode_ONL::process() {
+    }
+    
+    void SemanticNode_shiftLChangeVal::process() {
+    }
+    
+    void SemanticNode_exprRUnary::process() {
+    }
+    
+    void SemanticNode_assignmentEqual::process() {
+    }
+    
     void SemanticNode_continueStat::process() {
     }
     
+    void SemanticNode_varRefDeclBody::process() {
+    }
+    
+    void SemanticNode_definition::process() {
+    }
+    
+    void SemanticNode_file::process() {
+    }
+    
+    void SemanticNode_timesLoopStatPart::process() {
+    }
+    
+    void SemanticNode_dotChangeVal::process() {
+    }
+    
     void SemanticNode_listLiteral::process() {
+    }
+    
+    void SemanticNode_shiftRChangeVal::process() {
     }
     
 }
