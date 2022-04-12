@@ -4,8 +4,10 @@
     # The line after is the content of the macro
 # Lines starting with '@' define in which lexer state the following rules apply.
     # States are put on a stack and the last state is the current one whose rules apply
-# Lines starting with a '?' start the definition of a rule.
-    # Following the first '?' is the regex defining the rule. The rule whose regex matches the longest string applies.
+# Lines starting with a '?' or '=' start the definition of a rule.
+    # Following the '?' and after a single space is the regex defining the rule.
+    # Following the '=' and after a single space is the exact string defining the rule. 
+    # The rule whose string or regex matches the longest input string applies.
     # The next line should contain only '{'
     # The definition ends with a line containing only '}'
     # Between the braces can be several rule commands:
@@ -28,461 +30,465 @@
 @S_START
 
     # Get rid of carriage return in case of windows text file on unix
-    ?\r
+    ? \r
     {
     }
 
     # Keywords
 
-    ?if
+    = if
     {
-        out L_IF
+        out IF
     }
-    ?else
+    = else
     {
-        out L_ELSE
+        out ELSE
     }
-    ?elif
+    = elif
     {
-        out L_ELIF
+        out ELIF
     }
-    ?switch
+    = switch
     {
-        out L_SWITCH
+        out SWITCH
     }
-    ?case
+    = case
     {
-        out L_CASE
+        out CASE
     }
-    ?times
+    = times
     {
-        out L_TIMES
+        out TIMES
     }
-    ?for
+    = for
     {
-        out L_FOR
+        out FOR
     }
-    ?while
+    = while
     {
-        out L_WHILE
+        out WHILE
     }
-    ?repeat
+    = repeat
     {
-        out L_REPEAT
+        out LOOP_MARK
     }
-    ?break
+    = break
     {
-        out L_BREAK
+        out BREAK
     }
-    ?continue
+    = continue
     {
-        out L_CONTINUE
+        out CONTINUE
     }
-    ?return
+    = return
     {
-        out L_RETURN
+        out RETURN
     }
-    ?yield
+    = yield
     {
-        out L_YIELD
+        out YIELD
     }
-    ?with
+    = with
     {
-        out L_WITH
+        out WITH
     }
-    ?def
+    = def
     {
-        out L_DEF
+        out DEF
     }
-    ?const
+    = const
     {
-        out L_CONST
+        out CONST
     }
-    ?var
+    = var
     {
-        out L_VAR
+        out VAR
     }
-    ?ref
+    = ref
     {
-        out L_REF
+        out REF
     }
-    ?new
+    = new
     {
-        out L_NEW
+        out NEW
     }
-    ?final
+    = final
     {
-        out L_FINAL
+        out FINAL
     }
-    ?mutable
+    = mutable
     {
-        out L_MUTABLE
+        out MUTABLE
     }
-    ?volatile
+    = volatile
     {
-        out L_VOLATILE
+        out VOLATILE
     }
-    ?static
+    = static
     {
-        out L_STATIC
+        out STATIC
     }
-    ?using
+    = using
     {
-        out L_USING
+        out USING
     }
-    ?include
+    = include
     {
-        out L_INCLUDE
+        out INCLUDE
     }
-    ?as
+    = as
     {
-        out L_AS
+        out AS
+    }
+
+    # Symbols
+
+    = ,
+    {
+        out COMMA
+    }
+    = ;
+    {
+        out SEMICOLON
+    }
+    = :
+    {
+        out COLON
+    }
+    = ok
+    {
+        out BLOCK_END
+    }
+    = in
+    {
+        out IN
+    }
+    
+    = +
+    {
+        out ADD
+    }
+    = -
+    {
+        out SUB
+    }
+    = *
+    {
+        out MUL
+    }
+    = /
+    {
+        out DIV
+    }
+    = /%
+    {
+        out INT_DIV
+    }
+    = %
+    {
+        out MOD
+    }
+    = ^
+    {
+        out EXP
+    }
+    = >>
+    {
+        out SHIFT_RIGHT
+    }
+    = <<
+    {
+        out SHIFT_LEFT
+    }
+    = &
+    {
+        out AND
+    }
+    = |
+    {
+        out OR
+    }
+    = <>
+    {
+        out XOR
+    }
+    ? ×|\\cross
+    {
+        out CROSS
+    }
+    ? ⋅|\\dot
+    {
+        out DOT
+    }
+    
+    = =
+    {
+        out CHANGE
+    }
+    = ->
+    {
+        out ASSIGN
+    }
+    = +=
+    {
+        out ADD_CHANGE
+    }
+    = ++
+    {
+        out INCREMENT
+    }
+    = --
+    {
+        out DECREMENT
+    }
+    = -=
+    {
+        out SUB_CHANGE
+    }
+    = *=
+    {
+        out MUL_CHANGE
+    }
+    = /=
+    {
+        out DIV_CHANGE
+    }
+    = /%=
+    {
+        out INT_DIV_CHANGE
+    }
+    = %=
+    {
+        out MOD_CHANGE
+    }
+    = ^=
+    {
+        out EXP_CHANGE
+    }
+    = >>=
+    {
+        out SHR_CHANGE
+    }
+    = <<=
+    {
+        out SHL_CHANGE
+    }
+    = &=
+    {
+        out AND_CHANGE
+    }
+    = |=
+    {
+        out OR_CHANGE 
+    }
+    = <>=
+    {
+        out XOR_CHANGE
+    }
+    ? ×=|\\cross=
+    {
+        out CROSS_CHANGE
+    }
+    ? ⋅=|\\dot=
+    {
+        out DOT_CHANGE
+    }
+
+    = !
+    {
+        out NOT
+    }
+    = ?=
+    {
+        out EQUAL
+    }
+    = !=
+    {
+        out NOTEQ
+    }
+    = ?->
+    {
+        out ASSIGNED
+    }
+    = !->
+    {
+        out NOTASS
+    }
+    = <
+    {
+        out LESS
+    }
+    = >
+    {
+        out GREAT
+    }
+    = <=
+    {
+        out LEEQ
+    }
+    = >=
+    {
+        out GREQ
+    }
+    = +&
+    {
+        out TRAIT_AND
+    }
+    = +|
+    {
+        out TRAIT_OR
+    }
+    = +?
+    {
+        out TRAIT_AND_COND
+    }
+    = ??
+    {
+        out ASSERT_MARK
+    }
+    = ?
+    {
+        out QUEST
+    }
+    = (
+    {
+        out LPAR
+    }
+    = )
+    {
+        out RPAR
+    }
+    = [
+    {
+        out LBRACK
+    }
+    = ]
+    {
+        out RBRACK
+    }
+    = {
+    {
+        out LBRACE
+    }
+    = }
+    {
+        out RBRACE
+    }
+    = .
+    {
+        out MEMBER
+    }
+    = ..
+    {
+        out RANGE_INCL
+    }
+    = ...
+    {
+        out RANGE_EXCL
+    }
+    = =>
+    {
+        out FUNCTION_EXPR
+    }
+    = <=>
+    {
+        out COROUTINE_EXPR
     }
 
 
     # Words and values
 
-    ?[[:alpha:]][[:alnum:]_]*
+    ? [[:alpha:]][[:alnum:]_]*
     {
-        noAutoDetect
-        out L_IDENTIFIER
+        out IDENTIFIER
+        storeString
     }
-    ?[[:digit:]]+(_[[:digit:]]|[[:digit:]])*(\.[[:digit:]]+)?
+    ? [[:digit:]]+(_[[:digit:]]|[[:digit:]])*(\.[[:digit:]]+)?
     {
-        noAutoDetect
-        out L_NUM_LIT
+        out NUM_LIT
         push S_LITERAL
+        storeString
     }
-    ?0b[01]([_01]|[01])*(\.[_01]+)?
+    ? 0b[01]([_01]|[01])*(\.[_01]+)?
     {
-        noAutoDetect
-        out L_NUM_B_LIT
+        out NUM_B_LIT
         push S_LITERAL
+        storeString
     }
-    ?0o[0-7]([_0-7]|[0-7])*(\.[_0-7]+)?
+    ? 0o[0-7]([_0-7]|[0-7])*(\.[_0-7]+)?
     {
-        noAutoDetect
-        out L_NUM_O_LIT
+        out NUM_O_LIT
         push S_LITERAL
+        storeString
     }
-    ?0x[[:xdigit:]]([_[:xdigit:]]|[[:xdigit:]])*(\.[_[:xdigit:]]+)?
+    ? 0x[[:xdigit:]]([_[:xdigit:]]|[[:xdigit:]])*(\.[_[:xdigit:]]+)?
     {
-        noAutoDetect
-        out L_NUM_X_LIT
+        out NUM_X_LIT
         push S_LITERAL
+        storeString
     }
-    ?"([^\\"]|\\.)*"
+    ? "([^\\"]|\\.)*"
     {
-        noAutoDetect
-        out L_STR_LIT
+        out STR_LIT
         push S_LITERAL
+        storeString
     }
-    ?'([^\\']|\\.)'
+    ? '([^\\']|\\.)'
     {
-        noAutoDetect
-        out L_CHAR_LIT
+        out CHAR_LIT
+        storeString
     }
-    ?[:newl:]
+    ? [:newl:]
     {
-        out L_NEW_LN
+        out NL
     }
-    ?[[:blank:]]
+    ? [[:blank:]]
     {
     }
-    ?//
+    = //
     {
         push S_SINGLELINE_COMMENT
     }
-    ?/\*
+    = /*
     {
         push S_MULTILINE_COMMENT
     }
 
-    # Symbols
-
-    ?,
-    {
-        out L_COMMA
-    }
-    ?;
-    {
-        out L_SEMICOLON
-    }
-    ?:
-    {
-        out L_COLON
-    }
-    ?ok
-    {
-        out L_OK
-    }
-    ?in
-    {
-        out L_IN
-    }
-    
-    ?\+
-    {
-        out L_ADD
-    }
-    ?\-
-    {
-        out L_SUB
-    }
-    ?\*
-    {
-        out L_MUL
-    }
-    ?/
-    {
-        out L_DIV
-    }
-    ?/%
-    {
-        out L_INT_DIV
-    }
-    ?%
-    {
-        out L_MOD
-    }
-    ?\^
-    {
-        out L_EXP
-    }
-    ?>>
-    {
-        out L_SHIFT_RIGHT
-    }
-    ?<<
-    {
-        out L_SHIFT_LEFT
-    }
-    ?&
-    {
-        out L_AND
-    }
-    ?\|
-    {
-        out L_OR
-    }
-    ?<>
-    {
-        out L_XOR
-    }
-    ?×|\\cross
-    {
-        out L_CROSS
-    }
-    ?⋅|\\dot
-    {
-        out L_DOT
-    }
-    
-    ?[=]
-    {
-        out L_CHANGE
-    }
-    ?\->
-    {
-        out L_ASSIGN
-    }
-    ?\+[=]
-    {
-        out L_ADD_CHANGE
-    }
-    ?\+\+
-    {
-        out L_INCREMENT
-    }
-    ?--
-    {
-        out L_DECREMENT
-    }
-    ?\-[=]
-    {
-        out L_SUB_CHANGE
-    }
-    ?\*[=]
-    {
-        out L_MUL_CHANGE
-    }
-    ?/[=]
-    {
-        out L_DIV_CHANGE
-    }
-    ?/%[=]
-    {
-        out L_INT_DIV_CHANGE
-    }
-    ?%[=]
-    {
-        out L_MOD_CHANGE
-    }
-    ?\^[=]
-    {
-        out L_EXP_CHANGE
-    }
-    ?>>[=]
-    {
-        out L_SHIFT_RIGHT_CHANGE
-    }
-    ?<<[=]
-    {
-        out L_SHIFT_LEFT_CHANGE
-    }
-    ?&[=]
-    {
-        out L_AND_CHANGE
-    }
-    ?\|[=]
-    {
-        out L_OR_CHANGE
-    }
-    ?<>[=]
-    {
-        out L_XOR_CHANGE
-    }
-    ?×|\\cross
-    {
-        out L_CROSS_CHANGE
-    }
-    ?⋅|\\dot
-    {
-        out L_DOT_CHANGE
-    }
-
-    ?!
-    {
-        out L_NOT
-    }
-    ?\?[=]
-    {
-        out L_EQUAL
-    }
-    ?![=]
-    {
-        out L_NOTEQ
-    }
-    ?\?\->
-    {
-        out L_ASSIGNED
-    }
-    ?!\->
-    {
-        out L_NOTASS
-    }
-    ?<
-    {
-        out L_LESS
-    }
-    ?>
-    {
-        out L_GREAT
-    }
-    ?<[=]
-    {
-        out L_LEEQ
-    }
-    ?>[=]
-    {
-        out L_GREQ
-    }
-    ?\+&
-    {
-        out L_TRAIT_AND
-    }
-    ?\+\|
-    {
-        out L_TRAIT_OR
-    }
-    ?\+\?
-    {
-        out L_TRAIT_AND_COND
-    }
-    ?\?\?
-    {
-        out L_TRAIT_COND
-    }
-    ?\?
-    {
-        out L_QUEST
-    }
-    ?\(
-    {
-        out L_LEFT_PAR
-    }
-    ?\)
-    {
-        out L_RIGHT_PAR
-    }
-    ?\[
-    {
-        out L_LEFT_BRACK
-    }
-    ?\]
-    {
-        out L_RIGHT_BRACK
-    }
-    ?\{
-    {
-        out L_LEFT_BRACE
-    }
-    ?\}
-    {
-        out L_RIGHT_BRACE
-    }
-    ?\.
-    {
-        out L_MEMBER
-    }
-    ?[=]>
-    {
-        out L_FUNCTION
-    }
-    ?<[=]>
-    {
-        out L_COROUTINE
-    }
-
 
 @S_LITERAL
-    ?[[:alpha:]_][[:alnum:]_]*
+    ? [[:alpha:]_][[:alnum:]_]*
     {
-        noAutoDetect
-        out L_LIT_SUFFIX
+        out LIT_SUFFIX
+        storeString
         pop
     }
-    ?
+    ? 
     {
         pop
     }
 
 @S_SINGLELINE_COMMENT
     # skip all until end of line
-    ?[^[:newl:]]*
+    ? [^[:newl:]]*
     {
-        noAutoDetect
     }
 
-    ?[:newl:]
+    ? [:newl:]
     {
-        noAutoDetect
+        out NL
         pop
     }
 
 @S_MULTILINE_COMMENT
     # skip all until end of comment
-    ?([^*/]|\*[^/]|/[^\*])*
+    ? ([^*/]|\*[^/]|/[^\*])*
     {
-        noAutoDetect
     }
-    ?/\*
+    = /*
     {
-        noAutoDetect
         push S_MULTILINE_COMMENT
     }
-    ?\*/
+    = */
     {
-        noAutoDetect
         pop
     }

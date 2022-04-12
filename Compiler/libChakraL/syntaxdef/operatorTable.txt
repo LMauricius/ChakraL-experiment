@@ -2,59 +2,67 @@
 # associativity('<' | '>') type('BINARY' | 'LUNARY' | 'RUNARY') nodeName [semNodeName]
 # if the semantic node name is not specified, it will be set to the parse node name
 #
-# operators in a group are defined like this:
-# token|regex
+# operators in a group are defined after the group, each in its own line, like this:
+# (token name OR string corresponding to a token)
 #
 # @ symbol marks an externally defined production
 # @nodeName
-# if the nodeName is put before any other operator group, 
+# if the nodeName is put before another operator group, 
 # 	the next group will treat it as an expression of previous lower priority and a production will be added:
 #	next = <operands:nodeName>
 # if the nodeName is put after another operator group,
 # 	it will be treated as an expression of next higher priority and a production will be added:
 #	nodeName = <operands:prev>
+# : symbol marks a custom production that will be added after productions for the previous operator group
 
-@exprHighest
+@ExprHighest
 
-> BINARY exprSuffixFunction exprBinaryL2R
+> BINARY ExprSuffixFunction ExprBinaryL2R
 '.'
 
-< LUNARY exprPrefix exprLUnary
-'++'
+< LUNARY ExprSign ExprLUnary
 '+'
 '-'
+
+# We don't allow sign operators usage in expressions, except when surrounded by parentheses
+: ExprHighest = '(' .:ExprSign ')'
+@ExprSuffixFunction
+
+< LUNARY ExprPrefix ExprLUnary
+'++'
 '!'
 
-> RUNARY exprSuffix exprRUnary
+> RUNARY ExprSuffix ExprRUnary
 '++'
 '--'
 
-< BINARY exprPrefixFunction exprPrefixFunction
+< BINARY ExprPrefixFunction ExprPrefixFunction
 ''
 
-< LUNARY exprCopy exprLUnary
-'new'
+< LUNARY ExprCopy ExprLUnary
+NEW
 
-> BINARY exprExponent exprBinaryL2R
+> BINARY ExprExponent ExprBinaryL2R
 '^'
 
-> BINARY exprMultiplication exprBinaryL2R
+> BINARY ExprMultiplication ExprBinaryL2R
 '*'
-'×'
-'⋅'
+CROSS
+DOT
 '/'
 '/%'
 '%'
 
-> BINARY exprAddition exprBinaryL2R
+> BINARY ExprAddition ExprBinaryL2R
 '+'
 '-'
 
-> BINARY exprShift exprBinaryL2R
+> BINARY ExprShift ExprBinaryL2R
 '<<'
 '>>'
 
-> BINARY exprComparison exprBinaryL2R
+
+> BINARY ExprComparison ExprBinaryL2R
 '<'
 '>'
 '<='
@@ -62,20 +70,24 @@
 '?='
 '!='
 
-> BINARY exprCompAssigned assignmentCheck exprBinaryL2R
-'?->'
-'!->'
+> BINARY ExprCompAssigned assignmentCheck ExprBinaryL2R
+ASSIGNED
+NOTASS
 
-> BINARY exprLogAnd  exprBinaryL2R
+> BINARY ExprLogAnd  ExprBinaryL2R
 '&'
 
-> BINARY exprLogXOr  exprBinaryL2R
+> BINARY ExprLogXOr  ExprBinaryL2R
 '<>'
 
-> BINARY exprLogOr  exprBinaryL2R
+> BINARY ExprLogOr  ExprBinaryL2R
 '|'
 
-: exprLeast = <:exprLogOr>
+> BINARY RangeLiteral RangeLiteral
+'..'
+'...'
+
+: Expression = .:RangeLiteral
 
 
 

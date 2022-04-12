@@ -8,13 +8,13 @@
 
 void printTabs(int tabs)
 {
-    for (int i=0; i < tabs; i++) std::cout << "  ";
+    for (int i=0; i < tabs; i++) std::cout << "    ";
 }
 void printNode(ChakraL::SemanticNodePtr nodePtr, int tabs)
 {
     for (auto& e : nodePtr->errors)
     {
-        printTabs(tabs); std::wcout << L"Error at line " << e.token.line << L", position " << e.token.character << L", token " << e.token.str << L": ";
+        printTabs(tabs); std::wcout << L"Error at line " << e.token.line << L", position " << e.token.character << L", token " << ChakraL::WTokenNames[(int)e.token.type] << " '" << e.token.str << L"': ";
         std::wcout << e.msg << std::endl;
     }
     for (auto& nameListPair : nodePtr->nodeLists)
@@ -38,13 +38,13 @@ void printNode(ChakraL::SemanticNodePtr nodePtr, int tabs)
             }
         }
     }
-    if (nodePtr->replacementNode)
+    /*if (nodePtr->replacementNode)
     {
         printTabs(tabs); std::cout << "REPLACEMENT: " << nodePtr->replacementNode->name() << " {" << std::endl;
         printNode(nodePtr->replacementNode, tabs + 1);
         printTabs(tabs); std::cout << "}";
         std::cout << std::endl;
-    }
+    }*/
     for (auto& nameListPair : nodePtr->tokenLists)
     {
         //printTabs(tabs); std::cout << "'" << nameListPair.first << "'" << "(tokens): ";
@@ -56,10 +56,10 @@ void printNode(ChakraL::SemanticNodePtr nodePtr, int tabs)
             std::cout << std::endl;
         }
     }
-    if (nodePtr->continuationNode)
+    /*if (nodePtr->continuationNode)
     {
         printNode(nodePtr->continuationNode, tabs);
-    }
+    }*/
 }
 
 int main(int argc, char** argv)
@@ -97,10 +97,12 @@ int main(int argc, char** argv)
         auto endLexTime = high_resolution_clock::now();
         std::cout << "Lexer finished in " << duration<double>(endLexTime - startLexTime).count() << "s" << std::endl;
 
+        int tokI = 0;
         for (auto& t : tokens)
         {
-            std::cout << ChakraL::TokenNames[(int)t.type] << "-" << t.line << "," << t.character << ": ";
+            std::cout << tokI << " " << ChakraL::TokenNames[(int)t.type] << "-" << t.line << "," << t.character << ": ";
             std::wcout << t.str << std::endl;
+            tokI++;
         }
         for (auto& e : lerrors)
         {
@@ -114,11 +116,11 @@ int main(int argc, char** argv)
         auto endParsTime = high_resolution_clock::now();
         std::cout << "Parser finished in " << duration<double>(endParsTime - startParsTime).count() << "s" << std::endl;
 
-        auto startOrgTime = high_resolution_clock::now();
-        node = ChakraL::getOrganized(node, true);
+        /*auto startOrgTime = high_resolution_clock::now();
+        //node = ChakraL::getOrganized(node, true);
         auto endOrgTime = high_resolution_clock::now();
         std::cout << "Nodes organized in " << duration<double>(endOrgTime - startOrgTime).count() << "s" << std::endl;
-
+*/
         printNode(node, 1);
 
         /*for (auto& t : tokens)
@@ -128,9 +130,10 @@ int main(int argc, char** argv)
         }*/
         perrors.clear();
         ChakraL::extractErrors(node, perrors);
+        std::wcout << perrors.size() << L" errors found:" << std::endl;
         for (auto& e : perrors)
         {
-            std::wcout << L"Error at line " << e.token.line << L", position " << e.token.character << L", token " << e.token.str << L": ";
+            std::wcout << L"\tError at line " << e.token.line << L", position " << e.token.character << L", token " << ChakraL::WTokenNames[(int)e.token.type] << " '" << e.token.str << L"': ";
             std::wcout << e.msg << std::endl;
         }
 

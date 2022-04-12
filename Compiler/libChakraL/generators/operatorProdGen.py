@@ -1,7 +1,12 @@
 from __future__ import annotations
 from genUtil import *
 
-def outputExprProductions(filenameIn: str, filenameOut: str):
+'''
+This file contains the function for converting the 'operator table' file
+to a parser production list file
+'''
+
+def outputOperatorProductions(filenameIn: str, filenameOut: str):
 	print("Writing operator productions ", filenameOut)
 	f = open(filenameOut, "wt")
 	
@@ -34,17 +39,17 @@ def outputExprProductions(filenameIn: str, filenameOut: str):
 		def writeProductions():
 			productions: list[str] = []
 
-			# Allow lower priority exprs
-			if prevNodeName is not None:
-				if semNodenames[nodeName] == semNodenames[prevNodeName] or True:
-					productions.append("<:"+prevNodeName+">")
-				else:
-					productions.append("<operands:"+prevNodeName+">")
-
 			# Add operators
 			if template is not None and len(operators)>0:
 				productions.append(template.format(cur = nodeName, prev = prevNodeName, op = ops2RegexSelect(operators)))
 			operators.clear()
+
+			# Allow lower priority exprs
+			if prevNodeName is not None:
+				if semNodenames[nodeName] == semNodenames[prevNodeName] or True:
+					productions.append(".:"+prevNodeName+"")
+				else:
+					productions.append(".:"+prevNodeName+"")
 
 			# Add productions to expression
 			first = True
@@ -99,17 +104,17 @@ def outputExprProductions(filenameIn: str, filenameOut: str):
 				
 				if optype == 'BINARY':
 					if assoc == '>':
-						template = "<operands:{prev}> ( {op} <operands:{prev}> )+"
+						template = "operands:{prev} ( {op} operands:{prev} )+"
 					else:
-						template = "<operands:{prev}> ( {op} <operands:{prev}> )+"
+						template = "operands:{prev} ( {op} operands:{prev} )+"
 				elif optype == 'RUNARY':
 					if assoc != '>':
 						raise FormatError("RUNARY can't be <", lineInd)
-					template = "<operands:{prev}> {op}+"
+					template = "operands:{prev} {op}+"
 				elif optype == 'LUNARY':
 					if assoc != '<':
 						raise FormatError("LUNARY can't be >", lineInd)
-					template = "{op}+ <operands:{prev}>"
+					template = "{op}+ operands:{prev}"
 				else:
 					raise FormatError("Expected BINARY or RUNARY or LUNARY", lineInd)
 			else:

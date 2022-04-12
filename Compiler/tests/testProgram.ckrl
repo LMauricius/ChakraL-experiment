@@ -1,5 +1,5 @@
 // ---Hello world---
-console <<= a + "Hello world!"
+console <<= a + "Hello world!" * 1
 
 
 // ---State changes---
@@ -24,6 +24,7 @@ p = Pair(first = "one", second = "two")
 p = Pair("one", "two")
 
 l = List// A copy of 'prototype' List. List is a final context i.e. it can't be changed, but its copies are just normal contexts
+
 a = Array(source = l)// Array is a fixed size List
 a = v.Array// Same as above. This is analoguous to a 'cast' in other languages
 m = Matrix(rows = 3, columns = 3)
@@ -42,14 +43,14 @@ lst = List
 // argument 'struct' will be 'lst' for all 'push' calls in the block below
 // specifically, (struct: lst) will be unionized with other arguments
 
-with struct = lst:
+/*with struct = lst:
     // The only remaining argument is 'value', (value = 5)
     // Final argument for 'push' will be (struct = lst) && (value = 5) = (struct = lst, value = 5)
     push 5
     push 4
     push 6
     push 9
-ok
+ok*/
 m = Matrix(rows = 3, columns = 3) 
 // NulMatrix(y, x) returns 0 for any x, y
 m = NulMatrix// Only mutable values are equalized during an '=' operation, so m will have all the properties of a Matrix(3, 3) except all fields will be 0
@@ -69,47 +70,51 @@ l = lst.length// prefered
 
 // ---Cool features and shortcuts---
 
-r = 5...65
+//r = 5...65
 p = ("one", "two")
 v = [5, 4, 6, 9]
 a = Array[5, 4, 6, 9]
 l = List[5, 4, 6, 9]
-m = [1, 0, 0;
+/*m = [1, 0, 0;
 	 0, 1, 0;
-	 0, 0, 1]
+	 0, 0, 1]*/
 
 
 // ---Program flow---
 
 a = Int
 b = Int
-console >> a >> b
+console >>= a >>= b
 if a < b:
-	console << a << " is less than " << b
-else if a > b:
-	console << a << " is greater than " << b
+
+	console <<= a <<= " is less than " <<= b
+elif a > b:
+	console <<= a <<= " is greater than " <<= b
 else:
-	console << a << " and " b << " are equal"
+	console <<= a <<= " and " b <<= " are equal"
 ok
 
-for i in 0..10: console << i << NewLn
+for i in 0..10:
+    console <<= i <<= NewLn
+ok
 
 command = String
 running = True
 while running:
     console >> command
     if command ?= "exit": running = False
+
 ok
 
 // 'repeat' allows us to simply repeat code several times, or use complex repeating behavior
-repeat 10:
-    console << "Hi!" << NewLn
+repeat times 10:
+    console <<= "Hi!" <<= NewLn
 ok // Prints 'Hi!' 10 times
 
 // Alternative to classic "do-while" loop, repeats at least once, then repeats while expression is true
 command = String
 repeat times 1; while command ?= "exit":
-    console >> command
+    console >>= command
 ok
 
 
@@ -141,7 +146,7 @@ def Attack(agent: Actor, target: Actor)<=>
     agent.animation = "Attack1"
     MoveTowards(agent: agent, position: target.position, speed: 3mps)
 
-    until (agent.position - target.position).distance < 0.5m: yield
+    while !((agent.position - target.position).distance < 0.5m): yield
 
     // the target should be thrown away
     MoveTowards(agent: target, position: (target.position + (agent.position-target.position)), speed: 6mps)
@@ -158,10 +163,10 @@ ok
 
 // For function definitions, with block adds the values to the parameter 
 with agent = Actor:
-    def Attack(target: Actor)=>
+    def Attack(target: Actor)<=>
         agent.animation = "Attack1"
         MoveTowards(position: target.position, speed: 3mps)
-        until (agent.position - target.position).distance < 0.5m: yield
+        while !((agent.position - target.position).distance < 0.5m): yield
 
         with agent = target:
             MoveTowards(position: (target.position + (attacker.position-target.position)), speed: 6mps)
