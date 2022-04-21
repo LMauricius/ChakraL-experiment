@@ -36,7 +36,7 @@ def writeRecursiveParserH(parser: Parser, filename: str, lexerHeaderfile: str, e
     LN("namespace ChakraL {")
     LN("")
     
-    for name in parser.semNodeNames:
+    for name, semNode in parser.semNodes.items():
         TB();LN("class SemanticNode_" + name + " : public SemanticNode { public: ~SemanticNode_" + name + "(); void process(); std::string_view name() const; };")
     LN("")
     
@@ -319,7 +319,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     TB();TB();TB();TB();LN("state->nodeVarStack.pop_back();")
     TB();TB();TB();LN("}")
     TB();TB();LN("};")'''
-    for semNodeName in parser.semNodeNames:
+    for name, semNode in parser.semNodes.items():
         TB();TB();LN(f"struct CommPushNode_{semNodeName} : public ParserCommand {{")
         TB();TB();TB();LN("virtual void operator()(ParserState* state, SemanticNodePtr* varPtr) {")
         TB();TB();TB();TB();LN(f"(*varPtr) = std::make_shared<SemanticNode_{semNodeName}>();")
@@ -498,7 +498,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
 
     LN("")
 
-    for name in parser.semNodeNames:
+    for name, semNode in parser.semNodes.items():
         TB();LN("SemanticNode_" + name + "::~SemanticNode_" + name + "() {}")
         TB();LN("std::string_view SemanticNode_" + name + "::name() const { return \"" + name + "\"; }")
 

@@ -5,6 +5,7 @@ from enum import Enum
 from typing import Iterator, List
 from genUtil import *
 from lexerGen import *
+from semanticMethodGen import *
 import time
 
 NO_OUTPUT_PRODUCTION_STR = "-"
@@ -71,9 +72,10 @@ class Parser:
     def __init__(self):
         self.startProduction = ""
         self.productions: dict[str, Production] = {}
-        self.semNodeNames: set[str] = set()
+        #self.semNodeNames: set[str] = set()
         self.parserStates: list[ParserState] = []
         self.productionParts: list[ProductionPart] = []
+        self.semNodes : OrderedDict[str, SemanticNode] = OrderedDict()
 
 def detectAndMarkRecursions(poss : list[ProductionPart], nodeName: str):
     poss.isRecursive = None
@@ -600,7 +602,8 @@ def loadParser(lexer: Lexer, filename: str):
         
         for name, prod in parser.productions.items():
             if prod.semNodeName != NO_OUTPUT_PRODUCTION_STR and prod.semNodeName != FALTHRU_OUTPUT_PRODUCTION_STR:
-                parser.semNodeNames.add(prod.semNodeName)
+                #parser.semNodeNames.add(prod.semNodeName)
+                parser.semNodes.setdefault(prod.semNodeName, SemanticNode())
 
         print("Converting to state machine...")
         startTime = time.time()
