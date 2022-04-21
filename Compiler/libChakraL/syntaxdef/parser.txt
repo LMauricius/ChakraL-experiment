@@ -36,24 +36,21 @@
 
 
 
-File = <!> .:Context END_OF_STR
+File = <!> .:ContextBlock END_OF_STR
 	-> ::
 
 
 ###
-### *** Context definitions *** ###
+### *** ContextBlock definitions *** ###
 ###
 
-Context = ( NL | descs::DescriptionEntry <!> <$> NL)*
+ContextBlock = ( NL | descs::DescriptionEntry <!> <$> NL)*
 ContextLine = descs::DescriptionEntry
-			-> Context
-#ContextBlock 	= NL <!> (<$> NL | descs::DescriptionEntry <!> NL )* <$> BLOCK_END
-#				= descs::DescriptionEntry
-#				-> Context
+			-> ContextBlock
 
 DescriptionEntry 	= .:Statement
 					= .:TraitAssertion
-					-> ::
+					-> DescriptionEntry
 
 TraitAssertion = ASSERT_MARK cond:Expression
 
@@ -76,7 +73,7 @@ ExprHighest = .:Identifier
 
 Literal 	= .:FunctionLiteral
 			= .:CoroutineLiteral
-			= .:ContextLiteral
+			= .:ContextBlockLiteral
 			= .:ValueLiteral
 			= .:ListLiteral
 			= .:DictLiteral
@@ -97,13 +94,13 @@ DictLiteral = '{' ':' <!> items::DictEntry (<$> ',' items::DictEntry)* <$> '}'
 			= '{' ':' <!> NL* items::DictEntry <$> ',' (NL* items::DictEntry <$> ',')* NL* <$> '}'
 DictEntry = key:Expression ':' <!> NL* value:Expression
 
-ContextLiteral 	= '(' items::MemberDecl (<$> ',' <!> items::MemberDecl)* <$> ')'
+ContextBlockLiteral 	= '(' items::MemberDecl (<$> ',' <!> items::MemberDecl)* <$> ')'
 				= '(' NL* items::MemberDecl (<$> ',' <!> NL* items::MemberDecl)* <$> ',' NL* <$> ')'
 MemberDecl 	= member:IDENTIFIER ( ':' <!> trait:Expression [ '=' <!> value:Expression ] | '=' <!> value:Expression )
 			= value:Expression
 
-FunctionLiteral = param:ContextLiteral FUNCTION_EXPR (block:ContextLine | NL <!> block:Context <$> BLOCK_END)
-CoroutineLiteral = param:ContextLiteral COROUTINE_EXPR (block:ContextLine | NL <!> block:Context <$> BLOCK_END)
+FunctionLiteral = param:ContextBlockLiteral FUNCTION_EXPR (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
+CoroutineLiteral = param:ContextBlockLiteral COROUTINE_EXPR (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
 
 
 ###
@@ -120,15 +117,15 @@ Statement 	= .:Definition
 			-> ::
 
 Definition 	= DEF <!> id:IDENTIFIER '='? NL* val:Expression
-			= DEF <!> id:IDENTIFIER ':' (block:ContextLine | NL <!> block:Context <$> BLOCK_END)
+			= DEF <!> id:IDENTIFIER ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
 
-IfStat 	= IF <!> cond:Expression <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:Context ( <$> alt:ElseStatPart | <$> BLOCK_END) )
-ElseStatPart 	= ELSE <!> <$> ':' (exec:ContextLine | NL <!> exec:Context <$> BLOCK_END)
+IfStat 	= IF <!> cond:Expression <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:ContextBlock ( <$> alt:ElseStatPart | <$> BLOCK_END) )
+ElseStatPart 	= ELSE <!> <$> ':' (exec:ContextLine | NL <!> exec:ContextBlock <$> BLOCK_END)
 				= .:ElifStatPart
-ElifStatPart 	= ELIF <!> cond:Expression <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:Context ( <$> alt:ElseStatPart | <$> BLOCK_END) )
+ElifStatPart 	= ELIF <!> cond:Expression <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:ContextBlock ( <$> alt:ElseStatPart | <$> BLOCK_END) )
 
-LoopStat 	= LOOP_MARK <!> parts::LoopStatPart ( <$> ';' parts::LoopStatPart)* <$> ':' (block:ContextLine | NL <!> block:Context <$> BLOCK_END)
-			= .:LoopStatPart <!> <$> ':' (block:ContextLine | <$> NL <!> block:Context <$> BLOCK_END)
+LoopStat 	= LOOP_MARK <!> parts::LoopStatPart ( <$> ';' parts::LoopStatPart)* <$> ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
+			= .:LoopStatPart <!> <$> ':' (block:ContextLine | <$> NL <!> block:ContextBlock <$> BLOCK_END)
 LoopStatPart 	= .:TimesLoopStatPart
 				= .:ForLoopStatPart
 				= .:WhileLoopStatPart
@@ -146,7 +143,7 @@ ContinueStat = CONTINUE <!> [ id:IDENTIFIER ]
 ReturnStat = RETURN <!> [ val:Expression ]
 YieldStat = YIELD <!> [ val:Expression ]
 
-WithStat = WITH <!> entries::WithStatEntry ( ',' entries::WithStatEntry )* ':' (block:ContextLine | NL <!> block:Context <$> BLOCK_END)
+WithStat = WITH <!> entries::WithStatEntry ( ',' entries::WithStatEntry )* ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
 WithStatEntry 	= id:IDENTIFIER '=' <!> val:Expression
 				= val:Expression
 
