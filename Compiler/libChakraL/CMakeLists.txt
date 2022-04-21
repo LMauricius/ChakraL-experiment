@@ -54,15 +54,18 @@ add_custom_command(
 add_custom_command(
 	OUTPUT
 		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserAutogen.h
+		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserNodesAutogen.h
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserAutogen.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserNodesHybridgen.cpp
 	COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
 		--inlexer ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/lexer.txt
 		--inparser ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/parser.txt
+		--insemanticnodes ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/semanticNodes.txt
 		--inlexerh ${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralLexerAutogen.h
 		--outparserh ${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserAutogen.h
 		--outparsercpp ${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserAutogen.cpp
 		--extraparserheaders ${CMAKE_CURRENT_SOURCE_DIR}/include/chakralParserPrereq${ParserTypeSuffix}.h
+		--outsemanticnodesh ${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserNodesAutogen.h
 		--outsemanticnodescpp ${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserNodesHybridgen.cpp
 		--parsertype ${ParserType}
 	DEPENDS
@@ -70,6 +73,7 @@ add_custom_command(
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/genUtil.py
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/parserGenShared.py
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/parserGen${ParserTypeSuffix}.py
+		${CMAKE_CURRENT_SOURCE_DIR}/generators/semanticMethodGen.py
 		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/parser.txt
 		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralLexerAutogen.h
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralLexerAutogen.cpp
@@ -84,6 +88,7 @@ add_custom_target(
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralLexerAutogen.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserAutogen.h
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserAutogen.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserNodesAutogen.h
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserNodesHybridgen.cpp
 )
 
