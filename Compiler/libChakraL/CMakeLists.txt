@@ -54,9 +54,9 @@ add_custom_command(
 add_custom_command(
 	OUTPUT
 		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserAutogen.h
-		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserNodesAutogen.h
+		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralSemanticNodesAutogen.h
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserAutogen.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserNodesHybridgen.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralSemanticNodesHybridgen.cpp
 	COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
 		--inlexer ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/lexer.txt
 		--inparser ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/parser.txt
@@ -65,8 +65,8 @@ add_custom_command(
 		--outparserh ${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserAutogen.h
 		--outparsercpp ${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserAutogen.cpp
 		--extraparserheaders ${CMAKE_CURRENT_SOURCE_DIR}/include/chakralParserPrereq${ParserTypeSuffix}.h
-		--outsemanticnodesh ${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserNodesAutogen.h
-		--outsemanticnodescpp ${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserNodesHybridgen.cpp
+		--outsemanticnodesh ${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralSemanticNodesAutogen.h
+		--outsemanticnodescpp ${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralSemanticNodesHybridgen.cpp
 		--parsertype ${ParserType}
 	DEPENDS
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
@@ -75,6 +75,7 @@ add_custom_command(
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/parserGen${ParserTypeSuffix}.py
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/semanticMethodGen.py
 		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/parser.txt
+		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/semanticNodes.txt
 		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralLexerAutogen.h
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralLexerAutogen.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/operatorProductionsAutogen.txt
@@ -88,8 +89,8 @@ add_custom_target(
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralLexerAutogen.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserAutogen.h
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserAutogen.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralParserNodesAutogen.h
-		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserNodesHybridgen.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralSemanticNodesAutogen.h
+		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralSemanticNodesHybridgen.cpp
 )
 
 ######################################
