@@ -5,10 +5,4 @@
 namespace ChakraL
 {
     
-    ContextPtr ContextBlock::getTraits(ContextPtr parentContext) {
-    }
-    
-    ContextPtr ContextBlock::getDefinedContext(ContextPtr parentContext) {
-    }
-    
 }
