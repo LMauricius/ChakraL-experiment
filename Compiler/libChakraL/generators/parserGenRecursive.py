@@ -53,6 +53,8 @@ def getIterationSnippets(parser: Parser, subpart : ProductionPart, part : Produc
     initializerCodeStr = ""# The code that checks tokens, sets isOk to whether the production accepts the tokens
     checkerCodeStr = ""# The code that checks tokens, sets isOk to whether the production accepts the tokens
     executorCodeStr = [] # The code that moves iterator if isOk
+    
+    semNodeName = parser.productions[part.prodName].outSemNodeName
 
     # SubProd
     if subpart.type == ProductionType.SubProd:
@@ -68,9 +70,9 @@ def getIterationSnippets(parser: Parser, subpart : ProductionPart, part : Produc
         if parser.productions[part.prodName].outSemNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and subpart.variable != FALTHRU_VARIABLE_STR:
             if subpart.variable != "":
                 if subpart.variableIsList:
-                    executorCodeStr.append(f"commands.emplace_back(new CommBranchWithList(&(data.at(ind).commands[ProductionInd::{subpart.symbol}]), \"{subpart.variable}\"));")
+                    executorCodeStr.append(f"commands.emplace_back(new CommBranchWithList(&(data.at(ind).commands[ProductionInd::{subpart.symbol}]), SemanticNode_{semNodeName}::{subpart.variable}));")
                 else:
-                    executorCodeStr.append(f"commands.emplace_back(new CommBranchWithVar(&(data.at(ind).commands[ProductionInd::{subpart.symbol}]), \"{subpart.variable}\"));")
+                    executorCodeStr.append(f"commands.emplace_back(new CommBranchWithVar(&(data.at(ind).commands[ProductionInd::{subpart.symbol}]), SemanticNode_{semNodeName}::{subpart.variable}));")
             else:
                 executorCodeStr.append(f"commands.emplace_back(new CommBranchWithNoVar(&(data.at(ind).commands[ProductionInd::{subpart.symbol}])));")
         else:
@@ -87,9 +89,9 @@ def getIterationSnippets(parser: Parser, subpart : ProductionPart, part : Produc
         checkerCodeStr = f"ind < tokenNum && tokens.at(ind).type == TokenType::{subpart.symbol}"
         if subpart.variable != "":
             if subpart.variableIsList:
-                executorCodeStr.append(f"commands.emplace_back(new CommSaveTokenList(\"{subpart.variable}\", ind));")
+                executorCodeStr.append(f"commands.emplace_back(new CommSaveTokenList(ind, SemanticNode_{semNodeName}::{subpart.variable}));")
             else:
-                executorCodeStr.append(f"commands.emplace_back(new CommSaveTokenVar(\"{subpart.variable}\", ind));")
+                executorCodeStr.append(f"commands.emplace_back(new CommSaveTokenVar(ind, SemanticNode_{semNodeName}::{subpart.variable}));")
         executorCodeStr.append("ind++;")
     return (initializerCodeStr, checkerCodeStr, executorCodeStr)
 
@@ -185,38 +187,42 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     TB();TB();TB();LN("}")
     TB();TB();LN("};")
     # CommBranchWithVar
+    TB();TB();LN(f"template<class VarNode_T>")
     TB();TB();LN("struct CommBranchWithVar : public ParserCommand {")
     TB();TB();TB();LN("ParserCommandBranch* br;")
-    TB();TB();TB();LN("std::string name;")
-    TB();TB();TB();LN("CommBranchWithVar(ParserCommandBranch* br, std::string name) : br(br), name(name) {}")
+    TB();TB();TB();LN("std::shared_ptr<VarNode_T> SemanticNode::*memberVarPtr;")
+    TB();TB();TB();LN("CommBranchWithVar(ParserCommandBranch* br, std::shared_ptr<VarNode_T> SemanticNode::*memberVarPtr) : br(br), memberVarPtr(memberVarPtr) {}")
     TB();TB();TB();LN("virtual void operator()(ParserState* state, SemanticNodePtr* varPtr) {")
-    TB();TB();TB();TB();LN("(*varPtr)->nodeLists[name].push_back(nullptr);")
+    TB();TB();TB();TB();LN("(*varPtr)->(*memberVarPtr).push_back(nullptr);")
+    TB();TB();TB();TB();LN("auto newVarPtr = &((*varPtr)->(*memberVarPtr));")
     TB();TB();TB();TB();LN("for (auto& commPtr : *br) {")
-    TB();TB();TB();TB();TB();LN("(*commPtr)(state, &((*varPtr)->nodeLists[name].back()));")
+    TB();TB();TB();TB();TB();LN("(*commPtr)(state, newVarPtr);")
     TB();TB();TB();TB();LN("}")
     TB();TB();TB();LN("}")
     TB();TB();TB();LN("virtual void print(size_t indent) {")
     TB();TB();TB();TB();LN("for (int i=0; i<indent; i++) std::cout << ' ';")
-    TB();TB();TB();TB();LN("std::cout << \"CommBranchWithVar - \" << name << std::endl;")
+    TB();TB();TB();TB();LN("std::cout << \"CommBranchWithVar - \" << typeid(Node_T)::name() << std::endl;")
     TB();TB();TB();TB();LN("for (auto& commPtr : *br) {")
     TB();TB();TB();TB();TB();LN("(*commPtr).print(indent+1);")
     TB();TB();TB();TB();LN("}")
     TB();TB();TB();LN("}")
     TB();TB();LN("};")
     # CommBranchWithList
+    TB();TB();LN(f"template<class VarNode_T>")
     TB();TB();LN("struct CommBranchWithList : public ParserCommand {")
     TB();TB();TB();LN("ParserCommandBranch* br;")
-    TB();TB();TB();LN("std::string name;")
-    TB();TB();TB();LN("CommBranchWithList(ParserCommandBranch* br, std::string name) : br(br), name(name) {}")
+    TB();TB();TB();LN("std::list<std::shared_ptr<VarNode_T>> SemanticNode::*memberListPtr;")
+    TB();TB();TB();LN("CommBranchWithList(ParserCommandBranch* br, std::list<std::shared_ptr<VarNode_T>> SemanticNode::*memberListPtr) : br(br), memberListPtr(memberListPtr) {}")
     TB();TB();TB();LN("virtual void operator()(ParserState* state, SemanticNodePtr* varPtr) {")
-    TB();TB();TB();TB();LN("(*varPtr)->nodeLists[name].push_back(nullptr);")
+    TB();TB();TB();TB();LN("(*varPtr)->(*memberListPtr).push_back(nullptr);")
+    TB();TB();TB();TB();LN("auto newVarPtr = &((*varPtr)->(*memberListPtr).back());")
     TB();TB();TB();TB();LN("for (auto& commPtr : *br) {")
-    TB();TB();TB();TB();TB();LN("(*commPtr)(state, &((*varPtr)->nodeLists[name].back()));")
+    TB();TB();TB();TB();TB();LN("(*commPtr)(state, newVarPtr);")
     TB();TB();TB();TB();LN("}")
     TB();TB();TB();LN("}")
     TB();TB();TB();LN("virtual void print(size_t indent) {")
     TB();TB();TB();TB();LN("for (int i=0; i<indent; i++) std::cout << ' ';")
-    TB();TB();TB();TB();LN("std::cout << \"CommBranchWithList - \" << name << std::endl;")
+    TB();TB();TB();TB();LN("std::cout << \"CommBranchWithList - \" << typeid(Node_T)::name() << std::endl;")
     TB();TB();TB();TB();LN("for (auto& commPtr : *br) {")
     TB();TB();TB();TB();TB();LN("(*commPtr).print(indent+1);")
     TB();TB();TB();TB();LN("}")
@@ -275,26 +281,28 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     TB();TB();LN("};")'''
     # CommSaveTokenVar
     TB();TB();LN("struct CommSaveTokenVar : public ParserCommand {")
-    TB();TB();TB();LN("std::string name; TokenInd tokInd;")
-    TB();TB();TB();LN("CommSaveTokenVar(std::string name, TokenInd tokInd) : name(name), tokInd(tokInd) {}")
+    TB();TB();TB();LN("TokenInd tokInd;")
+    TB();TB();TB();LN("std::list<Token> SemanticNode::*memberVarPtr;")
+    TB();TB();TB();LN("CommSaveTokenVar(TokenInd tokInd, Token SemanticNode::*memberVarPtr) : memberVarPtr(memberVarPtr), tokInd(tokInd) {}")
     TB();TB();TB();LN("virtual void operator()(ParserState* state, SemanticNodePtr* varPtr) {")
-    TB();TB();TB();TB();LN("(*varPtr)->tokenLists[name].push_back(state->tokens.at(tokInd));")
+    TB();TB();TB();TB();LN("(*varPtr)->(*memberVarPtr) = state->tokens.at(tokInd);")
     TB();TB();TB();LN("}")
     TB();TB();TB();LN("virtual void print(size_t indent) {")
     TB();TB();TB();TB();LN("for (int i=0; i<indent; i++) std::cout << ' ';")
-    TB();TB();TB();TB();LN("std::cout << \"CommSaveTokenVar - \" << name << std::endl;")
+    TB();TB();TB();TB();LN("std::cout << \"CommSaveTokenVar - \" << memberVarPtr << std::endl;")
     TB();TB();TB();LN("}")
     TB();TB();LN("};")
     # CommSaveTokenList
     TB();TB();LN("struct CommSaveTokenList : public ParserCommand {")
-    TB();TB();TB();LN("std::string name; TokenInd tokInd;")
-    TB();TB();TB();LN("CommSaveTokenList(std::string name, TokenInd tokInd) : name(name), tokInd(tokInd) {}")
+    TB();TB();TB();LN("TokenInd tokInd;")
+    TB();TB();TB();LN("std::list<Token> SemanticNode::*memberListPtr;")
+    TB();TB();TB();LN("CommSaveTokenList(TokenInd tokInd, std::list<Token> SemanticNode::*memberListPtr) : memberListPtr(memberListPtr), tokInd(tokInd) {}")
     TB();TB();TB();LN("virtual void operator()(ParserState* state, SemanticNodePtr* varPtr) {")
-    TB();TB();TB();TB();LN("(*varPtr)->tokenLists[name].push_back(state->tokens.at(tokInd));")
+    TB();TB();TB();TB();LN("(*varPtr)->(*memberListPtr).push_back(state->tokens.at(tokInd));")
     TB();TB();TB();LN("}")
     TB();TB();TB();LN("virtual void print(size_t indent) {")
     TB();TB();TB();TB();LN("for (int i=0; i<indent; i++) std::cout << ' ';")
-    TB();TB();TB();TB();LN("std::cout << \"CommSaveTokenVar - \" << name << std::endl;")
+    TB();TB();TB();TB();LN("std::cout << \"CommSaveTokenList - \" << memberListPtr << std::endl;")
     TB();TB();TB();LN("}")
     TB();TB();LN("};")
     '''TB();TB();LN("struct CommPopBranch : public ParserCommand {")
@@ -319,16 +327,16 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     TB();TB();TB();TB();LN("state->nodeVarStack.pop_back();")
     TB();TB();TB();LN("}")
     TB();TB();LN("};")'''
-    for semNodeName, semNode in parser.semNodes.items():
-        TB();TB();LN(f"struct CommPushNode_{semNodeName} : public ParserCommand {{")
-        TB();TB();TB();LN("virtual void operator()(ParserState* state, SemanticNodePtr* varPtr) {")
-        TB();TB();TB();TB();LN(f"(*varPtr) = std::make_shared<SemanticNode_{semNodeName}>();")
-        TB();TB();TB();LN("}")
-        TB();TB();TB();LN("virtual void print(size_t indent) {")
-        TB();TB();TB();TB();LN("for (int i=0; i<indent; i++) std::cout << ' ';")
-        TB();TB();TB();TB();LN(f"std::cout << \"CommPushNode_{semNodeName}\" << std::endl;")
-        TB();TB();TB();LN("}")
-        TB();TB();LN("};")
+    TB();TB();LN(f"template<class Node_T>")
+    TB();TB();LN(f"struct CommPushNode : public ParserCommand {{")
+    TB();TB();TB();LN("virtual void operator()(ParserState* state, SemanticNodePtr* varPtr) {")
+    TB();TB();TB();TB();LN(f"(*varPtr) = std::make_shared<Node_T>();")
+    TB();TB();TB();LN("}")
+    TB();TB();TB();LN("virtual void print(size_t indent) {")
+    TB();TB();TB();TB();LN("for (int i=0; i<indent; i++) std::cout << ' ';")
+    TB();TB();TB();TB();LN(f"std::cout << \"CommPushNode<typeid(Node_T)::name()>\" << std::endl;")
+    TB();TB();TB();LN("}")
+    TB();TB();LN("};")
 
 
     '''TB();TB();LN("struct ParserIterator {")
@@ -391,7 +399,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
 
                 # reset command list and create node
                 if part.isMainPart and semNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and semNodeName != NO_OUTPUT_PRODUCTION_STR:
-                    TB();TB();TB();TB();LN(f"commands.emplace_back(new CommPushNode_{semNodeName}());")
+                    TB();TB();TB();TB();LN(f"commands.emplace_back(new CommPushNode<SemanticNode_{semNodeName}>());")
 
 
                 for subpartIndex in range(0, len(poss)):
