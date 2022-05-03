@@ -87,6 +87,8 @@ def main():
             argMap[curArg].append(arg)
     
     try:
+        semNodes : OrderedDict[str, SemanticNode] = OrderedDict()
+
         if "--outoperators" in argMap:
             startTime = time.time()
             outputOperatorProductions(argget("--inoperators"), argget("--outoperators"))
@@ -99,7 +101,12 @@ def main():
             startTime = time.time()
             argget("--inlexer")
             pars = loadParser(lex, argget("--inparser"))
+            semNodes.update(pars.semNodes)
             print("Loaded parser in " + str(time.time()-startTime) + "s: " + argget("--inparser"))
+        if "--insemanticnodes" in argMap:
+            startTime = time.time()
+            semNodes.update(loadSemanticNodes(argget("--insemanticnodes")))
+            print("Loaded sematic nodes in " + str(time.time()-startTime) + "s: " + argget("--insemanticnodes"))
         if "--outlexerh" in argMap:
             startTime = time.time()
             argget("--inlexer")
@@ -128,10 +135,15 @@ def main():
             argget("--inparser")
             writeFuncCPP(pars, argget("--outparsercpp"), argget("--inparserh", "--outparserh"), [])
             print("Generated parser source file in " + str(time.time()-startTime) + "s: " + argget("--outparsercpp"))
+        if "--outsemanticnodesh" in argMap:
+            startTime = time.time()
+            argget("--insemanticnodes", "--inparser")
+            writeSemanticNodesMethodsH(semNodes, argget("--outsemanticnodesh"), argget("--inparserh", "--outparserh"), argsgetopt("--extrasemanticnodesheaders"))
+            print("Generated parser process definitions source file in " + str(time.time()-startTime) + "s: " + argget("--outsemanticnodesh"))
         if "--outsemanticnodescpp" in argMap:
             startTime = time.time()
-            argget("--inparser")
-            writeSemanticNodesMethodsCPP(pars, argget("--outsemanticnodescpp"), argget("--inparserh", "--outparserh"), argsgetopt("--extrasemanticnodesheaders"))
+            argget("--insemanticnodes", "--inparser")
+            writeSemanticNodesMethodsCPP(semNodes, argget("--outsemanticnodescpp"), argget("--inparserh", "--outparserh"), argsgetopt("--extrasemanticnodesheaders"))
             print("Generated parser process definitions source file in " + str(time.time()-startTime) + "s: " + argget("--outsemanticnodescpp"))
     except ArgumentError as e:
         print("Error: " + e.message)

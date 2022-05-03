@@ -129,10 +129,12 @@ LoopStat 	= LOOP_MARK <!> parts::LoopStatPart ( <$> ';' parts::LoopStatPart)* <$
 LoopStatPart 	= .:TimesLoopStatPart
 				= .:ForLoopStatPart
 				= .:WhileLoopStatPart
-				-> ::
-TimesLoopStatPart = TIMES <!> count:Expression
-ForLoopStatPart = FOR <!> id:IDENTIFIER IN iterable:Expression
-WhileLoopStatPart = WHILE <!> cond:Expression
+TimesLoopStatPart 	= TIMES <!> count:Expression
+					-> LoopStatPart TimesLoopStatPart
+ForLoopStatPart 	= FOR <!> id:IDENTIFIER IN iterable:Expression
+					-> LoopStatPart ForLoopStatPart
+WhileLoopStatPart 	= WHILE <!> cond:Expression
+					-> LoopStatPart WhileLoopStatPart
 
 JumpStat 	= .:BreakStat
 			= .:ContinueStat
@@ -168,7 +170,7 @@ AssignmentEqualOperator = op:ASSIGN
 						= op:'&='
 						= op:'|='
 
-AssignmentEqual = left:Expression ( operator:AssignmentEqualOperator <!> NL* rights:Expression )+
+AssignmentEqual = left:Expression ( op:AssignmentEqualOperator <!> NL* rights:Expression )+
 
 
 

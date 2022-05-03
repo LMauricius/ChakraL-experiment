@@ -5,28 +5,37 @@ from genUtil import *
 from parserGenShared import *
 
 class Member:
-    def __init__(self, line:str, lineInd:int) -> None:
+
+    def __init__(self, name:str, type:str, val:str = "") -> None:
+        self.name = name
+        self.type = type
+        self.val = val
+
+    @classmethod
+    def fromDefinition(self, line:str, lineInd:int) -> Member:
         typeMarkInd = line.find("->")
         if typeMarkInd == -1:
             raise FormatError("'->' type mark not found but required", lineInd)
 
-        self.name = line[0:typeMarkInd].strip()
+        name = line[0:typeMarkInd].strip()
         
         defaultValMarkInd = line.find("=", typeMarkInd+2)
         if defaultValMarkInd == -1:
-            self.type = line[typeMarkInd+2:].strip()
-            self.val = ""
+            type = line[typeMarkInd+2:].strip()
+            val = ""
         else:
-            self.type = line[typeMarkInd+2:defaultValMarkInd].strip()
-            self.val = line[defaultValMarkInd+1:].strip()
+            type = line[typeMarkInd+2:defaultValMarkInd].strip()
+            val = line[defaultValMarkInd+1:].strip()
+        
+        return Member(name, type, val)
 
 
 class SemanticNode:
     def __init__(self) -> None:
-        self.privateMembers : list[Member] = []
-        self.protectedMembers : list[Member] = []
-        self.publicMembers : list[Member] = []
-        self.methods : list[Member] = []
+        self.privateMembers : OrderedDict[str, Member] = OrderedDict()
+        self.protectedMembers : OrderedDict[str, Member] = OrderedDict()
+        self.publicMembers : OrderedDict[str, Member] = OrderedDict()
+        self.methods : OrderedDict[str, Member] = OrderedDict()
 
 def loadSemanticNodes(filename: str):
     print("Loading semantic nodes ", filename)
@@ -44,34 +53,36 @@ def loadSemanticNodes(filename: str):
         while len(l):
             if l[0] == "@":
                 curNodeName = l[1:]
-                curNode = semNodes.get(curNodeName, SemanticNode())
+                curNode = semNodes.setdefault(curNodeName, SemanticNode())
             else:
                 spaceInd = l.find(" ")
                 mark = l[0:spaceInd].strip()
                 memberDef = l[spaceInd:].strip()
                 if mark == "fpub":
-                    newM = Member(memberDef, lineInd)
-                    curNode.publicMembers.append(newM)
-                    curNode.methods.append(newM)
+                    newM = Member.fromDefinition(memberDef, lineInd)
+                    curNode.publicMembers.setdefault(newM.name, newM)
+                    curNode.methods.setdefault(newM.name, newM)
                 elif mark == "fprot":
-                    newM = Member(memberDef, lineInd)
-                    curNode.protectedMembers.append(newM)
-                    curNode.methods.append(newM)
+                    newM = Member.fromDefinition(memberDef, lineInd)
+                    curNode.protectedMembers.setdefault(newM.name, newM)
+                    curNode.methods.setdefault(newM.name, newM)
                 elif mark == "fpriv":
-                    newM = Member(memberDef, lineInd)
-                    curNode.privateMembers.append(newM)
-                    curNode.methods.append(newM)
+                    newM = Member.fromDefinition(memberDef, lineInd)
+                    curNode.privateMembers.setdefault(newM.name, newM)
+                    curNode.methods.setdefault(newM.name, newM)
                 elif mark == "vpub":
-                    newM = Member(memberDef, lineInd)
-                    curNode.publicMembers.append(newM)
+                    newM = Member.fromDefinition(memberDef, lineInd)
+                    curNode.publicMembers.setdefault(newM.name, newM)
                 elif mark == "vprot":
-                    newM = Member(memberDef, lineInd)
-                    curNode.protectedMembers.append(newM)
+                    newM = Member.fromDefinition(memberDef, lineInd)
+                    curNode.protectedMembers.setdefault(newM.name, newM)
                 elif mark == "vpriv":
-                    newM = Member(memberDef, lineInd)
-                    curNode.privateMembers.append(newM)
+                    newM = Member.fromDefinition(memberDef, lineInd)
+                    curNode.privateMembers.setdefault(newM.name, newM)
                 else:
                     raise FormatError(f"Unknown node mark '{mark}'", lineInd)
+
+            l, lineInd = next(lines, ("",-1))
 
     except FormatError as e:
         print("At line " + str(e.lineInd) + ": " + e.message)
@@ -104,13 +115,19 @@ def writeSemanticNodesMethodsH(semNodes: OrderedDict[str, SemanticNode], filenam
         LN("namespace ChakraL")
         LN("{")
         TB();LN("")
+        
         for name, semNode in semNodes.items():
-            TB();LN(f"class SemanticNode_{name} {{")
+            TB();LN(f"class SemanticNode_{name};")
+        TB();LN("")
+
+        for name, semNode in semNodes.items():
+            TB();LN(f"class SemanticNode_{name}")
+            TB();LN(f"{{")
 
             for visMark, members in [
-                ("public", semNode.publicMembers),
-                ("protected", semNode.protectedMembers),
-                ("private", semNode.privateMembers)
+                ("public", semNode.publicMembers.values()),
+                ("protected", semNode.protectedMembers.values()),
+                ("private", semNode.privateMembers.values())
             ]:
                 if len(members) > 0:
                     TB();LN(f"{visMark}:")
@@ -120,23 +137,24 @@ def writeSemanticNodesMethodsH(semNodes: OrderedDict[str, SemanticNode], filenam
                         else:
                             TB();TB();LN(f"{mem.type} {mem.name};")
 
-            TB();LN(f"}}")
+            TB();LN(f"}};")
             TB();LN("")
         LN("}")
 
 def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filename: str, headerfile: str, extraheaderfiles: list[str]):
     definitions: dict[str, str] = {}
-    for name, semNode in semNodes.items():
+    for className, semNode in semNodes.items():
         #declarations[name] = "    SemanticNode_" + name + "::process("
-        definitions[name] = ""
+        for methName, meth in semNode.methods.items():
+            definitions[f"{meth.type} {className}::{methName}"] = ""
 
     print("Reading old parser nodes process definitions ", filename)
     try:
         with open(filename, "rt") as f:
             curDef = ""
             for line in f:
-                if line.startswith("    void SemanticNode_"):
-                    curDef = line[len("    void SemanticNode_"):line.find("::")]
+                if "SemanticNode_" in line:
+                    curDef = line[0:line.find("{")].strip()
                 elif line.startswith("    }"):
                     curDef = ""
                 elif len(curDef) > 0:
@@ -166,7 +184,7 @@ def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filen
         LN("{")
         TB();LN("")
         for name, definition in definitions.items():
-            LN("    void SemanticNode_" + name + "::process() {")
+            LN("    " + name + " {")
             f.write(definition)
             LN("    }")
             TB();LN("")

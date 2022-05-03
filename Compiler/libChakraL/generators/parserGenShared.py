@@ -8,6 +8,8 @@ from lexerGen import *
 from semanticMethodGen import *
 import time
 
+from semanticMethodGen import SemanticNode
+
 NO_OUTPUT_PRODUCTION_STR = "-"
 FALTHRU_OUTPUT_PRODUCTION_STR = "::"
 FALTHRU_VARIABLE_STR = "."
@@ -63,7 +65,8 @@ class ParserState:
 class Production:
     def __init__(self, name: str):
         self.name = name
-        self.semNodeName = name
+        self.outSemNodeName = name
+        self.visibleSemNodeName = name
         self.mainPart = ProductionPart(name, name, 0, "<>", "<>", ProductionType.SubProd, name, [], True)
         self.startingParserState : ParserState = None
         self.partCounter = 1
@@ -152,7 +155,7 @@ def convertToStates(part : ProductionPart, nextState: ParserState, parser: Parse
 
     #insertPos = len(outParserStates)
     def getSemNodeName(part : ProductionPart)->str:
-        return parser.productions[part.prodName].semNodeName
+        return parser.productions[part.prodName].outSemNodeName
     
     # = Manage repeating =
     if part.repeatCount == RepeatType.Single:
@@ -408,7 +411,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                 curPart = None
             elif curStr[0] == '<':
                 curErrorHelpers.append(curStr[1:-1])
-                print(curErrorHelpers)
+                #print(curErrorHelpers)
             elif curStr == ']' or curStr == ')':
                 raise FormatError("Unexpected closing bracket " + curStr, lineInd)
             else:
@@ -578,7 +581,17 @@ def loadParser(lexer: Lexer, filename: str):
                 if substr == '->':# semantic node
                     try:
                         substr, subStrPos = next(parserIt, ("",0))
-                        parser.productions[curNodeName].semNodeName = substr
+                        
+                        parser.productions[curNodeName].outSemNodeName = substr
+                        parser.productions[curNodeName].visibleSemNodeName = substr
+                        
+                        try:
+                            substr, subStrPos = next(parserIt, ("",0))
+                            if substr != "":
+                                parser.productions[curNodeName].outSemNodeName = substr
+                        except StopIteration:
+                            pass
+
                     except StopIteration:
                         raise FormatError("Expected a semantic node name, got nothing", lineInd)
                 elif substr == '=':# semantic node
@@ -601,15 +614,41 @@ def loadParser(lexer: Lexer, filename: str):
     try:
         
         for name, prod in parser.productions.items():
-            if prod.semNodeName != NO_OUTPUT_PRODUCTION_STR and prod.semNodeName != FALTHRU_OUTPUT_PRODUCTION_STR:
-                #parser.semNodeNames.add(prod.semNodeName)
-                parser.semNodes.setdefault(prod.semNodeName, SemanticNode())
+            extractParts(prod.mainPart, parser.productionParts)
+        
+        print("Extracting semantic nodes...")
+        for name, prod in parser.productions.items():
+            if prod.outSemNodeName != NO_OUTPUT_PRODUCTION_STR and prod.outSemNodeName != FALTHRU_OUTPUT_PRODUCTION_STR:
+                #parser.semNodeNames.add(prod.outSemNodeName)
+                parser.semNodes.setdefault(prod.outSemNodeName, SemanticNode())
+                parser.semNodes.setdefault(prod.visibleSemNodeName, SemanticNode())
+                
+        for part in parser.productionParts:
+            if (part.type == ProductionType.Node or part.type == ProductionType.Token) and len(part.variable) > 0 and part.variable != FALTHRU_VARIABLE_STR:
+                semNode = parser.semNodes.get(parser.productions[part.prodName].outSemNodeName)
+
+                if semNode is None:
+                    raise SemanticError(f"Variable {part.variable} of part <<{part.hint}>> ({part.type}) of prod <<{part.prodName}>> assigned to None node")
+                
+                varType = ""
+                defVal = ""
+
+                if part.type == ProductionType.Node:
+                    varType = f"std::shared_ptr<SemanticNode_{parser.productions[part.symbol].visibleSemNodeName}>"
+                    defVal = "nullptr"
+                elif part.type == ProductionType.Token:
+                    varType = "Token"
+
+                if part.variableIsList:
+                    varType = f"std::list<{varType}>"
+                    defVal = ""
+                
+                semNode.publicMembers.setdefault(part.variable, Member(part.variable, varType, defVal))
 
         print("Converting to state machine...")
         startTime = time.time()
         for name, prod in parser.productions.items():
             prod.startingParserState = convertToStates(prod.mainPart, None, parser, parser.parserStates)
-            extractParts(prod.mainPart, parser.productionParts)
         print("Converted to state machine in " + str(time.time()-startTime) + "s!")
 
         # Check if all referenced productions are defined

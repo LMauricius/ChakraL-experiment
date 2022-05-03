@@ -36,9 +36,9 @@ def writeRecursiveParserH(parser: Parser, filename: str, lexerHeaderfile: str, e
     LN("namespace ChakraL {")
     LN("")
     
-    for name, semNode in parser.semNodes.items():
-        TB();LN("class SemanticNode_" + name + " : public SemanticNode { public: ~SemanticNode_" + name + "(); void process(); std::string_view name() const; };")
-    LN("")
+    '''for semNodeName, semNode in parser.semNodes.items():
+        TB();LN("class SemanticNode_" + semNodeName + " : public SemanticNode { public: ~SemanticNode_" + semNodeName + "(); void process(); std::string_view name() const; };")
+    LN("")'''
     
     LN("")
     
@@ -65,7 +65,7 @@ def getIterationSnippets(parser: Parser, subpart : ProductionPart, part : Produc
         initializerCodeStr = f"testInd = (ind < tokenNum? check_{subpart.symbol}(tokenNum, tokens, data, ind) : FAIL_IND)"
         checkerCodeStr = "testInd != FAIL_IND"
 
-        if parser.productions[part.prodName].semNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and subpart.variable != FALTHRU_VARIABLE_STR:
+        if parser.productions[part.prodName].outSemNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and subpart.variable != FALTHRU_VARIABLE_STR:
             if subpart.variable != "":
                 if subpart.variableIsList:
                     executorCodeStr.append(f"commands.emplace_back(new CommBranchWithList(&(data.at(ind).commands[ProductionInd::{subpart.symbol}]), \"{subpart.variable}\"));")
@@ -79,7 +79,7 @@ def getIterationSnippets(parser: Parser, subpart : ProductionPart, part : Produc
         
         executorCodeStr.append("ind = testInd;")
         
-        '''if parser.productions[part.prodName].semNodeName != FALTHRU_OUTPUT_PRODUCTION_STR:
+        '''if parser.productions[part.prodName].outSemNodeName != FALTHRU_OUTPUT_PRODUCTION_STR:
             executorCodeStr.append(f"commands.emplace_back(new CommPopNodeVar());")'''
     # Token
     elif subpart.type == ProductionType.Token:
@@ -319,7 +319,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     TB();TB();TB();TB();LN("state->nodeVarStack.pop_back();")
     TB();TB();TB();LN("}")
     TB();TB();LN("};")'''
-    for name, semNode in parser.semNodes.items():
+    for semNodeName, semNode in parser.semNodes.items():
         TB();TB();LN(f"struct CommPushNode_{semNodeName} : public ParserCommand {{")
         TB();TB();TB();LN("virtual void operator()(ParserState* state, SemanticNodePtr* varPtr) {")
         TB();TB();TB();TB();LN(f"(*varPtr) = std::make_shared<SemanticNode_{semNodeName}>();")
@@ -352,7 +352,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     # Definitions
     for part in parser.productionParts:
         if part.type == ProductionType.SubProd:
-            semNodeName = parser.productions[part.prodName].semNodeName
+            semNodeName = parser.productions[part.prodName].outSemNodeName
 
             TB();TB();LN(f"// {(part.hint)}")
             TB();TB();LN("TokenInd check_" + part.idName + "(size_t tokenNum, std::vector<Token>& tokens, std::vector<TokenAssignedData>& data, TokenInd startInd) { //"+part.hint)
@@ -498,9 +498,9 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
 
     LN("")
 
-    for name, semNode in parser.semNodes.items():
-        TB();LN("SemanticNode_" + name + "::~SemanticNode_" + name + "() {}")
-        TB();LN("std::string_view SemanticNode_" + name + "::name() const { return \"" + name + "\"; }")
+    for semNodeName, semNode in parser.semNodes.items():
+        TB();LN("SemanticNode_" + semNodeName + "::~SemanticNode_" + semNodeName + "() {}")
+        TB();LN("std::string_view SemanticNode_" + semNodeName + "::name() const { return \"" + semNodeName + "\"; }")
 
     LN("")
 
