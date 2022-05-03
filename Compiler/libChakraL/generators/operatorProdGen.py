@@ -26,7 +26,7 @@ def outputOperatorProductions(filenameIn: str, filenameOut: str):
 			return (len(s) > 0)
 		def op2VarOp(op: str)->str:
 			if len(op) and op != "''":
-				return "operator:"+op
+				return "op:"+op
 			else:
 				return ""
 		def ops2RegexSelect(ops: list[str])->str:
