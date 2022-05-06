@@ -97,15 +97,30 @@ def main():
             startTime = time.time()
             lex = loadLexer(argget("--inlexer"))
             print("Loaded lexer in " + str(time.time()-startTime) + "s: " + argget("--inlexer"))
+        if "--insemanticnodes" in argMap:
+            startTime = time.time()
+
+            for name, node in loadSemanticNodes(argget("--insemanticnodes")).items():
+                semNodes.setdefault(name, SemanticNode())
+                semNodes[name].methods.update(node.methods)
+                semNodes[name].privateMembers.update(node.privateMembers)
+                semNodes[name].protectedMembers.update(node.protectedMembers)
+                semNodes[name].publicMembers.update(node.publicMembers)
         if "--inparser" in argMap:
             startTime = time.time()
             argget("--inlexer")
-            pars = loadParser(lex, argget("--inparser"))
-            semNodes.update(pars.semNodes)
+            pars = loadParser(lex, argget("--inparser"), semNodes)
+
+            semNodes = parser.semNodes
+            '''for name, node in pars.semNodes.items():
+                semNodes.setdefault(name, SemanticNode())
+                semNodes[name].methods.update(node.methods)
+                semNodes[name].privateMembers.update(node.privateMembers)
+                semNodes[name].protectedMembers.update(node.protectedMembers)
+                semNodes[name].publicMembers.update(node.publicMembers)'''
+
             print("Loaded parser in " + str(time.time()-startTime) + "s: " + argget("--inparser"))
-        if "--insemanticnodes" in argMap:
-            startTime = time.time()
-            semNodes.update(loadSemanticNodes(argget("--insemanticnodes")))
+
             print("Loaded sematic nodes in " + str(time.time()-startTime) + "s: " + argget("--insemanticnodes"))
         if "--outlexerh" in argMap:
             startTime = time.time()
@@ -138,12 +153,12 @@ def main():
         if "--outsemanticnodesh" in argMap:
             startTime = time.time()
             argget("--insemanticnodes", "--inparser")
-            writeSemanticNodesMethodsH(semNodes, argget("--outsemanticnodesh"), argget("--inparserh", "--outparserh"), argsgetopt("--extrasemanticnodesheaders"))
+            writeSemanticNodesMethodsH(semNodes, argget("--outsemanticnodesh"), argget("--inlexerh", "--outlexerh"), argsgetopt("--extrasemanticnodesheaders"))
             print("Generated parser process definitions source file in " + str(time.time()-startTime) + "s: " + argget("--outsemanticnodesh"))
         if "--outsemanticnodescpp" in argMap:
             startTime = time.time()
             argget("--insemanticnodes", "--inparser")
-            writeSemanticNodesMethodsCPP(semNodes, argget("--outsemanticnodescpp"), argget("--inparserh", "--outparserh"), argsgetopt("--extrasemanticnodesheaders"))
+            writeSemanticNodesMethodsCPP(semNodes, argget("--outsemanticnodescpp"), argget("--insemanticnodesh", "--outsemanticnodesh"), [])
             print("Generated parser process definitions source file in " + str(time.time()-startTime) + "s: " + argget("--outsemanticnodescpp"))
     except ArgumentError as e:
         print("Error: " + e.message)

@@ -2,7 +2,7 @@ from __future__ import annotations
 import os
 import re
 from enum import Enum
-from typing import Iterator, List
+from typing import Iterator, List, OrderedDict
 from genUtil import *
 from lexerGen import *
 from semanticMethodGen import *
@@ -171,8 +171,8 @@ def convertToStates(part : ProductionPart, nextState: ParserState, parser: Parse
             outParserStates.append(skipBranch)
             skipBranch.branchStart = nextState
 
-            if part.idName+"__cont" == "a_valueLiteral_14__cont":
-                print(skipBranch.branchStart)
+            #if part.idName+"__cont" == "a_valueLiteral_14__cont":
+            #    print(skipBranch.branchStart)
 
         acceptBranch = ParserState(part.idName+f"__accept", part.hint, StateType.Branch, getSemNodeName(part))
         outParserStates.append(acceptBranch)
@@ -545,11 +545,12 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
         raise
 
 
-def loadParser(lexer: Lexer, filename: str):
+def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, SemanticNode]):
     print("Loading parser ", filename)
 
     lines = meaningfulLines(filename)
     parser = Parser()
+    parser.semNodes = semNodes
     curNodeName = None
 
     try:
@@ -622,28 +623,53 @@ def loadParser(lexer: Lexer, filename: str):
                 #parser.semNodeNames.add(prod.outSemNodeName)
                 parser.semNodes.setdefault(prod.outSemNodeName, SemanticNode())
                 parser.semNodes.setdefault(prod.visibleSemNodeName, SemanticNode())
-                
-        for part in parser.productionParts:
-            if (part.type == ProductionType.Node or part.type == ProductionType.Token) and len(part.variable) > 0 and part.variable != FALTHRU_VARIABLE_STR:
-                semNode = parser.semNodes.get(parser.productions[part.prodName].outSemNodeName)
 
-                if semNode is None:
-                    raise SemanticError(f"Variable {part.variable} of part <<{part.hint}>> ({part.type}) of prod <<{part.prodName}>> assigned to None node")
-                
-                varType = ""
-                defVal = ""
+        handledProds : set[str] = set()
+        def processVariables(prodName):
+            if prodName in handledProds:
+                return
 
-                if part.type == ProductionType.Node:
-                    varType = f"std::shared_ptr<SemanticNode_{parser.productions[part.symbol].visibleSemNodeName}>"
-                    defVal = "nullptr"
-                elif part.type == ProductionType.Token:
-                    varType = "Token"
+            prod = parser.productions[prodName]
+            semNode = parser.semNodes.get(prod.outSemNodeName)
 
-                if part.variableIsList:
-                    varType = f"std::list<{varType}>"
-                    defVal = ""
-                
-                semNode.publicMembers.setdefault(part.variable, Member(part.variable, varType, defVal))
+            parts : list[ProductionPart] = []
+            extractParts(prod.mainPart, parts)
+
+            for part in parts:
+                if (part.type == ProductionType.Node or part.type == ProductionType.Token) and len(part.variable) > 0:
+                    if part.variable != FALTHRU_VARIABLE_STR:
+
+                        if semNode is None:
+                            raise SemanticError(f"Variable {part.variable} of part <<{part.hint}>> ({part.type}) of prod <<{part.prodName}>> assigned to None node")
+                        
+                        varType = ""
+                        defVal = ""
+
+                        if part.type == ProductionType.Node:
+                            #varType = f"Ptr<SemanticNode_{parser.productions[part.symbol].visibleSemNodeName}>"
+                            varType = f"SemanticNodePtr"
+                            defVal = "nullptr"
+                        elif part.type == ProductionType.Token:
+                            varType = "Token"
+
+                        if part.variableIsList:
+                            varType = f"std::list<{varType}>"
+                            defVal = ""
+                        
+                        semNode.publicMembers.setdefault(part.variable, Member(part.variable, varType, defVal))
+                    else:
+                        childSemNodeName = parser.productions[part.symbol].outSemNodeName
+                        parentSemNodeName = prod.visibleSemNodeName
+                        if not semNodeExtends(parser.semNodes.get(childSemNodeName), parentSemNodeName, parser.semNodes):
+                            raise SemanticError(f"Variable {part.variable} of prod <<{part.prodName}>> contains a semantic node of type '{childSemNodeName}', but the production needs to be of type '{parentSemNodeName}' which isn't an ancestor of the variable's type.")
+
+            
+            if not semNodeExtends(prod.outSemNodeName, prod.visibleSemNodeName, parser.semNodes):
+                raise SemanticError(f"Visible semantic node {prod.outSemNodeName} of prod <<{part.prodName}>> isn't a parent of the outing semantic node {prod.outSemNodeName}.")
+            handledProds.add(prodName)
+        for prodName, prod in parser.productions.items():
+            processVariables(prodName)
+
 
         print("Converting to state machine...")
         startTime = time.time()

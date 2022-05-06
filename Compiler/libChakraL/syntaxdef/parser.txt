@@ -114,7 +114,7 @@ Statement 	= .:Definition
 			= .:JumpStat
 			= .:WithStat
 			= .:Expression
-			-> ::
+			-> Statement
 
 Definition 	= DEF <!> id:IDENTIFIER '='? NL* val:Expression
 			= DEF <!> id:IDENTIFIER ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
