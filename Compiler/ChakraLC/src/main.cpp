@@ -17,34 +17,7 @@ void printNode(ChakraL::SemanticNodePtr nodePtr, int tabs)
         printTabs(tabs); std::wcout << L"Error at line " << e.token.line << L", position " << e.token.character << L", token " << ChakraL::WTokenNames[(int)e.token.type] << " '" << e.token.str << L"': ";
         std::wcout << e.msg << std::endl;
     }
-    for (auto& nameListPair : nodePtr->nodeLists)
-    {
-        //printTabs(tabs); std::cout << "'" << nameListPair.first << "'" << "(nodes): ";
-        for (auto np : nameListPair.second)
-        {
-            if (nameListPair.first.size())
-            {
-                if (np)
-                {
-                    printTabs(tabs); std::cout << "'" << nameListPair.first << "': " << np->name() << " {" << std::endl;
-                    printNode(np, tabs + 1);
-                    printTabs(tabs); std::cout << "}";
-                    std::cout << std::endl;
-                }
-                else
-                {
-                    printTabs(tabs); std::cout << "'" << nameListPair.first << "': ERROR-nullptr" << std::endl;
-                }
-            }
-        }
-    }
-    /*if (nodePtr->replacementNode)
-    {
-        printTabs(tabs); std::cout << "REPLACEMENT: " << nodePtr->replacementNode->name() << " {" << std::endl;
-        printNode(nodePtr->replacementNode, tabs + 1);
-        printTabs(tabs); std::cout << "}";
-        std::cout << std::endl;
-    }*/
+    nodePtr->print(std::cout, tabs);
     for (auto& nameListPair : nodePtr->tokenLists)
     {
         //printTabs(tabs); std::cout << "'" << nameListPair.first << "'" << "(tokens): ";

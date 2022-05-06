@@ -12,7 +12,8 @@ namespace ChakraL {
     class SemanticNode {
     public:
         virtual ~SemanticNode();
-        virtual std::string_view name() const = 0;
+        virtual std::string_view className() const = 0;
+        virtual void print(std::ostream& out, size_t tabs) const = 0;
         
         std::map<std::string, std::list<SemanticNodePtr>> nodeLists;
         std::map<std::string, std::list<Token>> tokenLists;
