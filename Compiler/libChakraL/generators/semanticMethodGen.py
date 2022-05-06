@@ -30,11 +30,13 @@ class Member:
         return Member(name, type, val)
 
 NAME_METHOD_DECL = "className() const"
-PRINT_METHOD_DECL = "print(std::ostream& out, size_t tabs) const"
+PRINT_METHOD_DECL = "print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const"
+SUBNODES_METHOD_DECL = "getSubNodes() const"
 
 class SemanticNode:
     def __init__(self) -> None:
-        self.parent : str = "SemanticNode"
+        self.parentNode : str = "SemanticNode"
+        self.parentClassName : str = "SemanticNode"
         self.privateMembers : OrderedDict[str, Member] = OrderedDict()
         self.protectedMembers : OrderedDict[str, Member] = OrderedDict()
         self.publicMembers : OrderedDict[str, Member] = OrderedDict()
@@ -44,6 +46,9 @@ class SemanticNode:
         self.publicMembers[mem.name] = mem
         self.methods[mem.name] = mem
         mem = Member(PRINT_METHOD_DECL, "void")
+        self.publicMembers[mem.name] = mem
+        self.methods[mem.name] = mem
+        mem = Member(SUBNODES_METHOD_DECL, "std::vector<const SemanticNode*>")
         self.publicMembers[mem.name] = mem
         self.methods[mem.name] = mem
 
@@ -70,7 +75,8 @@ def loadSemanticNodes(filename: str):
                 memberDef = l[spaceInd:].strip()
                 
                 if mark == "parent":
-                    curNode.parent = "SemanticNode_" + memberDef
+                    curNode.parentNode = memberDef
+                    curNode.parentClassName = "SemanticNode_" + memberDef
                 elif mark == "fpub":
                     newM = Member.fromDefinition(memberDef, lineInd)
                     curNode.publicMembers.setdefault(newM.name, newM)
@@ -102,7 +108,7 @@ def loadSemanticNodes(filename: str):
         sys.exit(1)
     except StopIteration:
         pass
-
+        
     return semNodes
 
 def writeSemanticNodesMethodsH(semNodes: OrderedDict[str, SemanticNode], filename: str, lexerHeaderfile: str, extraheaderfiles: list[str]):
@@ -134,7 +140,7 @@ def writeSemanticNodesMethodsH(semNodes: OrderedDict[str, SemanticNode], filenam
         TB();LN("")
 
         for name, semNode in semNodes.items():
-            TB();LN(f"class SemanticNode_{name} : public {semNode.parent}")
+            TB();LN(f"class SemanticNode_{name} : public {semNode.parentClassName}")
             TB();LN(f"{{")
             TB();LN(f"public:")
             TB();TB();LN(f"SemanticNode_{name}() = default;")
@@ -171,6 +177,7 @@ def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filen
             for line in f:
                 if "SemanticNode_" in line:
                     curDef = line[0:line.find("{")].strip()
+                    definitions.setdefault(curDef, "")
                 elif line.startswith("    }"):
                     curDef = ""
                 elif len(curDef) > 0:
@@ -178,21 +185,68 @@ def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filen
     except FileNotFoundError:
         print("No old parser nodes process definitions found")
 
+    TAB = "    "
+
     for className, semNode in semNodes.items():
         
+        # NAME method
         meth = semNode.methods[NAME_METHOD_DECL]
-        definitions[f"{meth.type} SemanticNode_{className}::{meth.name}"] = f"\t\treturn \"{className}\";\n"
+        definitions[f"{meth.type} SemanticNode_{className}::{meth.name}"] = f"{TAB}{TAB}return \"{className}\";\n"
         
+        # PRINT method
         meth = semNode.methods[PRINT_METHOD_DECL]
-        curdef = ""
+        code = ""
+        code += f"{TAB}{TAB}" + fr'out << "{className} {{" << std::endl; ' + "\n"
+        code += f"{TAB}{TAB}\n"
         for memName, mem in semNode.publicMembers.items():
             if mem.type.startswith("Ptr<SemanticNode_"):
-                curdef += "\t\t" + fr'{{for (size_t i = 0; i<tabs; i++) out << "\t";}} out << "{mem.name}: {{" << std::endl; {mem.name}->print(out, tabs+1); {{for (size_t i = 0; i<tabs; i++) out << "\t";}} out << "}}" << std::endl; ' + "\n"
+                code += f"{TAB}{TAB}" + fr'for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "{mem.name}: "; ' + "\n"
+                code += f"{TAB}{TAB}" + fr'if ({mem.name}) {mem.name}->print(out, tabs+1, tabstr); else out << "null";' + "\n"
+                code += f"{TAB}{TAB}" + fr'out << std::endl; ' + "\n"
+                code += f"{TAB}{TAB}\n"
             elif mem.type.startswith("std::list<Ptr<SemanticNode_"):
-                curdef += "\t\t" + fr'{{for (size_t i = 0; i<tabs; i++) out << "\t";}} out << "{mem.name}: [" << std::endl;' + "\n"
-                curdef += "\t\t" + fr'for (auto& ptr : {mem.name}) {{{{for (size_t i = 0; i<tabs+1; i++) out << "\t";}}; out << "{{" << std::endl; ptr->print(out, tabs+2); {{for (size_t i = 0; i<tabs+1; i++) out << "\t";}}; out << "}}," << std::endl; }}' + "\n"
-                curdef += "\t\t" + fr'{{for (size_t i = 0; i<tabs; i++) out << "\t";}} out << "]" << std::endl;' + "\n"
-        definitions[f"{meth.type} SemanticNode_{className}::{meth.name}"] = curdef
+                code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "{mem.name}: [" << std::endl;' + "\n"
+                code += f"{TAB}{TAB}" + fr'for (auto& ptr : {mem.name}) {{for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }}' + "\n"
+                code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "]" << std::endl;' + "\n"
+                code += f"{TAB}{TAB}\n"
+            elif mem.type.startswith("Token"):
+                code += f"{TAB}{TAB}" + fr'for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "{mem.name}: "; ' + "\n"
+                code += f"{TAB}{TAB}" + fr'out << WTokenNames[(int){mem.name}.type] << ":" << {mem.name}.line << ":" << {mem.name}.character << " - " << {mem.name}.str;' + "\n"
+                code += f"{TAB}{TAB}" + fr'out << std::endl; ' + "\n"
+                code += f"{TAB}{TAB}\n"
+            elif mem.type.startswith("std::list<Token"):
+                code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "{mem.name}: [" << std::endl;' + "\n"
+                code += f"{TAB}{TAB}" + fr'for (auto& tok : {mem.name}) {{for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }}' + "\n"
+                code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "]" << std::endl;' + "\n"
+                code += f"{TAB}{TAB}\n"
+            
+        code += f"{TAB}{TAB}" + fr'for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}}"; ' + "\n"
+        definitions[f"{meth.type} SemanticNode_{className}::{meth.name}"] = code
+        
+        # SUBNODES method
+        meth = semNode.methods[SUBNODES_METHOD_DECL]
+        code = ""
+        code += f"{TAB}{TAB}" + fr'std::vector<const SemanticNode*> ret {{' + "\n"
+        for memName, mem in semNode.publicMembers.items():
+            if mem.type.startswith("Ptr<SemanticNode_"):
+                code += f"{TAB}{TAB}{TAB}" + fr'{mem.name}.get(),' + "\n"
+        code += f"{TAB}{TAB}" + fr'}};' + "\n"
+
+        code += f"{TAB}{TAB}" + fr'ret.reserve(ret.size() + '
+        for memName, mem in semNode.publicMembers.items():
+            if mem.type.startswith("std::list<Ptr<SemanticNode_"):
+                code += fr'{mem.name}.size() + '
+        code += fr'0);' + "\n"
+
+        for memName, mem in semNode.publicMembers.items():
+            if mem.type.startswith("std::list<Ptr<SemanticNode_"):
+                code += f"{TAB}{TAB}" + fr'for (const auto& ptr : {mem.name}) {{ret.push_back(ptr.get());}}' + "\n"
+
+        code += f"{TAB}{TAB}" + fr'return ret;' + "\n"
+        definitions[f"{meth.type} SemanticNode_{className}::{meth.name}"] = code
+
+        # END of methods
+        
 
 
     print("Writing new parser nodes process definitions ", filename)
@@ -218,9 +272,9 @@ def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filen
         LN("{")
         TB();LN("")
         for name, definition in definitions.items():
-            LN("    " + name + " {")
+            TB();LN(name + " {")
             f.write(definition)
-            LN("    }")
+            TB();LN("}")
             TB();LN("")
         LN("}")
 
@@ -229,5 +283,5 @@ def semNodeExtends(child:str, parent:str, semNodes: OrderedDict[str, SemanticNod
     while cur in semNodes:
         if cur == parent:
             return True
-        cur = semNodes[cur].parent
+        cur = semNodes[cur].parentNode
     return False

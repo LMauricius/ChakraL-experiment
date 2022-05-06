@@ -1,6 +1,116 @@
+# *** CONTEXT ***
+
 @ContextBlock
     #fpub getTraits(ContextPtr parentContext) -> ContextPtr
     #fpub getDefinedContext(ContextPtr parentContext) -> ContextPtr
 
     #vprot savedTraits -> ContextPtr = nullptr
     #vprot savedContext -> ContextPtr = nullptr
+
+@DescriptionEntry
+
+@TraitAssertion
+    parent DescriptionEntry
+
+
+# *** STATEMENTS ***
+
+@Statement
+    parent DescriptionEntry
+
+@Definition
+    parent Statement
+
+@AssignmentEqual
+    parent Statement
+
+@IfStat
+    parent Statement
+
+@LoopStat
+    parent Statement
+
+@LoopStatPart
+
+@TimesLoopStatPart
+    parent LoopStatPart
+
+@ForLoopStatPart
+    parent LoopStatPart
+
+@WhileLoopStatPart
+    parent LoopStatPart
+
+
+@JumpStat
+    parent Statement
+
+@WithStat
+    parent Statement
+
+@BreakStat
+    parent JumpStat
+
+@ContinueStat
+    parent JumpStat
+
+@ReturnStat
+    parent JumpStat
+
+@YieldStat
+    parent JumpStat
+
+
+
+# *** EXPRESSIONS ***
+
+@Expression
+    parent Statement
+
+@ExprBinaryL2R
+    parent Expression
+
+@ExprLUnary
+    parent Expression
+
+@ExprRUnary
+    parent Expression
+
+@ExprPrefixFunction
+    parent Expression
+
+@assignmentCheck
+    parent Expression
+
+@RangeLiteral
+    parent Expression
+
+@Identifier
+    parent Expression
+
+
+# *** LITERALS ***
+
+@Literal
+    parent Expression
+
+@FunctionLiteral
+    parent Literal
+
+@CoroutineLiteral
+    parent Literal
+
+@ContextBlockLiteral
+    parent Literal
+
+@ValueLiteral
+    parent Literal
+
+@ListLiteral
+    parent Literal
+
+@DictLiteral
+    parent Literal
+
+@SetLiteral
+    parent Literal

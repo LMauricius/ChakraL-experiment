@@ -7,14 +7,12 @@ namespace ChakraL
     SemanticNode::~SemanticNode() {
     };
 
-    void extractErrors(SemanticNodePtr node, std::list<ParserError>& outErrors)
+    void SemanticNode::extractErrors(std::list<ParserError>& outErrors) const
     {
-        for (auto& nameListPair : node->nodeLists) {
-            for (auto& nodePtrRef : nameListPair.second) {
-                if (nodePtrRef) extractErrors(nodePtrRef, outErrors);
-            }
+        for (auto& node : getSubNodes()) {
+            if (node) node->extractErrors(outErrors);
         }
-        for (auto& e : node->errors) outErrors.push_back(e);
+        for (auto& e : errors) outErrors.push_back(e);
     }
 
 }

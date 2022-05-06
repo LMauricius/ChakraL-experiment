@@ -13,13 +13,11 @@ namespace ChakraL {
     public:
         virtual ~SemanticNode();
         virtual std::string_view className() const = 0;
-        virtual void print(std::ostream& out, size_t tabs) const = 0;
-        
-        std::map<std::string, std::list<SemanticNodePtr>> nodeLists;
-        std::map<std::string, std::list<Token>> tokenLists;
+        virtual void print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const = 0;
+        virtual std::vector<const SemanticNode*> getSubNodes() const = 0;
+	    void extractErrors(std::list<ParserError>& outErrors) const;
         
         std::list<ParserError> errors;
     };
 	
-	void extractErrors(SemanticNodePtr node, std::list<ParserError>& outErrors);
 }

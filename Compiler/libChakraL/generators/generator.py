@@ -100,18 +100,20 @@ def main():
         if "--insemanticnodes" in argMap:
             startTime = time.time()
 
-            for name, node in loadSemanticNodes(argget("--insemanticnodes")).items():
+            semNodes = loadSemanticNodes(argget("--insemanticnodes"))
+            '''for name, node in loadSemanticNodes(argget("--insemanticnodes")).items():
                 semNodes.setdefault(name, SemanticNode())
                 semNodes[name].methods.update(node.methods)
                 semNodes[name].privateMembers.update(node.privateMembers)
                 semNodes[name].protectedMembers.update(node.protectedMembers)
-                semNodes[name].publicMembers.update(node.publicMembers)
+                semNodes[name].publicMembers.update(node.publicMembers)'''
+            print("Loaded semantic nodes in " + str(time.time()-startTime) + "s: " + argget("--insemanticnodes"))
         if "--inparser" in argMap:
             startTime = time.time()
             argget("--inlexer")
             pars = loadParser(lex, argget("--inparser"), semNodes)
 
-            semNodes = parser.semNodes
+            semNodes = pars.semNodes
             '''for name, node in pars.semNodes.items():
                 semNodes.setdefault(name, SemanticNode())
                 semNodes[name].methods.update(node.methods)

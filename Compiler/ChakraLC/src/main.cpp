@@ -10,30 +10,6 @@ void printTabs(int tabs)
 {
     for (int i=0; i < tabs; i++) std::cout << "    ";
 }
-void printNode(ChakraL::SemanticNodePtr nodePtr, int tabs)
-{
-    for (auto& e : nodePtr->errors)
-    {
-        printTabs(tabs); std::wcout << L"Error at line " << e.token.line << L", position " << e.token.character << L", token " << ChakraL::WTokenNames[(int)e.token.type] << " '" << e.token.str << L"': ";
-        std::wcout << e.msg << std::endl;
-    }
-    nodePtr->print(std::cout, tabs);
-    for (auto& nameListPair : nodePtr->tokenLists)
-    {
-        //printTabs(tabs); std::cout << "'" << nameListPair.first << "'" << "(tokens): ";
-        for (auto& t : nameListPair.second)
-        {
-            printTabs(tabs);
-            std::cout << "'" << nameListPair.first << "': " << ChakraL::TokenNames[(int)t.type] << "-" << t.line << "," << t.character << ": ";
-            std::wcout << t.str;
-            std::cout << std::endl;
-        }
-    }
-    /*if (nodePtr->continuationNode)
-    {
-        printNode(nodePtr->continuationNode, tabs);
-    }*/
-}
 
 int main(int argc, char** argv)
 {
@@ -94,7 +70,7 @@ int main(int argc, char** argv)
         auto endOrgTime = high_resolution_clock::now();
         std::cout << "Nodes organized in " << duration<double>(endOrgTime - startOrgTime).count() << "s" << std::endl;
 */
-        printNode(node, 1);
+        node->print(std::wcout, 0, L"    ");
 
         /*for (auto& t : tokens)
         {
@@ -102,7 +78,7 @@ int main(int argc, char** argv)
             std::wcout << t.str << std::endl;
         }*/
         perrors.clear();
-        ChakraL::extractErrors(node, perrors);
+        node->extractErrors(perrors);
         std::wcout << perrors.size() << L" errors found:" << std::endl;
         for (auto& e : perrors)
         {

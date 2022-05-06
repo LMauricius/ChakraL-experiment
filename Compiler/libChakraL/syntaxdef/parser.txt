@@ -37,7 +37,7 @@
 
 
 File = <!> .:ContextBlock END_OF_STR
-	-> ::
+	-> ContextBlock ::
 
 
 ###
@@ -67,6 +67,7 @@ Identifier = name:IDENTIFIER
 ExprHighest = .:Identifier
 			= '(' NL* .:Expression NL* ')' 
 			= .:Literal
+			-> Expression ::
 
 # expressions are auto generated from the table in operatorTable.txt
 >> ../autosyntaxdef/operatorProductionsAutogen.txt
@@ -78,7 +79,7 @@ Literal 	= .:FunctionLiteral
 			= .:ListLiteral
 			= .:DictLiteral
 			= .:SetLiteral
-			-> ::
+			-> Literal ::
 
 ValueLiteral 	= val:NUM_LIT [ suf:LIT_SUFFIX ]
 				= val:NUM_B_LIT [ suf:LIT_SUFFIX ]
@@ -114,7 +115,7 @@ Statement 	= .:Definition
 			= .:JumpStat
 			= .:WithStat
 			= .:Expression
-			-> Statement
+			-> Statement ::
 
 Definition 	= DEF <!> id:IDENTIFIER '='? NL* val:Expression
 			= DEF <!> id:IDENTIFIER ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
@@ -122,24 +123,26 @@ Definition 	= DEF <!> id:IDENTIFIER '='? NL* val:Expression
 IfStat 	= IF <!> cond:Expression <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:ContextBlock ( <$> alt:ElseStatPart | <$> BLOCK_END) )
 ElseStatPart 	= ELSE <!> <$> ':' (exec:ContextLine | NL <!> exec:ContextBlock <$> BLOCK_END)
 				= .:ElifStatPart
+				-> Statement
 ElifStatPart 	= ELIF <!> cond:Expression <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:ContextBlock ( <$> alt:ElseStatPart | <$> BLOCK_END) )
+				-> Statement IfStat
 
 LoopStat 	= LOOP_MARK <!> parts::LoopStatPart ( <$> ';' parts::LoopStatPart)* <$> ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
-			= .:LoopStatPart <!> <$> ':' (block:ContextLine | <$> NL <!> block:ContextBlock <$> BLOCK_END)
+			= parts::LoopStatPart <!> <$> ':' (block:ContextLine | <$> NL <!> block:ContextBlock <$> BLOCK_END)
 LoopStatPart 	= .:TimesLoopStatPart
 				= .:ForLoopStatPart
 				= .:WhileLoopStatPart
+				-> LoopStatPart ::
 TimesLoopStatPart 	= TIMES <!> count:Expression
-					-> LoopStatPart TimesLoopStatPart
 ForLoopStatPart 	= FOR <!> id:IDENTIFIER IN iterable:Expression
-					-> LoopStatPart ForLoopStatPart
 WhileLoopStatPart 	= WHILE <!> cond:Expression
-					-> LoopStatPart WhileLoopStatPart
 
 JumpStat 	= .:BreakStat
 			= .:ContinueStat
 			= .:ReturnStat
 			= .:YieldStat
+			-> JumpStat ::
+
 BreakStat = BREAK <!> [ id:IDENTIFIER ]
 ContinueStat = CONTINUE <!> [ id:IDENTIFIER ]
 ReturnStat = RETURN <!> [ val:Expression ]
