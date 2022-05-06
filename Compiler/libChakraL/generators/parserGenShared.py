@@ -660,12 +660,13 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
                     else:
                         childSemNodeName = parser.productions[part.symbol].outSemNodeName
                         parentSemNodeName = prod.visibleSemNodeName
-                        if not semNodeExtends(parser.semNodes.get(childSemNodeName), parentSemNodeName, parser.semNodes):
-                            raise SemanticError(f"Variable {part.variable} of prod <<{part.prodName}>> contains a semantic node of type '{childSemNodeName}', but the production needs to be of type '{parentSemNodeName}' which isn't an ancestor of the variable's type.")
+                        if not semNodeExtends(childSemNodeName, parentSemNodeName, parser.semNodes):
+                            raise SemanticError(f"Variable '{part.variable}' of prod <<{part.hint}>> contains a semantic node of type '{childSemNodeName}', but the production needs to be of type '{parentSemNodeName}' which isn't an ancestor of the variable's type.")
 
             
-            if not semNodeExtends(prod.outSemNodeName, prod.visibleSemNodeName, parser.semNodes):
-                raise SemanticError(f"Visible semantic node {prod.outSemNodeName} of prod <<{part.prodName}>> isn't a parent of the outing semantic node {prod.outSemNodeName}.")
+            if prod.outSemNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and not semNodeExtends(prod.outSemNodeName, prod.visibleSemNodeName, parser.semNodes):
+                raise SemanticError(f"Visible semantic node '{prod.visibleSemNodeName}' of prod <<{part.prodName}>> isn't a parent of the outing semantic node '{prod.outSemNodeName}'.")
+            
             handledProds.add(prodName)
         for prodName, prod in parser.productions.items():
             processVariables(prodName)
