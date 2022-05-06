@@ -9,6 +9,8 @@ from semanticMethodGen import *
 import time
 
 from semanticMethodGen import SemanticNode
+from semanticMethodGen import Member
+from semanticMethodGen import semNodeExtends
 
 NO_OUTPUT_PRODUCTION_STR = "-"
 FALTHRU_OUTPUT_PRODUCTION_STR = "::"
@@ -431,7 +433,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                     var = curStr[0:colonInd]
                     if not ("\'" in var or "\"" in var):
                         if var.endswith(LIST_VARIABLE_SUFFIX):
-                            curPart.variable = var[0:(-len(LIST_VARIABLE_SUFFIX))-1]
+                            curPart.variable = var[0:(-len(LIST_VARIABLE_SUFFIX))]
                             curPart.variableIsList = True
                         else:
                             curPart.variable = var
@@ -624,6 +626,7 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
                 parser.semNodes.setdefault(prod.outSemNodeName, SemanticNode())
                 parser.semNodes.setdefault(prod.visibleSemNodeName, SemanticNode())
 
+
         handledProds : set[str] = set()
         def processVariables(prodName):
             if prodName in handledProds:
@@ -646,8 +649,8 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
                         defVal = ""
 
                         if part.type == ProductionType.Node:
-                            #varType = f"Ptr<SemanticNode_{parser.productions[part.symbol].visibleSemNodeName}>"
-                            varType = f"SemanticNodePtr"
+                            varType = f"Ptr<SemanticNode_{parser.productions[part.symbol].visibleSemNodeName}>"
+                            #varType = f"SemanticNodePtr"
                             defVal = "nullptr"
                         elif part.type == ProductionType.Token:
                             varType = "Token"
@@ -658,7 +661,7 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
                         
                         semNode.publicMembers.setdefault(part.variable, Member(part.variable, varType, defVal))
                     else:
-                        childSemNodeName = parser.productions[part.symbol].outSemNodeName
+                        childSemNodeName = parser.productions[part.symbol].visibleSemNodeName
                         parentSemNodeName = prod.visibleSemNodeName
                         if not semNodeExtends(childSemNodeName, parentSemNodeName, parser.semNodes):
                             raise SemanticError(f"Variable '{part.variable}' of prod <<{part.hint}>> contains a semantic node of type '{childSemNodeName}', but the production needs to be of type '{parentSemNodeName}' which isn't an ancestor of the variable's type.")
