@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0.0)
 # Cache variables
 ######################################
 
-set(ParserType "lr" CACHE STRING "The parsing algorithm to use")
+set(ParserType "recursive" CACHE STRING "The parsing algorithm to use")
 set_property(CACHE ParserType PROPERTY STRINGS "custom" "lr" "recursive")
 
 if(ParserType STREQUAL "custom")
