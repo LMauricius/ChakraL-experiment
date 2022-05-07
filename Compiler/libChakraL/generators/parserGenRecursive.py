@@ -58,7 +58,7 @@ def getIterationSnippets(parser: Parser, subpart : ProductionPart, part : Produc
 
     # SubProd
     if subpart.type == ProductionType.SubProd:
-        initializerCodeStr = f"testInd = (ind < tokenNum? check_{subpart.idName}(tokenNum, tokens, data, ind) : FAIL_IND)"
+        initializerCodeStr = f"testInd = (ind < tokenNum? check_{subpart.idName}(tokenNum, tokens, data, ind, commands) : FAIL_IND)"
         checkerCodeStr = "testInd != FAIL_IND"
         executorCodeStr.append(f"commands.emplace_back(new CommBranch(&(data.at(ind).commands[ProductionInd::{subpart.idName}])));")
         executorCodeStr.append("ind = testInd;")
@@ -358,10 +358,13 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     TB();TB();TB();LN("}")
     TB();TB();LN("};")'''
     
-    # Declarations
+    # Declarations 
     for part in parser.productionParts:
         if part.type == ProductionType.SubProd:
-            TB();TB();LN("TokenInd check_" + part.idName + "(size_t tokenNum, std::vector<Token>& tokens, std::vector<TokenAssignedData>& data, TokenInd startInd);")
+            if part.isMainPart:
+                TB();TB();LN("TokenInd check_" + part.idName + "(size_t tokenNum, std::vector<Token>& tokens, std::vector<TokenAssignedData>& data, TokenInd startInd);")
+            else:
+                TB();TB();LN("TokenInd check_" + part.idName + "(size_t tokenNum, std::vector<Token>& tokens, std::vector<TokenAssignedData>& data, TokenInd startInd, ParserCommandBranch& commands);")
     TB();LN("")
     
     # Definitions
@@ -370,7 +373,10 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
             semNodeName = parser.productions[part.prodName].outSemNodeName
 
             TB();TB();LN(f"// {(part.hint)}")
-            TB();TB();LN("TokenInd check_" + part.idName + "(size_t tokenNum, std::vector<Token>& tokens, std::vector<TokenAssignedData>& data, TokenInd startInd) { //"+part.hint)
+            if part.isMainPart:
+                TB();TB();LN("TokenInd check_" + part.idName + "(size_t tokenNum, std::vector<Token>& tokens, std::vector<TokenAssignedData>& data, TokenInd startInd) { //"+part.hint)
+            else:
+                TB();TB();LN("TokenInd check_" + part.idName + "(size_t tokenNum, std::vector<Token>& tokens, std::vector<TokenAssignedData>& data, TokenInd startInd, ParserCommandBranch& commands) { //"+part.hint)
             
             if part.isMainPart:
                 TB();TB();TB();LN("// Check for cached results")
@@ -380,7 +386,8 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                 TB();TB();TB();LN("}")
                 TB();TB();TB();LN("data.at(startInd).checked_" + part.idName + " = true;")
                 TB();TB();TB();LN("")
-            TB();TB();TB();LN(f"ParserCommandBranch& commands = data.at(startInd).commands[ProductionInd::{part.idName}];")
+            if part.isMainPart:
+                TB();TB();TB();LN(f"ParserCommandBranch commands;")
             TB();TB();TB();LN("size_t ogCommandNumber = commands.size();")
 
             # Check all possibilities
@@ -499,6 +506,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                 TB();TB();TB();TB();LN("")
                 if part.isMainPart:
                     TB();TB();TB();TB();LN("data.at(startInd).is_" + part.idName + " = true;")
+                    TB();TB();TB();TB();LN(f"data.at(startInd).commands[ProductionInd::{part.idName}] = std::move(commands);")
                     TB();TB();TB();TB();LN("data.at(startInd).endInds[ProductionInd::" + part.idName + "] = ind;")
 
                 '''if semNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and semNodeName != NO_OUTPUT_PRODUCTION_STR:
