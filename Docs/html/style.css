@@ -1,0 +1,42 @@
+body {
+	background-color: #ddd;
+	padding: 0em;
+    margin: 0;
+}
+
+.wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+
+.main,
+.sidebar {
+}
+
+.main {
+  width: 75%;
+}
+
+.sidebar {
+	width: 25%;
+	height: 100vh;
+	
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+}
+
+.tableofcontents,
+.pagecontent {
+	border: 3pt solid #aaa;
+	border-radius: 12pt;
+	padding: 1em;
+	margin: 6pt;
+	background-color: #fff;
+}
+
+.tableofcontents {
+	box-sizing: border-box;
+	height: calc(100% - 12pt);
+	overflow: auto;
+}
