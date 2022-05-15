@@ -253,14 +253,14 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     TB();TB();LN("};")
     # CommError
     TB();TB();LN("struct CommError : public ParserCommand {")
-    TB();TB();TB();LN("std::wstring str; TokenInd tokInd;")
-    TB();TB();TB();LN("CommError(std::wstring str, TokenInd tokInd) : str(str), tokInd(tokInd) {}")
+    TB();TB();TB();LN("std::function<std::wstring(TokenInd, std::vector<Token>&)> strGetter; TokenInd tokInd;")
+    TB();TB();TB();LN("CommError(TokenInd tokInd, std::function<std::wstring(TokenInd, std::vector<Token>&)> strGetter) : strGetter(strGetter), tokInd(tokInd) {}")
     TB();TB();TB();LN("virtual void operator()(ParserState* state, SemanticNodePtr* varPtr) {")
-    TB();TB();TB();TB();LN("(*varPtr)->errors.push_back(ParserError(state->tokens.at(std::min((size_t)tokInd, state->tokens.size()-1)), str));")
+    TB();TB();TB();TB();LN("(*varPtr)->errors.push_back(ParserError(state->tokens.at(std::min((size_t)tokInd, state->tokens.size()-1)), strGetter(tokInd, state->tokens)));")
     TB();TB();TB();LN("}")
     TB();TB();TB();LN("virtual void print(size_t indent) {")
     TB();TB();TB();TB();LN("for (int i=0; i<indent; i++) std::cout << ' ';")
-    TB();TB();TB();TB();LN("std::wcout << L\"CommError - \" << str << std::endl;")
+    TB();TB();TB();TB();LN("std::wcout << L\"CommError - \" << std::endl;")
     TB();TB();TB();LN("}")
     TB();TB();LN("};")
     '''TB();TB();LN("struct CommPushNodeEmptyVar : public ParserCommand {")
@@ -444,7 +444,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                             initializerCodeStr, checkerCodeStr, executorCodeStr = getIterationSnippets(parser, syncPart, part)
                             loopBody += f" {initializerCodeStr}; if ({checkerCodeStr}) break; "
                         
-                        nextPossSnippet = f"{{std::wstringstream ss; ss << \"Unexpected \" << ((ind < tokenNum)? WTokenNames[(int)tokens.at(ind).type] : L\"end of file\") << \", expected a {subpart.symbol if len(subpart.symbol)>0 else subpart.idName}\"; commands.emplace_back(new CommError(ss.str(), ind));"
+                        nextPossSnippet = f"{{ commands.emplace_back(new CommError(ind, [](TokenInd ind, std::vector<Token>& tokens) {{std::wstringstream ss; ss << \"Unexpected \" << ((ind < tokens.size())? WTokenNames[(int)tokens.at(ind).type] : L\"end of file\") << \", expected a {subpart.symbol if len(subpart.symbol)>0 else subpart.idName}\"; return ss.str(); }}));"
                         
                         if len(syncParts) > 0:
                             nextPossSnippet += f" for (ind++;ind < tokenNum; ind++) {{ {loopBody} }} }}"
