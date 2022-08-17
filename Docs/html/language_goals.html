@@ -1,0 +1,92 @@
+
+<!doctype html>
+<html>
+    <head>
+        <title>language goals</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <div class="sidebar">
+                <div class="tableofcontents">
+                    <p class="tableofcontents_title">Contents</p>
+                            <li><a href="introduction.html">1&nbspIntroduction</a>
+        <ul>
+            <li><a href="how_to_read_the_documentation.html">1&nbspHow to read the documentation</a>
+            </li>
+            <li><b>2 Language goals</b>
+            </li>
+            <li><a href="file_format.html">3&nbspFile format</a>
+            </li>
+            <li><a href="module_system.html">4&nbspModule system</a>
+            </li>
+        </ul>
+        </li>
+        <li>2&nbspBasic concepts
+        <ul>
+            <li><a href="context.html">1&nbspContext</a>
+            </li>
+            <li><a href="trait_system.html">2&nbspTrait system</a>
+            </li>
+        </ul>
+        </li>
+        <li>3&nbspStandard library
+        </li>
+
+                </div>
+            </div>
+            <div class="main">
+                <div class="pagecontent">
+                    <h1 id="language-goals">Language goals</h1>
+<p>ChakraL is developed with love towards both the programmer and the
+end-user. Here is the list of goals that the author believes will help
+make the language better.</p>
+<h2 id="semantics-are-important">Semantics are important</h2>
+<p>The end-goal of the programmer should always be obvious. Writing code
+should be focused on telling the copmuter what you want to happen,
+instead of how, and the code shouldn’t only make sense after reading
+thousands of lines. We are writing <em>programming</em> code, not
+cryptic gibberish. Common functionality especially shouldn’t require
+writing hackish boilerplate code, but should be short and readable.</p>
+<h2 id="keep-things-consistent">Keep things consistent</h2>
+<p>If an existing way of doing things can be extended with new
+functionality, it should be, instead of designing new features from the
+ground up. On the other hand, the language features shouldn’t be bent
+backwards to incorporate radically different ideas. The language
+structures should convey meaning intuitive to most people, and shouldn’t
+be used for unrelated things. For example, the brackets are
+<em>only</em> used to construct list literals.</p>
+<h2 id="interoperability-with-other-languages">Interoperability with
+other languages</h2>
+<p>The language shouldn’t require a huge ecosystem built specifically
+for it, but should be an interface to language-agnostic specifications.
+Existing libraries should be usable from the language and their API
+structure should be adapted while applying the ChakraL’s coding
+practices if possible. This requires a well-defined ABI per each
+platform.</p>
+<h2 id="fast-execution">Fast execution</h2>
+<p>The features must require the least overhead possible. Faster code
+shouldn’t be gatekeeped as a harder or less safe skill, but there should
+still be ways to avoid slower constructs without breaking the higher
+priority goals. Accessibility and speed/power aren’t mutually
+exclusive.</p>
+<h2 id="build-advanced-features-from-basic-building-blocks">Build
+advanced features from basic building blocks</h2>
+<p>The basic language features should be designed in such a way that
+they can be used in the most use-cases. This makes the language more
+abstract, while simultaneously easier to understand.</p>
+<h2 id="reduce-the-amount-of-work-for-the-programmer">Reduce the amount
+of work for the programmer</h2>
+<p>Even if you consider the programmer a wizard, their work and time
+aren’t zero-cost. We don’t expect the programmers to repeat work that
+can be done once and then shared. The amount of work needed should
+always be reduced at the lowest level possible without restricting what
+can be done with the language.</p>
+<h2 id="section"></h2>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

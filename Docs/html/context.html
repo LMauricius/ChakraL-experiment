@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>Context</title>
+        <title>context</title>
         <link rel="stylesheet" href="style.css">
     </head>
 
@@ -10,21 +10,28 @@
         <div class="wrapper">
             <div class="sidebar">
                 <div class="tableofcontents">
-                            <li><a href="introduction.html">1 Introduction</a>
+                    <p class="tableofcontents_title">Contents</p>
+                            <li><a href="introduction.html">1&nbspIntroduction</a>
         <ul>
-            <li><a href="how_to_read_the_documentation.html">1 How to read the documentation</a>
+            <li><a href="how_to_read_the_documentation.html">1&nbspHow to read the documentation</a>
             </li>
-            <li><a href="file_format.html">2 File format</a>
+            <li><a href="language_goals.html">2&nbspLanguage goals</a>
+            </li>
+            <li><a href="file_format.html">3&nbspFile format</a>
+            </li>
+            <li><a href="module_system.html">4&nbspModule system</a>
             </li>
         </ul>
         </li>
-        <li>2 Basic concepts
+        <li>2&nbspBasic concepts
         <ul>
-            <li><a href="context.html">1 Context</a>
+            <li><b>1 Context</b>
+            </li>
+            <li><a href="trait_system.html">2&nbspTrait system</a>
             </li>
         </ul>
         </li>
-        <li>3 Standard library
+        <li>3&nbspStandard library
         </li>
 
                 </div>
@@ -33,18 +40,26 @@
                 <div class="pagecontent">
                     <h1 id="context">Context</h1>
 <h2 id="definition">Definition</h2>
-<p>A context is the most primitive entity of ChakraL language. The so-called primitive types such as integers or real numbers, complex objects, literal values and code blocks are all contexts in ChakraL. A context can be described and distinguished from other contexts by requirements opposed on it and functions that map from it into a possibly different context. There are two ways to define a context in ChakraL.</p>
+<p>A context is the most primitive structure of ChakraL language. A
+context can be described and distinguished from other contexts by
+requirements opposed on it and functions that map from it into a
+possibly different context. There are two ways to define a context in
+ChakraL.</p>
 <h2 id="the-short-way">The short way</h2>
 <p>Example:</p>
 <pre><code>(lives = 3, score = 0)</code></pre>
-<p>A context can be defined as a comma-separated list of descriptions. The short definition is used in expressions. A single trailing comma is optional in the single-line version and mandatory in the multiline version, where descriptions also have to be on independent lines from the parentheses.</p>
+<p>A context can be defined as a comma-separated list of descriptions.
+The short definition is used in expressions. A single trailing comma is
+optional in the single-line version and mandatory in the multiline
+version, where descriptions also have to be on independent lines from
+the parentheses.</p>
 <p>Example:</p>
 <pre><code>(
     lives = 3,
     score = 0,
 )</code></pre>
 <p>Use:</p>
-<pre><code>(DESCRIPTION1, DESCRIPTION2 &lt;...&gt; )</code></pre>
+<pre><code>( DESCRIPTION1, DESCRIPTION2 &lt;...&gt; )</code></pre>
 <p>Or:</p>
 <pre><code>(
     DESCRIPTION1,
@@ -52,13 +67,27 @@
     DESCRIPTION4, &lt;...&gt;
 )</code></pre>
 <h2 id="the-long-way">The long way</h2>
+<p>A context can also be defined as a list of descriptions each starting
+at its own line of code. The long definition can be used in specific
+language constructs that require it. It is considered the long way
+because you can’t put more than one description per line, and because it
+is only used in longer language constructs.</p>
 <p>Example:</p>
 <pre><code>lives = 3
 score = 0</code></pre>
-<p>A context can also be defined as a list of descriptions each starting at its own line of code. The long definition can be used in specific places in code that require it.</p>
+<p>Use:</p>
+<pre><code>DESCRIPTION1
+DESCRIPTION2
+DESCRIPTION3
+&lt;...&gt;</code></pre>
 <h2 id="description">Description</h2>
 <p>Example of assignment: <code>lives = 3</code><br />
-Example of requirement: <code>?? lives &gt; 0</code> Example of composition: <code>! Movable</code></p>
+Example of requirement: <code>?? lives &gt; 0</code> Example of
+composition: <code>! Movable</code></p>
+<h2 id="similar-structures-in-other-languages">Similar structures in
+other languages</h2>
+<p>primitive data (integers or real numbers), complex objects, literal
+values, code blocks</p>
 
                 </div>
             </div>

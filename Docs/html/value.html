@@ -1,0 +1,100 @@
+
+<!doctype html>
+<html>
+    <head>
+        <title>value</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <div class="sidebar">
+                <div class="tableofcontents">
+                    <p class="tableofcontents_title">Contents</p>
+                            <li><a href="introduction.html">1&nbspIntroduction</a>
+        <ul>
+            <li><a href="how_to_read_the_documentation.html">1&nbspHow to read the documentation</a>
+            </li>
+            <li><a href="language_goals.html">2&nbspLanguage goals</a>
+            </li>
+            <li><a href="file_format.html">3&nbspFile format</a>
+            </li>
+            <li><a href="module_system.html">4&nbspModule system</a>
+            </li>
+        </ul>
+        </li>
+        <li>2&nbspBasic concepts
+        <ul>
+            <li><a href="context.html">1&nbspContext</a>
+            </li>
+            <li><a href="trait_system.html">2&nbspTrait system</a>
+            </li>
+        </ul>
+        </li>
+        <li>3&nbspStandard library
+        </li>
+
+                </div>
+            </div>
+            <div class="main">
+                <div class="pagecontent">
+                    <h1 id="value">Value</h1>
+<h2 id="definition">Definition</h2>
+<p>A value is a handle that can be used to access a context and modify
+functions that map from it. It consists of 3 components: the data, the
+required trait and the known trait.</p>
+<h2 id="the-data">The data</h2>
+<p>The data is the context that the functions map from and that can be
+modified if the value isn’t a constant.</p>
+<h2 id="the-required-trait">The required trait</h2>
+<p>The required trait of a value is the one that the data has to always
+satisfy. It is used to restrict the kinds of data that can be assigned
+to a value and keep the programmer’s sanity. The required trait can be
+specified manually, or infered from another value whose data is assigned
+to it.</p>
+<p>The required trait can be manually specified. For example we can
+specify variable value <code>a</code> to have a required type of
+<code>Positive Integer</code>:</p>
+<pre><code>a: Integer &amp; Positive = 3</code></pre>
+<p>The required trait can also be automatically inferred during the
+first use of a value. In the example:</p>
+<pre><code>a = 3</code></pre>
+<p>… <code>a</code>‘s required trait will be inferred to just be an
+<code>Integer</code>, as the integer literals’ required trait is
+<code>Integer</code>.</p>
+<h2 id="the-known-trait">The known trait</h2>
+<p>The known trait is the more specific trait that the data always
+satisfies. It is used internally by the compiler for performance
+optimizations and hidden from the programmer. The known trait is
+implementation-specific, but always satisfies the required trait.</p>
+<h2
+id="the-difference-between-data-the-required-trait-and-the-known-trait">The
+difference between data, the required trait and the known trait</h2>
+<p>The differences can be shown in the example of an integer literal
+<code>3</code>. The data is exactly <code>3</code>, its required trait
+is an <code>Integer</code>, but the known trait could be an
+<code>Unsigned Integer</code>. If we assign <code>3</code> to a newly
+declared variable value <code>a</code> without specifying a trait
+manually like this:</p>
+<pre><code>a = 3</code></pre>
+<p>… <code>a</code>’s required trait will also be an
+<code>Integer</code>, but the known trait could be an
+<code>Nonnegative &amp; int32</code> (as the literal <code>3</code> can
+be stored as a 32-bit integer) unless it gets a
+<code>Negative Integer</code> assigned to it somewhere in code for
+example. If we have the following code snippet later:</p>
+<pre><code>a = -2</code></pre>
+<p>… <code>a</code>’s known trait couldn’t be an
+<code>Unsigned &amp; int32</code>, but perhaps only an
+<code>int32</code>. It’s data would be <code>3</code> before its
+reassignment of <code>-2</code>.</p>
+<h2 id="similar-structures-in-other-languages">Similar structures in
+other languages</h2>
+<p>variable, constant, literal, pointer, temporary value, rvalue,
+lvalue</p>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
