@@ -21,7 +21,7 @@ Example:
 )
 ```
 
-Use:  
+Write:  
 ```
 ( DESCRIPTION1, DESCRIPTION2 <...> )
 ```
@@ -44,7 +44,7 @@ lives = 3
 score = 0
 ```
 
-Use:  
+Write:  
 ```
 DESCRIPTION1
 DESCRIPTION2
