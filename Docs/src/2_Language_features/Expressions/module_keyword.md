@@ -23,6 +23,3 @@ You can also retrieve the submodules with the keyword.
 Write: `module MODULE_NAME.SUBMODULE_NAME1.SUBMODULE_NAME2.<...>`
 
 Example: `module MyEngine.Physics`
-
-## Associated name
-The name associated with the `module ...` expression is the name of the most significant (deepest) submodule.
