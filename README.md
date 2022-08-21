@@ -1,5 +1,5 @@
 # ChakraL-experiment
-New language experiment
+New language experiment. Absolutely unstable currently. The documentation is WIP, and the compiler only for basic syntax testing.
 
 # Directory structure
 
@@ -18,6 +18,9 @@ New language experiment
         * ctre - Awesome compile-time regex library by hanickadot, https://github.com/hanickadot/compile-time-regular-expressions
 * Examples - ChakraL code examples and ideas
 * Tools - Random useful scripts for designing
+
+# Language documentation
+The documentation is part of this repo. It can be built by running the `compile.py` script inside the Docs directory. The current documentation can be viewed using [Github's htmlpreview](https://htmlpreview.github.io/?https://github.com/LMauricius/ChakraL-experiment/blob/main/Docs/html/introduction.html)
 
 # Building from source
 This project uses CMake for building the sources. To compile the compiler, position yourself inside the Compiler/ directory, create the build/ directory, position yourself inside the build directory, and then run the following:
