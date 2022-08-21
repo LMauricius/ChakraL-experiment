@@ -1,15 +1,17 @@
-# using keyword
+# using statement
 
 ## Description
 The `using` keyword is used to define values based on already named values. 
 
 ## Formal usage
-Write: `using NAMED_EXPRESSION`. This is equivalent to writing `NAME def NAMED_EXPRESSION`, where the expression's value has the same name asociated with it as the value we are defining. The expression can be complex, but its result must have a name associated with it.
+Write: `using NAMED_EXPRESSION`.
+
+This is equivalent to writing `NAME def NAMED_EXPRESSION`, where the expression's value has the same name asociated with it as the value we are defining. The expression can be complex, but its result must have a name associated with it.
 
 ## Examples
 
 ### Basic example
-For example, if we want to use the `sin` function from the `MyMath` module without typing `sin(module MyMath)` every time, we can write:
+The `using` statement is often used along with the `module` expression described in the chapter [module expression](module_expression.html). For example, if we want to use the `sin` function from the `MyMath` module without typing `sin(module MyMath)` every time, we can write:
 ```
 using sin (module MyMath)
 ```
