@@ -27,11 +27,21 @@
         <ul>
             <li><a href="context.html">1&nbspContext</a>
             </li>
-            <li><a href="trait_system.html">2&nbspTrait system</a>
+            <li><b>2 Value</b>
+            </li>
+            <li><a href="trait_system.html">3&nbspTrait system</a>
             </li>
         </ul>
         </li>
-        <li>3&nbspStandard library
+        <li>3&nbspLanguage features
+        <ul>
+            <li><a href="module_keyword.html">1&nbspmodule keyword</a>
+            </li>
+            <li><a href="using_keyword.html">2&nbspusing keyword</a>
+            </li>
+        </ul>
+        </li>
+        <li>4&nbspStandard library
         </li>
 
                 </div>
@@ -40,58 +50,35 @@
                 <div class="pagecontent">
                     <h1 id="value">Value</h1>
 <h2 id="definition">Definition</h2>
-<p>A value is a handle that can be used to access a context and modify
-functions that map from it. It consists of 3 components: the data, the
-required trait and the known trait.</p>
+<p>A value is a handle that can be used to access a context and modify functions that map from it. It consists of 3 components: the data, the required trait and the known trait.</p>
+<h2 id="what-can-be-a-value">What can be a value?</h2>
+<p>The values can be named constants, variables that can be changed during the program’s runtime, literals that are explicitly written in the code and used once etc. Here re few short examples that will be better explained later in the documentation:</p>
+<pre><code>a = b + c</code></pre>
+<p>…<code>a</code>, <code>b</code> and <code>c</code> are variable values</p>
+<pre><code>text = &quot;Hello World!&quot;
+num = 3</code></pre>
+<p>…<code>"Hello World!"</code> and <code>3</code> are literal values</p>
+<pre><code>PI def 3.141592</code></pre>
+<p>…<code>PI</code> is a constant value defined to be equal to the literal value <code>3.141592</code></p>
 <h2 id="the-data">The data</h2>
-<p>The data is the context that the functions map from and that can be
-modified if the value isn’t a constant.</p>
+<p>The data is the context that the functions map from and that can be modified if the value isn’t a constant.</p>
 <h2 id="the-required-trait">The required trait</h2>
-<p>The required trait of a value is the one that the data has to always
-satisfy. It is used to restrict the kinds of data that can be assigned
-to a value and keep the programmer’s sanity. The required trait can be
-specified manually, or infered from another value whose data is assigned
-to it.</p>
-<p>The required trait can be manually specified. For example we can
-specify variable value <code>a</code> to have a required type of
-<code>Positive Integer</code>:</p>
+<p>The required trait of a value is the one that the data <em>has</em> to always satisfy. It is used to restrict the kinds of data that can be assigned to a value and keep the programmer’s sanity. The required trait can be specified manually, or inferred from another value whose data is assigned to it.</p>
+<p>The required trait can be manually specified. For example we can specify variable value <code>a</code> to have a required trait of <code>Positive &amp; Integer</code> (<code>&amp;</code> means <code>a</code> has both the traits <code>Positive</code> and <code>Integer</code>):</p>
 <pre><code>a: Integer &amp; Positive = 3</code></pre>
-<p>The required trait can also be automatically inferred during the
-first use of a value. In the example:</p>
+<p>The required trait can also be automatically inferred during the first use of a value. In the example:</p>
 <pre><code>a = 3</code></pre>
-<p>… <code>a</code>‘s required trait will be inferred to just be an
-<code>Integer</code>, as the integer literals’ required trait is
-<code>Integer</code>.</p>
+<p>… <code>a</code>‘s required trait will be inferred to just be an <code>Integer</code>, as the integer literals’ required trait is <code>Integer</code>.</p>
 <h2 id="the-known-trait">The known trait</h2>
-<p>The known trait is the more specific trait that the data always
-satisfies. It is used internally by the compiler for performance
-optimizations and hidden from the programmer. The known trait is
-implementation-specific, but always satisfies the required trait.</p>
-<h2
-id="the-difference-between-data-the-required-trait-and-the-known-trait">The
-difference between data, the required trait and the known trait</h2>
-<p>The differences can be shown in the example of an integer literal
-<code>3</code>. The data is exactly <code>3</code>, its required trait
-is an <code>Integer</code>, but the known trait could be an
-<code>Unsigned Integer</code>. If we assign <code>3</code> to a newly
-declared variable value <code>a</code> without specifying a trait
-manually like this:</p>
+<p>The known trait is the more specific trait that the data can be <em>concluded</em> to always satisfy during the value’s existance. It is used internally by the compiler for performance optimizations and hidden from the programmer. The known trait is implementation-specific, but always satisfies the required trait.</p>
+<h2 id="the-difference-between-data-the-required-trait-and-the-known-trait">The difference between data, the required trait and the known trait</h2>
+<p>The differences can be shown in the example of an integer literal <code>3</code>. The data is exactly <code>3</code>, its required trait is an <code>Integer</code>, but the known trait could be an <code>Unsigned &amp; Integer</code>. If we assign <code>3</code> to a newly declared variable value <code>a</code> without specifying a trait manually like this:</p>
 <pre><code>a = 3</code></pre>
-<p>… <code>a</code>’s required trait will also be an
-<code>Integer</code>, but the known trait could be an
-<code>Nonnegative &amp; int32</code> (as the literal <code>3</code> can
-be stored as a 32-bit integer) unless it gets a
-<code>Negative Integer</code> assigned to it somewhere in code for
-example. If we have the following code snippet later:</p>
+<p>… <code>a</code>’s required trait will also be an <code>Integer</code>, but the known trait could be an <code>Nonnegative &amp; int32</code> (as the literal <code>3</code> can be stored as a 32-bit integer) unless it gets a <code>Negative &amp; Integer</code> assigned to it somewhere in code for example. If we have the following code snippet later:</p>
 <pre><code>a = -2</code></pre>
-<p>… <code>a</code>’s known trait couldn’t be an
-<code>Unsigned &amp; int32</code>, but perhaps only an
-<code>int32</code>. It’s data would be <code>3</code> before its
-reassignment of <code>-2</code>.</p>
-<h2 id="similar-structures-in-other-languages">Similar structures in
-other languages</h2>
-<p>variable, constant, literal, pointer, temporary value, rvalue,
-lvalue</p>
+<p>… <code>a</code>’s known trait couldn’t be an <code>Unsigned &amp; int32</code>, but perhaps only an <code>int32</code>. It’s data would be <code>3</code> before its reassignment of <code>-2</code>.</p>
+<h2 id="similar-structures-in-other-languages">Similar structures in other languages</h2>
+<p>variable, constant, literal, pointer, temporary value, rvalue, lvalue</p>
 
                 </div>
             </div>

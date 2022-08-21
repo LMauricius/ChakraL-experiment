@@ -27,11 +27,21 @@
         <ul>
             <li><b>1 Context</b>
             </li>
-            <li><a href="trait_system.html">2&nbspTrait system</a>
+            <li><a href="value.html">2&nbspValue</a>
+            </li>
+            <li><a href="trait_system.html">3&nbspTrait system</a>
             </li>
         </ul>
         </li>
-        <li>3&nbspStandard library
+        <li>3&nbspLanguage features
+        <ul>
+            <li><a href="module_keyword.html">1&nbspmodule keyword</a>
+            </li>
+            <li><a href="using_keyword.html">2&nbspusing keyword</a>
+            </li>
+        </ul>
+        </li>
+        <li>4&nbspStandard library
         </li>
 
                 </div>
@@ -40,25 +50,17 @@
                 <div class="pagecontent">
                     <h1 id="context">Context</h1>
 <h2 id="definition">Definition</h2>
-<p>A context is the most primitive structure of ChakraL language. A
-context can be described and distinguished from other contexts by
-requirements opposed on it and functions that map from it into a
-possibly different context. There are two ways to define a context in
-ChakraL.</p>
+<p>A context is the most primitive structure of ChakraL language. A context can be described and distinguished from other contexts by requirements opposed on it and functions that map from it into a possibly different context. There are two ways to define a context in ChakraL.</p>
 <h2 id="the-short-way">The short way</h2>
 <p>Example:</p>
 <pre><code>(lives = 3, score = 0)</code></pre>
-<p>A context can be defined as a comma-separated list of descriptions.
-The short definition is used in expressions. A single trailing comma is
-optional in the single-line version and mandatory in the multiline
-version, where descriptions also have to be on independent lines from
-the parentheses.</p>
+<p>A context can be defined as a comma-separated list of descriptions. The short definition is used in expressions. A single trailing comma is optional in the single-line version and mandatory in the multiline version, where descriptions also have to be on independent lines from the parentheses.</p>
 <p>Example:</p>
 <pre><code>(
     lives = 3,
     score = 0,
 )</code></pre>
-<p>Use:</p>
+<p>Write:</p>
 <pre><code>( DESCRIPTION1, DESCRIPTION2 &lt;...&gt; )</code></pre>
 <p>Or:</p>
 <pre><code>(
@@ -67,27 +69,20 @@ the parentheses.</p>
     DESCRIPTION4, &lt;...&gt;
 )</code></pre>
 <h2 id="the-long-way">The long way</h2>
-<p>A context can also be defined as a list of descriptions each starting
-at its own line of code. The long definition can be used in specific
-language constructs that require it. It is considered the long way
-because you can’t put more than one description per line, and because it
-is only used in longer language constructs.</p>
+<p>A context can also be defined as a list of descriptions each starting at its own line of code. The long definition can be used in specific language constructs that require it. It is considered the long way because you can’t put more than one description per line, and because it is only used in longer language constructs.</p>
 <p>Example:</p>
 <pre><code>lives = 3
 score = 0</code></pre>
-<p>Use:</p>
+<p>Write:</p>
 <pre><code>DESCRIPTION1
 DESCRIPTION2
 DESCRIPTION3
 &lt;...&gt;</code></pre>
 <h2 id="description">Description</h2>
 <p>Example of assignment: <code>lives = 3</code><br />
-Example of requirement: <code>?? lives &gt; 0</code> Example of
-composition: <code>! Movable</code></p>
-<h2 id="similar-structures-in-other-languages">Similar structures in
-other languages</h2>
-<p>primitive data (integers or real numbers), complex objects, literal
-values, code blocks</p>
+Example of requirement: <code>?? lives &gt; 0</code> Example of composition: <code>! Movable</code></p>
+<h2 id="similar-structures-in-other-languages">Similar structures in other languages</h2>
+<p>primitive data (integers or real numbers), complex objects, literal values, code blocks</p>
 
                 </div>
             </div>

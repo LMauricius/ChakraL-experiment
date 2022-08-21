@@ -1,0 +1,87 @@
+
+<!doctype html>
+<html>
+    <head>
+        <title>using keyword</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <div class="sidebar">
+                <div class="tableofcontents">
+                    <p class="tableofcontents_title">Contents</p>
+                            <li><a href="introduction.html">1&nbspIntroduction</a>
+        <ul>
+            <li><a href="how_to_read_the_documentation.html">1&nbspHow to read the documentation</a>
+            </li>
+            <li><a href="language_goals.html">2&nbspLanguage goals</a>
+            </li>
+            <li><a href="file_format.html">3&nbspFile format</a>
+            </li>
+            <li><a href="module_system.html">4&nbspModule system</a>
+            </li>
+        </ul>
+        </li>
+        <li>2&nbspBasic concepts
+        <ul>
+            <li><a href="context.html">1&nbspContext</a>
+            </li>
+            <li><a href="value.html">2&nbspValue</a>
+            </li>
+            <li><a href="trait_system.html">3&nbspTrait system</a>
+            </li>
+        </ul>
+        </li>
+        <li>3&nbspLanguage features
+        <ul>
+            <li><a href="module_keyword.html">1&nbspmodule keyword</a>
+            </li>
+            <li><b>2 using keyword</b>
+            </li>
+        </ul>
+        </li>
+        <li>4&nbspStandard library
+        </li>
+
+                </div>
+            </div>
+            <div class="main">
+                <div class="pagecontent">
+                    <h1 id="using-keyword">using keyword</h1>
+<h2 id="description">Description</h2>
+<p>The <code>using</code> keyword is used to define values based on already named values.</p>
+<h2 id="usage">Usage</h2>
+<p>Write: <code>using NAMED_VALUE</code></p>
+<p>For example, if we want to use the <code>sin</code> function from the <code>MyMath</code> module without typing <code>sin(module MyMath)</code> every time, we can write:</p>
+<pre><code>using sin (module MyMath)</code></pre>
+<p>…and then use it like this:</p>
+<pre><code>amp = sin 30°</code></pre>
+<p>For a more complex example, if we have a following context:</p>
+<pre><code>myComplexContext def (
+    numValue def 0.5,
+    textValue def &quot;Hello!&quot;,
+    subContext def (
+        subSubNum def 1.5,
+        subSubText def &quot;foo&quot;
+    )
+)</code></pre>
+<p>…and we need to use the <code>subSubNum</code> often, we could shorten the future code by doing this:</p>
+<pre><code>subSubValue def subSubNum subContext myComplexContext
+write subSubNum #Hint: prints 1.5</code></pre>
+<p>…or we could use the <code>using</code> keyword to do the same:</p>
+<pre><code>using subSubNum subContext myComplexContext
+write subSubNum #Hint: prints 1.5</code></pre>
+<p>If we want to use multiple values from a module, and we don’t want to write <code>using</code> for each value from it, we can perform a <code>using</code> statement on the whole module: <code>using module MyMath</code>. This is of course equivalent to writing <code>MyMath def module MyMath</code>. Then instead of writing hard to read code:</p>
+<pre><code>y = (sin (module MyMath)) angle
+x = (cos (module MyMath)) angle</code></pre>
+<p>…we can clean it up:</p>
+<pre><code>y = (sin MyMath) angle
+x = (cos MyMath) angle</code></pre>
+<p>This requires us to still write longer code than if we were <code>using</code> each specific function from <code>MyMath</code>, but it makes it clear from where we got the function values <code>sin</code> and <code>cos</code>.</p>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
