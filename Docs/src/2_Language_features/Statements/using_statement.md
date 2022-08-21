@@ -41,7 +41,7 @@ write subSubNum #Hint: prints 1.5
 ...or we could use the `using` keyword to do the same:
 ```
 using subSubNum subContext myComplexContext
-write subSubNum #Hint: prints 1.5
+a = subSubNum #Hint: a equals to 1.5
 ```
 
 ### *using module* example
