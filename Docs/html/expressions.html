@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>introduction</title>
+        <title>expressions</title>
         <link rel="stylesheet" href="style.css">
     </head>
 
@@ -11,7 +11,7 @@
             <div class="sidebar">
                 <div class="tableofcontents">
                     <p class="tableofcontents_title">Contents</p>
-                            <li><b>1 Introduction</b>
+                            <li><a href="introduction.html">1&nbspIntroduction</a>
         <ul>
             <li><a href="how_to_read_the_documentation.html">1&nbspHow to read the documentation</a>
             </li>
@@ -35,7 +35,7 @@
         </li>
         <li>3&nbspLanguage features
         <ul>
-            <li>1&nbspExpressions
+            <li><b>1 Expressions</b>
             <ul>
                 <li><a href="module_expression.html">1&nbspmodule expression</a>
                 </li>
@@ -56,7 +56,12 @@
             </div>
             <div class="main">
                 <div class="pagecontent">
-                    
+                    <h1 id="expressions">Expressions</h1>
+<h2 id="examples">Examples</h2>
+<p>Literals are expressions. Variables are expressions. <code>a + 2</code> is an expression. <code>score + 100</code> is an expression. <code>sin 30°</code> is an expression. <code>[0.5, 1.5, 8.3]</code> is an expression. <code>normalized vector [0.5, 1.5, 8.3]</code> is an expression.</p>
+<h2 id="named-expressions">Named expressions</h2>
+<p>Expressions can have a name associated with them, which is used in other language features. We haven’t yet introduced all types of expressions, but here is a cheat sheet describing how we deduce the name of various expressions.</p>
+<p>The name associated with the <code>module MODULE.SUBMODULE1.&lt;...&gt;</code> expression is the name of the most significant (deepest) submodule.</p>
 
                 </div>
             </div>

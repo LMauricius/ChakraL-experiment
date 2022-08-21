@@ -35,9 +35,17 @@
         </li>
         <li>3&nbspLanguage features
         <ul>
-            <li><b>1 module keyword</b>
+            <li>1&nbspExpressions
+            <ul>
+                <li><a href="module_expression.html">1&nbspmodule expression</a>
+                </li>
+            </ul>
             </li>
-            <li><a href="using_keyword.html">2&nbspusing keyword</a>
+            <li>2&nbspStatements
+            <ul>
+                <li><a href="using_statement.html">1&nbspusing statement</a>
+                </li>
+            </ul>
             </li>
         </ul>
         </li>
@@ -51,14 +59,19 @@
                     <h1 id="module-keyword">module keyword</h1>
 <h2 id="description">Description</h2>
 <p>The <code>module</code> keyword is used to retrieve the whole context of a module. We can use it to access values from other modules. The module can be installed in the global module path, or be a sub-module of the module which the code is part of.</p>
-<h2 id="usage">Usage</h2>
-<p>The <code>module</code> keyword is most commonly used along with the <code>using</code> keyword described in the next chapter.</p>
-<p>Write: <code>module MODULE_NAME</code> <code>module MODULE_NAME</code> is a prefix expression, so to use it in a more complex expression, you have to surround it with parentheses.</p>
-<p>Example: <code>module MyMath</code> Complex example: <code>sin (module MyMath)</code> More useful example:</p>
+<h2 id="basic-usage">Basic usage</h2>
+<p>The <code>module</code> keyword is most commonly used along with the <code>using</code> keyword described in the chapter <a href="using_keyword.html">using keyword</a>.</p>
+<p>Write: <code>module MODULE_NAME</code><br />
+Expression <code>module MODULE_NAME</code> is a prefix expression, so to use it in a more complex expression, you have to surround it with parentheses.</p>
+<p>Example: <code>module MyMath</code><br />
+Complex example: <code>sin (module MyMath)</code><br />
+More useful example:</p>
 <pre><code>mySineFunc def sin(module MyMath)
 amp = mySineFunc 30°</code></pre>
-<p>More complex but conscise example: <code>amp = (sin(module MyMath)) 30°</code></p>
-<p>You can also retrieve the submodules with the keyword. Write: <code>module MODULE_NAME.SUBMODULE_NAME1.SUBMODULE_NAME2.&lt;...&gt;</code></p>
+<p>Harder to read but conscise example: <code>amp = (sin(module MyMath)) 30°</code></p>
+<h2 id="submodules-usage">Submodules usage</h2>
+<p>You can also retrieve the submodules with the keyword.<br />
+Write: <code>module MODULE_NAME.SUBMODULE_NAME1.SUBMODULE_NAME2.&lt;...&gt;</code></p>
 <p>Example: <code>module MyEngine.Physics</code></p>
 
                 </div>
