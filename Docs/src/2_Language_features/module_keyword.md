@@ -6,17 +6,19 @@ The `module` keyword is used to retrieve the whole context of a module. We can u
 ## Usage
 The `module` keyword is most commonly used along with the `using` keyword described in the next chapter.
 
-Use: `module MODULE_NAME`
+Write: `module MODULE_NAME`
+`module MODULE_NAME` is a prefix expression, so to use it in a more complex expression, you have to surround it with parentheses. 
 
 Example: `module MyMath`
+Complex example: `sin (module MyMath)`
 More useful example:
 ```
-mySineFunc def sin(module Math)
+mySineFunc def sin(module MyMath)
 amp = mySineFunc 30°
 ```
-More complex but conscise example: `amp = (sin(module Math)) 30°`
+Harder to read but conscise example: `amp = (sin(module MyMath)) 30°`
 
 You can also retrieve the submodules with the keyword.
-Use: `module MODULE_NAME.SUBMODULE_NAME1.SUBMODULE_NAME2.<...>`
+Write: `module MODULE_NAME.SUBMODULE_NAME1.SUBMODULE_NAME2.<...>`
 
 Example: `module MyEngine.Physics`
