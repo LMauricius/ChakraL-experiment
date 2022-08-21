@@ -36,7 +36,7 @@ myComplexContext def (
 ...and we need to use the `subSubNum` often, we could shorten the future code by doing this:
 ```
 subSubValue def subSubNum subContext myComplexContext
-write subSubNum #Hint: prints 1.5
+a = subSubNum #Hint: a equals to 1.5
 ```
 ...or we could use the `using` keyword to do the same:
 ```
