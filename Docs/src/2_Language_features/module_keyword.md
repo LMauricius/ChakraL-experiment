@@ -12,9 +12,9 @@ Example: `module MyMath`
 More useful example:
 ```
 mySineFunc def sin(module Math)
-amp = mySineFunc(30°)
+amp = mySineFunc 30°
 ```
-More complex but conscise example: `amp = (sin(module Math))(30°)`
+More complex but conscise example: `amp = (sin(module Math)) 30°`
 
 You can also retrieve the submodules with the keyword.
 Use: `module MODULE_NAME.SUBMODULE_NAME1.SUBMODULE_NAME2.<...>`
