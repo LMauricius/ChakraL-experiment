@@ -3,9 +3,12 @@
 ## Description
 The `using` keyword is used to define values based on already named values. 
 
-## Usage
-Write: `using NAMED_VALUE`
+## Formal usage
+Write: `using NAMED_EXPRESSION`. This is equivalent to writing `NAME def NAMED_EXPRESSION`, where the expression's value has the same name asociated with it as the value we are defining. The expression can be complex, but its result must have a name associated with it.
 
+## Examples
+
+### Basic example
 For example, if we want to use the `sin` function from the `MyMath` module without typing `sin(module MyMath)` every time, we can write:
 ```
 using sin (module MyMath)
@@ -14,7 +17,9 @@ using sin (module MyMath)
 ```
 amp = sin 30°
 ```
+This is because the expression `sin (module MyMath)`'s result has the name `sin` associated with it.
 
+### Complex example
 For a more complex example, if we have a following context:
 ```
 myComplexContext def (
@@ -37,6 +42,7 @@ using subSubNum subContext myComplexContext
 write subSubNum #Hint: prints 1.5
 ```
 
+### *using module* example
 If we want to use multiple values from a module, and we don't want to write `using` for each value from it, we can perform a `using` statement on the whole module: `using module MyMath`. This is of course equivalent to writing `MyMath def module MyMath`. Then instead of writing hard to read code:
 ```
 y = (sin (module MyMath)) angle
