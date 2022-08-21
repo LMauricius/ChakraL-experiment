@@ -3,13 +3,34 @@
 ## Definition
 A value is a handle that can be used to access a context and modify functions that map from it. It consists of 3 components: the data, the required trait and the known trait.
 
+## What can be a value?
+
+The values can be named constants, variables that can be changed during the program's runtime, literals that are explicitly written in the code and used once etc. Here re few short examples that will be better explained later in the documentation:
+
+```
+a = b + c
+```
+...`a`, `b` and `c` are variable values
+
+```
+text = "Hello World!"
+num = 3
+```
+...`"Hello World!"` and `3` are literal values
+
+```
+PI def 3.141592
+```
+...`PI` is a constant value defined to be equal to the literal value `3.141592`
+
+
 ## The data
 The data is the context that the functions map from and that can be modified if the value isn't a constant.
 
 ## The required trait
-The required trait of a value is the one that the data has to always satisfy. It is used to restrict the kinds of data that can be assigned to a value and keep the programmer's sanity. The required trait can be specified manually, or infered from another value whose data is assigned to it.
+The required trait of a value is the one that the data *has* to always satisfy. It is used to restrict the kinds of data that can be assigned to a value and keep the programmer's sanity. The required trait can be specified manually, or inferred from another value whose data is assigned to it.
 
-The required trait can be manually specified. For example we can specify variable value `a` to have a required type of `Positive Integer`:
+The required trait can be manually specified. For example we can specify variable value `a` to have a required trait of `Positive & Integer` (`&` means `a` has both the traits `Positive` and `Integer`):
 ```
 a: Integer & Positive = 3
 ```
@@ -21,15 +42,15 @@ a = 3
 ... `a`'s required trait will be inferred to just be an `Integer`, as the integer literals' required trait is `Integer`.
 
 ## The known trait
-The known trait is the more specific trait that the data always satisfies. It is used internally by the compiler for performance optimizations and hidden from the programmer. The known trait is implementation-specific, but always satisfies the required trait.
+The known trait is the more specific trait that the data can be *concluded* to always satisfy during the value's existance. It is used internally by the compiler for performance optimizations and hidden from the programmer. The known trait is implementation-specific, but always satisfies the required trait.
 
 ## The difference between data, the required trait and the known trait
-The differences can be shown in the example of an integer literal `3`. The data is exactly `3`, its required trait is an `Integer`, but the known trait could be an `Unsigned Integer`. If we assign `3` to a newly declared variable value `a` without specifying a trait manually like this:
+The differences can be shown in the example of an integer literal `3`. The data is exactly `3`, its required trait is an `Integer`, but the known trait could be an `Unsigned & Integer`. If we assign `3` to a newly declared variable value `a` without specifying a trait manually like this:
 
 ```
 a = 3
 ```
-... `a`'s required trait will also be an `Integer`, but the known trait could be an `Nonnegative & int32` (as the literal `3` can be stored as a 32-bit integer) unless it gets a `Negative Integer` assigned to it somewhere in code for example. If we have the following code snippet later:
+... `a`'s required trait will also be an `Integer`, but the known trait could be an `Nonnegative & int32` (as the literal `3` can be stored as a 32-bit integer) unless it gets a `Negative & Integer` assigned to it somewhere in code for example. If we have the following code snippet later:
 ```
 a = -2
 ```
