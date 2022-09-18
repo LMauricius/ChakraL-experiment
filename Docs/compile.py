@@ -90,14 +90,14 @@ def getHtmlContents(src: Page, urlPrefix = "", index = 0, indent=0, current="") 
 
     return ret
 
-def buildHtmlChunks(src: Page, currentPage: Page, srcdir: str, builddir: str):
+def buildHtmlChunks(src: Page, currentPage: Page, srcdir: str, builddir: str, syntaxDefs: list[str]):
     
     # Convert current file
     if currentPage.file != "":
         outfilename = builddir+"/"+safeName(currentPage.name)+".html"
         print(f"Checking chunk {outfilename}...")
         if (not os.path.exists(outfilename)) or os.path.getmtime(currentPage.file) > os.path.getmtime(outfilename):
-            result = subprocess.run(["pandoc", currentPage.file, "--to", "html", "--highlight-style", f"{builddir}/highlight.theme"], stdout=subprocess.PIPE)
+            result = subprocess.run(["pandoc", currentPage.file, "--to", "html", "--highlight-style", f"{builddir}/highlight.theme"] + [x for d in syntaxDefs for x in ("--syntax-definition", d)], stdout=subprocess.PIPE)
             pageContent : str = result.stdout.decode("utf8")
 
             print(f"Generating chunk {outfilename}...")
@@ -109,7 +109,7 @@ def buildHtmlChunks(src: Page, currentPage: Page, srcdir: str, builddir: str):
 
     # convert sub pages
     for name, subpage in currentPage.subPages.items():
-        buildHtmlChunks(src, subpage, srcdir, builddir)
+        buildHtmlChunks(src, subpage, srcdir, builddir, syntaxDefs)
 
 def buildHtmlFile(templ : str, src: Page, infilename: str, outfilename: str):
     currentName = cleanName(infilename)
@@ -136,9 +136,16 @@ def main():
     builddir = sys.argv[3]
     themestyle = sys.argv[4]
 
+    # list syntaxdefs
+    syntaxDefs = []
+    for subname in os.listdir(srcdir+"/syntaxparsers"):
+        infilename = srcdir + "/syntaxparsers/" + subname
+        if not os.path.isdir(subname):
+            syntaxDefs.append(infilename)
+
     # save theme
     subprocess.run(["pandoc", "-o", f"{builddir}/highlight.theme", "--print-highlight-style", themestyle])
-    subprocess.run(["pandoc", f"--template={srcdir}/pandoc-template-syntax.css", srcdir+"/pandoc-used-syntax-blocks.md", "--highlight-style", f"{builddir}/highlight.theme", "-o", targetdir+"/syntax_style.css"])
+    subprocess.run(["pandoc", f"--template={srcdir}/pandoc-template-syntax.css", srcdir+"/pandoc-used-syntax-blocks.md", "--highlight-style", f"{builddir}/highlight.theme", "-o", targetdir+"/syntax_style.css"] + [x for d in syntaxDefs for x in ("--syntax-definition", d)])
     
     # get source
     src = getSourceStructure(srcdir+"/content", -1)
@@ -166,7 +173,7 @@ def main():
         print("Contents changed, rebuilding all...")
 
     # Build html files in /build dir
-    buildHtmlChunks(src, src, srcdir+"/content", builddir)
+    buildHtmlChunks(src, src, srcdir+"/content", builddir, syntaxDefs)
 
     # Generate final html in target dir and copy needed files
     for subname in os.listdir(builddir):
