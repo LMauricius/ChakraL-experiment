@@ -450,7 +450,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                         if len(syncParts) > 0:
                             nextPossSnippet += f" for (ind++;ind < tokenNum; ind++) {{ {loopBody} }} }}"
                         else:
-                            nextPossSnippet += f" return ind+1; }}"
+                            nextPossSnippet += f" ind++; goto successfulEnd{ctr+1}; }}"
 
                     else:
                         # Cancel the possibility and either check the next one, or return if the current is the last one
@@ -505,6 +505,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                         TB();TB();TB();TB();LN(f"}}")
                         
                 TB();TB();TB();TB();LN("")
+                TB();TB();TB();LN(f"successfulEnd{ctr+1}:")
                 if part.isMainPart:
                     TB();TB();TB();TB();LN("data.at(startInd).is_" + part.idName + " = true;")
                     TB();TB();TB();TB();LN(f"data.at(startInd).commands[ProductionInd::{part.idName}] = std::move(commands);")
@@ -516,6 +517,8 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                 #TB();TB();TB();TB();LN(f"commands.emplace_back(new CommPopBranch());")
                 TB();TB();TB();TB();LN("return ind;")
                 TB();TB();TB();LN("}")
+
+            
 
             TB();TB();LN("}")
     TB();LN("}")
