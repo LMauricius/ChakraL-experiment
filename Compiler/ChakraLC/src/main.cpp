@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iterator>
 #include <chrono>
+#include <codecvt>
 
 void printTabs(int tabs)
 {
@@ -31,12 +32,15 @@ int main(int argc, char** argv)
     if (argc >= 2)
     {
         std::wifstream file;
-        std::wstring text;
         std::wstringstream ss;
-        file.open(argv[1]);
+        std::wstring text;
 
+        file.open(argv[1]);
+        file.imbue(std::locale("C.UTF-8"));
         ss << file.rdbuf();
         text = ss.str();
+        std::wcout << L"READ:\n"
+                  << text << std::endl;
 
         //text = std::wstring(std::istream_iterator<wchar_t, wchar_t>(file), std::istream_iterator<wchar_t, wchar_t>());
 
@@ -49,13 +53,13 @@ int main(int argc, char** argv)
         int tokI = 0;
         for (auto& t : tokens)
         {
-            std::cout << tokI << " " << ChakraL::TokenNames[(int)t.type] << "-" << t.line << "," << t.character << ": ";
+            std::wcout << tokI << L" " << ChakraL::WTokenNames[(int)t.type] << L"-" << t.line << L"," << t.character << L": ";
             std::wcout << t.str << std::endl;
             tokI++;
         }
         for (auto& e : lerrors)
         {
-            std::cout << "Error at line " << e.line << ", position " << e.character << ": ";
+            std::wcout << L"Error at line " << e.line << L", position " << e.character << L": ";
             std::wcout << e.msg << std::endl;
         }
         
