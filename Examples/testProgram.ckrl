@@ -1,88 +1,88 @@
-# ---Hello world---
+** ---Hello world---
 myUnicodeŠčvar = "str"æ
 a = "str"
 console <<= a + "Hello world!" * 1
 
 
-# ---State changes---
+** ---State changes---
 
 Attack(target = enemy, doer = player1)
 
-Rotate(target = vec1, amount = Euler(yaw = 0, pitch = 90, roll = 0))# Fully explicit
-Rotate(vec1, amount = Euler(0, 90, 0))# Some parameter names are made implicit. The context with the unnamed parameters will be implicitly converted to one with named ones
-Rotate(vec1, amount = (0, 90, 0))# The Euler conversion is made implicit. The context will be implicitly converted to an Euler sub-context as it's compatible
-Rotate(vec1, (0, 90, 0))# All parameters and conversions are made implicit.
-(vec1, (0, 90, 0)).Rotate# Postfix notation, sometimes it can be useful even with complex parameters.
+Rotate(target = vec1, amount = Euler(yaw = 0, pitch = 90, roll = 0))** Fully explicit
+Rotate(vec1, amount = Euler(0, 90, 0))** Some parameter names are made implicit. The context with the unnamed parameters will be implicitly converted to one with named ones
+Rotate(vec1, amount = (0, 90, 0))** The Euler conversion is made implicit. The context will be implicitly converted to an Euler sub-context as it's compatible
+Rotate(vec1, (0, 90, 0))** All parameters and conversions are made implicit.
+(vec1, (0, 90, 0)).Rotate** Postfix notation, sometimes it can be useful even with complex parameters.
 
-# IDK, some more complex expression. Assert checks if parameter named expr is True. If it is, no state changes occur. If it's not, the program fails
+** IDK, some more complex expression. Assert checks if parameter named expr is True. If it is, no state changes occur. If it's not, the program fails
 Assert(expr = Attack(target = enemy, doer = player1).successState)
 
 
-# ---Assignments---
+** ---Assignments---
 
 r = Range(start = 5, end = 65)
 r = Range(5, 65)
 p = Pair(first = "one", second = "two")
 p = Pair("one", "two")
 
-l = List# A copy of 'prototype' List. List is a final context i.e. it can't be changed, but its copies are just normal contexts
+l = List** A copy of 'prototype' List. List is a final context i.e. it can't be changed, but its copies are just normal contexts
 
-a = Array(source = l)# Array is a fixed size List
-a = v.Array# Same as above. This is analoguous to a 'cast' in other languages
+a = Array(source = l)** Array is a fixed size List
+a = v.Array** Same as above. This is analoguous to a 'cast' in other languages
 m = Matrix(rows = 3, columns = 3)
 m = Matrix(3, 3)
 
 
-# ---Structure manipulation---
+** ---Structure manipulation---
 
 a = Vec
-push(value = 5, struct = a)
-push(value = 4, struct = a)
-push(struct = a, value = 6)
+push(value = 5, container = a)
+push(value = 4, container = a)
+push(container = a, value = 6)
 push(a, 9)
 
 lst = List
-# argument 'struct' will be 'lst' for all 'push' calls in the block below
-# specifically, (struct: lst) will be unionized with other arguments
+** argument 'struct' will be 'lst' for all 'push' calls in the block below
+** specifically, (struct: lst) will be unionized with other arguments
 
-/*with struct = lst:
-    # The only remaining argument is 'value', (value = 5)
-    # Final argument for 'push' will be (struct = lst) && (value = 5) = (struct = lst, value = 5)
+*-with container = lst:
+    ** The only remaining argument is 'value', (value = 5)
+    ** Final argument for 'push' will be (struct = lst) && (value = 5) = (struct = lst, value = 5)
     push 5
     push 4
     push 6
     push 9
-ok*/
+ok-*
 m = Matrix(rows = 3, columns = 3) 
-# NulMatrix(y, x) returns 0 for any x, y
-m = NulMatrix# Only mutable values are equalized during an '=' operation, so m will have all the properties of a Matrix(3, 3) except all fields will be 0
+** NulMatrix(y, x) returns 0 for any x, y
+m = NulMatrix** Only mutable values are equalized during an '=' operation, so m will have all the properties of a Matrix(3, 3) except all fields will be 0
 m(1, 1) = 5
 
 
-# ---Properties---
+** ---Properties---
 
-console << "Begin: " << r.start << "End: " << r.end # r.start is the same as  start(r)
+console << "Begin: " << r.start << "End: " << r.end ** r.start is the same as  start(r)
 console << "First: " << first(p) << "End: " << second(p)
 console << ("First = %1 Second = %2", p.first, p.second).formatted
-l = length(struct = lst)# 'struct' is argument name
+l = length(struct = lst)** 'struct' is argument name
 l = length(lst)
 l = length lst
-l = lst.length# prefered
+l = lst.length** prefered
 
 
-# ---Cool features and shortcuts---
+** ---Cool features and shortcuts---
 
-#r = 5...65
+**r = 5...65
 p = ("one", "two")
 v = [5, 4, 6, 9]
 a = Array[5, 4, 6, 9]
 l = List[5, 4, 6, 9]
-/*m = [1, 0, 0;
+*-m = [1, 0, 0;
 	 0, 1, 0;
-	 0, 0, 1]*/
+	 0, 0, 1]-*
 
 
-# ---Program flow---
+** ---Program flow---
 
 a = Int
 b = Int
@@ -108,12 +108,12 @@ while running:
 
 ok
 
-# 'repeat' allows us to simply repeat code several times, or use complex repeating behavior
+** 'repeat' allows us to simply repeat code several times, or use complex repeating behavior
 repeat times 10:
     console <<= "Hi!" <<= NewLn
-ok # Prints 'Hi!' 10 times
+ok ** Prints 'Hi!' 10 times
 
-# Alternative to classic "do-while" loop, repeats at least once, then repeats while expression is true
+** Alternative to classic "do-while" loop, repeats at least once, then repeats while expression is true
 command = String
 repeat times 1; while command ?= "exit":
     console >>= command
@@ -121,11 +121,11 @@ ok
 
 
 
-# ---Definitions---
+** ---Definitions---
 def PI = 3.141592
 
 
-# Function assignment (lambda)
+** Function assignment (lambda)
 myMinFunction = (a = Real, b = Real)=>
     if a < b:
         return a
@@ -134,7 +134,7 @@ myMinFunction = (a = Real, b = Real)=>
     ok
 ok
 
-# Function definition
+** Function definition
 def MinFunction(a = Real, b = Real)=>
     if a < b:
         return a
@@ -143,27 +143,27 @@ def MinFunction(a = Real, b = Real)=>
     ok
 ok
 
-# Coroutine definition
+** Coroutine definition
 def Attack(agent: Actor, target: Actor)<=>
     agent.animation = "Attack1"
     MoveTowards(agent: agent, position: target.position, speed: 3mps)
 
     while !((agent.position - target.position).distance < 0.5m): yield
 
-    # the target should be thrown away
+    ** the target should be thrown away
     MoveTowards(agent: target, position: (target.position + (agent.position-target.position)), speed: 6mps)
     target.health -= agent.strength
 ok
 
 
-# ---Some new ideas---
+** ---Some new ideas---
 
-# with block - sets an argument for the whole block 
+** with block - sets an argument for the whole block 
 with agent = player1:
     MoveTowards(position: goal.position, speed: 3mps)
 ok
 
-# For function definitions, with block adds the values to the parameter 
+** For function definitions, with block adds the values to the parameter 
 with agent = Actor:
     def Attack(target: Actor)<=>
         agent.animation = "Attack1"
@@ -177,7 +177,7 @@ with agent = Actor:
     ok
 ok
 
-# ---Maybe include following---
-# doer is a special parameter name
-# in postfix notation, if the context/object/parameter is omitted, it becomes doer by default
-# doer.animation can be written as just .animation
+** ---Maybe include following---
+** doer is a special parameter name
+** in postfix notation, if the context/object/parameter is omitted, it becomes doer by default
+** doer.animation can be written as just .animation

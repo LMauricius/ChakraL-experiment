@@ -449,11 +449,11 @@
     ? [[:blank:]]
     {
     }
-    = #(
+    = *-
     {
         push S_MULTILINE_COMMENT
     }
-    ? #[^[:newl:]]*[:newl:]
+    ? \*\*[^[:newl:]]*[:newl:]
     {
         out NL
     }
@@ -472,11 +472,11 @@
     }
 
 @S_MULTILINE_COMMENT
-    = #(
+    = *-
     {
         push S_MULTILINE_COMMENT
     }
-    = )#
+    = -*
     {
         pop
     }
