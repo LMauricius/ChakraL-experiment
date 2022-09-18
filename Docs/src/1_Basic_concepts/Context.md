@@ -58,5 +58,5 @@ Example of assignment: `lives = 3`
 Example of requirement: `?? lives > 0`
 Example of composition: `! Movable`
 
-## Similar structures in other languages
+## Similar ideas in other languages
 primitive data (integers or real numbers), complex objects, literal values, code blocks
