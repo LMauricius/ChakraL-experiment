@@ -14,7 +14,7 @@ Example:
 A context can be defined as a comma-separated list of descriptions. The short definition is used in expressions. A single trailing comma is optional in the single-line version and mandatory in the multiline version, where descriptions also have to be on independent lines from the parentheses.
 
 Example:  
-```python
+```chakral
 (
     lives = 3,
     score = 0,

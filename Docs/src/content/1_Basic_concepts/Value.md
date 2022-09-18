@@ -55,7 +55,7 @@ a = -60_000_000_000 # -60_000_000_000 is int64, a is still defined as int32
 The data always satisfies the trait. If the trait is declared with an `explicit` keyword, it will only be satisfied if the data is actually declared to be that type; if not, it will also be satisfied if the data is similar to the trait (it has the same members, it is composed of the same sub-contexts). For more details see the chapter [Trait system](trait_system.html). 
 
 An example of not satisfying the trait (we use assignment operator instead of change, because the change operator can implicitly convert values to the desired trait):
-```python
+```chakral
 a : int32 <- new 3 # assignment (<-) instead of change (=)
 a <- new "Hello world" # ERROR: string is not an int32
 ```

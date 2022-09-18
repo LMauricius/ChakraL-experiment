@@ -4,6 +4,7 @@
     <head>
         <title>value</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="syntax_style.css">
     </head>
 
     <body>
@@ -118,8 +119,9 @@ href="trait_system.html">Trait system</a>.</p>
 <p>An example of not satisfying the trait (we use assignment operator
 instead of change, because the change operator can implicitly convert
 values to the desired trait):</p>
-<pre><code>a : int32 &lt;- 3 # assignment (&lt;-) instead of change (=)
-a &lt;- &quot;Hello world&quot; # ERROR: string is not an int32</code></pre>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>a : int32 <span class="op">&lt;-</span> new <span class="dv">3</span> <span class="co"># assignment (&lt;-) instead of change (=)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">&lt;-</span> new <span class="st">&quot;Hello world&quot;</span> <span class="co"># ERROR: string is not an int32</span></span></code></pre></div>
 <h2 id="similar-ideas-in-other-languages">Similar ideas in other
 languages</h2>
 <p>variable, constant, literal, pointer, temporary value, rvalue,
