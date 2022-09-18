@@ -39,8 +39,6 @@ int main(int argc, char** argv)
         file.imbue(std::locale("C.UTF-8"));
         ss << file.rdbuf();
         text = ss.str();
-        std::wcout << L"READ:\n"
-                  << text << std::endl;
 
         //text = std::wstring(std::istream_iterator<wchar_t, wchar_t>(file), std::istream_iterator<wchar_t, wchar_t>());
 
