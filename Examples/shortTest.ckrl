@@ -1,1 +1,16 @@
 a = 2*b 
+
+Alive def:
+	health: float32
+	?? health > 0
+
+if player is Alive:
+	write "I'm alive!!! ahhAhahahg"
+
+attack def (player: Player & Alive) =>
+	write "punch!"
+	health player -= 2
+	playAnim(player, "PunchAnim")
+
+playAnim def (player: Player & Alive, anim: String) =>
+	......
