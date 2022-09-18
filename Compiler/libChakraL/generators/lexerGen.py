@@ -15,8 +15,8 @@ class Rule:
         self.commands: list[Command] = []
 
 class Lexer:
-    def __init__(self):
-        self.macros: dict[str, str] = {}
+    def __init__(self, macros: dict[str, str]):
+        self.macros: dict[str, str] = macros
         self.regexNames: dict[str, str] = {}
         self.exactStringNames: dict[str, str] = {}
         self.stringTokenPairs: list[Tuple[str, str]] = []
@@ -65,11 +65,11 @@ def replaceMacros(regex: str, macros: dict[str, str]):
 
 
 
-def loadLexer(filename: str):
+def loadLexer(filename: str, macros: dict[str, str] ):
     print("Loading lexer ", filename)
 
     lines = meaningfulLines(filename)
-    lexer = Lexer()
+    lexer = Lexer(macros)
     curState = ""
 
     try:

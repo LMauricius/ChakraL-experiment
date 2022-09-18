@@ -1,6 +1,7 @@
 from __future__ import annotations
 import sys
 from lexerGen import *
+from regexMacroGen import outputUnicodeMacros
 from parserGenShared import *
 from semanticMethodGen import *
 from parserGenCustom import *
@@ -13,6 +14,8 @@ class ArgumentError(Exception):
         self.message = "Command requires " + name + " as an argument."
 
 def main():
+    # --inregexmacro <txt file> ... posix regex bracket expressions
+    # --outunicoderegex <txt file> ... File to write unicode general categories as posix regex bracket expressions to
     # --inoperators <txt file> ... Operator table file
     # --outoperators <txt file> ... File to write operator expression productions to
     # --inlexer <txt file> ... Lexer definitions file
@@ -36,6 +39,7 @@ def main():
         "custom": writeCustomParserCPP,
         "recursive": writeRecursiveParserCPP
     }
+    regexmacros: dict[str, str] = {}
 
     def argsgetopt(*names):
         for n in names:
@@ -89,13 +93,26 @@ def main():
     try:
         semNodes : OrderedDict[str, SemanticNode] = OrderedDict()
 
+        if "--inregexmacro" in argMap:
+            startTime = time.time()
+            for filename in argsget("--inregexmacro"):
+                with open(filename) as file:
+                    lines = file.readlines()
+                    for ind in range(0, len(lines), 2):
+                        regexmacros[lines[ind].strip()] = lines[ind+1].strip()
+                        #print(f";;;;;{lines[ind].strip()} {lines[ind+1].strip()}")
+            print("Loaded regex macro in " + str(time.time()-startTime) + "s: " + str(argsget("--inregexmacro")))
+        if "--outunicoderegex" in argMap:
+            startTime = time.time()
+            outputUnicodeMacros(argget("--outunicoderegex"))
+            print("Generated unicode regex file in " + str(time.time()-startTime) + "s: " + argget("--outunicoderegex"))
         if "--outoperators" in argMap:
             startTime = time.time()
             outputOperatorProductions(argget("--inoperators"), argget("--outoperators"))
             print("Generated operator productions file in " + str(time.time()-startTime) + "s: " + argget("--outoperators"))
         if "--inlexer" in argMap:
             startTime = time.time()
-            lex = loadLexer(argget("--inlexer"))
+            lex = loadLexer(argget("--inlexer"), regexmacros)
             print("Loaded lexer in " + str(time.time()-startTime) + "s: " + argget("--inlexer"))
         if "--insemanticnodes" in argMap:
             startTime = time.time()
