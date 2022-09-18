@@ -56,8 +56,8 @@ The data always satisfies the trait. If the trait is declared with an `explicit`
 
 An example of not satisfying the trait (we use assignment operator instead of change, because the change operator can implicitly convert values to the desired trait):
 ```
-a : int32 <- 3 # assignment (<-) instead of change (=)
-a <- "Hello world" # ERROR: string is not an int32
+a : int32 <- new 3 # assignment (<-) instead of change (=)
+a <- new "Hello world" # ERROR: string is not an int32
 ```
 
 
