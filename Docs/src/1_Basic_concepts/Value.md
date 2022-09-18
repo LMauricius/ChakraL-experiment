@@ -1,11 +1,13 @@
 # Value
 
 ## Definition
-A value is a handle that can be used to access a context and modify functions that map from it. It consists of 3 components: the data, the required trait and the known trait.
+A value is a handle that can be used to access a context and modify functions that map from it. It consists of 2 components: the data, and the required trait.
 
-## What can be a value?
+## What are values?
 
-The values can be named constants, variables that can be changed during the program's runtime, literals that are explicitly written in the code and used once etc. Here re few short examples that will be better explained later in the documentation:
+The values can be named constants, variables that can be changed during the program's runtime, literals that are explicitly written in the code and used once etc. Here are few short examples that will be better explained later in the documentation:
+
+`3.141592` is a numeric value, `"Hello world"` is a textual value.
 
 ```
 a = b + c
@@ -13,10 +15,10 @@ a = b + c
 ...`a`, `b` and `c` are variable values
 
 ```
-text = "Hello World!"
-num = 3
+t = "Hello World!"
+n = 3
 ```
-...`"Hello World!"` and `3` are literal values
+...`"Hello World!"` and `3` are literal values, while `t` and `n` are variable values.
 
 ```
 PI def 3.141592
@@ -25,37 +27,40 @@ PI def 3.141592
 
 
 ## The data
-The data is the context that the functions map from and that can be modified if the value isn't a constant.
+The data is the context that can be used in functions, assigned to other values and that can be modified if the value isn't a constant.
 
-## The required trait
-The required trait of a value is the one that the data *has* to always satisfy. It is used to restrict the kinds of data that can be assigned to a value and keep the programmer's sanity. The required trait can be specified manually, or inferred from another value whose data is assigned to it.
+## The trait
+The trait of a value is the one that the data must satisfy. It is used to restrict the kinds of data that can be assigned to a value and keep the programmer's sanity. The trait can be specified manually, or inferred from another value whose data is assigned to it.
 
-The required trait can be manually specified. For example we can specify variable value `a` to have a required trait of `Positive & Integer` (`&` means `a` has both the traits `Positive` and `Integer`):
+The trait can be manually specified. For example we can specify variable value `a` to have a trait of `Positive & Integer` (`&` combines multiple traits into one):
 ```
 a: Integer & Positive = 3
 ```
 
-The required trait can also be automatically inferred during the first use of a value. In the example:
+The trait can also be automatically inferred during the first use of a value. In the example:
 ```
 a = 3
 ```
-... `a`'s required trait will be inferred to just be an `Integer`, as the integer literals' required trait is `Integer`.
+... `a`'s trait will be inferred to be an `int32` (a 32-bit signed `Integer` trait), as the integer literals' trait is `int32`.
 
-## The known trait
-The known trait is the more specific trait that the data can be *concluded* to always satisfy during the value's existance. It is used internally by the compiler for performance optimizations and hidden from the programmer. The known trait is implementation-specific, but always satisfies the required trait.
-
-## The difference between data, the required trait and the known trait
-The differences can be shown in the example of an integer literal `3`. The data is exactly `3`, its required trait is an `Integer`, but the known trait could be an `Unsigned & Integer`. If we assign `3` to a newly declared variable value `a` without specifying a trait manually like this:
-
+We chose 32-bit integers as the default because they are a good compromise between the range of numbers (-2_147_483_647 to 2_147_483_647) and the memory taken (4 bytes). Literals that are outside that range will be stored as the smallest native `Integer` type that fits them. For example:
 ```
-a = 3
+a = 3 # 3 is int32, a is inferred to be int32
+a = -60_000_000_000 # -60_000_000_000 is int64, a is still defined as int32
+# the program raises an ERROR: 
+# -60_000_000_000 cannot be cast to int32 as it is outside the range of int32
 ```
-... `a`'s required trait will also be an `Integer`, but the known trait could be an `Nonnegative & int32` (as the literal `3` can be stored as a 32-bit integer) unless it gets a `Negative & Integer` assigned to it somewhere in code for example. If we have the following code snippet later:
+
+## Satisfying the trait
+The data always satisfies the trait. If the trait is declared with an `explicit` keyword, it will only be satisfied if the data is actually declared to be that type; if not, it will also be satisfied if the data is similar to the trait (it has the same members, it is composed of the same sub-contexts). For more details see the chapter [Trait system](trait_system.html). 
+
+An example of not satisfying the trait (we use assignment operator instead of change, because the change operator can implicitly convert values to the desired trait):
 ```
-a = -2
+a : int32 <- 3 # assignment (<-) instead of change (=)
+a <- "Hello world" # ERROR: string is not an int32
 ```
-... `a`'s known trait couldn't be an `Unsigned & int32`, but perhaps only an `int32`. It's data would be `3` before its reassignment of `-2`.
 
 
-## Similar structures in other languages
+
+## Similar ideas in other languages
 variable, constant, literal, pointer, temporary value, rvalue, lvalue
