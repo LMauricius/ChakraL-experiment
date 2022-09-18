@@ -457,6 +457,8 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                         if string == qStr:
                             symbol = token
                             break
+                    if symbol == "":
+                        raise FormatError(f"Unrecognizable string '{qStr}'", lineInd)
                 else:
                     # normal symbols
                     symbol = symbolOrString

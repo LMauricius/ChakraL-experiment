@@ -114,6 +114,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     LN('#include <sstream>')
     LN('#include <algorithm>')
     LN('#include <typeinfo>')
+    LN('#include <functional>')
     
     LN("")
     LN("namespace ChakraL")
