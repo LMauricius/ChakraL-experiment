@@ -97,7 +97,7 @@ def buildHtmlChunks(src: Page, currentPage: Page, srcdir: str, builddir: str):
         outfilename = builddir+"/"+safeName(currentPage.name)+".html"
         print(f"Checking chunk {outfilename}...")
         if (not os.path.exists(outfilename)) or os.path.getmtime(currentPage.file) > os.path.getmtime(outfilename):
-            result = subprocess.run(["pandoc", currentPage.file, "--to", "html"], stdout=subprocess.PIPE)
+            result = subprocess.run(["pandoc", currentPage.file, "--to", "html", "--highlight-style", f"{builddir}/highlight.theme"], stdout=subprocess.PIPE)
             pageContent : str = result.stdout.decode("utf8")
 
             print(f"Generating chunk {outfilename}...")
@@ -134,9 +134,14 @@ def main():
     srcdir = sys.argv[1]
     targetdir = sys.argv[2]
     builddir = sys.argv[3]
+    themestyle = sys.argv[4]
+
+    # save theme
+    subprocess.run(["pandoc", "-o", f"{builddir}/highlight.theme", "--print-highlight-style", themestyle])
+    subprocess.run(["pandoc", f"--template={srcdir}/pandoc-template-syntax.css", srcdir+"/pandoc-used-syntax-blocks.md", "--highlight-style", f"{builddir}/highlight.theme", "-o", targetdir+"/syntax_style.css"])
     
     # get source
-    src = getSourceStructure(srcdir, -1)
+    src = getSourceStructure(srcdir+"/content", -1)
 
     # Get template
     templ : str = ""
@@ -161,12 +166,12 @@ def main():
         print("Contents changed, rebuilding all...")
 
     # Build html files in /build dir
-    buildHtmlChunks(src, src, srcdir, builddir)
+    buildHtmlChunks(src, src, srcdir+"/content", builddir)
 
     # Generate final html in target dir and copy needed files
     for subname in os.listdir(builddir):
         infilename = builddir + "/" + subname
-        if subname != "cached-contents.html" and not os.path.isdir(subname):
+        if subname.endswith(".html") and subname != "cached-contents.html" and not os.path.isdir(subname):
             outfilename = targetdir + "/" + subname
             if contentsUpdated or (not os.path.exists(outfilename)) or os.path.getmtime(infilename) > os.path.getmtime(outfilename):
                 print(f"Building {outfilename}")
