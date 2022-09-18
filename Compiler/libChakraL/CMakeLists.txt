@@ -23,9 +23,21 @@ find_package( PythonInterp 3.0 REQUIRED )
 
 add_custom_command(
 	OUTPUT
+		${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/unicodeREMacrosAutogen.txt
+	COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
+		--outunicoderegex ${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/unicodeREMacrosAutogen.txt
+	DEPENDS
+		${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
+		${CMAKE_CURRENT_SOURCE_DIR}/generators/regexMacroGen.py
+	COMMENT "Generating unicode regex macros files"
+)
+
+add_custom_command(
+	OUTPUT
 		${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralLexerAutogen.h
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralLexerAutogen.cpp
 	COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
+		--inregexmacro ${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/unicodeREMacrosAutogen.txt
 		--inlexer ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/lexer.txt
 		--outlexerh ${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralLexerAutogen.h
 		--outlexercpp ${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralLexerAutogen.cpp
@@ -34,6 +46,7 @@ add_custom_command(
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/genUtil.py
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/lexerGen.py
 		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/lexer.txt
+		${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/unicodeREMacrosAutogen.txt
 	COMMENT "Generating lexer files"
 )
 
@@ -58,6 +71,7 @@ add_custom_command(
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralParserAutogen.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralSemanticNodesHybridgen.cpp
 	COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
+		--inregexmacro ${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/unicodeREMacrosAutogen.txt
 		--inlexer ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/lexer.txt
 		--insemanticnodes ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/semanticNodes.txt
 		--inparser ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/parser.txt
@@ -70,6 +84,7 @@ add_custom_command(
 		--extrasemanticnodesheaders ${CMAKE_CURRENT_SOURCE_DIR}/include/chakralParserPrereq${ParserTypeSuffix}.h
 		--parsertype ${ParserType}
 	DEPENDS
+		${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/unicodeREMacrosAutogen.txt
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/genUtil.py
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/parserGenShared.py
