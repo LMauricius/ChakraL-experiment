@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>introduction</title>
+        <title>if statement</title>
         <link rel="stylesheet" href="style.css">
     </head>
 
@@ -11,7 +11,7 @@
             <div class="sidebar">
                 <div class="tableofcontents">
                     <p class="tableofcontents_title">Contents</p>
-                            <li><b>1 Introduction</b>
+                            <li><a href="introduction.html">1&nbspIntroduction</a>
         <ul>
             <li><a href="how_to_read_the_documentation.html">1&nbspHow to read the documentation</a>
             </li>
@@ -39,7 +39,7 @@
             <ul>
                 <li><a href="using_statement.html">1&nbspusing statement</a>
                 </li>
-                <li><a href="if_statement.html">2&nbspif statement</a>
+                <li><b>2 if statement</b>
                 </li>
             </ul>
             </li>
@@ -58,7 +58,46 @@
             </div>
             <div class="main">
                 <div class="pagecontent">
-                    
+                    <h1 id="if-statement"><em>if</em> statement</h1>
+<h2 id="description">Description</h2>
+<p>The <em>if</em> statement is used for conditional execution. The
+context is executed only if the condition is true. Optionally, an
+alternative context can be specified along with multiple alternative
+conditions.</p>
+<h2 id="usage">Usage</h2>
+<p>Write:</p>
+<pre><code>if CONDITION:
+    CONTEXT_TO_EXECUTE
+ok</code></pre>
+<p>With an alternative:</p>
+<pre><code>if CONDITION:
+    CONTEXT_TO_EXECUTE
+else
+    ALTERNATIVE_CONTEXT_TO_EXECUTE
+ok</code></pre>
+<p>With multiple conditions:</p>
+<pre><code>if CONDITION1:
+    CONTEXT_TO_EXECUTE1
+elif CONDITION2:
+    CONTEXT_TO_EXECUTE2
+elif CONDITION3:
+    CONTEXT_TO_EXECUTE3
+&lt;...&gt;
+else
+    ALTERNATIVE_CONTEXT_TO_EXECUTE
+ok</code></pre>
+<h2 id="examples">Examples</h2>
+<h3 id="basic-examples">Basic examples</h3>
+<pre><code>if a &lt; b:
+    write &quot;a is less than b&quot;
+elif a &gt; b:
+    write &quot;a is greater than b&quot;
+else
+    write &quot;a is equal to b&quot;
+ok</code></pre>
+<pre><code>if score &gt; recordscore:
+    recordscore = score
+ok</code></pre>
 
                 </div>
             </div>
