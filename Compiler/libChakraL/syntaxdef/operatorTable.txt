@@ -75,13 +75,13 @@ ASSIGNED
 NOTASS
 
 > BINARY ExprLogAnd  ExprBinaryL2R
-'&'
+AND
 
 > BINARY ExprLogXOr  ExprBinaryL2R
-'<>'
+XOR
 
 > BINARY ExprLogOr  ExprBinaryL2R
-'|'
+OR
 
 > BINARY RangeLiteral RangeLiteral
 '..'

@@ -20,15 +20,15 @@
 #			If any symbol within a production's option is a forwarding symbol,
 #				no other symbol can be assigned to a variable within that option
 #			The semantic node output from the forwarding symbol must be of the same type as the production's node
-#		#############################If a parse node symbol prefixed Only by a ':', the node isn't stored and
-#			#########################all its arguments are stored in its parent node instead (the applied definition's node)
+#		If a parse node symbol prefixed Only by a ':', the node isn't stored and
+#			all its arguments are stored in its parent node instead (the applied definition's node)
 #
 # Lines starting with a '=' (without a production symbol)
 # 	are alternate definitions for the last specified symbol.
 #	This is a cleaner way than using '|'
 # Lines starting with a '->' define the semantic node that will be output when the current production is parsed
 #	'-' is a special string specifying that no semantic node will be output from the production
-#	#########################'::' is a special string that specifies a 'fallthrough', i.e. that the semantic node of the first symbol (that outputs a sem. node) will be passed as the output of the current production
+#	'::' is a special string that specifies a 'fallthrough', i.e. that the semantic node of the first symbol (that outputs a sem. node) will be passed as the output of the current production
 # Instead of lexeme names, strings corresponding to a specific lexer rule's regex can be used,
 # 	enclosed with double quotes. The first regex that the string fits is used and
 # 	the string is replaced with the lexeme that the rule outputs.
@@ -170,8 +170,9 @@ AssignmentEqualOperator = op:ASSIGN
 						= op:'^='
 						= op:'>>='
 						= op:'<<='
-						= op:'&='
-						= op:'|='
+						= op:AND_CHANGE
+						= op:OR_CHANGE
+						= op:XOR_CHANGE
 
 AssignmentEqual = left:Expression ( op:AssignmentEqualOperator <!> NL* rights:Expression )+
 

@@ -96,9 +96,25 @@
     {
         out DEF
     }
+    = using
+    {
+        out USING
+    }
+    = mutable
+    {
+        out MUTABLE
+    }
     = const
     {
         out CONST
+    }
+    = final
+    {
+        out FINAL
+    }
+    = volatile
+    {
+        out VOLATILE
     }
     = var
     {
@@ -112,29 +128,13 @@
     {
         out NEW
     }
-    = final
-    {
-        out FINAL
-    }
-    = mutable
-    {
-        out MUTABLE
-    }
-    = volatile
-    {
-        out VOLATILE
-    }
     = static
     {
         out STATIC
     }
-    = using
+    = api
     {
-        out USING
-    }
-    = include
-    {
-        out INCLUDE
+        out API_MARK
     }
     = as
     {
@@ -200,15 +200,15 @@
     {
         out SHIFT_LEFT
     }
-    = &
+    = and
     {
         out AND
     }
-    = |
+    = or
     {
         out OR
     }
-    = <>
+    = xor
     {
         out XOR
     }
@@ -273,15 +273,15 @@
     {
         out SHL_CHANGE
     }
-    = &=
+    = and=
     {
         out AND_CHANGE
     }
-    = |=
+    = or=
     {
         out OR_CHANGE 
     }
-    = <>=
+    = xor=
     {
         out XOR_CHANGE
     }
@@ -330,13 +330,17 @@
     {
         out GREQ
     }
-    = +&
+    = &
     {
         out TRAIT_AND
     }
-    = +|
+    = |
     {
         out TRAIT_OR
+    }
+    = <>
+    {
+        out TRAIT_XOR
     }
     = +?
     {
@@ -398,7 +402,7 @@
 
     # Words and values
 
-    ? [[:alpha:]][[:alnum:]_]*
+    ? \p{L}(\p{L}|[[:digit:]_])*
     {
         out IDENTIFIER
         storeString
@@ -406,31 +410,31 @@
     ? [[:digit:]]+(_[[:digit:]]|[[:digit:]])*(\.[[:digit:]]+)?
     {
         out NUM_LIT
-        push S_LITERAL
+        push S_AFTER_LITERAL
         storeString
     }
     ? 0b[01]([_01]|[01])*(\.[_01]+)?
     {
         out NUM_B_LIT
-        push S_LITERAL
+        push S_AFTER_LITERAL
         storeString
     }
     ? 0o[0-7]([_0-7]|[0-7])*(\.[_0-7]+)?
     {
         out NUM_O_LIT
-        push S_LITERAL
+        push S_AFTER_LITERAL
         storeString
     }
     ? 0x[[:xdigit:]]([_[:xdigit:]]|[[:xdigit:]])*(\.[_[:xdigit:]]+)?
     {
         out NUM_X_LIT
-        push S_LITERAL
+        push S_AFTER_LITERAL
         storeString
     }
     ? "([^\\"]|\\.)*"
     {
         out STR_LIT
-        push S_LITERAL
+        push S_AFTER_LITERAL
         storeString
     }
     ? '([^\\']|\\.)'
@@ -445,18 +449,18 @@
     ? [[:blank:]]
     {
     }
-    = //
-    {
-        push S_SINGLELINE_COMMENT
-    }
-    = /*
+    = #(
     {
         push S_MULTILINE_COMMENT
     }
+    ? #[^[:newl:]]*[:newl:]
+    {
+        out NL
+    }
 
 
-@S_LITERAL
-    ? [[:alpha:]_][[:alnum:]_]*
+@S_AFTER_LITERAL
+    ? \p{L}(\p{L}|[[:digit:]_])*
     {
         out LIT_SUFFIX
         storeString
@@ -467,28 +471,16 @@
         pop
     }
 
-@S_SINGLELINE_COMMENT
-    # skip all until end of line
-    ? [^[:newl:]]*
-    {
-    }
-
-    ? [:newl:]
-    {
-        out NL
-        pop
-    }
-
 @S_MULTILINE_COMMENT
-    # skip all until end of comment
-    ? ([^*/]|\*[^/]|/[^\*])*
-    {
-    }
-    = /*
+    = #(
     {
         push S_MULTILINE_COMMENT
     }
-    = */
+    = )#
     {
         pop
+    }
+    # skip all until end of comment
+    ? .
+    {
     }
