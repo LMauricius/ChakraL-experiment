@@ -1,7 +1,9 @@
 from __future__ import annotations
+from hashlib import sha3_224
 import os
 import sys
 from typing import Iterator
+import unicodedata as ucd
 
 def meaningfulLines(filename: str) -> Iterator[(str, any)]:
     with open(filename, "rt") as f:
@@ -59,3 +61,12 @@ def escapeRegexToCComment(regex: str) -> str:
 def unescapeString(s: str):
     return s.encode("raw_unicode_escape").decode("unicode_escape")
     return bytes(s, "utf-8").decode("unicode_escape")
+
+def escapeStringNonGraph(s: str):
+    ret = ""
+    for c in s:
+        if ucd.category(c)[0] == 'Z' or ucd.category(c)[0] == 'C':
+            ret += c.encode("unicode_escape").decode("ascii")
+        else:
+            ret += c
+    return ret
