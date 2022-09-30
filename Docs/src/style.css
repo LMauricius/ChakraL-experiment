@@ -50,15 +50,28 @@ body {
 }
 
 /* Code blocks*/
-pre {
+div.sourceCode,
+:not(div.sourceCode) > pre {
 	width: 100%;
 	max-width: 88ex;
+    font-family: monospace;
 	overflow-x: auto;
-
+}
+div.sourceCode::before {
+    content: attr(data-caption);
+    display: block;
+	background-color: #c0ecf0;
+    font-family: monospace;
+	font-weight: bold;
+	padding-left: 1.25em;
+	padding-top: 0.5;
+}
+pre {
 	padding: 0.5em;
 }
 
-pre,
+div.sourceCode,
+:not(div.sourceCode) > pre,
 :not(pre) > code,
 table {
 	border: 1pt solid #aaa;
