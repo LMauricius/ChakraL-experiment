@@ -38,373 +38,72 @@
 	<!ENTITY formatString "(?:r?f|fr?)(?:'(?:[^'{]++|\\'|\{\{|\{[^}]++\})*+'|&quot;(?:[^&quot;]++|\\&quot;|\{\{|\{[^}]*+\})*+&quot;)">
 	<!ENTITY string "&rawString;|&formatString;">
 ]>
-<!-- Python syntax highlightning v0.9 by Per Wigren -->
-<!-- Python syntax highlighting v1.9 by Michael Bueker (improved keyword differentiation) -->
-<!-- Python syntax highlighting v1.97 by Paul Giannaros -->
-<!-- Python syntax highlighting v1.99 by Primoz Anzur -->
-<!-- Python syntax highlighting v2.01 by Paul Giannaros:
-	* full format character support
-	* unicode string modifier supported -->
-<!-- v2.02 remove RegExpr for nums and make indent consistent -->
-<!-- v2.03 highlight decorators, remove operator regex, don't highlight parens as operators -->
-<!-- v2.04 make alerts visible even if they are directly after ''' or # without a space -->
-<!-- v2.06 decorator names can (and often do) contain periods -->
-<!-- v2.07 add support for %prog and co, see bug 142832 -->
-<!-- v2.08 add missing overloaders, new Python 3 statements, builtins, and keywords -->
-<!-- v2.29 recognize escape sequenzes correctly -->
-<language name="ChakraL" version="25" style="chakral" indenter="chakral" kateversion="5.0" section="Scripts" extensions="*.py;*.pyw;SConstruct;SConscript;*.FCMacro" mimetype="application/x-chakral;text/x-chakral;text/x-chakral3" casesensitive="1" author="Michael Bueker" license="">
+
+<language name="ChakraL" version="1" style="chakral" indenter="normal" kateversion="5.0" section="Scripts" extensions="*.ckr;*.ckri" mimetype="application/x-chakral;text/x-chakral" casesensitive="1" author="Mauricio Šmit" license="">
 	<highlighting>
 		<list name="import">
-			<item>import</item>
-			<item>from</item>
-			<item>as</item>
 		</list>
 		<list name="defs">
-			<item>class</item>
 			<item>def</item>
-			<item>del</item>
-			<item>global</item>
-			<item>lambda</item>
-			<item>nonlocal</item>
+			<item>using</item>
+			<item>module</item>
+			<item>api</item>
 		</list>
 		<list name="operators">
-			<item>and</item>
-			<item>in</item>
-			<item>is</item>
+			<item>explicit</item>
+			<item>whether</item>
 			<item>not</item>
+			<item>and</item>
 			<item>or</item>
+			<item>xor</item>
+			<item>in</item>
+			<item>on</item>
+			<item>is</item>
+			<item>as</item>
+			<item>new</item>
+		</list>
+		<list name="memory">
+			<item>mutable</item>
+			<item>const</item>
+			<item>final</item>
+			<item>volatile</item>
+			<item>static</item>
 		</list>
 		<list name="flow">
-			<item>assert</item>
+			<item>ok</item>
 			<item>break</item>
 			<item>continue</item>
+			<item>return</item>
+			<item>yield</item>
+			<item>if</item>
 			<item>elif</item>
 			<item>else</item>
-			<item>except</item>
-			<item>finally</item>
+			<item>repeat</item>
 			<item>for</item>
-			<item>if</item>
-			<item>pass</item>
-			<item>raise</item>
-			<item>return</item>
-			<item>try</item>
+			<item>times</item>
 			<item>while</item>
+			<item>raise</item>
+			<item>except</item>
 			<item>with</item>
-			<item>async</item>
-			<item>await</item>
-		</list>
-		<list name="flow_yield">
-			<item>yield</item>
-			<!--
-				"yield from" added here as a keyword for autocompletion. The actual handling
-				is in context="yield" so that we won't need to add space as a weakDeliminator.
-			-->
-			<item>yield from</item>
 		</list>
 		<list name="patternmatching">
 			<item>match</item>
 			<item>case</item>
 		</list>
-		<list name="builtinfuncs">
-			<!-- https://docs.chakral.org/3.11/library/functions.html#built-in-funcs -->
-			<item>__import__</item>
-			<item>abs</item>
-			<item>aiter</item>
-			<item>all</item>
-			<item>anext</item>
-			<item>any</item>
-			<item>apply</item>
-			<item>ascii</item>
-			<item>basestring</item>
-			<item>bin</item>
-			<item>breakpoint</item>
-			<item>bool</item>
-			<item>buffer</item>
-			<item>bytearray</item>
-			<item>bytes</item>
-			<item>callable</item>
-			<item>chr</item>
-			<item>classmethod</item>
-			<item>cmp</item>
-			<item>coerce</item>
-			<item>compile</item>
-			<item>complex</item>
-			<item>delattr</item>
-			<item>dict</item>
-			<item>dir</item>
-			<item>divmod</item>
-			<item>enumerate</item>
-			<item>eval</item>
-			<item>exec</item>
-			<item>execfile</item>
-			<item>file</item>
-			<item>filter</item>
-			<item>float</item>
-			<item>format</item>
-			<item>frozenset</item>
-			<item>getattr</item>
-			<item>globals</item>
-			<item>hasattr</item>
-			<item>hash</item>
-			<item>help</item>
-			<item>hex</item>
-			<item>id</item>
-			<item>input</item>
-			<item>int</item>
-			<item>intern</item>
-			<item>isinstance</item>
-			<item>issubclass</item>
-			<item>iter</item>
-			<item>len</item>
-			<item>list</item>
-			<item>locals</item>
-			<item>long</item>
-			<item>map</item>
-			<item>max</item>
-			<item>memoryview</item>
-			<item>min</item>
-			<item>next</item>
-			<item>object</item>
-			<item>oct</item>
-			<item>open</item>
-			<item>ord</item>
-			<item>pow</item>
-			<item>print</item>
-			<item>property</item>
-			<item>range</item>
-			<item>raw_input</item>
-			<item>reduce</item>
-			<item>reload</item>
-			<item>repr</item>
-			<item>reversed</item>
-			<item>round</item>
-			<item>set</item>
-			<item>setattr</item>
-			<item>slice</item>
-			<item>sorted</item>
-			<item>staticmethod</item>
-			<item>str</item>
-			<item>sum</item>
-			<item>super</item>
-			<item>tuple</item>
-			<item>type</item>
-			<item>unichr</item>
-			<item>unicode</item>
-			<item>vars</item>
-			<item>xrange</item>
-			<item>zip</item>
-		</list>
 		<list name="specialvars">
-			<item>None</item>
-			<item>self</item>
+			<item>Nil</item>
 			<item>True</item>
 			<item>False</item>
-			<item>NotImplemented</item>
-			<item>Ellipsis</item>
-			<item>__debug__</item>
-			<item>__file__</item>
-			<item>__name__</item>
-			<item>__qualname__</item>
 		</list>
-		<list name="bindings">
-			<item>SIGNAL</item>
-			<item>SLOT</item>
-			<item>connect</item>
-		</list>
-		<list name="overloaders">
-			<!-- https://docs.chakral.org/3.10/reference/datamodel.html#special-method-names -->
-			<item>__new__</item>
-			<item>__init__</item>
-			<item>__del__</item>
-			<item>__repr__</item>
-			<item>__str__</item>
-			<item>__lt__</item>
-			<item>__le__</item>
-			<item>__eq__</item>
-			<item>__ne__</item>
-			<item>__gt__</item>
-			<item>__ge__</item>
-			<item>__cmp__</item>
-			<item>__rcmp__</item>
-			<item>__hash__</item>
-			<item>__bool__</item>
-			<item>__nonzero__</item>
-			<item>__unicode__</item>
-			<item>__getattr__</item>
-			<item>__setattr__</item>
-			<item>__delattr__</item>
-			<item>__getattribute__</item>
-			<item>__get__</item>
-			<item>__set__</item>
-			<item>__delete__</item>
-			<item>__call__</item>
-			<item>__len__</item>
-			<item>__length_hint__</item>
-			<item>__getitem__</item>
-			<item>__setitem__</item>
-			<item>__delitem__</item>
-			<item>__missing__</item>
-			<item>__iter__</item>
-			<item>__reversed__</item>
-			<item>__contains__</item>
-			<item>__getslice__</item>
-			<item>__setslice__</item>
-			<item>__delslice__</item>
-			<item>__add__</item>
-			<item>__sub__</item>
-			<item>__mul__</item>
-			<item>__matmul__</item>
-			<item>__floordiv__</item>
-			<item>__mod__</item>
-			<item>__divmod__</item>
-			<item>__pow__</item>
-			<item>__lshift__</item>
-			<item>__rshift__</item>
-			<item>__and__</item>
-			<item>__xor__</item>
-			<item>__or__</item>
-			<item>__div__</item>
-			<item>__truediv__</item>
-			<item>__radd__</item>
-			<item>__rsub__</item>
-			<item>__rmul__</item>
-			<item>__rmatmul__</item>
-			<item>__rdiv__</item>
-			<item>__rtruediv__</item>
-			<item>__rfloordiv__</item>
-			<item>__rmod__</item>
-			<item>__rdivmod__</item>
-			<item>__rpow__</item>
-			<item>__rlshift__</item>
-			<item>__rrshift__</item>
-			<item>__rand__</item>
-			<item>__rxor__</item>
-			<item>__ror__</item>
-			<item>__iadd__</item>
-			<item>__isub__</item>
-			<item>__imul__</item>
-			<item>__imatmul__</item>
-			<item>__idiv__</item>
-			<item>__itruediv__</item>
-			<item>__ifloordiv__</item>
-			<item>__imod__</item>
-			<item>__ipow__</item>
-			<item>__ilshift__</item>
-			<item>__irshift__</item>
-			<item>__iand__</item>
-			<item>__ixor__</item>
-			<item>__ior__</item>
-			<item>__neg__</item>
-			<item>__pos__</item>
-			<item>__abs__</item>
-			<item>__invert__</item>
-			<item>__complex__</item>
-			<item>__int__</item>
-			<item>__long__</item>
-			<item>__float__</item>
-			<item>__oct__</item>
-			<item>__hex__</item>
-			<item>__index__</item>
-			<item>__round__</item>
-			<item>__trunc__</item>
-			<item>__floor__</item>
-			<item>__ceil__</item>
-			<item>__coerce__</item>
-			<item>__enter__</item>
-			<item>__exit__</item>
-			<item>__match_args__</item>
-			<item>__bytes__</item>
-			<item>__format__</item>
-			<item>__next__</item>
-			<item>__dir__</item>
-			<item>__await__</item>
-			<item>__aiter__</item>
-			<item>__anext__</item>
-			<item>__aenter__</item>
-			<item>__aexit__</item>
-			<item>__slots__</item>
-			<item>__init_subclass__</item>
-			<item>__set_name__</item>
-			<item>__prepare__</item>
-			<item>__instancecheck__</item>
-			<item>__subclasscheck__</item>
-			<item>__class_getitem__</item>
-		</list>
-		<list name="exceptions">
-			<!--
-				Exceptions list resources used:
-				- http://docs.chakral.org/2.7/library/exceptions.html#exception-hierarchy
-				- http://docs.chakral.org/3.10/library/exceptions.html#exception-hierarchy
-			-->
-			<item>ArithmeticError</item>
-			<item>AssertionError</item>
-			<item>AttributeError</item>
-			<item>BaseException</item>
-			<item>BlockingIOError</item>
-			<item>BrokenPipeError</item>
-			<item>BufferError</item>
-			<item>BytesWarning</item>
-			<item>ChildProcessError</item>
-			<item>ConnectionAbortedError</item>
-			<item>ConnectionError</item>
-			<item>ConnectionRefusedError</item>
-			<item>ConnectionResetError</item>
-			<item>DeprecationWarning</item>
-			<item>EnvironmentError</item>
-			<item>EOFError</item>
-			<item>EncodingWarning</item>
-			<item>Exception</item>
-			<item>FileExistsError</item>
-			<item>FileNotFoundError</item>
-			<item>FloatingPointError</item>
-			<item>FutureWarning</item>
-			<item>GeneratorExit</item>
-			<item>ImportError</item>
-			<item>ImportWarning</item>
-			<item>IndentationError</item>
-			<item>IndexError</item>
-			<item>InterruptedError</item>
-			<item>IOError</item>
-			<item>IsADirectoryError</item>
-			<item>KeyboardInterrupt</item>
-			<item>KeyError</item>
-			<item>LookupError</item>
-			<item>MemoryError</item>
-			<item>ModuleNotFoundError</item>
-			<item>NameError</item>
-			<item>NotADirectoryError</item>
-			<item>NotImplementedError</item>
-			<item>OSError</item>
-			<item>OverflowError</item>
-			<item>PendingDeprecationWarning</item>
-			<item>PermissionError</item>
-			<item>ProcessLookupError</item>
-			<item>RecursionError</item>
-			<item>ReferenceError</item>
-			<item>ResourceWarning</item>
-			<item>RuntimeError</item>
-			<item>RuntimeWarning</item>
-			<item>StandardError</item>
-			<item>StopAsyncIteration</item>
-			<item>StopIteration</item>
-			<item>SyntaxError</item>
-			<item>SyntaxWarning</item>
-			<item>SystemError</item>
-			<item>SystemExit</item>
-			<item>TabError</item>
-			<item>TimeoutError</item>
-			<item>TypeError</item>
-			<item>UnboundLocalError</item>
-			<item>UnicodeDecodeError</item>
-			<item>UnicodeEncodeError</item>
-			<item>UnicodeError</item>
-			<item>UnicodeTranslateError</item>
-			<item>UnicodeWarning</item>
-			<item>UserWarning</item>
-			<item>ValueError</item>
-			<item>Warning</item>
-			<item>WindowsError</item>
-			<item>ZeroDivisionError</item>
+		<list name="builtintraits">
+			<item>int8</item>
+			<item>int16</item>
+			<item>int32</item>
+			<item>int64</item>
+			<item>int128</item>
+			<item>float32</item>
+			<item>float64</item>
+			<item>bool</item>
 		</list>
 		<contexts>
 			<context name="Normal" attribute="Normal Text" lineEndContext="#stay">
@@ -414,19 +113,14 @@
 				<keyword attribute="Definition Keyword" String="defs" context="#stay"/>
 				<keyword attribute="Operator Keyword" String="operators" context="#stay"/>
 				<keyword attribute="Flow Control Keyword" String="flow" context="#stay"/>
-				<keyword attribute="Flow Control Keyword" String="flow_yield" context="yield"/>
 				<keyword attribute="Flow Control Keyword" String="patternmatching" context="Pattern Matching" lookAhead="1" firstNonSpace="1"/>
-				<keyword attribute="Builtin Function" String="builtinfuncs" context="#stay"/>
 				<keyword attribute="Special Variable" String="specialvars" context="#stay"/>
-				<keyword attribute="Extensions" String="bindings" context="#stay"/>
-				<keyword attribute="Exceptions" String="exceptions" context="#stay"/>
-				<keyword attribute="Overloaders" String="overloaders" context="#stay"/>
-
+				
 				<DetectChar attribute="Normal Text" char="{" context="Dictionary" beginRegion="Dictionary"/>
 				<DetectChar attribute="Normal Text" char="[" context="List" beginRegion="List"/>
 				<DetectChar attribute="Normal Text" char="(" context="Tuple" beginRegion="Tuple"/>
 
-				<DetectChar attribute="Comment" char="#" context="Hash comment"/>
+				<Detect2Chars attribute="Comment"  char="*" char1="*" context="Star comment"/>
 
 				<IncludeRules context="Number" />
 				<IncludeRules context="CommentVariants" />
@@ -577,16 +271,16 @@
 
 			<!-- Comments -->
 
-			<context name="Hash comment" attribute="Comment" lineEndContext="#pop">
+			<context name="Star comment" attribute="Comment" lineEndContext="#pop">
 				<DetectSpaces />
-				<IncludeRules context="##Comments" />
+				<!--IncludeRules context="##Comments" /-->
 				<DetectIdentifier/>
 			</context>
 
 			<context name="Triple A-comment" attribute="Comment" lineEndContext="#stay" noIndentationBasedFolding="true">
 				<DetectSpaces/>
 				<StringDetect attribute="Comment" String="'''" context="#pop" endRegion="Triple A-region"/>
-				<IncludeRules context="##Comments" />
+				<!--IncludeRules context="##Comments" /-->
 				<DetectIdentifier/>
 				<IncludeRules context="stringescape"/>
 				<LineContinue attribute="String Char" context="#stay"/>
@@ -595,7 +289,7 @@
 			<context name="Triple Q-comment" attribute="Comment" lineEndContext="#stay" noIndentationBasedFolding="true">
 				<DetectSpaces/>
 				<StringDetect attribute="Comment" String="&quot;&quot;&quot;" context="#pop" endRegion="Triple Q-region"/>
-				<IncludeRules context="##Comments" />
+				<!--IncludeRules context="##Comments" /-->
 				<DetectIdentifier/>
 				<IncludeRules context="stringescape"/>
 				<LineContinue attribute="String Char" context="#stay"/>
@@ -604,7 +298,7 @@
 			<context name="Single A-comment" attribute="Comment" lineEndContext="#pop!UnfinishedStringError">
 				<DetectSpaces/>
 				<DetectChar attribute="Comment" char="'" context="#pop"/>
-				<IncludeRules context="##Comments" />
+				<!--IncludeRules context="##Comments" /-->
 				<DetectIdentifier/>
 				<IncludeRules context="stringescape"/>
 				<LineContinue attribute="String Char" context="#stay"/>
@@ -613,7 +307,7 @@
 			<context name="Single Q-comment" attribute="Comment" lineEndContext="#pop!UnfinishedStringError">
 				<DetectSpaces/>
 				<DetectChar attribute="Comment" char="&quot;" context="#pop"/>
-				<IncludeRules context="##Comments" />
+				<!--IncludeRules context="##Comments" /-->
 				<DetectIdentifier/>
 				<IncludeRules context="stringescape"/>
 				<LineContinue attribute="String Char" context="#stay"/>
