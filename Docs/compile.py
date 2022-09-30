@@ -6,6 +6,7 @@ import os
 import re
 import shutil
 import sys
+from typing import List
 
 class Page:
     def __init__(self) -> None:
@@ -90,13 +91,14 @@ def getHtmlContents(src: Page, urlPrefix = "", index = 0, indent=0, current="") 
 
     return ret
 
-def buildHtmlChunks(src: Page, currentPage: Page, srcdir: str, builddir: str, syntaxDefs: list[str]):
+def buildHtmlChunks(src: Page, currentPage: Page, srcdir: str, builddir: str, syntaxDefs: "list[str]"):
     
     # Convert current file
     if currentPage.file != "":
         outfilename = builddir+"/"+safeName(currentPage.name)+".html"
         print(f"Checking chunk {outfilename}...")
         if (not os.path.exists(outfilename)) or os.path.getmtime(currentPage.file) > os.path.getmtime(outfilename):
+            #print(["pandoc", currentPage.file, "--to", "html", "--highlight-style", f"{builddir}/highlight.theme"] + [x for d in syntaxDefs for x in ("--syntax-definition", d)])
             result = subprocess.run(["pandoc", currentPage.file, "--to", "html", "--highlight-style", f"{builddir}/highlight.theme"] + [x for d in syntaxDefs for x in ("--syntax-definition", d)], stdout=subprocess.PIPE)
             pageContent : str = result.stdout.decode("utf8")
 
@@ -144,7 +146,9 @@ def main():
             syntaxDefs.append(infilename)
 
     # save theme
-    subprocess.run(["pandoc", "-o", f"{builddir}/highlight.theme", "--print-highlight-style", themestyle])
+    result = subprocess.run(["pandoc", "--print-highlight-style", themestyle], stdout=subprocess.PIPE)
+    with open(f"{builddir}/highlight.theme", 'w+') as ofile:
+        ofile.write(result.stdout.decode("utf8"))
     subprocess.run(["pandoc", f"--template={srcdir}/pandoc-template-syntax.css", srcdir+"/pandoc-used-syntax-blocks.md", "--highlight-style", f"{builddir}/highlight.theme", "-o", targetdir+"/syntax_style.css"] + [x for d in syntaxDefs for x in ("--syntax-definition", d)])
     
     # get source
