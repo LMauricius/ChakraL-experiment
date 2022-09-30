@@ -1,12 +1,10 @@
 #!/bin/python3
 
 import subprocess
-import json
 import os
 import re
 import shutil
 import sys
-from typing import List
 
 class Page:
     def __init__(self) -> None:
