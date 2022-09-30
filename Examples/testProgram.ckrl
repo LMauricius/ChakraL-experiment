@@ -1,5 +1,6 @@
 ** ---Hello world---
 myUnicodeŠčvar = "str"æ
+angle = 30° 
 a = "str"
 console <<= a + "Hello world!" * 1
 

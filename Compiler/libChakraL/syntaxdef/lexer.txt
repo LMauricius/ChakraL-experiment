@@ -27,6 +27,17 @@
 #[:digit:]
 #0-9
 
+# letter or non-math symbol
+[:alphaSpecial:]
+\p{L}\p{So}\p{Sc}
+
+# letter or non-math symbol
+[:alphaSpecialNum:]
+\p{L}\p{So}\p{Sc}0-9
+
+[:operatorSymbol:]
+\p{Sm}
+
 @S_START
 
     # Get rid of carriage return in case of windows text file on unix
@@ -402,7 +413,7 @@
 
     # Words and values
 
-    ? \p{L}(\p{L}|[[:digit:]_])*
+    ? \p{L}[\p{L}[:digit:]_]*
     {
         out IDENTIFIER
         storeString
@@ -460,7 +471,7 @@
 
 
 @S_AFTER_LITERAL
-    ? \p{L}(\p{L}|[[:digit:]_])*
+    ? [[:alphaSpecial:]_][[:alphaSpecialNum:]]*
     {
         out LIT_SUFFIX
         storeString
