@@ -61,71 +61,41 @@
                 <div class="pagecontent">
                     <h1 id="value">Value</h1>
 <h2 id="definition">Definition</h2>
-<p>A value is a handle that can be used to access a context and modify
-functions that map from it. It consists of 2 components: the data, and
-the required trait.</p>
+<p>A value is a handle that can be used to access a context and modify functions that map from it. It consists of 2 components: the data, and the required trait.</p>
 <h2 id="what-are-values">What are values?</h2>
-<p>The values can be named constants, variables that can be changed
-during the program’s runtime, literals that are explicitly written in
-the code and used once etc. Here are few short examples that will be
-better explained later in the documentation:</p>
-<p><code>3.141592</code> is a numeric value, <code>"Hello world"</code>
-is a textual value.</p>
-<pre><code>a = b + c</code></pre>
-<p>…<code>a</code>, <code>b</code> and <code>c</code> are variable
-values</p>
-<pre><code>t = &quot;Hello World!&quot;
-n = 3</code></pre>
-<p>…<code>"Hello World!"</code> and <code>3</code> are literal values,
-while <code>t</code> and <code>n</code> are variable values.</p>
-<pre><code>PI def 3.141592</code></pre>
-<p>…<code>PI</code> is a constant value defined to be equal to the
-literal value <code>3.141592</code></p>
+<p>The values can be named constants, variables that can be changed during the program’s runtime, literals that are explicitly written in the code and used once etc. Here are few short examples that will be better explained later in the documentation:</p>
+<p><code>3.141592</code> is a numeric value, <code>"Hello world"</code> is a textual value.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1">a <span class="op">=</span> b <span class="op">+</span> c</a></code></pre></div>
+<p>…<code>a</code>, <code>b</code> and <code>c</code> are variable values</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb2-1" title="1">t <span class="op">=</span> <span class="st">&quot;Hello World!&quot;</span></a>
+<a class="sourceLine" id="cb2-2" title="2">n <span class="op">=</span> <span class="dv">3</span></a></code></pre></div>
+<p>…<code>"Hello World!"</code> and <code>3</code> are literal values, while <code>t</code> and <code>n</code> are variable values.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb3-1" title="1">PI <span class="kw">def</span> <span class="fl">3.141592</span></a></code></pre></div>
+<p>…<code>PI</code> is a constant value defined to be equal to the literal value <code>3.141592</code></p>
 <h2 id="the-data">The data</h2>
-<p>The data is the context that can be used in functions, assigned to
-other values and that can be modified if the value isn’t a constant.</p>
+<p>The data is the context that can be used in functions, assigned to other values and that can be modified if the value isn’t a constant.</p>
 <h2 id="the-trait">The trait</h2>
-<p>The trait of a value is the one that the data must satisfy. It is
-used to restrict the kinds of data that can be assigned to a value and
-keep the programmer’s sanity. The trait can be specified manually, or
-inferred from another value whose data is assigned to it.</p>
-<p>The trait can be manually specified. For example we can specify
-variable value <code>a</code> to have a trait of
-<code>Positive &amp; Integer</code> (<code>&amp;</code> combines
-multiple traits into one):</p>
-<pre><code>a: Integer &amp; Positive = 3</code></pre>
-<p>The trait can also be automatically inferred during the first use of
-a value. In the example:</p>
-<pre><code>a = 3</code></pre>
-<p>… <code>a</code>‘s trait will be inferred to be an <code>int32</code>
-(a 32-bit signed <code>Integer</code> trait), as the integer literals’
-trait is <code>int32</code>.</p>
-<p>We chose 32-bit integers as the default because they are a good
-compromise between the range of numbers (-2_147_483_647 to
-2_147_483_647) and the memory taken (4 bytes). Literals that are outside
-that range will be stored as the smallest native <code>Integer</code>
-type that fits them. For example:</p>
-<pre><code>a = 3 # 3 is int32, a is inferred to be int32
-a = -60_000_000_000 # -60_000_000_000 is int64, a is still defined as int32
-# the program raises an ERROR: 
-# -60_000_000_000 cannot be cast to int32 as it is outside the range of int32</code></pre>
+<p>The trait of a value is the one that the data must satisfy. It is used to restrict the kinds of data that can be assigned to a value and keep the programmer’s sanity. The trait can be specified manually, or inferred from another value whose data is assigned to it.</p>
+<p>The trait can be manually specified. For example we can specify variable value <code>a</code> to have a trait of <code>Positive &amp; Integer</code> (<code>&amp;</code> combines multiple traits into one):</p>
+<div class="sourceCode" id="cb4" data-caption="Example of manual traits"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb4-1" title="1">a: Integer <span class="op">&amp;</span> Positive <span class="op">=</span> <span class="dv">3</span></a></code></pre></div>
+<p>The trait can also be automatically inferred during the first use of a value. In the example:</p>
+<div class="sourceCode" id="cb5" data-caption="Example of inferred traits"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1">a <span class="op">=</span> <span class="dv">3</span></a></code></pre></div>
+<p>… <code>a</code>‘s trait will be inferred to be an <code>int32</code> (a 32-bit signed <code>Integer</code> trait), as the integer literals’ trait is <code>int32</code>.</p>
+<p>We chose 32-bit integers as the default because they are a good compromise between the range of numbers (-2_147_483_647 to 2_147_483_647) and the memory taken (4 bytes). Literals that are outside that range will be stored as the smallest native <code>Integer</code> type that fits them.</p>
+<pre class="chakral" data-caption="Example for integer limits"><code>a = 3 ** 3 is int32, a is inferred to be int32
+a = -60_000_000_000 ** -60_000_000_000 is int64, a is still defined as int32
+** the program raises an ERROR: 
+** -60_000_000_000 cannot be cast to int32 as it is outside the range of int32</code></pre>
 <h2 id="satisfying-the-trait">Satisfying the trait</h2>
-<p>The data always satisfies the trait. If the trait is declared with an
-<code>explicit</code> keyword, it will only be satisfied if the data is
-actually declared to be that type; if not, it will also be satisfied if
-the data is similar to the trait (it has the same members, it is
-composed of the same sub-contexts). For more details see the chapter <a
-href="trait_system.html">Trait system</a>.</p>
-<p>An example of not satisfying the trait (we use assignment operator
-instead of change, because the change operator can implicitly convert
-values to the desired trait):</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>a : int32 <span class="op">&lt;-</span> new <span class="dv">3</span> <span class="co"># assignment (&lt;-) instead of change (=)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">&lt;-</span> new <span class="st">&quot;Hello world&quot;</span> <span class="co"># ERROR: string is not an int32</span></span></code></pre></div>
-<h2 id="similar-ideas-in-other-languages">Similar ideas in other
-languages</h2>
-<p>variable, constant, literal, pointer, temporary value, rvalue,
-lvalue</p>
+<p>The data always satisfies the trait. If the trait is declared with an <code>explicit</code> keyword, it will only be satisfied if the data is actually declared to be that type; if not, it will also be satisfied if the data is similar to the trait (it has the same members, it is composed of the same sub-contexts). For more details see the chapter <a href="trait_system.html">Trait system</a>.</p>
+<pre class="chakral" data-caption="Example of not satisfying the trait"><code>** we use assignment operator (&lt;-) instead of change (=), 
+** because the change operator can implicitly 
+** convert values to the desired trait
+
+a : int32 &lt;- new 3
+a &lt;- new &quot;Hello world&quot; ** ERROR: string is not an int32</code></pre>
+<h2 id="similar-ideas-in-other-languages">Similar ideas in other languages</h2>
+<p>variable, constant, literal, pointer, temporary value, rvalue, lvalue</p>
 
                 </div>
             </div>

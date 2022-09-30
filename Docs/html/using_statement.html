@@ -77,44 +77,65 @@ href="module_expression.html">module expression</a>. For example, if we
 want to use the <code>sin</code> function from the <code>MyMath</code>
 module without typing <code>sin(module MyMath)</code> every time, we can
 write:</p>
-<pre><code>using sin (module MyMath)</code></pre>
+<div class="sourceCode" id="cb1" data-caption="Example"><pre
+class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> sin (<span class="kw">module</span> MyMath)</span></code></pre></div>
 <p>…and then use it like this:</p>
-<pre><code>amp = sin 30°</code></pre>
+<div class="sourceCode" id="cb2" data-caption="Example"><pre
+class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>amp <span class="op">=</span> sin <span class="dv">30</span>°</span></code></pre></div>
 <p>This is because the expression <code>sin (module MyMath)</code>’s
 result has the name <code>sin</code> associated with it.</p>
 <h3 id="complex-example">Complex example</h3>
 <p>For a more complex example, if we have a following context:</p>
-<pre><code>myComplexContext def (
-    numValue def 0.5,
-    textValue def &quot;Hello!&quot;,
-    subContext def (
-        subSubNum def 1.5,
-        subSubText def &quot;foo&quot;
-    )
-)</code></pre>
+<div class="sourceCode" id="cb3" data-caption="Example problem"><pre
+class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>myComplexContext <span class="kw">def</span> (</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    numValue <span class="kw">def</span> <span class="fl">0.5</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    textValue <span class="kw">def</span> <span class="st">&quot;Hello!&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    subContext <span class="kw">def</span> (</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        subSubNum <span class="kw">def</span> <span class="fl">1.5</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        subSubText <span class="kw">def</span> <span class="st">&quot;foo&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>…and we need to use the <code>subSubNum</code> often, we could
 shorten the future code by doing this:</p>
-<pre><code>subSubNum def subSubNum subContext myComplexContext
-a = subSubNum #Hint: a equals to 1.5</code></pre>
-<p>…or we could use the <code>using</code> keyword to do the same:</p>
-<pre><code>using subSubNum subContext myComplexContext
-a = subSubNum #Hint: a equals to 1.5</code></pre>
+<div class="sourceCode" id="cb4"
+data-caption="Example long solution"><pre
+class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>subSubNum <span class="kw">def</span> subSubNum subContext myComplexContext</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> subSubNum <span class="co">**Hint: a equals to 1.5</span></span></code></pre></div>
+<p>…or we could use the <code
+class="sourceCode chakral"><span class="kw">using</span></code> keyword
+to do the same:</p>
+<div class="sourceCode" id="cb5"
+data-caption="Example good solution"><pre
+class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> subSubNum subContext myComplexContext</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> subSubNum <span class="co">**Hint: a equals to 1.5</span></span></code></pre></div>
 <h3 id="using-module-example"><em>using module</em> example</h3>
 <p>If we want to use multiple values from a module, and we don’t want to
 write <code>using</code> for each value from it, we can perform a
-<code>using</code> statement on the whole module:
-<code>using module MyMath</code>. This is of course equivalent to
-writing <code>MyMath def module MyMath</code>. Then instead of writing
-hard to read code:</p>
-<pre><code>y = (sin (module MyMath)) angle
-x = (cos (module MyMath)) angle</code></pre>
+<code>using</code> statement on the whole module: <code
+class="sourceCode chakral"><span class="kw">using</span> <span class="kw">module</span> MyMath</code>.
+This is of course equivalent to writing
+<code>MyMath def module MyMath</code>. Then instead of writing hard to
+read code:</p>
+<div class="sourceCode" id="cb6"
+data-caption="Example unreadable code"><pre
+class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (sin (<span class="kw">module</span> MyMath)) angle</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> (cos (<span class="kw">module</span> MyMath)) angle</span></code></pre></div>
 <p>…we can clean it up:</p>
-<pre><code>y = (sin MyMath) angle
-x = (cos MyMath) angle</code></pre>
+<div class="sourceCode" id="cb7" data-caption="Example clean code"><pre
+class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">module</span> MyMath</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (sin MyMath) angle</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> (cos MyMath) angle</span></code></pre></div>
 <p>This requires us to still write longer code than if we were
 <code>using</code> each specific function from <code>MyMath</code>, but
 it makes it clear from where we got the function values <code>sin</code>
-and <code>cos</code>.</p>
+and <code>cos</code>. To shorten it further, we need to be
+<code>using</code> each required function:</p>
+<div class="sourceCode" id="cb8"
+data-caption="Example shortest code"><pre
+class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> sin (<span class="kw">module</span> MyMath)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> cos (<span class="kw">module</span> MyMath)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> sin angle</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> cos angle</span></code></pre></div>
 
                 </div>
             </div>
