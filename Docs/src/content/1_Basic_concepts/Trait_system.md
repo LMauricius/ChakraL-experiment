@@ -17,11 +17,6 @@ A final trait `t` can be used as a required trait for value `v` only if `v` is a
 ```{.chakral caption="Example of the difference between final and non-final traits"}
 ** A context is Killable if it has a Real value health and Integer value lives
 ** (no matter those values' data)
-```
-
-```{.chakral caption="Example of the difference between final and non-final traits"}
-** A context is Killable if it has a Real value health and Integer value lives
-** (no matter those values' data)
 Killable def:
     health = 100.0 **100.0 is the starting value for copies
     lives = 1 **1 is the starting value for copies
@@ -83,6 +78,24 @@ with output = console:
     write whether p2 is Player **prints 'true'
     write whether p2 is Swordsman **prints 'false'
 ok
+```
+
+```{.chakral caption="Limitations of const and final values"}
+ConstZeroOwner def:
+    number: const = 0
+ok
+FinalZeroOwner def:
+    final
+    number = 0
+ok
+
+a = ConstZeroOwner
+b = FinalZeroOwner
+
+number a = 100 **ERROR - can't change const value
+number b = 100 **ERROR - can't change final value
+c = a & (number: const = 100) **OK - can override const value
+d = b & (final, number = 100) **ERROR - can't override final value
 ```
 
 ### explicit specifier
