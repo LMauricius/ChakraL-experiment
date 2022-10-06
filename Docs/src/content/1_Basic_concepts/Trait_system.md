@@ -6,31 +6,82 @@ The trait system is useful in several ways. It allows the programmer to limit th
 ## Satisfying the trait
 If the context `c` satisfies the trait `t` we say that `c is t`{.chakral}. That satisfaction depends on `c` and `t`'s descriptions and specifiers. How the descriptions and specifiers are satisfied is described below.
 
-## The specifiers
-The specifiers change how the satisfaction is interpreted. They are useful to limit the contexts that satisfy the trait.
+## Trait specifiers
+Trait specifiers change how the satisfaction is interpreted in addition to the descriptions.
 
 ### final specifier
+If the trait `t` has a `final`{.chakral} specifier, then it will only be satisfied if `c` is either equal to `t` or hasn't been changed since being created as a copy of `t`. If a final trait `t` is used as a required trait of value `v`, `v` cannot be changed, just like if `v` was a constant value. Unlike constant values, a final value cannot be overriden by another value. Using a final value in an operation that could change or override it is forbidden, even if `v`'s data wouldn't be changed by the operation (i.e. `v` would still satisfy its required trait *after* the operation).
+
+A final trait `t` can be used as a required trait for value `v` only if `v` is a constant value. Note that `final`{.chakral} is a trait specifier while `const`{.chakral} is a value specifier.
+
 ```{.chakral caption="Example of the difference between final and non-final traits"}
+** A context is Killable if it has a Real value health and Integer value lives
+** (no matter those values' data)
+```
+
+```{.chakral caption="Example of the difference between final and non-final traits"}
+** A context is Killable if it has a Real value health and Integer value lives
+** (no matter those values' data)
 Killable def:
-    health: Real = 100.0
+    health = 100.0 **100.0 is the starting value for copies
+    lives = 1 **1 is the starting value for copies
 ok
 
+** A context is Dead if its health and lives are equal to 0
 Dead def:
-    final health: Real = 0.0
+    final
+    health = 0.0
+    lives = 0
 ok
 
 p = Killable
 with output = console:
-    write p **prints '(health = 100.0)'
+    write p **prints '(health = 100.0, lives = 1)'
     write whether p is Killable **prints 'true'
     write whether p is Dead **prints 'false'
 ok
 
 health p -= 100.0
+lives p -= 1
 with output = console:
-    write p **prints '(health = 0.0)'
+    write p **prints '(health = 0.0, lives = 0)'
     write whether p is Killable **prints 'true'
     write whether p is Dead **prints 'true'
+ok
+```
+
+```{.chakral caption="Example of the difference between a definition and a final valued member"}
+Player def:
+    health: Real = 100.0
+    strength def 0.0
+    speed def 0.0
+    weaponName def "none"
+ok
+
+Swordsman def:
+    !Player
+    strength def 120.0
+    speed def 80.0
+    weaponName def final "sword"
+ok
+
+p1 = Player & (
+    strength def 100.0,
+    speed def 200.0,
+    weaponName def "sword"
+)
+p2 = Player & (
+    strength def 120.0,
+    speed def 80.0,
+    weaponName def "lance"
+)
+with output = console:
+    write p1 **prints '(health = 100.0, strength = 100.0, speed = 200.0, weaponName = "sword")'
+    write whether p1 is Player **prints 'true'
+    write whether p1 is Swordsman **prints 'true'
+    write p2 **prints '(health = 100.0, strength = 120.0, speed = 80.0, weaponName = "lance")'
+    write whether p2 is Player **prints 'true'
+    write whether p2 is Swordsman **prints 'false'
 ok
 ```
 
@@ -52,7 +103,7 @@ ok
 p1 = Player **copies the constant 'Player' into a non-constant context
 p2 = (lives = 3, score = 0)
 p3: Player = (lives = 3, score = 0)
-
+ 
 with output = console:
     write whether p1 is Player **prints 'true'
     write whether p2 is Player **prints 'false'
