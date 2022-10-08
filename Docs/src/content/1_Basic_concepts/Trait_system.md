@@ -7,7 +7,20 @@ The trait system is useful in several ways. It allows the programmer to limit th
 If the context `c` satisfies the trait `t` we say that `c is t`{.chakral}. That satisfaction depends on `c` and `t`'s descriptions and specifiers. How the descriptions and specifiers are satisfied is described below.
 
 ## Trait specifiers
-Trait specifiers change how the satisfaction is interpreted in addition to the descriptions.
+Trait specifiers change how the satisfaction is interpreted in addition to the descriptions. They can be used as descriptions or like prefix functions.
+
+```{.chakral caption="Example of a final trait specifier"}
+** like description of a block context:
+A def:
+    final
+    a = 1
+ok
+** like description of an expression context:
+B def (final, b = 2)
+
+** like a prefix function:
+C def final (c = 3)
+```
 
 ### final specifier
 If the trait `t` has a `final`{.chakral} specifier, then it will only be satisfied if `c` is either equal to `t` or hasn't been changed since being created as a copy of `t`. If a final trait `t` is used as a required trait of value `v`, `v` cannot be changed, just like if `v` was a constant value. Unlike constant values, a final value cannot be overriden by another value. Using a final value in an operation that could change or override it is forbidden, even if `v`'s data wouldn't be changed by the operation (i.e. `v` would still satisfy its required trait *after* the operation).
