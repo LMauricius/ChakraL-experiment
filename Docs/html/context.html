@@ -61,10 +61,10 @@
                 <div class="pagecontent">
                     <h1 id="context">Context</h1>
 <h2 id="definition">Definition</h2>
-<p>A context is the most primitive structure of ChakraL language. A context can be described and distinguished from other contexts by requirements opposed on it and functions that map from it into a possibly different context. There are two ways to define a context in ChakraL.</p>
-<h2 id="the-short-way">The short way</h2>
+<p>A context is the most primitive structure of ChakraL language. A context can be described and distinguished from other contexts by requirements opposed on it and functions that map from it into a possibly different context. There are two ways to describe a context in ChakraL.</p>
+<h2 id="the-expression-context-way">The expression context way</h2>
 <div class="sourceCode" id="cb1" data-caption="Example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1">(lives <span class="op">=</span> <span class="dv">3</span>, score <span class="op">=</span> <span class="dv">0</span>)</a></code></pre></div>
-<p>A context can be defined as a comma-separated list of descriptions. The short definition is used in expressions. A single trailing comma is optional in the single-line version and mandatory in the multiline version, where descriptions also have to be on independent lines from the parentheses.</p>
+<p>A context can be defined as a comma-separated list of descriptions. This is used in expressions. A single trailing comma is optional in the single-line version and mandatory in the multiline version, where descriptions also have to be on independent lines from the parentheses.</p>
 <div class="sourceCode" id="cb2" data-caption="Example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb2-1" title="1">(</a>
 <a class="sourceLine" id="cb2-2" title="2">    lives <span class="op">=</span> <span class="dv">3</span>,</a>
 <a class="sourceLine" id="cb2-3" title="3">    score <span class="op">=</span> <span class="dv">0</span>,</a>
@@ -75,8 +75,8 @@
     DESCRIPTION2, DESCRIPTION3,
     DESCRIPTION4, &lt;...&gt;
 )</code></pre>
-<h2 id="the-long-way">The long way</h2>
-<p>A context can also be defined as a list of descriptions each starting at its own line of code. The long definition can be used in specific language constructs that require it. It is considered the long way because you can’t put more than one description per line, and because it is only used in longer language constructs.</p>
+<h2 id="the-block-context-way">The block context way</h2>
+<p>A context can also be defined as a list of descriptions each starting at its own line of code. The block contexts can be used in specific language constructs that require it. In a block context you can’t put more than one description per line.</p>
 <div class="sourceCode" id="cb5" data-caption="Example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1">lives <span class="op">=</span> <span class="dv">3</span></a>
 <a class="sourceLine" id="cb5-2" title="2">score <span class="op">=</span> <span class="dv">0</span></a></code></pre></div>
 <pre class="chakralspec" data-caption="Multi-line usage"><code>DESCRIPTION1
