@@ -40,7 +40,7 @@ ok
 C def A & B ** ERROR: String is not Integer for override of member 'b'
 ```
 
-If the combination result context `C` is used as a trait, for a context `d` to satisfy it, it must satisfy all the operand contexts that were combined into `C`.
+A context `d` satisfied the combination result trait `C` if and only if it satisfies all the operand contexts that are part of `C`.
 
 ```{.chakral caption="Example of a combined trait"}
 NonZero def:
