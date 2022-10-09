@@ -44,7 +44,7 @@ A context `d` satisfied the combination result trait `C` if and only if it satis
 
 ```{.chakral caption="Example of a combined trait"}
 NonZero def:
-    ? _ != 0
+    ? context != 0
 ok
 
 NonZero32 def int32 & NonZero
@@ -66,7 +66,7 @@ with output=console:
 ok
 ```
 
-The [trait specifiers]{trait_system.html} of the operands `A` and `B` do not carry over into the combined context, but they do apply on the operands as parts of the result context `c`.
+The [trait specifiers](trait_system.html) of the operands `A` and `B` do not carry over into the combined context, but they do apply on the operands as parts of the result context `c`.
 
 ```{.chakral caption="Example of the final specifier in a combined trait"}
 A def:
