@@ -60,34 +60,30 @@ ok
 
 ```{.chakral caption="Example of the difference between a definition and a final valued member"}
 Player def:
-    health: Real = 100.0
-    strength def 0.0
-    speed def 0.0
-    weaponName def "none"
+    health: Real = 100.0  **member variable
+    strength def 0.0      **member definition
+    weaponName def "none" **member definition
 ok
 
 Swordsman def:
-    !Player
-    strength def 120.0
-    speed def 80.0
-    weaponName def final "sword"
+    !Player               **includes Player trait
+    strength def 120.0    **member redefinition
+    weaponName def final "sword" **
 ok
 
 p1 = Player & (
     strength def 100.0,
-    speed def 200.0,
     weaponName def "sword"
 )
 p2 = Player & (
     strength def 120.0,
-    speed def 80.0,
     weaponName def "lance"
 )
 with output = console:
-    write p1 **prints '(health = 100.0, strength = 100.0, speed = 200.0, weaponName = "sword")'
+    write p1 **prints '(health = 100.0, strength = 100.0, weaponName = "sword")'
     write whether p1 is Player **prints 'true'
     write whether p1 is Swordsman **prints 'true'
-    write p2 **prints '(health = 100.0, strength = 120.0, speed = 80.0, weaponName = "lance")'
+    write p2 **prints '(health = 100.0, strength = 120.0, weaponName = "lance")'
     write whether p2 is Player **prints 'true'
     write whether p2 is Swordsman **prints 'false'
 ok
