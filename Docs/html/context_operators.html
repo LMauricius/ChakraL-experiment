@@ -97,7 +97,7 @@
 <a class="sourceLine" id="cb3-11" title="11">C <span class="kw">def</span> A <span class="op">&amp;</span> B <span class="co">** ERROR: String is not Integer for override of member &#39;b&#39;</span></a></code></pre></div>
 <p>A context <code>d</code> satisfied the combination result trait <code>C</code> if and only if it satisfies all the operand contexts that are part of <code>C</code>.</p>
 <div class="sourceCode" id="cb4" data-caption="Example of a combined trait"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb4-1" title="1">NonZero <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb4-2" title="2">    ? _ <span class="op">!=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb4-2" title="2">    ? <span class="va">context</span> <span class="op">!=</span> <span class="dv">0</span></a>
 <a class="sourceLine" id="cb4-3" title="3"><span class="cf">ok</span></a>
 <a class="sourceLine" id="cb4-4" title="4"></a>
 <a class="sourceLine" id="cb4-5" title="5">NonZero32 <span class="kw">def</span> int32 <span class="op">&amp;</span> NonZero</a>
@@ -117,12 +117,12 @@
 <a class="sourceLine" id="cb4-19" title="19">    write <span class="kw">whether</span> c <span class="kw">is</span> NonZero <span class="co">**prints &#39;true&#39;</span></a>
 <a class="sourceLine" id="cb4-20" title="20">    write <span class="kw">whether</span> c <span class="kw">is</span> NonZero32 <span class="co">**prints &#39;true&#39;</span></a>
 <a class="sourceLine" id="cb4-21" title="21"><span class="cf">ok</span></a></code></pre></div>
-<p>The [trait specifiers]{trait_system.html} of the operands <code>A</code> and <code>B</code> do not carry over into the combined context, but they do apply on the operands as parts of the result context <code>c</code>.</p>
+<p>The <a href="trait_system.html">trait specifiers</a> of the operands <code>A</code> and <code>B</code> do not carry over into the combined context, but they do apply on the operands as parts of the result context <code>c</code>.</p>
 <div class="sourceCode" id="cb5" data-caption="Example of the final specifier in a combined trait"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1">A <span class="kw">def</span>:</a>
 <a class="sourceLine" id="cb5-2" title="2">    x <span class="op">=</span> <span class="dv">0</span></a>
 <a class="sourceLine" id="cb5-3" title="3"><span class="cf">ok</span></a>
 <a class="sourceLine" id="cb5-4" title="4">B <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb5-5" title="5">    final</a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="kw">final</span></a>
 <a class="sourceLine" id="cb5-6" title="6">    y <span class="op">=</span> <span class="dv">0</span></a>
 <a class="sourceLine" id="cb5-7" title="7"><span class="cf">ok</span></a>
 <a class="sourceLine" id="cb5-8" title="8">C <span class="kw">def</span> A <span class="op">&amp;</span> B</a>
