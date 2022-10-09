@@ -6,7 +6,9 @@
 C = A & B
 ```
 
-Combines two operand contexts `A` and `B` into one result context `C`. `C` will have all descriptions of `A` and `B`. If a member of the same name is found in both operands `A` and `B`, the result context `C` will have one member of that name with the required type of the left operand `A` and the starting assigned data of the right operand `B`. In that case, `B`'s member value must satisfy the required trait of `A`'s member value. In such a situation we say that `A`'s member value was overriden by `B`'s.
+Combines two operand contexts `A` and `B` into one result context `C`. `C` will have all descriptions of `A` and `B`. 
+
+If a member of the same name is found in both operands `A` and `B`, the result context `C` will have one member of that name with the required type of the left operand `A` and the starting assigned data of the right operand `B`. In that case, `B`'s member value must satisfy the required trait of `A`'s member value and `B`'s member value's access specifiers must be the same as' `A`'s member value's access specifiers. In such a situation we say that `A`'s member value was overriden by `B`'s.
 
 ```{.chakral caption="Example of combination"}
 A def:
