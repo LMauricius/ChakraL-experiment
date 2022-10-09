@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>file format</title>
+        <title>operators</title>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="syntax_style.css">
     </head>
@@ -18,7 +18,7 @@
             </li>
             <li><a href="language_goals.html">2&nbspLanguage goals</a>
             </li>
-            <li><b>3 File format</b>
+            <li><a href="file_format.html">3&nbspFile format</a>
             </li>
             <li><a href="module_system.html">4&nbspModule system</a>
             </li>
@@ -48,7 +48,7 @@
             <ul>
                 <li><a href="module_expression.html">1&nbspmodule expression</a>
                 </li>
-                <li><a href="operators.html">2&nbspOperators</a>
+                <li><b>2 Operators</b>
                 <ul>
                     <li><a href="context_operators.html">1&nbspContext operators</a>
                     </li>
@@ -65,33 +65,7 @@
             </div>
             <div class="main">
                 <div class="pagecontent">
-                    <h1 id="file-format">File format</h1>
-<p>Here are described the file formats, folder structures and conventions used in ChakraL.</p>
-<h2 id="file-naming">File naming</h2>
-<p>The file names must start with a letter and can contain leters, digits and underscores. Double underscores are forbidden. If the file has multiple extensions (separated by multiple dots), all but the last extension will be ignored.</p>
-<h2 id="file-extensions">File extensions</h2>
-<table>
-<thead>
-<tr class="header">
-<th>File type</th>
-<th>Extension</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Source file</td>
-<td><code>ckr</code></td>
-</tr>
-<tr class="even">
-<td>Module interface file</td>
-<td><code>ckri</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="source-files">Source files</h3>
-<p>The source files are the ones containing the ChakraL code. They get compiled into a <em>binary file</em>, which can be either an <em>executable</em> or a <em>library</em>. Multiple source files can be used to compile a single binary file. If the binary we are compiling is a library meant to be used by other developers, the source files can also produce <em>module interface files</em> which simplify the loading of library symbols without showing the full source code to others.</p>
-<h2 id="text-file-format">Text file format</h2>
-<p>The source files should always be saved using the <code>UTF-8</code> encoding. Other formats might not be recognized or read properly by the compiler. Most modern text editors use <code>UTF-8</code> by default.</p>
+                    
 
                 </div>
             </div>
