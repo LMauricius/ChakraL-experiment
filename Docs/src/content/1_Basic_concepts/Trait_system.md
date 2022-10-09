@@ -80,10 +80,10 @@ p2 = Player & (
     weaponName def "lance"
 )
 with output = console:
-    write p1 **prints '(health = 100.0, strength = 100.0, weaponName = "sword")'
+    write p1 **prints '(health=100.0, strength=100.0, weaponName="sword")'
     write whether p1 is Player **prints 'true'
     write whether p1 is Swordsman **prints 'true'
-    write p2 **prints '(health = 100.0, strength = 120.0, weaponName = "lance")'
+    write p2 **prints '(health=100.0, strength=120.0, weaponName="lance")'
     write whether p2 is Player **prints 'true'
     write whether p2 is Swordsman **prints 'false'
 ok
