@@ -1,1 +1,5 @@
+Math operators
+Operator new
+Operator as
+Logical operators
 Context operators
