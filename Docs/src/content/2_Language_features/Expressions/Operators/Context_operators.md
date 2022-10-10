@@ -42,7 +42,9 @@ ok
 C def A & B ** ERROR: String is not Integer for override of member 'b'
 ```
 
-A context `d` satisfied the combination result trait `C` if and only if it satisfies all the operand contexts that are part of `C`.
+The copy (`new`{.chakral}) operator is automatically created for the combination if and only if the copy operator is defined for each of its operands.
+
+A context `d` satisfies the combination result trait `C` if and only if it satisfies all the operand contexts that are part of `C`.
 
 ```{.chakral caption="Example of a combined trait"}
 NonZero def:
