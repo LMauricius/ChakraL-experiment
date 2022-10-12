@@ -2,6 +2,23 @@
 
 ## Usage
 Comparison operators are operators usually used in math but also repurposed for other use-cases, similar to math operators. Their meaning depends on the traits of operands. They can be overloaded and overriden by defining a value with the operator identifier. The return trait of these functions must always be `bool`{.chakral}.
+
+```{.chakral caption="Example of comparison"}
+with input=console, output=console:
+    write "Enter X:"
+    x = read Int
+    write "Enter Y:"
+    y = read Int
+
+    if x > y:
+        write "X is greater"
+    elif x < y:
+        write "Y is greater"
+    else:
+        write "They are equal"
+ok
+```
+
 ```{.chakral caption="Example of redefining the '?=' operator"}
 equals\ def (l: Point, r: Point)->bool:
     return x l ?= x r and y l ?= y r
