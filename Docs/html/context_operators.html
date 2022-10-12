@@ -145,7 +145,7 @@
 <a class="sourceLine" id="cb5-15" title="15"><span class="cf">ok</span></a></code></pre></div>
 <h2 id="context-selection-operator">Context selection (|) operator</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb6-1" title="1">C: virtual <span class="op">=</span> A <span class="op">|</span> B</a></code></pre></div>
-<p>Makes a selection between two operand contexts <code>A</code> and <code>B</code> as a result context <code>C</code>. <code>C</code> will have those descriptions that are part of both <code>A</code> and <code>B</code>. A context <code>d</code> satisfies the selection result trait <code>C</code> if and only if it satisfies at least one of the operands that are part of <code>C</code>. Because of that, <code>d</code> that is of trait <code>C</code> can be cast into at least one of its operands <code>A</code> or <code>B</code>.</p>
+<p>Makes a trait selection between two operand contexts <code>A</code> and <code>B</code> as a result context <code>C</code>. <code>C</code> will have those descriptions that are part of both <code>A</code> and <code>B</code>. A context <code>d</code> satisfies the selection result trait <code>C</code> if and only if it satisfies at least one of the operands that are part of <code>C</code>. Because of that, <code>d</code> that is of trait <code>C</code> can be cast into at least one of its operands <code>A</code> or <code>B</code>. A selection is usually only useful as a required trait as it cannot be instantiated by default.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb7-1" title="1">XY <span class="kw">def</span> (x<span class="op">=</span><span class="dv">1</span>, y<span class="op">=</span><span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb7-2" title="2">YZ <span class="kw">def</span> (y<span class="op">=</span><span class="dv">2</span>, z<span class="op">=</span><span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb7-3" title="3">c: XY <span class="op">|</span> YZ <span class="op">=</span> (x<span class="op">=</span><span class="dv">4</span>, y<span class="op">=</span><span class="dv">5</span>) <span class="co">**assigns an XY value</span></a>
@@ -154,14 +154,34 @@
 <a class="sourceLine" id="cb7-6" title="6">    write y c <span class="co">**prints &#39;5&#39;</span></a>
 <a class="sourceLine" id="cb7-7" title="7">    <span class="co">**write x c **would be ERROR: selection c doesn&#39;t always have the member x</span></a>
 <a class="sourceLine" id="cb7-8" title="8"></a>
-<a class="sourceLine" id="cb7-9" title="9">    <span class="co">** how to access &#39;x&#39;:</span></a>
-<a class="sourceLine" id="cb7-10" title="10">    <span class="cf">if</span> c <span class="kw">is</span> XY: <span class="co">**yes</span></a>
-<a class="sourceLine" id="cb7-11" title="11">        <span class="kw">using</span> c <span class="kw">as</span> XY <span class="co">**cast from XY|YZ to XY</span></a>
-<a class="sourceLine" id="cb7-12" title="12">        write x c <span class="co">**prints &#39;4&#39;</span></a></code></pre></div>
-<p>The <code class="sourceCode chakral"><span class="kw">new</span></code> operator isn’t automatically defined for a selection since there is not universal default for which operands should be included in the copy. A selection is usually only useful as a required trait as it cannot be instantiated by default. It is however a <code class="sourceCode chakral">virtual</code> context, so it can be assigned to values that have a virtual specifier.</p>
+<a class="sourceLine" id="cb7-9" title="9">    write <span class="kw">whether</span> c <span class="kw">is</span> XY <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb7-10" title="10">    write <span class="kw">whether</span> c <span class="kw">is</span> YZ <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb7-11" title="11"></a>
+<a class="sourceLine" id="cb7-12" title="12">    <span class="co">** how to access &#39;x&#39;:</span></a>
+<a class="sourceLine" id="cb7-13" title="13">    <span class="cf">if</span> c <span class="kw">is</span> XY: <span class="co">**yes</span></a>
+<a class="sourceLine" id="cb7-14" title="14">        <span class="kw">using</span> c <span class="kw">as</span> XY <span class="co">**cast from XY|YZ to XY</span></a>
+<a class="sourceLine" id="cb7-15" title="15">        write x c <span class="co">**prints &#39;4&#39;</span></a></code></pre></div>
+<p>The copy (<code class="sourceCode chakral"><span class="kw">new</span></code>) operator isn’t automatically defined for a selection since there is not universal default for which operands should be included in the copy. It is however a <code class="sourceCode chakral">virtual</code> context, so it can be assigned to values that have a virtual specifier.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb8-1" title="1">c <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">|</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**ERROR: cannot copy a selection into variable &#39;c&#39;</span></a>
 <a class="sourceLine" id="cb8-2" title="2">d: virtual <span class="kw">const</span> <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">|</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**OK</span></a></code></pre></div>
 <h2 id="context-choice-operator">Context choice (&lt;&gt;) operator</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb9-1" title="1">C: virtual <span class="op">=</span> A <span class="op">&lt;&gt;</span> B</a></code></pre></div>
+<p>Makes a trait choice (variant) between two operand contexts <code>A</code> and <code>B</code> as a result context <code>C</code>. <code>C</code> will have those descriptions that are part of both <code>A</code> and <code>B</code>. A context <code>d</code> satisfies the choice result trait <code>C</code> if and only if it satisfies exactly one of the operands that are part of <code>C</code>. Because of that, <code>d</code> that is of trait <code>C</code> can be cast into exactly one of its operands <code>A</code> or <code>B</code>. A choice is usually only useful as a required trait as it cannot be instantiated by default.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb10-1" title="1">c: Real <span class="op">&lt;&gt;</span> String <span class="op">=</span> <span class="fl">5.3</span> <span class="co">**assigns a Real value</span></a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="cf">with</span> output<span class="op">=</span>console:</a>
+<a class="sourceLine" id="cb10-4" title="4">    write <span class="kw">whether</span> c <span class="kw">is</span> Real <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb10-5" title="5">    write <span class="kw">whether</span> c <span class="kw">is</span> String <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb10-6" title="6"></a>
+<a class="sourceLine" id="cb10-7" title="7">    <span class="co">** how to access &#39;x&#39;:</span></a>
+<a class="sourceLine" id="cb10-8" title="8">    <span class="cf">if</span> c <span class="kw">is</span> Real: <span class="co">**yes</span></a>
+<a class="sourceLine" id="cb10-9" title="9">        <span class="kw">using</span> c <span class="kw">as</span> Real <span class="co">**cast from Real&lt;&gt;String to Real</span></a>
+<a class="sourceLine" id="cb10-10" title="10">        write c <span class="co">**prints &#39;5.3&#39;</span></a></code></pre></div>
+<p>The copy (<code class="sourceCode chakral"><span class="kw">new</span></code>) operator isn’t automatically defined for a choice since there is not universal default for which operand should be chosen for the copy. It is however a <code class="sourceCode chakral">virtual</code> context, so it can be assigned to values that have a virtual specifier.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb11-1" title="1">c <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">&lt;&gt;</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**ERROR: cannot copy a selection into variable &#39;c&#39;</span></a>
+<a class="sourceLine" id="cb11-2" title="2">d: virtual <span class="kw">const</span> <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">&lt;&gt;</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**OK</span></a></code></pre></div>
+<p>The choice operator is useful for creating optional values, i.e. values that can be assigned to None.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb12-1" title="1">c: Integer<span class="op">&lt;&gt;</span><span class="va">Nil</span> <span class="op">=</span> </a></code></pre></div>
 
                 </div>
             </div>

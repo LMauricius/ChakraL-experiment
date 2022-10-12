@@ -73,7 +73,107 @@
             </div>
             <div class="main">
                 <div class="pagecontent">
-                    
+                    <h1 id="math-operators">Math operators</h1>
+<h2 id="usage">Usage</h2>
+<p>Math operators are operators usually used in math but also repurposed for other use-cases. Their meaning depends on the traits of operands. They can be overloaded and overriden by defining a value with the operator identifier.</p>
+<div class="sourceCode" id="cb1" data-caption="Example of redefining the &#39;+&#39; operator"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1">plus\ <span class="kw">def</span> (l: Point, r: Point)<span class="op">-&gt;</span>Point:</a>
+<a class="sourceLine" id="cb1-2" title="2">    <span class="cf">return</span> Point(x <span class="op">=</span> x l <span class="op">+</span> x r, y <span class="op">=</span> y l <span class="op">+</span> y r)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="cf">ok</span></a></code></pre></div>
+<h2 id="supported-operators">Supported operators</h2>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 24%" />
+<col style="width: 23%" />
+<col style="width: 19%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Symbol</th>
+<th>Operator identifier</th>
+<th>Mathematical usage</th>
+<th>Container usage</th>
+<th>Bitwise usage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Unary</td>
+<td><code>-</code></td>
+<td>negative\</td>
+<td>negation</td>
+<td>none</td>
+<td>negation</td>
+</tr>
+<tr class="even">
+<td>Binary</td>
+<td><code>+</code></td>
+<td>plus\</td>
+<td>addition</td>
+<td>concatenation</td>
+<td>or</td>
+</tr>
+<tr class="odd">
+<td>Binary</td>
+<td><code>-</code></td>
+<td>minus\</td>
+<td>subtraction</td>
+<td>removal</td>
+<td>and not</td>
+</tr>
+<tr class="even">
+<td>Binary</td>
+<td><code>*</code></td>
+<td>star\</td>
+<td>multiplication</td>
+<td>none</td>
+<td>and</td>
+</tr>
+<tr class="odd">
+<td>Binary</td>
+<td><code>/</code></td>
+<td>divide\</td>
+<td>division</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr class="even">
+<td>Binary</td>
+<td><code>^</code></td>
+<td>superscript\</td>
+<td>power</td>
+<td>none</td>
+<td>xor</td>
+</tr>
+<tr class="odd">
+<td>Binary</td>
+<td><code>%</code></td>
+<td>percent\</td>
+<td>modulo</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr class="even">
+<td>Binary</td>
+<td><code>×</code></td>
+<td>cross\</td>
+<td>cross product</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr class="odd">
+<td>Binary</td>
+<td><code>⋅</code></td>
+<td>dot\</td>
+<td>dot product</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
 
                 </div>
             </div>
