@@ -20,8 +20,8 @@ ok
 ```
 
 ```{.chakral caption="Example of redefining the '?=' operator"}
-equals\ def (l: Point, r: Point)->bool:
-    return x l ?= x r and y l ?= y r
+equals\ def (left: Point, right: Point)->bool:
+    return x left ?= x right and y left ?= y right
 ok
 ```
 

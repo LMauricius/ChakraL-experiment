@@ -2,9 +2,20 @@
 
 ## Usage
 Math operators are operators usually used in math but also repurposed for other use-cases. Their meaning depends on the traits of operands. They can be overloaded and overriden by defining a value with the operator identifier.
+
+```{.chakral caption="Example of addition"}
+with input=console, output=console:
+    write "Enter X:"
+    x = read Int
+    write "Enter Y:"
+    y = read Int
+
+    write x+y
+ok
+```
 ```{.chakral caption="Example of redefining the '+' operator"}
-plus\ def (l: Point, r: Point)->Point:
-    return Point(x = x l + x r, y = y l + y r)
+plus\ def (left: Point, right: Point)->Point:
+    return Point(x = x left + x right, y = y left + y right)
 ok
 ```
 

@@ -78,9 +78,17 @@
                     <h1 id="math-operators">Math operators</h1>
 <h2 id="usage">Usage</h2>
 <p>Math operators are operators usually used in math but also repurposed for other use-cases. Their meaning depends on the traits of operands. They can be overloaded and overriden by defining a value with the operator identifier.</p>
-<div class="sourceCode" id="cb1" data-caption="Example of redefining the &#39;+&#39; operator"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1">plus\ <span class="kw">def</span> (l: Point, r: Point)<span class="op">-&gt;</span>Point:</a>
-<a class="sourceLine" id="cb1-2" title="2">    <span class="cf">return</span> Point(x <span class="op">=</span> x l <span class="op">+</span> x r, y <span class="op">=</span> y l <span class="op">+</span> y r)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="cf">ok</span></a></code></pre></div>
+<div class="sourceCode" id="cb1" data-caption="Example of addition"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">with</span> input<span class="op">=</span>console, output<span class="op">=</span>console:</a>
+<a class="sourceLine" id="cb1-2" title="2">    write <span class="st">&quot;Enter X:&quot;</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    x <span class="op">=</span> read Int</a>
+<a class="sourceLine" id="cb1-4" title="4">    write <span class="st">&quot;Enter Y:&quot;</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    y <span class="op">=</span> read Int</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7">    write x<span class="op">+</span>y</a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="cf">ok</span></a></code></pre></div>
+<div class="sourceCode" id="cb2" data-caption="Example of redefining the &#39;+&#39; operator"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb2-1" title="1">plus\ <span class="kw">def</span> (left: Point, right: Point)<span class="op">-&gt;</span>Point:</a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="cf">return</span> Point(x <span class="op">=</span> x left <span class="op">+</span> x right, y <span class="op">=</span> y left <span class="op">+</span> y right)</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="cf">ok</span></a></code></pre></div>
 <h2 id="supported-operators">Supported operators</h2>
 <table>
 <colgroup>
