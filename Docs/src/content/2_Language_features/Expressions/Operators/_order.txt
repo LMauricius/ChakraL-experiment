@@ -1,5 +1,6 @@
 Math operators
+Comparison operators
+Logical operators
 Operator new
 Operator as
-Logical operators
 Context operators
