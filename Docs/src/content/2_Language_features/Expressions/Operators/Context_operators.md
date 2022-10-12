@@ -121,3 +121,31 @@ d: virtual const = (x=1) | (y=2) **OK
 ```
 
 ## Context choice (<>) operator
+```{.chakral}
+C: virtual = A <> B
+```
+
+Makes a trait choice (variant) between two operand contexts `A` and `B` as a result context `C`. `C` will have those descriptions that are part of both `A` and `B`. A context `d` satisfies the choice result trait `C` if and only if it satisfies exactly one of the operands that are part of `C`. Because of that, `d` that is of trait `C` can be cast into exactly one of its operands `A` or `B`. A choice is usually only useful as a required trait as it cannot be instantiated by default. 
+```{.chakral}
+c: Real <> String = 5.3 **assigns a Real value
+
+with output=console:
+    write whether c is Real **prints 'true'
+    write whether c is String **prints 'false'
+
+    ** how to access 'x':
+    if c is Real: **yes
+        using c as Real **cast from Real<>String to Real
+        write c **prints '5.3'
+```
+
+The copy (`new`{.chakral}) operator isn't automatically defined for a choice since there is not universal default for which operand should be chosen for the copy. It is however a `virtual`{.chakral} context, so it can be assigned to values that have a virtual specifier.
+```{.chakral}
+c = (x=1) <> (y=2) **ERROR: cannot copy a selection into variable 'c'
+d: virtual const = (x=1) <> (y=2) **OK
+```
+
+The choice operator is useful for creating optional values, i.e. values that can be assigned to None.
+```{.chakral}
+c: Integer<>Nil = 
+```
