@@ -92,7 +92,7 @@
 <a class="sourceLine" id="cb1-12" title="12">        write <span class="st">&quot;They are equal&quot;</span></a>
 <a class="sourceLine" id="cb1-13" title="13"><span class="cf">ok</span></a></code></pre></div>
 <div class="sourceCode" id="cb2" data-caption="Example of redefining the &#39;?=&#39; operator"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb2-1" title="1">equals\ <span class="kw">def</span> (left: Point, right: Point)<span class="op">-&gt;</span>bool:</a>
-<a class="sourceLine" id="cb2-2" title="2">    <span class="cf">return</span> x left ?<span class="op">=</span> x right <span class="kw">and</span> y left ?<span class="op">=</span> y right</a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="cf">return</span> <span class="kw">whether</span> x left ?<span class="op">=</span> x right <span class="kw">and</span> y left ?<span class="op">=</span> y right</a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="cf">ok</span></a></code></pre></div>
 <h2 id="supported-operators">Supported operators</h2>
 <table>

@@ -21,7 +21,7 @@ ok
 
 ```{.chakral caption="Example of redefining the '?=' operator"}
 equals\ def (left: Point, right: Point)->bool:
-    return x left ?= x right and y left ?= y right
+    return whether x left ?= x right and y left ?= y right
 ok
 ```
 
