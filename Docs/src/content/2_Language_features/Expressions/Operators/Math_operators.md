@@ -12,12 +12,12 @@ ok
 
 | Type   | Symbol | Operator identifier | Mathematical usage | Container usage | Bitwise usage |
 | ------ | ------ | ------------------- | ------------------ | --------------- | ------------- |
-| Unary | `-` | negative\ | negation | none | negation |
-| Binary | `+` | plus\ | addition | concatenation | or |
-| Binary | `-` | minus\ | subtraction | removal | and not |
-| Binary | `*` | star\ | multiplication | none | and |
-| Binary | `/` | divide\ | division | none | none |
-| Binary | `^` | superscript\ | power | none | xor |
-| Binary | `%` | percent\ | modulo | none | none |
-| Binary | `×` | cross\ | cross product | none | none |
-| Binary | `⋅` | dot\ | dot product | none | none |
+| Unary | `-` | `negative\` | negation | none | negation |
+| Binary | `+` | `plus\` | addition | concatenation | or |
+| Binary | `-` | `minus\` | subtraction | removal | and not |
+| Binary | `*` | `star\` | multiplication | none | and |
+| Binary | `/` | `divide\` | division | none | none |
+| Binary | `^` | `superscript\` | power | none | xor |
+| Binary | `%` | `percent\` | modulo | none | none |
+| Binary | `×` | `cross\` | cross product | none | none |
+| Binary | `⋅` | `dot\` | dot product | none | none |

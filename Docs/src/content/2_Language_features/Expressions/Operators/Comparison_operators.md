@@ -12,9 +12,9 @@ ok
 
 | Type   | Symbol | Operator identifier | Mathematical usage | Container usage | Bitwise usage |
 | ------ | ------ | ------------------- | ------------------ | --------------- | ------------- |
-| Binary | `?=` | equals\ | value compare | size and element compare | bit compare |
-| Binary | `!=` | notequals\ | value compare | size and element compare | bit compare |
-| Binary | `>` | greater\ | order | first different element / alphabetical / order | none |
-| Binary | `>=` | greaterequals\ | order | first different element / alphabetical / order | none |
-| Binary | `<` | less\ | order | first different element / alphabetical / order | none |
-| Binary | `<=` | lessequals\ | order | first different element / alphabetical / order | none |
+| Binary | `?=` | `equals\` | value compare | size and element compare | bit compare |
+| Binary | `!=` | `notequals\` | value compare | size and element compare | bit compare |
+| Binary | `>` | `greater\` | order | first different element / alphabetical / order | none |
+| Binary | `>=` | `greaterequals\` | order | first different element / alphabetical / order | none |
+| Binary | `<` | `less\` | order | first different element / alphabetical / order | none |
+| Binary | `<=` | `lessequals\` | order | first different element / alphabetical / order | none |
