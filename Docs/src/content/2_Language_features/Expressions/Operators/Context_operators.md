@@ -95,7 +95,7 @@ ok
 C: virtual = A | B
 ```
 
-Makes a selection between two operand contexts `A` and `B` as a result context `C`. `C` will have those descriptions that are part of both `A` and `B`. A context `d` satisfies the selection result trait `C` if and only if it satisfies at least one of the operands that are part of `C`. Because of that, `d` that is of trait `C` can be cast into at least one of its operands `A` or `B`.
+Makes a trait selection between two operand contexts `A` and `B` as a result context `C`. `C` will have those descriptions that are part of both `A` and `B`. A context `d` satisfies the selection result trait `C` if and only if it satisfies at least one of the operands that are part of `C`. Because of that, `d` that is of trait `C` can be cast into at least one of its operands `A` or `B`. A selection is usually only useful as a required trait as it cannot be instantiated by default. 
 ```{.chakral}
 XY def (x=1, y=2)
 YZ def (y=2, z=3)
@@ -105,13 +105,16 @@ with output=console:
     write y c **prints '5'
     **write x c **would be ERROR: selection c doesn't always have the member x
 
+    write whether c is XY **prints 'true'
+    write whether c is YZ **prints 'false'
+
     ** how to access 'x':
     if c is XY: **yes
         using c as XY **cast from XY|YZ to XY
         write x c **prints '4'
 ```
 
-The `new`{.chakral} operator isn't automatically defined for a selection since there is not universal default for which operands should be included in the copy. A selection is usually only useful as a required trait as it cannot be instantiated by default. It is however a `virtual`{.chakral} context, so it can be assigned to values that have a virtual specifier.
+The copy (`new`{.chakral}) operator isn't automatically defined for a selection since there is not universal default for which operands should be included in the copy. It is however a `virtual`{.chakral} context, so it can be assigned to values that have a virtual specifier.
 ```{.chakral}
 c = (x=1) | (y=2) **ERROR: cannot copy a selection into variable 'c'
 d: virtual const = (x=1) | (y=2) **OK
