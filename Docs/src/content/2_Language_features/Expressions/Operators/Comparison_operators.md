@@ -6,9 +6,9 @@ Comparison operators are operators usually used in math but also repurposed for 
 ```{.chakral caption="Example of comparison"}
 with input=console, output=console:
     write "Enter X:"
-    x = read Int
+    x = read Integer
     write "Enter Y:"
-    y = read Int
+    y = read Integer
 
     if x > y:
         write "X is greater"
