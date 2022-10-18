@@ -75,7 +75,37 @@
             </div>
             <div class="main">
                 <div class="pagecontent">
-                    
+                    <h1 id="operator-as">Operator as</h1>
+<h2 id="usage">Usage</h2>
+<p>The <code>as</code> is the cast (conversion) operator. It returns a value with the right operand as its required trait. The conversion can be done in several ways.</p>
+<h2 id="table">Table</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Symbol</th>
+<th>Operator identifier</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Binary</td>
+<td><code>as</code></td>
+<td><code>cast\</code></td>
+<td>conversion for usage with another trait</td>
+</tr>
+</tbody>
+</table>
+<h2 id="temporary-cast">Temporary cast</h2>
+<div class="sourceCode" id="cb1" data-caption="Example of a temporary cast"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">with</span> output<span class="op">=</span>console:</a>
+<a class="sourceLine" id="cb1-2" title="2">    myList: List <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb1-3" title="3">    write myList <span class="co">**prints &#39;[1, 2]&#39;</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    myList <span class="op">+=</span> [<span class="dv">3</span>, <span class="dv">4</span>] <span class="co">**concatenates lists</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    write myList <span class="co">**prints &#39;[1, 2, 3, 4]&#39;</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    myList <span class="kw">as</span> Vector <span class="op">+=</span> [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>] <span class="co">**adds elements of a mathematical vector</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    write myList <span class="co">**prints &#39;[3, 3, 5, 5]&#39;</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="cf">ok</span></a></code></pre></div>
 
                 </div>
             </div>
