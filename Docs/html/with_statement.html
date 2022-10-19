@@ -1,0 +1,122 @@
+
+<!doctype html>
+<html>
+    <head>
+        <title>with statement</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="syntax_style.css">
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <div class="sidebar">
+                <div class="tableofcontents">
+                    <p class="tableofcontents_title">Contents</p>
+                            <li><a href="introduction.html">1&nbspIntroduction</a>
+        <ul>
+            <li><a href="how_to_read_the_documentation.html">1&nbspHow to read the documentation</a>
+            </li>
+            <li><a href="language_goals.html">2&nbspLanguage goals</a>
+            </li>
+            <li><a href="file_format.html">3&nbspFile format</a>
+            </li>
+            <li><a href="module_system.html">4&nbspModule system</a>
+            </li>
+        </ul>
+        </li>
+        <li>2&nbspBasic concepts
+        <ul>
+            <li><a href="context.html">1&nbspContext</a>
+            </li>
+            <li><a href="value.html">2&nbspValue</a>
+            </li>
+            <li><a href="trait_system.html">3&nbspTrait system</a>
+            </li>
+        </ul>
+        </li>
+        <li>3&nbspLanguage features
+        <ul>
+            <li>1&nbspStatements
+            <ul>
+                <li><a href="using_statement.html">1&nbspusing statement</a>
+                </li>
+                <li><a href="if_statement.html">2&nbspif statement</a>
+                </li>
+                <li><b>3 with statement</b>
+                </li>
+            </ul>
+            </li>
+            <li><a href="expressions.html">2&nbspExpressions</a>
+            <ul>
+                <li><a href="module_expression.html">1&nbspmodule expression</a>
+                </li>
+                <li><a href="operators.html">2&nbspOperators</a>
+                <ul>
+                    <li><a href="math_operators.html">1&nbspMath operators</a>
+                    </li>
+                    <li><a href="comparison_operators.html">2&nbspComparison operators</a>
+                    </li>
+                    <li><a href="logical_operators.html">3&nbspLogical operators</a>
+                    </li>
+                    <li><a href="operator_new.html">4&nbspOperator new</a>
+                    </li>
+                    <li><a href="operator_as.html">5&nbspOperator as</a>
+                    </li>
+                    <li><a href="context_operators.html">6&nbspContext operators</a>
+                    </li>
+                </ul>
+                </li>
+            </ul>
+            </li>
+        </ul>
+        </li>
+        <li>4&nbspStandard library
+        </li>
+
+                </div>
+            </div>
+            <div class="main">
+                <div class="pagecontent">
+                    <h1 id="with-statement"><em>with</em> statement</h1>
+<h2 id="description">Description</h2>
+<p>The <em>with</em> statement is used for shared argument insertion. It is a shortcut for preventing writing same expressions many times which reduces visual noise. Making the code look cleaner without making the behavior less explicit, it allows both the code writer and reader to spend mental energy on problem solving rather than understanding the code.</p>
+<div class="sourceCode" id="cb1" data-caption="Example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1"><span class="co">**this:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">write(output<span class="op">=</span>console, <span class="st">&quot;Hello world!&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3">write(output<span class="op">=</span>console, <span class="st">&quot;How&#39;s it going?&quot;</span>)</a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">**has the same behavior to this:</span></a>
+<a class="sourceLine" id="cb1-6" title="6">write <span class="cf">with</span> output<span class="op">=</span>console:</a>
+<a class="sourceLine" id="cb1-7" title="7">    write <span class="st">&quot;Hello world!&quot;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    write <span class="st">&quot;How&#39;s it going?&quot;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="cf">ok</span></a></code></pre></div>
+<h2 id="usage">Usage</h2>
+<pre data-caption="Usage"><code>FUNCTION1, FUNCTION2 &lt;...&gt; with DESCRIPTION1, DESCRIPTION2 &lt;...&gt;:
+    CONTEXT_TO_EXECUTE
+ok</code></pre>
+<h2 id="behaviour">Behaviour</h2>
+<p>For each call of an affected function, the context composed of descriptions in the statement is combined (on the left side of an <code>&amp;</code> operator) with the argument of the function call.</p>
+<p>This:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb3-1" title="1">write <span class="cf">with</span> output<span class="op">=</span>console:</a>
+<a class="sourceLine" id="cb3-2" title="2">    write <span class="st">&quot;Hello world!&quot;</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    write <span class="st">&quot;How&#39;s it going?&quot;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="cf">ok</span></a></code></pre></div>
+<p>…is same as:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb4-1" title="1">write <span class="cf">with</span> output<span class="op">=</span>console:</a>
+<a class="sourceLine" id="cb4-2" title="2">    write (<span class="st">&quot;Hello world!&quot;</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3">    write (<span class="st">&quot;How&#39;s it going?&quot;</span>)</a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="cf">ok</span></a></code></pre></div>
+<p>…which is same as:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1">write (output<span class="op">=</span>console) <span class="op">&amp;</span> (<span class="st">&quot;Hello world!&quot;</span>)</a>
+<a class="sourceLine" id="cb5-2" title="2">write (output<span class="op">=</span>console) <span class="op">&amp;</span> (<span class="st">&quot;How&#39;s it going?&quot;</span>)</a></code></pre></div>
+<p>…which is same as:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb6-1" title="1">write (output<span class="op">=</span>console, <span class="st">&quot;Hello world!&quot;</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2">write (output<span class="op">=</span>console, <span class="st">&quot;How&#39;s it going?&quot;</span>)</a></code></pre></div>
+<p>…which is (due to implicit conversion of unnamed arguments) same as:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb7-1" title="1">write (output<span class="op">=</span>console, msg<span class="op">=</span><span class="st">&quot;Hello world!&quot;</span>)</a>
+<a class="sourceLine" id="cb7-2" title="2">write (output<span class="op">=</span>console, msg<span class="op">=</span><span class="st">&quot;How&#39;s it going?&quot;</span>)</a></code></pre></div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
