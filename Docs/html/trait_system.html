@@ -82,117 +82,162 @@
 <p>The trait system is useful in several ways. It allows the programmer to limit themself and prevent errors caused by improper use of data. It simultaneously tells the compiler how we are going to use the data, which allows it to optimize the machine code for that specific usage, causing the resulting program to run faster. As the trait system is quite <em>explicit</em> (without necessarily being <em>verbose</em>), this also allows other programmers who read our code to know what we intended to do with the data.</p>
 <h2 id="satisfying-the-trait">Satisfying the trait</h2>
 <p>If the context <code>c</code> satisfies the trait <code>t</code> we say that <code class="sourceCode chakral">c <span class="kw">is</span> t</code>. That satisfaction depends on <code>c</code> and <code>t</code>’s descriptions and specifiers. How the descriptions and specifiers are satisfied is described below.</p>
+<h2 id="descriptions">Descriptions</h2>
+<h3 id="member-declaration">Member declaration</h3>
+<p>The context <code>c</code> can satisfy the trait <code>t</code> with a member <code>m</code> of required trait <code>MT</code> only if <code>c</code> also has a member <code>m</code> that satisfies <code>t</code>‘s member’s required trait <code>MT</code>. Unless a <code>final</code> trait specifier (see down below) is involved, the members values’ data doesn’t matter.</p>
+<div class="sourceCode" id="cb1" data-caption="Example of a member declaration"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1">ExampleTrait <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb1-2" title="2">    member: int32 <span class="op">=</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5">write <span class="cf">with</span> output <span class="op">=</span> console:</a>
+<a class="sourceLine" id="cb1-6" title="6">    write <span class="kw">whether</span> (member: int32 <span class="op">=</span> <span class="dv">5</span>) <span class="kw">is</span> ExampleTrait <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    write <span class="kw">whether</span> (member: float64 <span class="op">=</span> <span class="fl">5.0</span>) <span class="kw">is</span> ExampleTrait <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    write <span class="kw">whether</span> (member: int32 <span class="op">=</span> <span class="dv">2</span>) <span class="kw">is</span> ExampleTrait <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="cf">ok</span></a></code></pre></div>
+<h3 id="requirement">Requirement</h3>
+<p>The context <code>c</code> can satisfy the trait <code>t</code> with a requirement <code>?? LOGICAL_EXPRESSION</code> only if <code>c</code> also satisfies that requirement.</p>
+<div class="sourceCode" id="cb2" data-caption="Example of a requirement"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb2-1" title="1">OwnerOfSubZero <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb2-2" title="2">    member: Number</a>
+<a class="sourceLine" id="cb2-3" title="3">    ?? member <span class="op">&lt;</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">write <span class="cf">with</span> output <span class="op">=</span> console:</a>
+<a class="sourceLine" id="cb2-7" title="7">    a <span class="op">=</span> (member <span class="op">=</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb2-8" title="8">    write <span class="kw">whether</span> a <span class="kw">is</span> OwnerOfSubZero <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb2-9" title="9">    b <span class="op">=</span> (member <span class="op">=</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb2-10" title="10">    write <span class="kw">whether</span> b <span class="kw">is</span> OwnerOfSubZero <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb2-11" title="11">    c <span class="op">=</span> (member <span class="op">=</span> <span class="op">-</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb2-12" title="12">    write <span class="kw">whether</span> c <span class="kw">is</span> OwnerOfSubZero <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="cf">ok</span></a></code></pre></div>
+<h3 id="inclusion">Inclusion</h3>
+<p>The context <code>c</code> can satisfy the trait <code>t</code> with an included trait <code>IncT</code> only if <code>c</code> also satisfies <code>IncT</code>.</p>
+<div class="sourceCode" id="cb3" data-caption="Example of an inclusion"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb3-1" title="1">OwnerOfSubZeroX <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb3-2" title="2">    x: Number</a>
+<a class="sourceLine" id="cb3-3" title="3">    ?? x <span class="op">&lt;</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6">ExampleTrait <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="op">!!</span> OwnerOfSubZeroX</a>
+<a class="sourceLine" id="cb3-8" title="8">    y: Number</a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb3-10" title="10"></a>
+<a class="sourceLine" id="cb3-11" title="11">write <span class="cf">with</span> output <span class="op">=</span> console:</a>
+<a class="sourceLine" id="cb3-12" title="12">    write <span class="kw">whether</span> (y <span class="op">=</span> <span class="dv">2</span>) <span class="kw">is</span> ExampleTrait <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb3-13" title="13">    write <span class="kw">whether</span> (x <span class="op">=</span> <span class="dv">1</span>, y <span class="op">=</span> <span class="dv">2</span>) <span class="kw">is</span> ExampleTrait <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb3-14" title="14">    write <span class="kw">whether</span> (x <span class="op">=</span> <span class="op">-</span><span class="dv">2</span>, y <span class="op">=</span> <span class="dv">2</span>) <span class="kw">is</span> ExampleTrait <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb3-15" title="15">    write <span class="kw">whether</span> (x <span class="op">=</span> <span class="op">-</span><span class="dv">2</span>) <span class="kw">is</span> ExampleTrait <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="cf">ok</span></a></code></pre></div>
 <h2 id="trait-specifiers">Trait specifiers</h2>
 <p>Trait specifiers change how the satisfaction is interpreted in addition to the descriptions. They can be used as descriptions or like prefix functions.</p>
-<div class="sourceCode" id="cb1" data-caption="Example of a final trait specifier"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1"><span class="co">** like description of a block context:</span></a>
-<a class="sourceLine" id="cb1-2" title="2">A <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb1-3" title="3">    <span class="kw">final</span></a>
-<a class="sourceLine" id="cb1-4" title="4">    a <span class="op">=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="co">** like description of an expression context:</span></a>
-<a class="sourceLine" id="cb1-7" title="7">B <span class="kw">def</span> (<span class="kw">final</span>, b <span class="op">=</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb1-8" title="8"></a>
-<a class="sourceLine" id="cb1-9" title="9"><span class="co">** like a prefix function:</span></a>
-<a class="sourceLine" id="cb1-10" title="10">C <span class="kw">def</span> <span class="kw">final</span> (c <span class="op">=</span> <span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4" data-caption="Example of a final trait specifier"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb4-1" title="1"><span class="co">** like description of a block context:</span></a>
+<a class="sourceLine" id="cb4-2" title="2">A <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="kw">final</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    a <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">** like description of an expression context:</span></a>
+<a class="sourceLine" id="cb4-7" title="7">B <span class="kw">def</span> (<span class="kw">final</span>, b <span class="op">=</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb4-8" title="8"></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co">** like a prefix function:</span></a>
+<a class="sourceLine" id="cb4-10" title="10">C <span class="kw">def</span> <span class="kw">final</span> (c <span class="op">=</span> <span class="dv">3</span>)</a></code></pre></div>
 <h3 id="final-specifier">final specifier</h3>
 <p>If the trait <code>t</code> has a <code class="sourceCode chakral"><span class="kw">final</span></code> specifier, then it will only be satisfied if <code>c</code> is either equal to <code>t</code> or hasn’t been changed since being created as a copy of <code>t</code>. If a final trait <code>t</code> is used as a required trait of value <code>v</code>, <code>v</code> cannot be changed, just like if <code>v</code> was a constant value. Unlike constant values, a final value cannot be overriden by another value. Using a final value in an operation that could change or override it is forbidden, even if <code>v</code>’s data wouldn’t be changed by the operation (i.e. <code>v</code> would still satisfy its required trait <em>after</em> the operation).</p>
 <p>A final trait <code>t</code> can be used as a required trait for value <code>v</code> only if <code>v</code> is a constant value. Note that <code class="sourceCode chakral"><span class="kw">final</span></code> is a trait specifier while <code class="sourceCode chakral"><span class="kw">const</span></code> is a value specifier.</p>
-<div class="sourceCode" id="cb2" data-caption="Example of the difference between final and non-final traits"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb2-1" title="1"><span class="co">** A context is Killable if it has a Real value health and Integer value lives</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co">** (no matter those values&#39; data)</span></a>
-<a class="sourceLine" id="cb2-3" title="3">Killable <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb2-4" title="4">    health <span class="op">=</span> <span class="fl">100.0</span> <span class="co">**100.0 is the starting value for copies</span></a>
-<a class="sourceLine" id="cb2-5" title="5">    lives <span class="op">=</span> <span class="dv">1</span> <span class="co">**1 is the starting value for copies</span></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb2-7" title="7"></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="co">** A context is Dead if its health and lives are equal to 0</span></a>
-<a class="sourceLine" id="cb2-9" title="9">Dead <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb2-10" title="10">    <span class="kw">final</span></a>
-<a class="sourceLine" id="cb2-11" title="11">    health <span class="op">=</span> <span class="fl">0.0</span></a>
-<a class="sourceLine" id="cb2-12" title="12">    lives <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb2-14" title="14"></a>
-<a class="sourceLine" id="cb2-15" title="15">p <span class="op">=</span> Killable</a>
-<a class="sourceLine" id="cb2-16" title="16"><span class="cf">with</span> output <span class="op">=</span> console:</a>
-<a class="sourceLine" id="cb2-17" title="17">    write p <span class="co">**prints &#39;(health = 100.0, lives = 1)&#39;</span></a>
-<a class="sourceLine" id="cb2-18" title="18">    write <span class="kw">whether</span> p <span class="kw">is</span> Killable <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb2-19" title="19">    write <span class="kw">whether</span> p <span class="kw">is</span> Dead <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb2-20" title="20"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb2-21" title="21"></a>
-<a class="sourceLine" id="cb2-22" title="22">health p <span class="op">-=</span> <span class="fl">100.0</span></a>
-<a class="sourceLine" id="cb2-23" title="23">lives p <span class="op">-=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb2-24" title="24"><span class="cf">with</span> output <span class="op">=</span> console:</a>
-<a class="sourceLine" id="cb2-25" title="25">    write p <span class="co">**prints &#39;(health = 0.0, lives = 0)&#39;</span></a>
-<a class="sourceLine" id="cb2-26" title="26">    write <span class="kw">whether</span> p <span class="kw">is</span> Killable <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb2-27" title="27">    write <span class="kw">whether</span> p <span class="kw">is</span> Dead <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb2-28" title="28"><span class="cf">ok</span></a></code></pre></div>
-<div class="sourceCode" id="cb3" data-caption="Example of the difference between a definition and a final valued member"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb3-1" title="1">Player <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb3-2" title="2">    health: Real <span class="op">=</span> <span class="fl">100.0</span>  <span class="co">**member variable</span></a>
-<a class="sourceLine" id="cb3-3" title="3">    strength <span class="kw">def</span> <span class="fl">0.0</span>      <span class="co">**member definition</span></a>
-<a class="sourceLine" id="cb3-4" title="4">    weaponName <span class="kw">def</span> <span class="st">&quot;none&quot;</span> <span class="co">**member definition</span></a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb3-6" title="6"></a>
-<a class="sourceLine" id="cb3-7" title="7">Swordsman <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb3-8" title="8">    <span class="op">!</span>Player               <span class="co">**includes Player trait</span></a>
-<a class="sourceLine" id="cb3-9" title="9">    strength <span class="kw">def</span> <span class="fl">120.0</span>    <span class="co">**member redefinition</span></a>
-<a class="sourceLine" id="cb3-10" title="10">    weaponName <span class="kw">def</span> <span class="kw">final</span> <span class="st">&quot;sword&quot;</span> <span class="co">**</span></a>
-<a class="sourceLine" id="cb3-11" title="11"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb3-12" title="12"></a>
-<a class="sourceLine" id="cb3-13" title="13">p1 <span class="op">=</span> Player <span class="op">&amp;</span> (</a>
-<a class="sourceLine" id="cb3-14" title="14">    strength <span class="kw">def</span> <span class="fl">100.0</span>,</a>
-<a class="sourceLine" id="cb3-15" title="15">    weaponName <span class="kw">def</span> <span class="st">&quot;sword&quot;</span></a>
-<a class="sourceLine" id="cb3-16" title="16">)</a>
-<a class="sourceLine" id="cb3-17" title="17">p2 <span class="op">=</span> Player <span class="op">&amp;</span> (</a>
-<a class="sourceLine" id="cb3-18" title="18">    strength <span class="kw">def</span> <span class="fl">120.0</span>,</a>
-<a class="sourceLine" id="cb3-19" title="19">    weaponName <span class="kw">def</span> <span class="st">&quot;lance&quot;</span></a>
-<a class="sourceLine" id="cb3-20" title="20">)</a>
-<a class="sourceLine" id="cb3-21" title="21"><span class="cf">with</span> output <span class="op">=</span> console:</a>
-<a class="sourceLine" id="cb3-22" title="22">    write p1 <span class="co">**prints &#39;(health=100.0, strength=100.0, weaponName=&quot;sword&quot;)&#39;</span></a>
-<a class="sourceLine" id="cb3-23" title="23">    write <span class="kw">whether</span> p1 <span class="kw">is</span> Player <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb3-24" title="24">    write <span class="kw">whether</span> p1 <span class="kw">is</span> Swordsman <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb3-25" title="25">    write p2 <span class="co">**prints &#39;(health=100.0, strength=120.0, weaponName=&quot;lance&quot;)&#39;</span></a>
-<a class="sourceLine" id="cb3-26" title="26">    write <span class="kw">whether</span> p2 <span class="kw">is</span> Player <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb3-27" title="27">    write <span class="kw">whether</span> p2 <span class="kw">is</span> Swordsman <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb3-28" title="28"><span class="cf">ok</span></a></code></pre></div>
-<div class="sourceCode" id="cb4" data-caption="Limitations of const and final values"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb4-1" title="1">ConstZeroOwner <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb4-2" title="2">    number: <span class="kw">const</span> <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb4-4" title="4">FinalZeroOwner <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb4-5" title="5">    <span class="kw">final</span></a>
-<a class="sourceLine" id="cb4-6" title="6">    number <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb4-8" title="8"></a>
-<a class="sourceLine" id="cb4-9" title="9">a <span class="op">=</span> ConstZeroOwner</a>
-<a class="sourceLine" id="cb4-10" title="10">b <span class="op">=</span> FinalZeroOwner</a>
-<a class="sourceLine" id="cb4-11" title="11"></a>
-<a class="sourceLine" id="cb4-12" title="12">number a <span class="op">=</span> <span class="dv">100</span> <span class="co">**ERROR - can&#39;t change const value</span></a>
-<a class="sourceLine" id="cb4-13" title="13">number b <span class="op">=</span> <span class="dv">100</span> <span class="co">**ERROR - can&#39;t change final value</span></a>
-<a class="sourceLine" id="cb4-14" title="14">c <span class="op">=</span> a <span class="op">&amp;</span> (number: <span class="kw">const</span> <span class="op">=</span> <span class="dv">100</span>) <span class="co">**OK - can override const value</span></a>
-<a class="sourceLine" id="cb4-15" title="15">d <span class="op">=</span> b <span class="op">&amp;</span> (<span class="kw">final</span>, number <span class="op">=</span> <span class="dv">100</span>) <span class="co">**ERROR - can&#39;t override final value</span></a></code></pre></div>
+<div class="sourceCode" id="cb5" data-caption="Example of the difference between final and non-final traits"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1"><span class="co">** A context is Killable if it has a Real value health and Integer value lives</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">** (no matter those values&#39; data)</span></a>
+<a class="sourceLine" id="cb5-3" title="3">Killable <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb5-4" title="4">    health <span class="op">=</span> <span class="fl">100.0</span> <span class="co">**100.0 is the starting value for copies</span></a>
+<a class="sourceLine" id="cb5-5" title="5">    lives <span class="op">=</span> <span class="dv">1</span> <span class="co">**1 is the starting value for copies</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">** A context is Dead if its health and lives are equal to 0</span></a>
+<a class="sourceLine" id="cb5-9" title="9">Dead <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb5-10" title="10">    <span class="kw">final</span></a>
+<a class="sourceLine" id="cb5-11" title="11">    health <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb5-12" title="12">    lives <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb5-14" title="14"></a>
+<a class="sourceLine" id="cb5-15" title="15">p <span class="op">=</span> Killable</a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="cf">with</span> output <span class="op">=</span> console:</a>
+<a class="sourceLine" id="cb5-17" title="17">    write p <span class="co">**prints &#39;(health = 100.0, lives = 1)&#39;</span></a>
+<a class="sourceLine" id="cb5-18" title="18">    write <span class="kw">whether</span> p <span class="kw">is</span> Killable <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb5-19" title="19">    write <span class="kw">whether</span> p <span class="kw">is</span> Dead <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb5-21" title="21"></a>
+<a class="sourceLine" id="cb5-22" title="22">health p <span class="op">-=</span> <span class="fl">100.0</span></a>
+<a class="sourceLine" id="cb5-23" title="23">lives p <span class="op">-=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="cf">with</span> output <span class="op">=</span> console:</a>
+<a class="sourceLine" id="cb5-25" title="25">    write p <span class="co">**prints &#39;(health = 0.0, lives = 0)&#39;</span></a>
+<a class="sourceLine" id="cb5-26" title="26">    write <span class="kw">whether</span> p <span class="kw">is</span> Killable <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb5-27" title="27">    write <span class="kw">whether</span> p <span class="kw">is</span> Dead <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb5-28" title="28"><span class="cf">ok</span></a></code></pre></div>
+<div class="sourceCode" id="cb6" data-caption="Example of the difference between a definition and a final valued member"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb6-1" title="1">Player <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb6-2" title="2">    health: Real <span class="op">=</span> <span class="fl">100.0</span>  <span class="co">**member variable</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    strength <span class="kw">def</span> <span class="fl">0.0</span>      <span class="co">**member definition</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    weaponName <span class="kw">def</span> <span class="st">&quot;none&quot;</span> <span class="co">**member definition</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7">Swordsman <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb6-8" title="8">    <span class="op">!</span>Player               <span class="co">**includes Player trait</span></a>
+<a class="sourceLine" id="cb6-9" title="9">    strength <span class="kw">def</span> <span class="fl">120.0</span>    <span class="co">**member redefinition</span></a>
+<a class="sourceLine" id="cb6-10" title="10">    weaponName <span class="kw">def</span> <span class="kw">final</span> <span class="st">&quot;sword&quot;</span> <span class="co">**</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb6-12" title="12"></a>
+<a class="sourceLine" id="cb6-13" title="13">p1 <span class="op">=</span> Player <span class="op">&amp;</span> (</a>
+<a class="sourceLine" id="cb6-14" title="14">    strength <span class="kw">def</span> <span class="fl">100.0</span>,</a>
+<a class="sourceLine" id="cb6-15" title="15">    weaponName <span class="kw">def</span> <span class="st">&quot;sword&quot;</span></a>
+<a class="sourceLine" id="cb6-16" title="16">)</a>
+<a class="sourceLine" id="cb6-17" title="17">p2 <span class="op">=</span> Player <span class="op">&amp;</span> (</a>
+<a class="sourceLine" id="cb6-18" title="18">    strength <span class="kw">def</span> <span class="fl">120.0</span>,</a>
+<a class="sourceLine" id="cb6-19" title="19">    weaponName <span class="kw">def</span> <span class="st">&quot;lance&quot;</span></a>
+<a class="sourceLine" id="cb6-20" title="20">)</a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="cf">with</span> output <span class="op">=</span> console:</a>
+<a class="sourceLine" id="cb6-22" title="22">    write p1 <span class="co">**prints &#39;(health=100.0, strength=100.0, weaponName=&quot;sword&quot;)&#39;</span></a>
+<a class="sourceLine" id="cb6-23" title="23">    write <span class="kw">whether</span> p1 <span class="kw">is</span> Player <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb6-24" title="24">    write <span class="kw">whether</span> p1 <span class="kw">is</span> Swordsman <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb6-25" title="25">    write p2 <span class="co">**prints &#39;(health=100.0, strength=120.0, weaponName=&quot;lance&quot;)&#39;</span></a>
+<a class="sourceLine" id="cb6-26" title="26">    write <span class="kw">whether</span> p2 <span class="kw">is</span> Player <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb6-27" title="27">    write <span class="kw">whether</span> p2 <span class="kw">is</span> Swordsman <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb6-28" title="28"><span class="cf">ok</span></a></code></pre></div>
+<div class="sourceCode" id="cb7" data-caption="Limitations of const and final values"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb7-1" title="1">ConstZeroOwner <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb7-2" title="2">    number: <span class="kw">const</span> <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb7-4" title="4">FinalZeroOwner <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="kw">final</span></a>
+<a class="sourceLine" id="cb7-6" title="6">    number <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb7-8" title="8"></a>
+<a class="sourceLine" id="cb7-9" title="9">a <span class="op">=</span> ConstZeroOwner</a>
+<a class="sourceLine" id="cb7-10" title="10">b <span class="op">=</span> FinalZeroOwner</a>
+<a class="sourceLine" id="cb7-11" title="11"></a>
+<a class="sourceLine" id="cb7-12" title="12">number a <span class="op">=</span> <span class="dv">100</span> <span class="co">**ERROR - can&#39;t change const value</span></a>
+<a class="sourceLine" id="cb7-13" title="13">number b <span class="op">=</span> <span class="dv">100</span> <span class="co">**ERROR - can&#39;t change final value</span></a>
+<a class="sourceLine" id="cb7-14" title="14">c <span class="op">=</span> a <span class="op">&amp;</span> (number: <span class="kw">const</span> <span class="op">=</span> <span class="dv">100</span>) <span class="co">**OK - can override const value</span></a>
+<a class="sourceLine" id="cb7-15" title="15">d <span class="op">=</span> b <span class="op">&amp;</span> (<span class="kw">final</span>, number <span class="op">=</span> <span class="dv">100</span>) <span class="co">**ERROR - can&#39;t override final value</span></a></code></pre></div>
 <h3 id="explicit-specifier">explicit specifier</h3>
 <p>If the trait <code>t</code> has an <code class="sourceCode chakral"><span class="kw">explicit</span></code> specifier, then it will only be satisfied if <code>c</code> was created as a copy of <code>t</code>. This requires the code that creates the context to epxlicitly want us to use <code>c</code> as <code>t</code>. If a value’s trait is manually specified to be <code>t</code>, and we try to assign it a context <code>c2</code> that is not <code>t</code>, <code>c2</code> will be <em>cast</em> (reinterpreted, if possible) to <code>t</code>.</p>
-<div class="sourceCode" id="cb5" data-caption="Example of the difference between explicit and non-explicit traits"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1">Player <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb5-2" title="2">    <span class="kw">explicit</span></a>
-<a class="sourceLine" id="cb5-3" title="3">    lives <span class="op">=</span> <span class="dv">3</span></a>
-<a class="sourceLine" id="cb5-4" title="4">    score <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb5-6" title="6"></a>
-<a class="sourceLine" id="cb5-7" title="7">PlayerLike <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb5-8" title="8">    lives <span class="op">=</span> <span class="dv">3</span></a>
-<a class="sourceLine" id="cb5-9" title="9">    score <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb5-11" title="11"></a>
-<a class="sourceLine" id="cb5-12" title="12">p1 <span class="op">=</span> Player <span class="co">**copies the constant &#39;Player&#39; into a non-constant context</span></a>
-<a class="sourceLine" id="cb5-13" title="13">p2 <span class="op">=</span> (lives <span class="op">=</span> <span class="dv">3</span>, score <span class="op">=</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb5-14" title="14">p3: Player <span class="op">=</span> (lives <span class="op">=</span> <span class="dv">3</span>, score <span class="op">=</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb5-15" title="15"> </a>
-<a class="sourceLine" id="cb5-16" title="16"><span class="cf">with</span> output <span class="op">=</span> console:</a>
-<a class="sourceLine" id="cb5-17" title="17">    write <span class="kw">whether</span> p1 <span class="kw">is</span> Player <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb5-18" title="18">    write <span class="kw">whether</span> p2 <span class="kw">is</span> Player <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb5-19" title="19">    write <span class="kw">whether</span> p3 <span class="kw">is</span> Player <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb5-20" title="20">    write <span class="kw">whether</span> p1 <span class="kw">is</span> PlayerLike <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb5-21" title="21">    write <span class="kw">whether</span> p2 <span class="kw">is</span> PlayerLike <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb5-22" title="22">    write <span class="kw">whether</span> p3 <span class="kw">is</span> PlayerLike <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb5-23" title="23"><span class="cf">ok</span></a></code></pre></div>
+<div class="sourceCode" id="cb8" data-caption="Example of the difference between explicit and non-explicit traits"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb8-1" title="1">Player <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb8-2" title="2">    <span class="kw">explicit</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    lives <span class="op">=</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    score <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb8-6" title="6"></a>
+<a class="sourceLine" id="cb8-7" title="7">PlayerLike <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb8-8" title="8">    lives <span class="op">=</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb8-9" title="9">    score <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb8-11" title="11"></a>
+<a class="sourceLine" id="cb8-12" title="12">p1 <span class="op">=</span> Player <span class="co">**copies the constant &#39;Player&#39; into a non-constant context</span></a>
+<a class="sourceLine" id="cb8-13" title="13">p2 <span class="op">=</span> (lives <span class="op">=</span> <span class="dv">3</span>, score <span class="op">=</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb8-14" title="14">p3: Player <span class="op">=</span> (lives <span class="op">=</span> <span class="dv">3</span>, score <span class="op">=</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb8-15" title="15"> </a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="cf">with</span> output <span class="op">=</span> console:</a>
+<a class="sourceLine" id="cb8-17" title="17">    write <span class="kw">whether</span> p1 <span class="kw">is</span> Player <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb8-18" title="18">    write <span class="kw">whether</span> p2 <span class="kw">is</span> Player <span class="co">**prints &#39;false&#39;</span></a>
+<a class="sourceLine" id="cb8-19" title="19">    write <span class="kw">whether</span> p3 <span class="kw">is</span> Player <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb8-20" title="20">    write <span class="kw">whether</span> p1 <span class="kw">is</span> PlayerLike <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb8-21" title="21">    write <span class="kw">whether</span> p2 <span class="kw">is</span> PlayerLike <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb8-22" title="22">    write <span class="kw">whether</span> p3 <span class="kw">is</span> PlayerLike <span class="co">**prints &#39;true&#39;</span></a>
+<a class="sourceLine" id="cb8-23" title="23"><span class="cf">ok</span></a></code></pre></div>
 
                 </div>
             </div>

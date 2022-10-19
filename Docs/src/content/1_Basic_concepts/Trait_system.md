@@ -6,6 +6,65 @@ The trait system is useful in several ways. It allows the programmer to limit th
 ## Satisfying the trait
 If the context `c` satisfies the trait `t` we say that `c is t`{.chakral}. That satisfaction depends on `c` and `t`'s descriptions and specifiers. How the descriptions and specifiers are satisfied is described below.
 
+## Descriptions
+
+### Member declaration
+The context `c` can satisfy the trait `t` with a member `m` of required trait `MT` only if `c` also has a member `m` that satisfies `t`'s member's required trait `MT`. Unless a `final` trait specifier (see down below) is involved, the members values' data doesn't matter.
+
+```{.chakral caption="Example of a member declaration"}
+ExampleTrait def:
+    member: int32 = 5
+ok
+
+write with output = console:
+    write whether (member: int32 = 5) is ExampleTrait **prints 'true'
+    write whether (member: float64 = 5.0) is ExampleTrait **prints 'false'
+    write whether (member: int32 = 2) is ExampleTrait **prints 'true'
+ok
+```
+
+### Requirement
+The context `c` can satisfy the trait `t` with a requirement `?? LOGICAL_EXPRESSION` only if `c` also satisfies that requirement.
+
+```{.chakral caption="Example of a requirement"}
+OwnerOfSubZero def:
+    member: Number
+    ?? member < 0
+ok
+
+write with output = console:
+    a = (member = 5)
+    write whether a is OwnerOfSubZero **prints 'false'
+    b = (member = 0)
+    write whether b is OwnerOfSubZero **prints 'false'
+    c = (member = -2)
+    write whether c is OwnerOfSubZero **prints 'true'
+ok
+```
+
+### Inclusion
+The context `c` can satisfy the trait `t` with an included trait `IncT` only if `c` also satisfies `IncT`.
+
+```{.chakral caption="Example of an inclusion"}
+OwnerOfSubZeroX def:
+    x: Number
+    ?? x < 0
+ok
+
+ExampleTrait def:
+    !! OwnerOfSubZeroX
+    y: Number
+ok
+
+write with output = console:
+    write whether (y = 2) is ExampleTrait **prints 'false'
+    write whether (x = 1, y = 2) is ExampleTrait **prints 'false'
+    write whether (x = -2, y = 2) is ExampleTrait **prints 'true'
+    write whether (x = -2) is ExampleTrait **prints 'false'
+ok
+```
+
+
 ## Trait specifiers
 Trait specifiers change how the satisfaction is interpreted in addition to the descriptions. They can be used as descriptions or like prefix functions.
 
