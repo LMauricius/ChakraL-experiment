@@ -98,6 +98,7 @@
 </tbody>
 </table>
 <h2 id="temporary-cast">Temporary cast</h2>
+<p>Temporary cast happens when the cast value is used in an expression that modifies it. It is equivalent to casting the original before using the converted value, and casting the modified value back to its original trait after the converted value isn’t used anymore.</p>
 <div class="sourceCode" id="cb1" data-caption="Example of a temporary cast"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">with</span> output<span class="op">=</span>console:</a>
 <a class="sourceLine" id="cb1-2" title="2">    myList: List <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>]</a>
 <a class="sourceLine" id="cb1-3" title="3">    write myList <span class="co">**prints &#39;[1, 2]&#39;</span></a>
@@ -106,6 +107,59 @@
 <a class="sourceLine" id="cb1-6" title="6">    myList <span class="kw">as</span> Vector <span class="op">+=</span> [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>] <span class="co">**adds elements of a mathematical vector</span></a>
 <a class="sourceLine" id="cb1-7" title="7">    write myList <span class="co">**prints &#39;[3, 3, 5, 5]&#39;</span></a>
 <a class="sourceLine" id="cb1-8" title="8"><span class="cf">ok</span></a></code></pre></div>
+<p>A temporary cast:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb2-1" title="1">a: TraitA <span class="op">=</span> ()</a>
+<a class="sourceLine" id="cb2-2" title="2">modifyB (a <span class="kw">as</span> TraitB)</a></code></pre></div>
+<p>…is equivalent to this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb3-1" title="1">a: TraitA <span class="op">=</span> ()</a>
+<a class="sourceLine" id="cb3-2" title="2">b <span class="op">=</span> a <span class="kw">as</span> TraitB</a>
+<a class="sourceLine" id="cb3-3" title="3">modifyB b</a>
+<a class="sourceLine" id="cb3-4" title="4">a <span class="op">=</span> b <span class="kw">as</span> TraitA</a></code></pre></div>
+<h2 id="borrow-cast">Borrow cast</h2>
+<p>A borrow cast is an extended version of temporary cast.</p>
+<div class="sourceCode" id="cb4" data-caption="Example of a borrow cast"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb4-1" title="1">NormalVars <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb4-2" title="2">    <span class="kw">explicit</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    a:int<span class="dv">32</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    b:int<span class="dv">32</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb4-6" title="6"></a>
+<a class="sourceLine" id="cb4-7" title="7">DoubledVars <span class="kw">def</span>:</a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="kw">explicit</span></a>
+<a class="sourceLine" id="cb4-9" title="9">    a:int<span class="dv">32</span></a>
+<a class="sourceLine" id="cb4-10" title="10">    b:int<span class="dv">32</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb4-12" title="12"></a>
+<a class="sourceLine" id="cb4-13" title="13">cast\ <span class="kw">def</span> (vars: NormalVars mut) <span class="kw">volatile</span> <span class="op">-&gt;</span> (vars: DoubledVars):</a>
+<a class="sourceLine" id="cb4-14" title="14">    a vars <span class="op">*=</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb4-15" title="15">    b vars <span class="op">*=</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb4-16" title="16">    write(output<span class="op">=</span>console, msg<span class="op">=</span><span class="st">&quot;Doubled numbers!&quot;</span>)</a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb4-18" title="18"></a>
+<a class="sourceLine" id="cb4-19" title="19">cast\ <span class="kw">def</span> (vars: DoubledVars mut) <span class="kw">volatile</span> <span class="op">-&gt;</span> (vars: NormalVars):</a>
+<a class="sourceLine" id="cb4-20" title="20">    a vars <span class="op">/=</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb4-21" title="21">    b vars <span class="op">/=</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb4-22" title="22">    write(output<span class="op">=</span>console, msg<span class="op">=</span><span class="st">&quot;Halved numbers!&quot;</span>)</a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb4-24" title="24"></a>
+<a class="sourceLine" id="cb4-25" title="25">v <span class="op">=</span> NormalVars <span class="op">&amp;</span> (a <span class="op">=</span> <span class="dv">3</span>, b <span class="op">=</span> <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb4-26" title="26">write(output<span class="op">=</span>console, msg<span class="op">=</span>v) <span class="co">**prints &#39;(a = 3, b = 4)&#39;</span></a>
+<a class="sourceLine" id="cb4-27" title="27"></a>
+<a class="sourceLine" id="cb4-28" title="28"><span class="kw">using</span> v <span class="kw">as</span> DoubledVars:</a>
+<a class="sourceLine" id="cb4-29" title="29">    <span class="co">**prints &#39;Doubled numbers!&#39;</span></a>
+<a class="sourceLine" id="cb4-30" title="30">    write(output<span class="op">=</span>console, msg<span class="op">=</span>v) <span class="co">**prints &#39;(a = 6, b = 8)&#39;</span></a>
+<a class="sourceLine" id="cb4-31" title="31"><span class="cf">ok</span></a>
+<a class="sourceLine" id="cb4-32" title="32"><span class="co">**prints &#39;Halved numbers!&#39;</span></a>
+<a class="sourceLine" id="cb4-33" title="33">write(output<span class="op">=</span>console, msg<span class="op">=</span>v) <span class="co">**prints &#39;(a = 3, b = 4)&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb5" data-caption="Example of RAII using a borrow cast"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1">myFile <span class="op">=</span> File <span class="st">&quot;hello.txt&quot;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">using</span> myFile <span class="kw">as</span> Open:</a>
+<a class="sourceLine" id="cb5-4" title="4">    filecontent <span class="op">=</span> read(input <span class="op">=</span> text myFile, type <span class="op">=</span> String)</a>
+<a class="sourceLine" id="cb5-5" title="5">    write(output <span class="op">=</span> console, msg <span class="op">=</span> filecontent)</a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="cf">ok</span></a></code></pre></div>
+<div class="sourceCode" id="cb6" data-caption="Conscise example of RAII using a borrow cast"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb6-1" title="1"><span class="cf">with</span> input <span class="op">=</span> Open File <span class="st">&quot;hello.txt&quot;</span>, output <span class="op">=</span> console:</a>
+<a class="sourceLine" id="cb6-2" title="2">    filecontent <span class="op">=</span> read String <span class="co">**from file</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    write filecontent <span class="co">**to console</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="cf">ok</span></a></code></pre></div>
 
                 </div>
             </div>
