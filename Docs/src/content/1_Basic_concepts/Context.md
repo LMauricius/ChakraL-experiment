@@ -47,12 +47,23 @@ DESCRIPTION3
 <...>
 ```
 
-## What is a description
+## Descriptions
 The descriptions tell the compiler how the context can be used. They describe what data can be associated with it and what states can the context be in. The *members* are values that are uniquely connected to one context. Each member has the respective mapping from 
 
 Example of member declaration (and an assignment): `lives = 3`{.chakral}  
 Example of requirement (the `lives` never reach zero): `?? lives > 0`{.chakral}  
 Example of composition (the context 'includes' the description of a `Movable` context): `! Movable`{.chakral}
+
+### Member declaration
+```{caption="Usage (reference variable)"}
+MEMBER_NAME : REQUIRED_TRAIT VALUE_SPECIFIERS = STARTING_VALUE 
+```
+```{caption="Usage (poiter variable)"}
+MEMBER_NAME : REQUIRED_TRAIT VALUE_SPECIFIERS <- STARTING_VALUE 
+```
+
+If the required trait is ommited, it will be automatically inferred from the required trait of the starting value. If neither the required trait nor any value specifiers are written, the colon can be ommited too.
+Value specifiers are `const`, `mutable`, `volatile`, `virtual`.
 
 ## Similar ideas in other languages
 primitive data (integers or real numbers), complex objects, literal values, code blocks
