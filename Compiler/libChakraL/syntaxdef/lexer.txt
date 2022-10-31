@@ -31,12 +31,18 @@
 [:alphaSpecial:]
 \p{L}\p{So}\p{Sc}
 
-# letter or non-math symbol
+# letter or non-math symbol + digits
 [:alphaSpecialNum:]
 \p{L}\p{So}\p{Sc}0-9
 
 [:operatorSymbol:]
 \p{Sm}
+
+[:identifier:]
+\p{L}[\p{L}[:digit:]_]*
+
+[:suffix:]
+[[:alphaSpecial:]_][[:alphaSpecialNum:]]*
 
 @S_START
 
@@ -45,7 +51,32 @@
     {
     }
 
-    # Keywords
+
+    # Separators
+
+    = ,
+    {
+        out COMMA
+    }
+    = ;
+    {
+        out SEMICOLON
+    }
+    = :
+    {
+        out COLON
+    }
+    = ok
+    {
+        out BLOCK_END
+    }
+    = in
+    {
+        out IN
+    }
+
+
+    # Control flow
 
     = if
     {
@@ -99,10 +130,15 @@
     {
         out YIELD
     }
+
+
+    # Descriptions
+
     = with
     {
         out WITH
     }
+
     = def
     {
         out DEF
@@ -111,22 +147,15 @@
     {
         out USING
     }
-    = mutable
+    = including
     {
-        out MUTABLE
+        out INCLUDING
     }
-    = const
+    = ??
     {
-        out CONST
+        out REQUIREMENT
     }
-    = final
-    {
-        out FINAL
-    }
-    = volatile
-    {
-        out VOLATILE
-    }
+
     = var
     {
         out VAR
@@ -135,108 +164,19 @@
     {
         out REF
     }
-    = new
-    {
-        out NEW
-    }
-    = static
-    {
-        out STATIC
-    }
     = api
     {
         out API_MARK
     }
-    = as
-    {
-        out AS
-    }
 
-    # Symbols
 
-    = ,
-    {
-        out COMMA
-    }
-    = ;
-    {
-        out SEMICOLON
-    }
-    = :
-    {
-        out COLON
-    }
-    = ok
-    {
-        out BLOCK_END
-    }
-    = in
-    {
-        out IN
-    }
-    
-    = +
-    {
-        out ADD
-    }
-    = -
-    {
-        out SUB
-    }
-    = *
-    {
-        out MUL
-    }
-    = /
-    {
-        out DIV
-    }
-    = /%
-    {
-        out INT_DIV
-    }
-    = %
-    {
-        out MOD
-    }
-    = ^
-    {
-        out EXP
-    }
-    = >>
-    {
-        out SHIFT_RIGHT
-    }
-    = <<
-    {
-        out SHIFT_LEFT
-    }
-    = and
-    {
-        out AND
-    }
-    = or
-    {
-        out OR
-    }
-    = xor
-    {
-        out XOR
-    }
-    ? ×|\\cross
-    {
-        out CROSS
-    }
-    ? ⋅|\\dot
-    {
-        out DOT
-    }
+    # Change operators
     
     = =
     {
         out CHANGE
     }
-    = ->
+    = <-
     {
         out ASSIGN
     }
@@ -305,10 +245,85 @@
         out DOT_CHANGE
     }
 
-    = !
+
+    # Operators
+    
+    = new
     {
-        out NOT
+        out NEW
     }
+    = as
+    {
+        out AS
+    }
+    
+    = +
+    {
+        out ADD
+    }
+    = -
+    {
+        out SUB
+    }
+    = *
+    {
+        out MUL
+    }
+    = /
+    {
+        out DIV
+    }
+    = /%
+    {
+        out INT_DIV
+    }
+    = %
+    {
+        out MOD
+    }
+    = ^
+    {
+        out EXP
+    }
+    = >>
+    {
+        out SHIFT_RIGHT
+    }
+    = <<
+    {
+        out SHIFT_LEFT
+    }
+    ? ×|\\cross
+    {
+        out CROSS
+    }
+    ? ⋅|\\dot
+    {
+        out DOT
+    }
+    = contains
+    {
+        out CONTAINS
+    }
+    = \\[:identifier:]
+    {
+        out CUSTOM_OPERATOR
+        storeString
+    }
+    
+    = operator
+    {
+        out OPERATOR_ID
+    }
+    = operator[[:blank:]]*[.]
+    {
+        out OPERATOR_ID
+        push S_AFTER_LITERAL
+    }
+
+
+    # Comparison operators
+
     = ?=
     {
         out EQUAL
@@ -317,11 +332,11 @@
     {
         out NOTEQ
     }
-    = ?->
+    = ?<-
     {
         out ASSIGNED
     }
-    = !->
+    = !<-
     {
         out NOTASS
     }
@@ -341,30 +356,86 @@
     {
         out GREQ
     }
+    = is
+    {
+        out IS
+    }
+
+
+    # Logical operators
+    
+    = and
+    {
+        out AND
+    }
+    = or
+    {
+        out OR
+    }
+    = xor
+    {
+        out XOR
+    }
+    = not
+    {
+        out NOT
+    }
+
+
+    # Context operators
+    
     = &
     {
-        out TRAIT_AND
+        out CONTEXT_AND
     }
     = |
     {
-        out TRAIT_OR
+        out CONTEXT_OR
     }
     = <>
     {
-        out TRAIT_XOR
+        out CONTEXT_XOR
     }
-    = +?
+
+
+    # Value specifiers
+
+    = mutable
     {
-        out TRAIT_AND_COND
+        out MUTABLE
     }
-    = ??
+    = const
     {
-        out ASSERT_MARK
+        out CONST
     }
-    = ?
+    = volatile
     {
-        out QUEST
+        out VOLATILE
     }
+    = virtual
+    {
+        out VIRTUAL
+    }
+    = static
+    {
+        out STATIC
+    }
+
+
+    # Trait specifiers
+
+    = class
+    {
+        out CLASS
+    }
+    = final
+    {
+        out FINAL
+    }
+
+
+    # Literals
+
     = (
     {
         out LPAR
@@ -391,19 +462,23 @@
     }
     = .
     {
-        out MEMBER
-    }
-    = ..
-    {
-        out RANGE_INCL
+        out PLACEHOLDER
     }
     = ...
     {
-        out RANGE_EXCL
+        out RANGE
+    }
+    = ->
+    {
+        out VIRTUAL_FUNCTION_EXPR
     }
     = =>
     {
         out FUNCTION_EXPR
+    }
+    = <->
+    {
+        out VIRTUAL_COROUTINE_EXPR
     }
     = <=>
     {
@@ -413,7 +488,7 @@
 
     # Words and values
 
-    ? \p{L}[\p{L}[:digit:]_]*
+    ? [:identifier:]
     {
         out IDENTIFIER
         storeString
@@ -460,9 +535,13 @@
     ? [[:blank:]]
     {
     }
-    = *-
+    = \*-
     {
-        push S_MULTILINE_COMMENT
+        push S_SMULTILINE_COMMENT
+    }
+    = \*=
+    {
+        push S_DMULTILINE_COMMENT
     }
     ? \*\*[^[:newl:]]*[:newl:]
     {
@@ -471,7 +550,7 @@
 
 
 @S_AFTER_LITERAL
-    ? [[:alphaSpecial:]_][[:alphaSpecialNum:]]*
+    ? [:suffix:]
     {
         out LIT_SUFFIX
         storeString
@@ -482,12 +561,34 @@
         pop
     }
 
-@S_MULTILINE_COMMENT
-    = *-
+@S_SMULTILINE_COMMENT
+    = \*-
     {
-        push S_MULTILINE_COMMENT
+        push S_SMULTILINE_COMMENT
     }
-    = -*
+    = \*=
+    {
+        push S_DMULTILINE_COMMENT
+    }
+    = -\*
+    {
+        pop
+    }
+    # skip all until end of comment
+    ? .
+    {
+    }
+
+@S_DMULTILINE_COMMENT
+    = \*-
+    {
+        push S_SMULTILINE_COMMENT
+    }
+    = \*=
+    {
+        push S_DMULTILINE_COMMENT
+    }
+    = =\*
     {
         pop
     }
