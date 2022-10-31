@@ -317,7 +317,7 @@
     }
     = operator[[:blank:]]*[.]
     {
-        out OPERATOR_ID
+        out SUF_OPERATOR_ID
         push S_AFTER_LITERAL
     }
 

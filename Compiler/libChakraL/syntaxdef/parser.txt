@@ -59,7 +59,27 @@ TraitAssertion = ASSERT_MARK cond:Expression
 ### *** Expressions and values *** ###
 ###
 
-Identifier = name:IDENTIFIER
+UnaryOperator 	= op:SUB
+				= op:INCREMENT
+				= op:DECREMENT
+
+BinaryOperator 	= op:ADD
+				= op:SUB
+				= op:MUL
+				= op:DIV
+				= op:INT_DIV
+				= op:MOD
+				= op:EXP
+				= op:SHIFT_RIGHT
+				= op:SHIFT_LEFT
+				= op:CROSS
+				= op:DOT
+				= op:CONTAINS
+				= op:CUSTOM_OPERATOR
+
+Identifier 	= name:IDENTIFIER
+			= name:OPERATOR_ID <!> ( '(' <!> unary_op:UnaryOperator ')' | binary_op:BinaryOperator )
+			= name:SUF_OPERATOR_ID <!> suf:LIT_SUFFIX
 
 #Expression 	= .:ExprLeast
 
