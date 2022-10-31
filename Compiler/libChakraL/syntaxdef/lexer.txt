@@ -170,6 +170,18 @@
     }
 
 
+    # Prefixes
+
+    = whether
+    {
+        out WHETHER
+    }
+    = module
+    {
+        out MODULE
+    }
+
+
     # Change operators
     
     = =

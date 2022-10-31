@@ -17,24 +17,13 @@
 
 @ExprHighest
 
-> BINARY ExprSuffixFunction ExprBinaryL2R
-'.'
-
 < LUNARY ExprSign ExprLUnary
 '+'
 '-'
 
 # We don't allow sign operators usage in expressions, except when surrounded by parentheses
 : ExprHighest = '(' .:ExprSign ')'
-@ExprSuffixFunction
-
-< LUNARY ExprPrefix ExprLUnary
-'++'
-'!'
-
-> RUNARY ExprSuffix ExprRUnary
-'++'
-'--'
+@ExprHighest
 
 < BINARY ExprPrefixFunction ExprPrefixFunction
 ''
@@ -61,6 +50,11 @@ DOT
 '<<'
 '>>'
 
+> BINARY RangeLiteral RangeLiteral
+'...'
+
+: Expression = .:RangeLiteral
+
 
 > BINARY ExprComparison ExprBinaryL2R
 '<'
@@ -83,11 +77,8 @@ XOR
 > BINARY ExprLogOr  ExprBinaryL2R
 OR
 
-> BINARY RangeLiteral RangeLiteral
-'..'
-'...'
-
-: Expression = .:RangeLiteral
+: LogicalExpression = .:ExprLogOr
+: Expression = WHETHER .:LogicalExpression
 
 
 
