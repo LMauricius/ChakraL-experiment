@@ -19,18 +19,22 @@
 #			and output instead of the production's own node.
 #			If any symbol within a production's option is a forwarding symbol,
 #				no other symbol can be assigned to a variable within that option
-#			The semantic node output from the forwarding symbol must be of the same type as the production's node
-#		If a parse node symbol prefixed Only by a ':', the node isn't stored and
-#			all its arguments are stored in its parent node instead (the applied definition's node)
+#			The semantic node output from the forwarding symbol must be of the same type as (or derived from) the production's node
 #
 # Lines starting with a '=' (without a production symbol)
 # 	are alternate definitions for the last specified symbol.
 #	This is a cleaner way than using '|'
 # Lines starting with a '->' define the semantic node that will be output when the current production is parsed
 #	'-' is a special string specifying that no semantic node will be output from the production
-#	'::' is a special string that specifies a 'fallthrough', i.e. that the semantic node of the first symbol (that outputs a sem. node) will be passed as the output of the current production
+#	'::' is a special string that specifies a 'forwarding', i.e. that the semantic node of the first symbol
+#		(that outputs a sem. node) will be passed as the output of the current production.
+#		Requires a single named argument to be a dot ('.').
+#	The actual ouput node of a production doesn't have to be the same type that is visible to other productions.
+#		You can separate the visible type and the output type with a space.
+#		Then, the production will create a node of the output type, but will store a node of the visible type. 
+#		The output type must be derived from the visible type.
 # Instead of lexeme names, strings corresponding to a specific lexer rule's regex can be used,
-# 	enclosed with double quotes. The first regex that the string fits is used and
+# 	enclosed with quotes. The first regex that the string fits is used and
 # 	the string is replaced with the lexeme that the rule outputs.
 #	The string allows c-like escape characters
 
@@ -196,11 +200,3 @@ ChangeOperator 	= op:'+='
 				= op:CUSTOM_OPERATOR_CHANGE
 
 Change = left:Expression op:ChangeOperator <!> NL* rights:Expression
-
-
-
-
-#	To be considered:
-#		If no argument name is specified (no prefix), the symbol won't be stored
-#		If a instead of a single semicolon, double semicolon ('::') is placed between the name and the symbol,
-#			the argument will be a list in which the symbol will be inserted.
