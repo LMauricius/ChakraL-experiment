@@ -104,7 +104,7 @@ def loadSemanticNodes(filename: str):
             l, lineInd = next(lines, ("",-1))
 
     except FormatError as e:
-        print("ERROR in " + filename + ":" + str(e.lineInd) + ": " + e.message)
+        print("ERROR in \"" + filename + "\", line " + str(e.lineInd) + ": " + e.message)
         sys.exit(1)
     except StopIteration:
         pass

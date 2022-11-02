@@ -1,0 +1,26 @@
+// create a CMake build task and put this in it
+
+			"problemMatcher": [
+                {
+                    "fileLocation": "autoDetect",
+                    "pattern": [
+                        {
+                            "regexp": "ERROR in \"(.*)\": (.*)$",
+                            "file": 1,
+                            "message": 2,
+							"kind": "file"
+                        }
+                    ]
+                },
+                {
+                    "fileLocation": "autoDetect",
+                    "pattern": [
+                        {
+                            "regexp": "ERROR in \"(.*)\", line (\\d+): (.*)$",
+                            "file": 1,
+                            "line": 2,
+                            "message": 3
+                        }
+                    ]
+                }
+			],
