@@ -27,8 +27,9 @@ class FormatError(Exception):
         self.lineInd = lineInd
 
 class SemanticError(Exception):
-    def __init__(self, message):
+    def __init__(self, message, lineInd=None):
         self.message = message
+        self.lineInd = lineInd
 
 def safeStrConvert(s: str):
     return s.encode(sys.stdout.encoding, errors='replace').decode(sys.stdout.encoding)

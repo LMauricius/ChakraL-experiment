@@ -105,7 +105,7 @@ def detectRecursionsAndCrash(part : ProductionPart, path, visited: set[Productio
         pass
     elif part.type == ProductionType.Node:
         if not part.symbol in parser.productions:
-            raise SemanticError(f"node '{part.symbol}' used at <<{part.hint}>> but not defined")
+            raise SemanticError(f"node '{part.symbol}' used at <<{part.hint}>> but not defined", part.line)
         node = parser.productions[part.symbol]
         if not node in visited:
             visited.add(node)
@@ -645,7 +645,7 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
                     if part.variable != FALTHRU_VARIABLE_STR:
 
                         if semNode is None:
-                            raise SemanticError(f"Variable {part.variable} of part <<{part.hint}>> ({part.type}) of prod <<{part.prodName}>> assigned to None node")
+                            raise SemanticError(f"Variable {part.variable} of part <<{part.hint}>> ({part.type}) of prod <<{part.prodName}>> assigned to None node", part.line)
                         
                         varType = ""
                         defVal = ""
@@ -666,11 +666,11 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
                         childSemNodeName = parser.productions[part.symbol].visibleSemNodeName
                         parentSemNodeName = prod.visibleSemNodeName
                         if not semNodeExtends(childSemNodeName, parentSemNodeName, parser.semNodes):
-                            raise SemanticError(f"Variable '{part.variable}' of prod <<{part.hint}>> contains a semantic node of type '{childSemNodeName}', but the production needs to be of type '{parentSemNodeName}' which isn't an ancestor of the variable's type.")
+                            raise SemanticError(f"Variable '{part.variable}' of prod <<{part.hint}>> contains a semantic node of type '{childSemNodeName}', but the production needs to be of type '{parentSemNodeName}' which isn't an ancestor of the variable's type.", part.line)
 
             
             if prod.outSemNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and not semNodeExtends(prod.outSemNodeName, prod.visibleSemNodeName, parser.semNodes):
-                raise SemanticError(f"Visible semantic node '{prod.visibleSemNodeName}' of prod <<{part.prodName}>> isn't a parent of the outing semantic node '{prod.outSemNodeName}'.")
+                raise SemanticError(f"Visible semantic node '{prod.visibleSemNodeName}' of prod <<{part.prodName}>> isn't a parent of the outing semantic node '{prod.outSemNodeName}'.", part.line)
             
             handledProds.add(prodName)
         for prodName, prod in parser.productions.items():
@@ -687,7 +687,7 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
         for part in parser.productionParts:
             if part.type == ProductionType.Node:
                 if not part.symbol in parser.productions:
-                    raise SemanticError(f"Production '{part.symbol}' referenced in <<{part.hint}>> at line {part.line} but not defined.")
+                    raise SemanticError(f"Production '{part.symbol}' referenced in <<{part.hint}>> at line {part.line} but not defined.", part.line)
         
         print("Checking for recursions...")
         startTime = time.time()
@@ -695,7 +695,10 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
             detectRecursionsAndCrash(prod.mainPart, [], set(), parser, name)
         print("No recursions found in " + str(time.time()-startTime) + "s!")
     except SemanticError as e:
-        print("ERROR in \"" + filename + "\": " + e.message)
+        if e.lineInd is not None:
+            print("ERROR in \"" + filename + "\", line " + str(e.lineInd) + ": " + e.message)
+        else:
+            print("ERROR in \"" + filename + "\": " + e.message)
         sys.exit(1)
     
     return parser
