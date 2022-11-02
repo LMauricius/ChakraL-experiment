@@ -22,7 +22,7 @@
 '-'
 
 # We don't allow sign operators usage in expressions, except when surrounded by parentheses
-: ExprHighest = '(' .:ExprSign ')'
+: TightExpr = .:ExprSign
 @ExprHighest
 
 < BINARY ExprPrefixFunction ExprPrefixFunction
@@ -51,7 +51,7 @@ DOT
 '>>'
 
 > BINARY RangeLiteral RangeLiteral
-'...'
+RangeOperator
 
 : Expression = .:RangeLiteral
 
@@ -79,6 +79,7 @@ OR
 
 : LogicalExpression = .:ExprLogOr
 : Expression = WHETHER .:LogicalExpression
+: Expression = .TightExpr
 
 
 
