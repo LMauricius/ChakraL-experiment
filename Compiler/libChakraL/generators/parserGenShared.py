@@ -611,7 +611,7 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
 
             l, lineInd = next(lines, ("",-1))
     except FormatError as e:
-        print("ERROR At line " + str(e.lineInd) + ": " + e.message)
+        print("ERROR in " + filename + ":" + str(e.lineInd) + ": " + e.message)
         sys.exit(1)
     except StopIteration:
         pass
@@ -695,6 +695,7 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
             detectRecursionsAndCrash(prod.mainPart, [], set(), parser, name)
         print("No recursions found in " + str(time.time()-startTime) + "s!")
     except SemanticError as e:
+        print("ERROR in " + filename + ": " + e.message)
         print("ERROR " + e.message)
         sys.exit(1)
     

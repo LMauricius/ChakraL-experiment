@@ -125,7 +125,7 @@ def outputOperatorProductions(filenameIn: str, filenameOut: str):
 		semNodeName = None
 
 	except FormatError as e:
-		print(e.message)
+		print("ERROR in " + filenameIn + ":" + str(e.lineInd) + ": " + e.message)
 		sys.exit(1)
 
 	f.close()

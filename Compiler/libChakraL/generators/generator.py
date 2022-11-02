@@ -180,7 +180,7 @@ def main():
             writeSemanticNodesMethodsCPP(semNodes, argget("--outsemanticnodescpp"), argget("--insemanticnodesh", "--outsemanticnodesh"), [])
             print("Generated parser process definitions source file in " + str(time.time()-startTime) + "s: " + argget("--outsemanticnodescpp"))
     except ArgumentError as e:
-        print("Error: " + e.message)
+        print("ERROR: " + e.message)
         return 1
 
 main()
