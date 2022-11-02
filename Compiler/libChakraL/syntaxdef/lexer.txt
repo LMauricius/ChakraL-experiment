@@ -256,6 +256,11 @@
     {
         out DOT_CHANGE
     }
+    ? \\[:identifier:][=]
+    {
+        out CUSTOM_OPERATOR_CHANGE
+        storeString
+    }
 
 
     # Operators

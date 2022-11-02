@@ -44,15 +44,17 @@ File = <!> .:ContextBlock END_OF_STR
 ### *** ContextBlock definitions *** ###
 ###
 
-ContextBlock = ( NL | descs::DescriptionEntry <!> <$> NL)*
-ContextLine = descs::DescriptionEntry
+ContextBlock = ( NL | descs::Description <!> <$> NL)*
+ContextLine = descs::Description
 			-> ContextBlock
 
-DescriptionEntry 	= .:Statement
-					= .:TraitAssertion
-					-> DescriptionEntry
+Description 	= .:Statement
+				= .:Requirement
+				= .:Inclusion
+				-> Description
 
-TraitAssertion = ASSERT_MARK cond:Expression
+Requirement = REQUIREMENT cond:Expression
+Inclusion = INCLUDING value:Expression
 
 
 ###
@@ -77,15 +79,14 @@ BinaryOperator 	= op:ADD
 				= op:CONTAINS
 				= op:CUSTOM_OPERATOR
 
+RangeOperator = [left:LESS | left:EQUAL] '...' [right:LESS | right:EQUAL]
+
 Identifier 	= name:IDENTIFIER
 			= name:OPERATOR_ID <!> ( '(' <!> unary_op:UnaryOperator ')' | binary_op:BinaryOperator )
 			= name:SUF_OPERATOR_ID <!> suf:LIT_SUFFIX
 
-#Expression 	= .:ExprLeast
-
 # 0th priority Expression
 ExprHighest = .:Identifier
-			= '(' NL* .:Expression NL* ')' 
 			= .:Literal
 			-> Expression ::
 
@@ -94,11 +95,11 @@ ExprHighest = .:Identifier
 
 Literal 	= .:FunctionLiteral
 			= .:CoroutineLiteral
-			= .:ContextBlockLiteral
-			= .:ValueLiteral
+			= .:ContextExpressionLiteral
 			= .:ListLiteral
 			= .:DictLiteral
 			= .:SetLiteral
+			= .:ValueLiteral
 			-> Literal ::
 
 ValueLiteral 	= val:NUM_LIT [ suf:LIT_SUFFIX ]
@@ -107,38 +108,42 @@ ValueLiteral 	= val:NUM_LIT [ suf:LIT_SUFFIX ]
 				= val:NUM_X_LIT [ suf:LIT_SUFFIX ]
 				= val:STR_LIT [ suf:LIT_SUFFIX ]
 
-ListLiteral = '[' <!> items::Expression (<$> ',' items::Expression)* <$> ']'
-			= '[' <!> NL* items::Expression <$> ',' (NL* items::Expression <$> ',')* NL* <$> ']'
-SetLiteral 	= '{' <!> items::Expression (<$> ',' items::Expression)* <$> '}'
-			= '{' <!> NL* items::Expression <$> ',' (NL* items::Expression <$> ',')* NL* <$> '}'
-DictLiteral = '{' ':' <!> items::DictEntry (<$> ',' items::DictEntry)* <$> '}'
-			= '{' ':' <!> NL* items::DictEntry <$> ',' (NL* items::DictEntry <$> ',')* NL* <$> '}'
+ListLiteral = '['  items::Expression <$> ',' (NL* items::Expression <$> ',')* NL+ <$> ']'
+			= '[' <!> items::Expression (<$> ',' items::Expression)* [','] <$> ']'
+SetLiteral 	= '{' NL+ <!> items::Expression <$> ',' (NL* items::Expression <$> ',')* NL+ <$> '}'
+			= '{' <!> items::Expression (<$> ',' items::Expression)* [','] <$> '}'
+DictLiteral = '{' ':' NL+ <!> items::DictEntry <$> ',' (NL* items::DictEntry <$> ',')* NL+ <$> '}'
+			= '{' ':' <!> items::DictEntry (<$> ',' items::DictEntry)* [','] <$> '}'
 DictEntry = key:Expression ':' <!> NL* value:Expression
 
-ContextBlockLiteral 	= '(' items::MemberDecl (<$> ',' <!> items::MemberDecl)* <$> ')'
-				= '(' NL* items::MemberDecl (<$> ',' <!> NL* items::MemberDecl)* <$> ',' NL* <$> ')'
-MemberDecl 	= member:IDENTIFIER ( ':' <!> trait:Expression [ '=' <!> value:Expression ] | '=' <!> value:Expression )
-			= value:Expression
+ContextExpressionLiteral 	= '('  items::Description <$> ',' (NL* items::Description <$> ',')* NL+ <$> ')'
+							= '(' <!> items::Description (<$> ',' items::Description)* [','] <$> ')'
 
-FunctionLiteral = param:ContextBlockLiteral FUNCTION_EXPR (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
-CoroutineLiteral = param:ContextBlockLiteral COROUTINE_EXPR (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
+FunctionLiteral = param:ContextExpressionLiteral FUNCTION_EXPR (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
+CoroutineLiteral = param:ContextExpressionLiteral COROUTINE_EXPR (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
 
 
 ###
 ### *** Statements *** ###
 ###
 
-Statement 	= .:Definition
-			= .:AssignmentEqual
+Statement 	= .:MemberDecl
+			= .:Definition
+			= .:Change
 			= .:IfStat
 			= .:LoopStat
 			= .:JumpStat
 			= .:WithStat
-			= .:Expression
 			-> Statement ::
 
-Definition 	= DEF <!> id:IDENTIFIER '='? NL* val:Expression
-			= DEF <!> id:IDENTIFIER ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
+ExpressionOrBlock 	= expr:Expression
+					= ':' <!> (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
+AssignOrChangeSymbol 	= symbol:ASSIGN
+						= symbol:CHANGE
+MemberDecl 	= member:Expression ( ':' <!> (valueSpecs::ValueSpecifier* symbol:AssignOrChangeSymbol <!> value:ExpressionOrBlock | trait:Expression valueSpecs::ValueSpecifier* [ symbol:AssignOrChangeSymbol <!> value:ExpressionOrBlock ]) | symbol:AssignOrChangeSymbol <!> value:ExpressionOrBlock )
+			= anonValue:Expression
+
+Definition 	= id:IDENTIFIER DEF <!> value:ExpressionOrBlock
 
 IfStat 	= IF <!> cond:Expression <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:ContextBlock ( <$> alt:ElseStatPart | <$> BLOCK_END) )
 ElseStatPart 	= ELSE <!> <$> ':' (exec:ContextLine | NL <!> exec:ContextBlock <$> BLOCK_END)
@@ -168,33 +173,29 @@ ContinueStat = CONTINUE <!> [ id:IDENTIFIER ]
 ReturnStat = RETURN <!> [ val:Expression ]
 YieldStat = YIELD <!> [ val:Expression ]
 
-WithStat = WITH <!> entries::WithStatEntry ( ',' entries::WithStatEntry )* ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
-WithStatEntry 	= id:IDENTIFIER '=' <!> val:Expression
-				= val:Expression
+WithStat = [funcs::IDENTIFIER (',' funcs::IDENTIFIER)* [','] ] WITH <!> entries::WithStatEntry ( ',' entries::WithStatEntry )* [','] ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
+WithStatEntry 	= id:IDENTIFIER '=' <!> value:Expression
+				= anonValue:Expression
 
 
 ###
 ### *** Assignments *** ###
 ###
 
-AssignmentEqualOperator = op:ASSIGN
-						= op:'='
-						= op:'+='
-						= op:'-='
-						= op:'*='
-						= op:CROSS_CHANGE
-						= op:DOT_CHANGE
-						= op:'/='
-						= op:'/%='
-						= op:'%='
-						= op:'^='
-						= op:'>>='
-						= op:'<<='
-						= op:AND_CHANGE
-						= op:OR_CHANGE
-						= op:XOR_CHANGE
+ChangeOperator 	= op:'+='
+				= op:'-='
+				= op:'*='
+				= op:'/='
+				= op:'/%='
+				= op:'%='
+				= op:'^='
+				= op:'>>='
+				= op:'<<='
+				= op:CROSS_CHANGE
+				= op:DOT_CHANGE
+				= op:CUSTOM_OPERATOR_CHANGE
 
-AssignmentEqual = left:Expression ( op:AssignmentEqualOperator <!> NL* rights:Expression )+
+Change = left:Expression op:ChangeOperator <!> NL* rights:Expression
 
 
 
