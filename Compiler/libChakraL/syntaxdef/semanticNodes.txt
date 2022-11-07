@@ -7,21 +7,30 @@
     #vprot savedTraits -> ContextPtr = nullptr
     #vprot savedContext -> ContextPtr = nullptr
 
-@DescriptionEntry
+@Description
 
-@TraitAssertion
-    parent DescriptionEntry
+@Requirement
+    parent Description
+
+@Inclusion
+    parent Description
+
+@TraitSpecifier
+    parent Description
 
 
 # *** STATEMENTS ***
 
 @Statement
-    parent DescriptionEntry
+    parent Description
+
+@MemberDecl
+    parent Statement
 
 @Definition
     parent Statement
 
-@AssignmentEqual
+@Change
     parent Statement
 
 @IfStat
@@ -76,10 +85,13 @@
 @ExprRUnary
     parent Expression
 
-@ExprPrefixFunction
+@TightExpr
     parent Expression
 
-@assignmentCheck
+@LogicalExpr
+    parent Expression
+
+@ExprPrefixFunction
     parent Expression
 
 @RangeLiteral
@@ -100,10 +112,13 @@
 @CoroutineLiteral
     parent Literal
 
-@ContextBlockLiteral
+@ContextExpressionLiteral
     parent Literal
 
 @ValueLiteral
+    parent Literal
+
+@ModuleReference
     parent Literal
 
 @ListLiteral

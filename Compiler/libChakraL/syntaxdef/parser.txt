@@ -55,10 +55,14 @@ ContextLine = descs::Description
 Description 	= .:Statement
 				= .:Requirement
 				= .:Inclusion
+				= .:TraitSpecifier
 				-> Description
 
 Requirement = REQUIREMENT cond:Expression
 Inclusion = INCLUDING value:Expression
+
+TraitSpecifier 	= token:CLASS
+				= token:EXACT
 
 
 ###
@@ -94,6 +98,9 @@ ExprHighest = .:Identifier
 			= .:Literal
 			-> Expression ::
 
+# Expression that has to be solo or surrounded by parentheses
+TightExpr -> Expression ::
+
 # expressions are auto generated from the table in operatorTable.txt
 >> ../autosyntaxdef/operatorProductionsAutogen.txt
 
@@ -104,6 +111,7 @@ Literal 	= .:FunctionLiteral
 			= .:DictLiteral
 			= .:SetLiteral
 			= .:ValueLiteral
+			= .:ModuleReference
 			-> Literal ::
 
 ValueLiteral 	= val:NUM_LIT [ suf:LIT_SUFFIX ]
@@ -111,6 +119,8 @@ ValueLiteral 	= val:NUM_LIT [ suf:LIT_SUFFIX ]
 				= val:NUM_O_LIT [ suf:LIT_SUFFIX ]
 				= val:NUM_X_LIT [ suf:LIT_SUFFIX ]
 				= val:STR_LIT [ suf:LIT_SUFFIX ]
+
+ModuleReference = MODULE modulepath::IDENTIFIER [version:NUM_LIT]
 
 ListLiteral = '['  items::Expression <$> ',' (NL* items::Expression <$> ',')* NL+ <$> ']'
 			= '[' <!> items::Expression (<$> ',' items::Expression)* [','] <$> ']'
@@ -131,9 +141,9 @@ CoroutineLiteral = param:ContextExpressionLiteral COROUTINE_EXPR (block:ContextL
 ### *** Statements *** ###
 ###
 
-Statement 	= .:MemberDecl
+Statement 	= .:Change
+			= .:MemberDecl
 			= .:Definition
-			= .:Change
 			= .:IfStat
 			= .:LoopStat
 			= .:JumpStat
@@ -142,10 +152,14 @@ Statement 	= .:MemberDecl
 
 ExpressionOrBlock 	= expr:Expression
 					= ':' <!> (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
-AssignOrChangeSymbol 	= symbol:ASSIGN
-						= symbol:CHANGE
-MemberDecl 	= member:Expression ( ':' <!> (valueSpecs::ValueSpecifier* symbol:AssignOrChangeSymbol <!> value:ExpressionOrBlock | trait:Expression valueSpecs::ValueSpecifier* [ symbol:AssignOrChangeSymbol <!> value:ExpressionOrBlock ]) | symbol:AssignOrChangeSymbol <!> value:ExpressionOrBlock )
-			= anonValue:Expression
+MemberDecl 	= member:Expression ( ':' <!> (valueSpecs::ValueSpecifier+ '=' <!> value:Expression | trait:Expression valueSpecs::ValueSpecifier* [ '=' <!> value:Expression ]) | '=' <!> value:Expression )
+			= value:Expression
+
+ValueSpecifier 	= token:MUTABLE
+				= token:CONST
+				= token:VOLATILE
+				= token:VIRTUAL
+				= token:STATIC
 
 Definition 	= id:IDENTIFIER DEF <!> value:ExpressionOrBlock
 
