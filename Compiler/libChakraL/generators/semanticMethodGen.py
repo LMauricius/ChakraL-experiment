@@ -12,10 +12,10 @@ class Member:
         self.val = val
 
     @classmethod
-    def fromDefinition(self, line:str, lineInd:int) -> Member:
+    def fromDefinition(self, line:str, location:int) -> Member:
         typeMarkInd = line.find("->")
         if typeMarkInd == -1:
-            raise FormatError("'->' type mark not found but required", lineInd)
+            raise FormatError("'->' type mark not found but required", location)
 
         name = line[0:typeMarkInd].strip()
         
@@ -61,8 +61,7 @@ def loadSemanticNodes(filename: str):
     curNode = None
 
     try:
-        lineInd = 0
-        l, lineInd = next(lines, ("",-1))
+        l, location = next(lines, ("", Location()))
 
 
         while len(l):
@@ -78,33 +77,33 @@ def loadSemanticNodes(filename: str):
                     curNode.parentNode = memberDef
                     curNode.parentClassName = "SemanticNode_" + memberDef
                 elif mark == "fpub":
-                    newM = Member.fromDefinition(memberDef, lineInd)
+                    newM = Member.fromDefinition(memberDef, location)
                     curNode.publicMembers.setdefault(newM.name, newM)
                     curNode.methods.setdefault(newM.name, newM)
                 elif mark == "fprot":
-                    newM = Member.fromDefinition(memberDef, lineInd)
+                    newM = Member.fromDefinition(memberDef, location)
                     curNode.protectedMembers.setdefault(newM.name, newM)
                     curNode.methods.setdefault(newM.name, newM)
                 elif mark == "fpriv":
-                    newM = Member.fromDefinition(memberDef, lineInd)
+                    newM = Member.fromDefinition(memberDef, location)
                     curNode.privateMembers.setdefault(newM.name, newM)
                     curNode.methods.setdefault(newM.name, newM)
                 elif mark == "vpub":
-                    newM = Member.fromDefinition(memberDef, lineInd)
+                    newM = Member.fromDefinition(memberDef, location)
                     curNode.publicMembers.setdefault(newM.name, newM)
                 elif mark == "vprot":
-                    newM = Member.fromDefinition(memberDef, lineInd)
+                    newM = Member.fromDefinition(memberDef, location)
                     curNode.protectedMembers.setdefault(newM.name, newM)
                 elif mark == "vpriv":
-                    newM = Member.fromDefinition(memberDef, lineInd)
+                    newM = Member.fromDefinition(memberDef, location)
                     curNode.privateMembers.setdefault(newM.name, newM)
                 else:
-                    raise FormatError(f"Unknown node mark '{mark}'", lineInd)
+                    raise FormatError(f"Unknown node mark '{mark}'", location)
 
-            l, lineInd = next(lines, ("",-1))
+            l, location = next(lines, ("", Location()))
 
     except FormatError as e:
-        print("ERROR in \"" + filename + "\", line " + str(e.lineInd) + ": " + e.message)
+        print("ERROR " + str(e.location) + ": " + e.message)
         sys.exit(1)
     except StopIteration:
         pass
@@ -165,33 +164,44 @@ def writeSemanticNodesMethodsH(semNodes: OrderedDict[str, SemanticNode], filenam
 
 def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filename: str, headerfile: str, extraheaderfiles: list[str]):
     definitions: dict[str, str] = {}
-    for className, semNode in semNodes.items():
-        #declarations[name] = "    SemanticNode_" + name + "::process("
-        for methName, meth in semNode.methods.items():
-            definitions[f"{meth.type} SemanticNode_{className}::{methName}"] = ""
+    definitionsPerClass: dict[str, dict[str, str]] = {}
 
     print("Reading old parser nodes process definitions ", filename)
     try:
         with open(filename, "rt") as f:
+            curDefName = ""
             curDef = ""
             for line in f:
                 if "SemanticNode_" in line:
-                    curDef = line[0:line.find("{")].strip()
-                    definitions.setdefault(curDef, "")
-                elif line.startswith("    }"):
+                    curDefName = line[0:line.find("{")].strip()
                     curDef = ""
-                elif len(curDef) > 0:
-                    definitions[curDef] += line
+                elif line.startswith("    }"):
+                    if len(curDef) > 0 and not (curDefName.endswith(NAME_METHOD_DECL) or curDefName.endswith(PRINT_METHOD_DECL) or curDefName.endswith(SUBNODES_METHOD_DECL)):
+                        definitions[curDefName] = curDef
+                    curDefName = ""
+                elif len(curDefName) > 0:
+                    curDef += line
     except FileNotFoundError:
         print("No old parser nodes process definitions found")
-
+ 
     TAB = "    "
 
     for className, semNode in semNodes.items():
+
+        # Existing methods
+        definitionsPerClass[className] = {}
+        for methName, meth in semNode.methods.items():
+            curDefName = f"{meth.type} SemanticNode_{className}::{methName}"
+
+            if curDefName in definitions.keys():
+                definitionsPerClass[className][curDefName] = definitions[curDefName]
+                definitions.pop(curDefName)
+            else:
+                definitionsPerClass[className][curDefName] = ""
         
         # NAME method
         meth = semNode.methods[NAME_METHOD_DECL]
-        definitions[f"{meth.type} SemanticNode_{className}::{meth.name}"] = f"{TAB}{TAB}return \"{className}\";\n"
+        definitionsPerClass[className][f"{meth.type} SemanticNode_{className}::{meth.name}"] = f"{TAB}{TAB}return \"{className}\";\n"
         
         # PRINT method
         meth = semNode.methods[PRINT_METHOD_DECL]
@@ -221,7 +231,7 @@ def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filen
                 code += f"{TAB}{TAB}\n"
             
         code += f"{TAB}{TAB}" + fr'for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}}"; ' + "\n"
-        definitions[f"{meth.type} SemanticNode_{className}::{meth.name}"] = code
+        definitionsPerClass[className][f"{meth.type} SemanticNode_{className}::{meth.name}"] = code
         
         # SUBNODES method
         meth = semNode.methods[SUBNODES_METHOD_DECL]
@@ -243,7 +253,7 @@ def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filen
                 code += f"{TAB}{TAB}" + fr'for (const auto& ptr : {mem.name}) {{ret.push_back(ptr.get());}}' + "\n"
 
         code += f"{TAB}{TAB}" + fr'return ret;' + "\n"
-        definitions[f"{meth.type} SemanticNode_{className}::{meth.name}"] = code
+        definitionsPerClass[className][f"{meth.type} SemanticNode_{className}::{meth.name}"] = code
 
         # END of methods
         
@@ -271,6 +281,14 @@ def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filen
         LN("namespace ChakraL")
         LN("{")
         TB();LN("")
+        for className, classDefinitions in definitionsPerClass.items():
+            TB();LN("// === *** " + className + " *** ===")
+            TB();LN("")
+            for name, definition in classDefinitions.items():
+                TB();LN(name + " {")
+                f.write(definition)
+                TB();LN("}")
+                TB();LN("")
         for name, definition in definitions.items():
             TB();LN(name + " {")
             f.write(definition)

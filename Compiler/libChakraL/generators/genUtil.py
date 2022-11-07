@@ -4,32 +4,46 @@ import os
 import sys
 from typing import Iterator
 import unicodedata as ucd
+import copy
 
-def meaningfulLines(filename: str) -> Iterator[(str, any)]:
+class Location:
+    def __init__(self, path: str | None = None, lineInd: int | None = None):
+        self.path = path
+        self.lineInd = lineInd
+
+    def __str__(self) -> str:
+        s = "in "
+        if self.path is not None:
+            s += f"\"{self.path}\""
+        if self.lineInd is not None:
+            s += f", line {self.lineInd}"
+        return s
+
+def meaningfulLines(filename: str) -> Iterator[(str, Location)]:
     with open(filename, "rt") as f:
-        lineInd = 0
+        location = Location(filename, 0)
         for line in f:
-            lineInd += 1
+            location.lineInd += 1
             l = line.lstrip()
             if len(l) > 0:
                 if l[0] != '#':
                     if l[0:2] == '>>':
                         includeFilename = l[2:].strip()
                         nameNoPath = os.path.splitext(includeFilename)[0]
-                        for l2, lineInd2 in meaningfulLines(os.path.dirname(filename)+'/'+includeFilename):
-                            yield l2, (lineInd, nameNoPath+":"+str(lineInd2))
+                        for l2, location2 in meaningfulLines(os.path.dirname(filename)+'/'+includeFilename):
+                            yield l2, location2
                     else:
-                        yield l.rstrip('\n'), lineInd
+                        yield l.rstrip('\n'), location
 
 class FormatError(Exception):
-    def __init__(self, message, lineInd: int):
+    def __init__(self, message, location: Location):
         self.message = message
-        self.lineInd = lineInd
+        self.location = copy.copy(location)
 
 class SemanticError(Exception):
-    def __init__(self, message, lineInd=None):
+    def __init__(self, message, location: Location):
         self.message = message
-        self.lineInd = lineInd
+        self.location = copy.copy(location)
 
 def safeStrConvert(s: str):
     return s.encode(sys.stdout.encoding, errors='replace').decode(sys.stdout.encoding)

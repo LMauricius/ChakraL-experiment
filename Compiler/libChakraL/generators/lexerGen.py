@@ -73,13 +73,12 @@ def loadLexer(filename: str, macros: dict[str, str] ):
     curState = ""
 
     try:
-        lineInd = 0
-        l, lineInd = next(lines, ("",-1))
+        l, location = next(lines, ("", Location()))
         while len(l):
             #print("...Line ", l)
 
             if l[0] == '[':
-                l2, lineInd = next(lines, ("",-1))
+                l2, location = next(lines, ("", Location()))
                 lexer.macros[l] = replaceMacros(l2, lexer.macros)
             elif l[0] == '@':
                 state = l[1:]
@@ -112,12 +111,12 @@ def loadLexer(filename: str, macros: dict[str, str] ):
                 rule = Rule(regex)
                 #print("...Rule with regex ", regex)
 
-                l, lineInd = next(lines, ("",-1))
+                l, location = next(lines, ("", Location()))
                 if l != '{':
-                    raise FormatError("Expected a '{', got '"+l+"'", lineInd)
+                    raise FormatError("Expected a '{', got '"+l+"'", location)
                 
                 # commands
-                l, lineInd = next(lines, ("",-1))
+                l, location = next(lines, ("", Location()))
                 while l != '}':
                     spl = l.split()
                     if len(spl) > 1:
@@ -131,17 +130,17 @@ def loadLexer(filename: str, macros: dict[str, str] ):
                         if isExact:
                             lexer.stringTokenPairs.append((exactString, spl[1]))
 
-                    l, lineInd = next(lines, ("",-1))
+                    l, location = next(lines, ("", Location()))
                     if len(l) == 0:
-                        raise FormatError("Expected a '}', got '"+l+"'", lineInd)
+                        raise FormatError("Expected a '}', got '"+l+"'", location)
 
 
                 # add rule
                 lexer.rulesPerState[curState].append(rule)
 
-            l, lineInd = next(lines, ("",-1))
+            l, location = next(lines, ("", Location()))
     except FormatError as e:
-        print("ERROR in \"" + filename + "\", line " + str(e.lineInd) + ": " + e.message)
+        print("ERROR " + str(e.location) + ": " + e.message)
         sys.exit(1)
     except StopIteration:
         pass

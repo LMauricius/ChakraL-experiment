@@ -37,10 +37,10 @@ class StateType(Enum):
     Branch = 3
 
 class ProductionPart:
-    def __init__(self, idName: str, hint: str, line: int, variable: str, symbol: str, type: ProductionType, prodName: str, errorHelpers : List[str], isMainPart: bool = False):
+    def __init__(self, idName: str, hint: str, location: Location, variable: str, symbol: str, type: ProductionType, prodName: str, errorHelpers : List[str], isMainPart: bool = False):
         self.idName = idName
         self.hint = hint
-        self.line = line
+        self.location = copy.copy(location)
         self.variable = variable
         self.variableIsList = None
         self.symbol = symbol
@@ -65,11 +65,11 @@ class ParserState:
         self.proxyForStates: list[ParserState] = []
 
 class Production:
-    def __init__(self, name: str):
+    def __init__(self, name: str, location: Location):
         self.name = name
         self.outSemNodeName = name
         self.visibleSemNodeName = name
-        self.mainPart = ProductionPart(name, name, 0, "<>", "<>", ProductionType.SubProd, name, [], True)
+        self.mainPart = ProductionPart(name, name, location, "<>", "<>", ProductionType.SubProd, name, [], True)
         self.startingParserState : ParserState = None
         self.partCounter = 1
 
@@ -105,7 +105,7 @@ def detectRecursionsAndCrash(part : ProductionPart, path, visited: set[Productio
         pass
     elif part.type == ProductionType.Node:
         if not part.symbol in parser.productions:
-            raise SemanticError(f"node '{part.symbol}' used at <<{part.hint}>> but not defined", part.line)
+            raise SemanticError(f"node '{part.symbol}' used at <<{part.hint}>> but not defined", part.location)
         node = parser.productions[part.symbol]
         if not node in visited:
             visited.add(node)
@@ -358,7 +358,7 @@ def iterParserLine(line : str) -> Iterator[str]:
         yield subStr, subStrStartPos
 
 # Yes.
-def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: Production, target: list[list[ProductionPart]], parserIt: Iterator[str], fullLine: str, stopStr: str):
+def parseParserFileParseNodeProduction(location: Location, lexer: Lexer, counterNode: Production, target: list[list[ProductionPart]], parserIt: Iterator[str], fullLine: str, stopStr: str):
     curOption = []
     curStr = ""
     curStrPos = 0
@@ -383,41 +383,41 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                 target.append(curOption)
                 curOption = []
             elif curStr == '(':
-                curPart = ProductionPart(curPartName(), curPartHint(), lineInd, "", "", ProductionType.SubProd, counterNode.name, curErrorHelpers)
+                curPart = ProductionPart(curPartName(), curPartHint(), location, "", "", ProductionType.SubProd, counterNode.name, curErrorHelpers)
                 curErrorHelpers = []
                 counterNode.partCounter += 1
                 curOption.append(curPart)
-                parseParserFileParseNodeProduction(lineInd, lexer, counterNode, curPart.possibilities, parserIt, fullLine, ')')
+                parseParserFileParseNodeProduction(location, lexer, counterNode, curPart.possibilities, parserIt, fullLine, ')')
             elif curStr == '[':
-                curPart = ProductionPart(curPartName(), curPartHint(), lineInd, "", "", ProductionType.SubProd, counterNode.name, curErrorHelpers)
+                curPart = ProductionPart(curPartName(), curPartHint(), location, "", "", ProductionType.SubProd, counterNode.name, curErrorHelpers)
                 curErrorHelpers = []
                 counterNode.partCounter += 1
                 curPart.repeatCount = RepeatType.Optional
                 curOption.append(curPart)
-                parseParserFileParseNodeProduction(lineInd, lexer, counterNode, curPart.possibilities, parserIt, fullLine, ']')
+                parseParserFileParseNodeProduction(location, lexer, counterNode, curPart.possibilities, parserIt, fullLine, ']')
                 curPart = None
             elif curStr == '+':
                 if curPart == None:
-                    raise FormatError("Error at '+'; must follow a symbol or sequence", lineInd)
+                    raise FormatError("Error at '+'; must follow a symbol or sequence", location)
                 curPart.repeatCount = RepeatType.SingleOrMore
                 curPart = None
             elif curStr == '*':
                 if curPart == None:
-                    raise FormatError("Error at '*'; must follow a symbol or sequence", lineInd)
+                    raise FormatError("Error at '*'; must follow a symbol or sequence", location)
                 curPart.repeatCount = RepeatType.ZeroOrMore
                 curPart = None
             elif curStr == '?':
                 if curPart == None:
-                    raise FormatError("Error at '?'; must follow a symbol or sequence", lineInd)
+                    raise FormatError("Error at '?'; must follow a symbol or sequence", location)
                 curPart.repeatCount = RepeatType.Optional
                 curPart = None
             elif curStr[0] == '<':
                 curErrorHelpers.append(curStr[1:-1])
                 #print(curErrorHelpers)
             elif curStr == ']' or curStr == ')':
-                raise FormatError("Unexpected closing bracket " + curStr, lineInd)
+                raise FormatError("Unexpected closing bracket " + curStr, location)
             else:
-                curPart = ProductionPart(curPartName(), curPartHint(), lineInd, "", "", ProductionType.SubProd, counterNode.name, curErrorHelpers)
+                curPart = ProductionPart(curPartName(), curPartHint(), location, "", "", ProductionType.SubProd, counterNode.name, curErrorHelpers)
                 curErrorHelpers = []
                 counterNode.partCounter += 1
 
@@ -448,7 +448,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                 if symbolOrString[0] == "\'" or symbolOrString[0] == "\"":
                     # quoted symbols
                     if symbolOrString[-1] != '\'' and symbolOrString[-1] != '\"':
-                        raise FormatError(f"Expected a '\\{symbolOrString[0]}'", lineInd)
+                        raise FormatError(f"Expected a '\\{symbolOrString[0]}'", location)
 
                     qStr = unescapeString(symbolOrString[1 : -1])
 
@@ -458,7 +458,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                             symbol = token
                             break
                     if symbol == "":
-                        raise FormatError(f"Unrecognizable string '{qStr}'", lineInd)
+                        raise FormatError(f"Unrecognizable string '{qStr}'", location)
                 else:
                     # normal symbols
                     symbol = symbolOrString
@@ -472,7 +472,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
 
                 '''if curStr[0] == '<':
                     if curStr[-1] != '>':
-                        raise FormatError("Expected a '>'", lineInd)
+                        raise FormatError("Expected a '>'", location)
                         
                     # argument
                     semicInd = curStr.find(':', 1)
@@ -492,7 +492,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                     # quoted lexemes
                     if "\'" in curStr or "\"" in curStr:
                         if curStr[-1] != '\'' and curStr[-1] != '\"':
-                            raise FormatError("Expected a '\\''", lineInd)
+                            raise FormatError("Expected a '\\''", location)
 
                         # find quote
                         qPos = curStr.find("\'")
@@ -510,7 +510,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                                 lexeme = token
                                 break
                         if len(lexeme) == 0:
-                            raise FormatError("Don't know what '" + safeStrConvert(qStr) + "' is", lineInd)
+                            raise FormatError("Don't know what '" + safeStrConvert(qStr) + "' is", location)
                         curPart.symbol = lexeme
 
                         # argument
@@ -518,7 +518,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                         if semicInd != -1 and semicInd < startQ:
                             curPart.variable = curStr[0:semicInd]
                             #if curPart.variable == "":
-                            #    raise FormatError("Lexemes can't have only semicolons for prefix", lineInd)
+                            #    raise FormatError("Lexemes can't have only semicolons for prefix", location)
 
                     # non quoted lexemes
                     else:
@@ -533,7 +533,7 @@ def parseParserFileParseNodeProduction(lineInd: int, lexer: Lexer, counterNode: 
                         curPart.symbol = curStr[semicInd+1:]
                     '''
                 curOption.append(curPart)
-                #print(lineInd, curPart.variable, curPart.symbol,  "- "+curStr+"")
+                #print(location, curPart.variable, curPart.symbol,  "- "+curStr+"")
 
 
             curStr, curStrPos = next(parserIt, ("",0))
@@ -558,8 +558,7 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
     curNodeName = None
 
     try:
-        lineInd = 0
-        l, lineInd = next(lines, ("",-1))
+        l, location = next(lines, ("", Location()))
         while len(l):
             #print("...Line ", l)
 
@@ -573,12 +572,12 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
                 if substr != '=' and substr != '->':# new node
                     curNodeName = substr
                     substr, subStrPos = next(parserIt, ("",0))
-                    if substr != '=':
-                        raise FormatError("Expected a '=' or a '->' got '"+substr+"'", lineInd)
+                    if substr != '=' and substr != '->':
+                        raise FormatError("Expected a '=' or a '->' got '"+substr+"'", location)
 
                 # check if node exists
                 if not curNodeName in parser.productions:
-                    parser.productions[curNodeName] = Production(curNodeName)
+                    parser.productions[curNodeName] = Production(curNodeName, location)
                     if len(parser.startProduction) == 0:
                         parser.startProduction = curNodeName
                 curNode = parser.productions[curNodeName]
@@ -598,20 +597,20 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
                             pass
 
                     except StopIteration:
-                        raise FormatError("Expected a semantic node name, got nothing", lineInd)
+                        raise FormatError("Expected a semantic node name, got nothing", location)
                 elif substr == '=':# semantic node
                     # add production
                     try:
-                        parseParserFileParseNodeProduction(lineInd, lexer, curNode, curNode.mainPart.possibilities, parserIt, l, "")
+                        parseParserFileParseNodeProduction(location, lexer, curNode, curNode.mainPart.possibilities, parserIt, l, "")
                     except StopIteration:
                         pass
                 
             except StopIteration:
-                raise FormatError("Expected a '=', '->' or a prod name, got nothing", lineInd)
+                raise FormatError("Expected a '=', '->' or a prod name, got nothing", location)
 
-            l, lineInd = next(lines, ("",-1))
+            l, location = next(lines, ("", Location()))
     except FormatError as e:
-        print("ERROR in \"" + filename + "\", line " + str(e.lineInd) + ": " + e.message)
+        print("ERROR " + str(e.location) + ": " + e.message)
         sys.exit(1)
     except StopIteration:
         pass
@@ -641,11 +640,14 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
             extractParts(prod.mainPart, parts)
 
             for part in parts:
+                if part.type == ProductionType.Node and part.symbol not in parser.productions.keys():
+                    raise SemanticError(f"Variable {part.variable} of prod <<{part.hint}>> contains a production '{part.symbol}', which is undefined", part.location)
+
                 if (part.type == ProductionType.Node or part.type == ProductionType.Token) and len(part.variable) > 0:
                     if part.variable != FALTHRU_VARIABLE_STR:
 
                         if semNode is None:
-                            raise SemanticError(f"Variable {part.variable} of part <<{part.hint}>> ({part.type}) of prod <<{part.prodName}>> assigned to None node", part.line)
+                            raise SemanticError(f"Variable {part.variable} of part <<{part.hint}>> ({part.type}) of prod <<{part.prodName}>> assigned to None node", part.location)
                         
                         varType = ""
                         defVal = ""
@@ -666,11 +668,11 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
                         childSemNodeName = parser.productions[part.symbol].visibleSemNodeName
                         parentSemNodeName = prod.visibleSemNodeName
                         if not semNodeExtends(childSemNodeName, parentSemNodeName, parser.semNodes):
-                            raise SemanticError(f"Variable '{part.variable}' of prod <<{part.hint}>> contains a semantic node of type '{childSemNodeName}', but the production needs to be of type '{parentSemNodeName}' which isn't an ancestor of the variable's type.", part.line)
+                            raise SemanticError(f"Forwarding of variable in prod <<{part.hint}>> contains a semantic node of type '{childSemNodeName}', but the production needs to be of type '{parentSemNodeName}' which isn't an ancestor of the variable's type.", part.location)
 
             
             if prod.outSemNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and not semNodeExtends(prod.outSemNodeName, prod.visibleSemNodeName, parser.semNodes):
-                raise SemanticError(f"Visible semantic node '{prod.visibleSemNodeName}' of prod <<{part.prodName}>> isn't a parent of the outing semantic node '{prod.outSemNodeName}'.", part.line)
+                raise SemanticError(f"Visible semantic node '{prod.visibleSemNodeName}' of prod <<{part.prodName}>> isn't a parent of the outing semantic node '{prod.outSemNodeName}'.", part.location)
             
             handledProds.add(prodName)
         for prodName, prod in parser.productions.items():
@@ -687,7 +689,7 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
         for part in parser.productionParts:
             if part.type == ProductionType.Node:
                 if not part.symbol in parser.productions:
-                    raise SemanticError(f"Production '{part.symbol}' referenced in <<{part.hint}>> at line {part.line} but not defined.", part.line)
+                    raise SemanticError(f"Production '{part.symbol}' referenced in <<{part.hint}>> at line {part.location} but not defined.", part.location)
         
         print("Checking for recursions...")
         startTime = time.time()
@@ -695,10 +697,7 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
             detectRecursionsAndCrash(prod.mainPart, [], set(), parser, name)
         print("No recursions found in " + str(time.time()-startTime) + "s!")
     except SemanticError as e:
-        if e.lineInd is not None:
-            print("ERROR in \"" + filename + "\", line " + str(e.lineInd) + ": " + e.message)
-        else:
-            print("ERROR in \"" + filename + "\": " + e.message)
+        print("ERROR " + str(e.location) + ": " + e.message)
         sys.exit(1)
     
     return parser
