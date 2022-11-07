@@ -156,14 +156,6 @@
         out REQUIREMENT
     }
 
-    = var
-    {
-        out VAR
-    }
-    = ref
-    {
-        out REF
-    }
     = api
     {
         out API_MARK
@@ -187,10 +179,6 @@
     = =
     {
         out CHANGE
-    }
-    = <-
-    {
-        out ASSIGN
     }
     = +=
     {
@@ -349,14 +337,6 @@
     {
         out NOTEQ
     }
-    = ?<-
-    {
-        out ASSIGNED
-    }
-    = !<-
-    {
-        out NOTASS
-    }
     = <
     {
         out LESS
@@ -437,6 +417,22 @@
     {
         out STATIC
     }
+    = own
+    {
+        out OWN
+    }
+    = shared
+    {
+        out SHARED
+    }
+    = ref
+    {
+        out REF
+    }
+    = unique
+    {
+        out UNIQUE
+    }
 
 
     # Trait specifiers
@@ -445,9 +441,9 @@
     {
         out CLASS
     }
-    = final
+    = exact
     {
-        out FINAL
+        out EXACT
     }
 
 
@@ -552,11 +548,11 @@
     ? [[:blank:]]
     {
     }
-    = \*-
+    = *-
     {
         push S_SMULTILINE_COMMENT
     }
-    = \*=
+    = *=
     {
         push S_DMULTILINE_COMMENT
     }
@@ -579,15 +575,15 @@
     }
 
 @S_SMULTILINE_COMMENT
-    = \*-
+    = *-
     {
         push S_SMULTILINE_COMMENT
     }
-    = \*=
+    = *=
     {
         push S_DMULTILINE_COMMENT
     }
-    = -\*
+    = -*
     {
         pop
     }
@@ -597,15 +593,15 @@
     }
 
 @S_DMULTILINE_COMMENT
-    = \*-
+    = *-
     {
         push S_SMULTILINE_COMMENT
     }
-    = \*=
+    = *=
     {
         push S_DMULTILINE_COMMENT
     }
-    = =\*
+    = =*
     {
         pop
     }
