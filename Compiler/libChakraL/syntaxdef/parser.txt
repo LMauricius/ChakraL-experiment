@@ -122,7 +122,7 @@ ValueLiteral 	= val:NUM_LIT [ suf:LIT_SUFFIX ]
 
 ModuleReference = MODULE modulepath::IDENTIFIER [version:NUM_LIT]
 
-ListLiteral = '['  items::Expression <$> ',' (NL* items::Expression <$> ',')* NL+ <$> ']'
+ListLiteral = '[' NL+ <!>  items::Expression <$> ',' (NL* items::Expression <$> ',')* NL+ <$> ']'
 			= '[' <!> items::Expression (<$> ',' items::Expression)* [','] <$> ']'
 SetLiteral 	= '{' NL+ <!> items::Expression <$> ',' (NL* items::Expression <$> ',')* NL+ <$> '}'
 			= '{' <!> items::Expression (<$> ',' items::Expression)* [','] <$> '}'
@@ -130,7 +130,7 @@ DictLiteral = '{' ':' NL+ <!> items::DictEntry <$> ',' (NL* items::DictEntry <$>
 			= '{' ':' <!> items::DictEntry (<$> ',' items::DictEntry)* [','] <$> '}'
 DictEntry = key:Expression ':' <!> NL* value:Expression
 
-ContextExpressionLiteral 	= '('  items::Description <$> ',' (NL* items::Description <$> ',')* NL+ <$> ')'
+ContextExpressionLiteral 	= '(' NL+ <!> items::Description <$> ',' (NL* items::Description <$> ',')* NL+ <$> ')'
 							= '(' <!> items::Description (<$> ',' items::Description)* [','] <$> ')'
 
 FunctionLiteral = param:ContextExpressionLiteral FUNCTION_EXPR (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
@@ -142,8 +142,8 @@ CoroutineLiteral = param:ContextExpressionLiteral COROUTINE_EXPR (block:ContextL
 ###
 
 Statement 	= .:Change
-			= .:MemberDecl
 			= .:Definition
+			= .:MemberDecl
 			= .:IfStat
 			= .:LoopStat
 			= .:JumpStat
@@ -163,11 +163,11 @@ ValueSpecifier 	= token:MUTABLE
 
 Definition 	= id:IDENTIFIER DEF <!> value:ExpressionOrBlock
 
-IfStat 	= IF <!> cond:Expression <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:ContextBlock ( <$> alt:ElseStatPart | <$> BLOCK_END) )
+IfStat 	= IF <!> cond:LogicalExpr <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:ContextBlock ( <$> alt:ElseStatPart | <$> BLOCK_END) )
 ElseStatPart 	= ELSE <!> <$> ':' (exec:ContextLine | NL <!> exec:ContextBlock <$> BLOCK_END)
 				= .:ElifStatPart
 				-> Statement
-ElifStatPart 	= ELIF <!> cond:Expression <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:ContextBlock ( <$> alt:ElseStatPart | <$> BLOCK_END) )
+ElifStatPart 	= ELIF <!> cond:LogicalExpr <$> ':' ( exec:ContextLine [ <$> alt:ElseStatPart ] | NL <!> exec:ContextBlock ( <$> alt:ElseStatPart | <$> BLOCK_END) )
 				-> Statement IfStat
 
 LoopStat 	= LOOP_MARK <!> parts::LoopStatPart ( <$> ';' parts::LoopStatPart)* <$> ':' (block:ContextLine | NL <!> block:ContextBlock <$> BLOCK_END)
@@ -178,7 +178,7 @@ LoopStatPart 	= .:TimesLoopStatPart
 				-> LoopStatPart ::
 TimesLoopStatPart 	= TIMES <!> count:Expression
 ForLoopStatPart 	= FOR <!> id:IDENTIFIER IN iterable:Expression
-WhileLoopStatPart 	= WHILE <!> cond:Expression
+WhileLoopStatPart 	= WHILE <!> cond:LogicalExpr
 
 JumpStat 	= .:BreakStat
 			= .:ContinueStat

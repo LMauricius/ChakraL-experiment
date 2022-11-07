@@ -65,6 +65,9 @@ RangeOperator
 '?='
 '!='
 
+< LUNARY ExprNegation ExprLUnary
+NOT
+
 > BINARY ExprLogAnd  ExprBinaryL2R
 AND
 
