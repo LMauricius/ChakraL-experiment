@@ -125,9 +125,9 @@ def detectRecursionsAndCrash(part : ProductionPart, path, visited: set[Productio
             if len(subPoss) > 0:
                 detectRecursionsAndCrash(subPoss[0], path, visited, parser, nodeName)
 
-def hasRecursion(part : ProductionPart, nodeName: str, parser: Parser, visited: dict[Production, bool]) -> bool:
+def hasRecursion(part : ProductionPart, nodeName: str, parser: Parser, visited: dict[Production, bool], path = ()) -> bool:
     if part.type == ProductionType.Token:
-        pass
+        return False
     elif part.type == ProductionType.Node:
         if not part.symbol in parser.productions:
             raise SemanticError(f"node '{part.symbol}' used at <<{part.hint}>> but not defined", part.location)
@@ -140,18 +140,19 @@ def hasRecursion(part : ProductionPart, nodeName: str, parser: Parser, visited: 
                 visited[node] = True
                 return True
             else:
-                visited[node] = hasRecursion(node.mainPart, nodeName, parser, visited)
+                visited[node] = False
+                visited[node] = hasRecursion(node.mainPart, nodeName, parser, visited, (path, part.idName))
                 return visited[node]
     elif part.type == ProductionType.SubProd:
         for subPoss in part.possibilities:
             if len(subPoss) > 0:
-                if hasRecursion(subPoss[0], nodeName, parser, visited):
+                if hasRecursion(subPoss[0], nodeName, parser, visited, (path, part.idName)):
                     return True
         return False
 
 def hasUnavoidableReference(part : ProductionPart, nodeName: str, parser: Parser, visited: dict[Production, bool]) -> bool:
     if part.type == ProductionType.Token:
-        pass
+        return False
     elif part.type == ProductionType.Node:
         if not part.symbol in parser.productions:
             raise SemanticError(f"node '{part.symbol}' used at <<{part.hint}>> but not defined", part.location)
@@ -164,6 +165,7 @@ def hasUnavoidableReference(part : ProductionPart, nodeName: str, parser: Parser
                 visited[node] = True
                 return True
             else:
+                visited[node] = False
                 visited[node] = hasUnavoidableReference(node.mainPart, nodeName, parser, visited)
                 return visited[node]
     elif part.type == ProductionType.SubProd:

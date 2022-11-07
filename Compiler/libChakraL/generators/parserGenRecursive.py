@@ -60,7 +60,7 @@ def getIterationSnippets(parser: Parser, subpart : ProductionPart, part : Produc
     if subpart.type == ProductionType.SubProd:
         initializerCodeStr = f"testInd = (ind < tokenNum? check_{subpart.idName}(tokenNum, tokens, data, ind, commands) : FAIL_IND)"
         checkerCodeStr = "testInd != FAIL_IND"
-        executorCodeStr.append(f"commands.emplace_back(new CommBranch(&(data.at(ind).commands[ProductionInd::{subpart.idName}])));")
+        executorCodeStr.append(f"commands.emplace_back(new CommBranch(&(data.at(ind).commands[ProductionInd::{subpart.idName}].back())));")
         executorCodeStr.append("ind = testInd;")
     # Node
     elif subpart.type == ProductionType.Node:
@@ -70,14 +70,14 @@ def getIterationSnippets(parser: Parser, subpart : ProductionPart, part : Produc
         if parser.productions[part.prodName].outSemNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and subpart.variable != FALTHRU_VARIABLE_STR:
             if subpart.variable != "":
                 if subpart.variableIsList:
-                    executorCodeStr.append(f"commands.emplace_back(new CommBranchWithList(&(data.at(ind).commands[ProductionInd::{subpart.symbol}]), &SemanticNode_{semNodeName}::{subpart.variable}));")
+                    executorCodeStr.append(f"commands.emplace_back(new CommBranchWithList(&(data.at(ind).commands[ProductionInd::{subpart.symbol}].back()), &SemanticNode_{semNodeName}::{subpart.variable}));")
                 else:
-                    executorCodeStr.append(f"commands.emplace_back(new CommBranchWithVar(&(data.at(ind).commands[ProductionInd::{subpart.symbol}]), &SemanticNode_{semNodeName}::{subpart.variable}));")
+                    executorCodeStr.append(f"commands.emplace_back(new CommBranchWithVar(&(data.at(ind).commands[ProductionInd::{subpart.symbol}].back()), &SemanticNode_{semNodeName}::{subpart.variable}));")
             else:
-                executorCodeStr.append(f"commands.emplace_back(new CommBranchWithNoVar(&(data.at(ind).commands[ProductionInd::{subpart.symbol}])));")
+                executorCodeStr.append(f"commands.emplace_back(new CommBranchWithNoVar(&(data.at(ind).commands[ProductionInd::{subpart.symbol}].back())));")
         else:
-            executorCodeStr.append(f"commands.emplace_back(new CommBranch(&(data.at(ind).commands[ProductionInd::{subpart.symbol}])));")
-            #executorCodeStr.append(f"commands.emplace_back(new CommBranch(data.at(ind).commands[ProductionInd::{subpart.symbol}].begin()));")
+            executorCodeStr.append(f"commands.emplace_back(new CommBranch(&(data.at(ind).commands[ProductionInd::{subpart.symbol}].back())));")
+            #executorCodeStr.append(f"commands.emplace_back(new CommBranch(data.at(ind).commands[ProductionInd::{subpart.symbol}].back().begin()));")
         
         executorCodeStr.append("ind = testInd;")
         
@@ -153,7 +153,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                 TB();TB();TB();LN(f"bool checked_{part.idName} : 1 = false;")
                 TB();TB();TB();LN(f"bool is_{part.idName} : 1 = false;")
     TB();TB();TB();LN(f"std::map<ProductionInd, TokenInd> endInds;")
-    TB();TB();TB();LN(f"std::map<ProductionInd, ParserCommandBranch> commands;")
+    TB();TB();TB();LN(f"std::map<ProductionInd, std::list<ParserCommandBranch>> commands;")
     TB();TB();LN("};")
     TB();TB();LN("")
 
@@ -395,7 +395,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
             recursivePoss = []
             nonRecursivePoss = []
             for poss in part.possibilities:
-                if part.isMainPart and hasRecursion(part, part.prodName, parser, {}):
+                if part.isMainPart and hasRecursion(poss[0], part.prodName, parser, {}):
                     recursivePoss.append(poss)
                 else:
                     nonRecursivePoss.append(poss)
@@ -416,7 +416,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                         TB();TB();TB();LN(f"// {poss[0].hint}")
                     else:
                         print("ERROR: ", ctr, part.hint)
-                    TB();TB();TB();LN(f"tryPoss{ctr}:")
+                    TB();TB();TB();LN(f"tryPoss{ctr}:" + ("// recursive" if isRec else ""))
 
                 # Possibility block
                 TB();TB();TB();LN("{")
@@ -461,7 +461,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                         if len(syncParts) > 0:
                             nextPossSnippet += f" for (ind++;ind < tokenNum; ind++) {{ {loopBody} }} }}"
                         else:
-                            nextPossSnippet += f" ind++; goto successfulEnd{ctr+1}; }}"
+                            nextPossSnippet += f" ind++; goto successfulEnd{ctr}; }}"
 
                     else:
                         # Cancel the possibility and either check the next one, or return if the current is the last one
@@ -522,10 +522,17 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                         TB();TB();TB();TB();LN(f"}}")
                         
                 TB();TB();TB();TB();LN("")
-                TB();TB();TB();LN(f"successfulEnd{ctr+1}:")
+                TB();TB();TB();LN(f"successfulEnd{ctr}:")
+                
+                if isRec and len(recursivePoss) > 0 and len(nonRecursivePoss) > 0:
+                    TB();TB();TB();TB();LN(f"if (ind <= data.at(startInd).endInds[ProductionInd::{part.idName}]) {{")
+                    TB();TB();TB();TB();TB();LN(f"return data.at(startInd).endInds[ProductionInd::{part.idName}];")
+                    TB();TB();TB();TB();LN("}")
+
                 if part.isMainPart:
                     TB();TB();TB();TB();LN("data.at(startInd).is_" + part.idName + " = true;")
-                    TB();TB();TB();TB();LN(f"data.at(startInd).commands[ProductionInd::{part.idName}] = std::move(commands);")
+                    TB();TB();TB();TB();LN(f"data.at(startInd).commands[ProductionInd::{part.idName}].emplace_back();")
+                    TB();TB();TB();TB();LN(f"data.at(startInd).commands[ProductionInd::{part.idName}].back() = std::move(commands);")
                     TB();TB();TB();TB();LN("data.at(startInd).endInds[ProductionInd::" + part.idName + "] = ind;")
 
                 '''if semNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and semNodeName != NO_OUTPUT_PRODUCTION_STR:
@@ -533,7 +540,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
 
                 #TB();TB();TB();TB();LN(f"commands.emplace_back(new CommPopBranch());")
                 if len(recursivePoss) > 0 and len(nonRecursivePoss) > 0:
-                    TB();TB();TB();TB();LN(f"goto tryPoss{len(nonRecursivePoss)};")
+                    TB();TB();TB();TB();LN(f"goto tryPoss{len(nonRecursivePoss)+1};")
                 else:
                     TB();TB();TB();TB();LN("return ind;")
                 TB();TB();TB();LN("}")
@@ -561,7 +568,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     TB();TB();LN("if (check_" + parser.startProduction + "(state.tokens.size(), state.tokens, state.data, 0) != FAIL_IND) {")
     #TB();TB();TB();LN("state.nodeVarStack.push_back(&res);")
     TB();TB();TB();LN("")
-    TB();TB();TB();LN(f"for (auto& commPtr : state.data.at(0).commands[ProductionInd::{parser.startProduction}]) {{")
+    TB();TB();TB();LN(f"for (auto& commPtr : state.data.at(0).commands[ProductionInd::{parser.startProduction}].back()) {{")
     TB();TB();TB();TB();LN("(*commPtr)(&state, &res);")
     #TB();TB();TB();TB();LN("(*commPtr).print(0);")
     TB();TB();TB();LN("}")
