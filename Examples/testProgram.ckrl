@@ -183,8 +183,3 @@ with agent = Actor:
         health target -= strength agent
     ok
 ok
-
-** ---Maybe include following---
-** doer is a special parameter name
-** in postfix notation, if the context/object/parameter is omitted, it becomes doer by default
-** doer.animation can be written as just .animation
