@@ -125,6 +125,56 @@ def detectRecursionsAndCrash(part : ProductionPart, path, visited: set[Productio
             if len(subPoss) > 0:
                 detectRecursionsAndCrash(subPoss[0], path, visited, parser, nodeName)
 
+def hasRecursion(part : ProductionPart, nodeName: str, parser: Parser, visited: dict[Production, bool]) -> bool:
+    if part.type == ProductionType.Token:
+        pass
+    elif part.type == ProductionType.Node:
+        if not part.symbol in parser.productions:
+            raise SemanticError(f"node '{part.symbol}' used at <<{part.hint}>> but not defined", part.location)
+        node = parser.productions[part.symbol]
+
+        if node in visited.keys():
+            return visited[node]
+        else:
+            if part.symbol == nodeName:
+                visited[node] = True
+                return True
+            else:
+                visited[node] = hasRecursion(node.mainPart, nodeName, parser, visited)
+                return visited[node]
+    elif part.type == ProductionType.SubProd:
+        for subPoss in part.possibilities:
+            if len(subPoss) > 0:
+                if hasRecursion(subPoss[0], nodeName, parser, visited):
+                    return True
+        return False
+
+def hasUnavoidableReference(part : ProductionPart, nodeName: str, parser: Parser, visited: dict[Production, bool]) -> bool:
+    if part.type == ProductionType.Token:
+        pass
+    elif part.type == ProductionType.Node:
+        if not part.symbol in parser.productions:
+            raise SemanticError(f"node '{part.symbol}' used at <<{part.hint}>> but not defined", part.location)
+        node = parser.productions[part.symbol]
+
+        if node in visited.keys():
+            return visited[node]
+        else:
+            if part.symbol == nodeName:
+                visited[node] = True
+                return True
+            else:
+                visited[node] = hasUnavoidableReference(node.mainPart, nodeName, parser, visited)
+                return visited[node]
+    elif part.type == ProductionType.SubProd:
+        ret = True
+        for subPoss in part.possibilities:
+            if len(subPoss) > 0:
+                if not hasUnavoidableReference(subPoss[0], nodeName, parser, visited):
+                    ret = False
+                    break
+        return ret
+
 # Will be allowed
 '''def detectForbiddenRecursionsAndCrash(poss : list[ProductionPart], nodeName: str):
 
@@ -694,8 +744,9 @@ def loadParser(lexer: Lexer, filename: str, semNodes : OrderedDict[str, Semantic
         print("Checking for recursions...")
         startTime = time.time()
         for name, prod in parser.productions.items():
-            detectRecursionsAndCrash(prod.mainPart, [], set(), parser, name)
-        print("No recursions found in " + str(time.time()-startTime) + "s!")
+            if hasUnavoidableReference(prod.mainPart, name, parser, {}):
+                raise SemanticError(f"At node '{name}': Cannot avoid recursion through any productions")
+        print("No forbidden recursions found in " + str(time.time()-startTime) + "s!")
     except SemanticError as e:
         print("ERROR " + str(e.location) + ": " + e.message)
         sys.exit(1)

@@ -391,12 +391,23 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                 TB();TB();TB();LN(f"ParserCommandBranch commands;")
             TB();TB();TB();LN("size_t ogCommandNumber = commands.size();")
 
+            # Separate recursive and non recursive possibilities
+            recursivePoss = []
+            nonRecursivePoss = []
+            for poss in part.possibilities:
+                if part.isMainPart and hasRecursion(part, part.prodName, parser, {}):
+                    recursivePoss.append(poss)
+                else:
+                    nonRecursivePoss.append(poss)
+            allPos = nonRecursivePoss + recursivePoss
+
             # Check all possibilities
             ctr = 0
-            needsGotos = (len(part.possibilities) > 1)
-            for poss in part.possibilities:
+            needsGotos = (len(allPos) > 1)
+            for poss in allPos:
                 ctr += 1
                 assertiveMode = False
+                isRec = (poss in recursivePoss)
 
                 # Possibility start 
                 if needsGotos or True:# Always add gotos for readability
@@ -454,10 +465,16 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
 
                     else:
                         # Cancel the possibility and either check the next one, or return if the current is the last one
-                        if ctr < len(part.possibilities):
-                            nextPossSnippet = f"{{commands.resize(ogCommandNumber); goto tryPoss{ctr+1};}}"
+                        if isRec and len(nonRecursivePoss) > 0:
+                            if ctr < len(allPos):
+                                nextPossSnippet = f"{{commands.resize(ogCommandNumber); goto tryPoss{ctr+1};}}"
+                            else:
+                                nextPossSnippet = f"{{commands.resize(ogCommandNumber); return data.at(startInd).endInds[ProductionInd::{part.idName}];}}"
                         else:
-                            nextPossSnippet = "{commands.resize(ogCommandNumber); return FAIL_IND;}"
+                            if ctr < len(nonRecursivePoss):
+                                nextPossSnippet = f"{{commands.resize(ogCommandNumber); goto tryPoss{ctr+1};}}"
+                            else:
+                                nextPossSnippet = "{commands.resize(ogCommandNumber); return FAIL_IND;}"
 
                     
                     
@@ -515,7 +532,10 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
                     TB();TB();TB();TB();LN(f"commands.emplace_back(new CommPopNode());")'''
 
                 #TB();TB();TB();TB();LN(f"commands.emplace_back(new CommPopBranch());")
-                TB();TB();TB();TB();LN("return ind;")
+                if len(recursivePoss) > 0 and len(nonRecursivePoss) > 0:
+                    TB();TB();TB();TB();LN(f"goto tryPoss{len(nonRecursivePoss)};")
+                else:
+                    TB();TB();TB();TB();LN("return ind;")
                 TB();TB();TB();LN("}")
 
             
