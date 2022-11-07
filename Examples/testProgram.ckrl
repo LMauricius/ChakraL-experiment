@@ -13,10 +13,9 @@ Rotate(target = vec1, amount = Euler(yaw = 0, pitch = 90, roll = 0))** Fully exp
 Rotate(vec1, amount = Euler(0, 90, 0))** Some parameter names are made implicit. The context with the unnamed parameters will be implicitly converted to one with named ones
 Rotate(vec1, amount = (0, 90, 0))** The Euler conversion is made implicit. The context will be implicitly converted to an Euler sub-context as it's compatible
 Rotate(vec1, (0, 90, 0))** All parameters and conversions are made implicit.
-(vec1, (0, 90, 0)).Rotate** Postfix notation, sometimes it can be useful even with complex parameters.
 
 ** IDK, some more complex expression. Assert checks if parameter named expr is True. If it is, no state changes occur. If it's not, the program fails
-Assert(expr = Attack(target = enemy, doer = player1).successState)
+Assert(expr = successState Attack(target = enemy, doer = player1))
 
 
 ** ---Assignments---
@@ -26,10 +25,9 @@ r = Range(5, 65)
 p = Pair(first = "one", second = "two")
 p = Pair("one", "two")
 
-l = List** A copy of 'prototype' List. List is a final context i.e. it can't be changed, but its copies are just normal contexts
+l = List **A copy of 'prototype' List. List is a final context i.e. it can't be changed, but its copies are just normal contexts
 
 a = Array(source = l)** Array is a fixed size List
-a = v.Array** Same as above. This is analoguous to a 'cast' in other languages
 m = Matrix(rows = 3, columns = 3)
 m = Matrix(3, 3)
 
@@ -62,13 +60,12 @@ m(1, 1) = 5
 
 ** ---Properties---
 
-console << "Begin: " << r.start << "End: " << r.end ** r.start is the same as  start(r)
+console << "Begin: " << start r << "End: " << end r ** r.start is the same as  start(r)
 console << "First: " << first(p) << "End: " << second(p)
-console << ("First = %1 Second = %2", p.first, p.second).formatted
+console << formatted ("First = %1 Second = %2", first p, second p)
 l = length(struct = lst)** 'struct' is argument name
 l = length(lst)
-l = length lst
-l = lst.length** prefered
+l = length lst** prefered
 
 
 ** ---Cool features and shortcuts---
@@ -87,31 +84,40 @@ l = List[5, 4, 6, 9]
 
 a = Int
 b = Int
-console >>= a >>= b
+console >>= a
+console >>= b
 if a < b:
 
-	console <<= a <<= " is less than " <<= b
+	console <<= a
+    console <<= " is less than "
+    console <<= b
 elif a > b:
-	console <<= a <<= " is greater than " <<= b
+	console <<= a 
+    console <<= " is greater than "
+    console <<= b
 else:
-	console <<= a <<= " and " b <<= " are equal"
+	console <<= a 
+    console <<= " and " b
+    console <<= " are equal"
 ok
 
-for i in 0..10:
-    console <<= i <<= NewLn
+for i in 0...10:
+    console <<= i
+    console <<= NewLn
 ok
 
 command = String
 running = True
 while running:
-    console >> command
+    console >>= command
     if command ?= "exit": running = False
 
 ok
 
 ** 'repeat' allows us to simply repeat code several times, or use complex repeating behavior
 repeat times 10:
-    console <<= "Hi!" <<= NewLn
+    console <<= "Hi!"
+    console <<= NewLn
 ok ** Prints 'Hi!' 10 times
 
 ** Alternative to classic "do-while" loop, repeats at least once, then repeats while expression is true
@@ -123,7 +129,7 @@ ok
 
 
 ** ---Definitions---
-def PI = 3.141592
+PI def 3.141592
 
 
 ** Function assignment (lambda)
@@ -136,7 +142,7 @@ myMinFunction = (a = Real, b = Real)=>
 ok
 
 ** Function definition
-def MinFunction(a = Real, b = Real)=>
+MinFunction def (a = Real, b = Real)=>
     if a < b:
         return a
     else:
@@ -145,15 +151,15 @@ def MinFunction(a = Real, b = Real)=>
 ok
 
 ** Coroutine definition
-def Attack(agent: Actor, target: Actor)<=>
-    agent.animation = "Attack1"
-    MoveTowards(agent: agent, position: target.position, speed: 3mps)
+Attack def (agent: Actor, target: Actor)<=>
+    animation agent = "Attack1"
+    MoveTowards(agent = agent, position = position target, speed = 3mps)
 
-    while !((agent.position - target.position).distance < 0.5m): yield
+    while not distance(position agent - position target) < 0.5m: yield
 
     ** the target should be thrown away
-    MoveTowards(agent: target, position: (target.position + (agent.position-target.position)), speed: 6mps)
-    target.health -= agent.strength
+    MoveTowards(agent = target, position = (position target + (position agent - position target)), speed = 6mps)
+    health target -= strength agent
 ok
 
 
@@ -161,20 +167,20 @@ ok
 
 ** with block - sets an argument for the whole block 
 with agent = player1:
-    MoveTowards(position: goal.position, speed: 3mps)
+    MoveTowards(position = position goal, speed = 3mps)
 ok
 
 ** For function definitions, with block adds the values to the parameter 
 with agent = Actor:
-    def Attack(target: Actor)<=>
-        agent.animation = "Attack1"
-        MoveTowards(position: target.position, speed: 3mps)
-        while !((agent.position - target.position).distance < 0.5m): yield
+    Attack def (target = Actor)<=>
+        animation agent = "Attack1"
+        MoveTowards(position = position target, speed = 3mps)
+        while not distance(position agent - position target) < 0.5m: yield
 
         with agent = target:
-            MoveTowards(position: (target.position + (attacker.position-target.position)), speed: 6mps)
+            MoveTowards(position = (position target + (position attacker - position target)), speed = 6mps)
         ok
-        target.health -= agent.strength
+        health target -= strength agent
     ok
 ok
 
