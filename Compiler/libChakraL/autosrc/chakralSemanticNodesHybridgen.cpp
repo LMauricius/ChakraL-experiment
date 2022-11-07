@@ -6,6 +6,8 @@
 namespace ChakraL
 {
     
+    // === *** ContextBlock *** ===
+    
     std::string_view SemanticNode_ContextBlock::className() const {
         return "ContextBlock";
     }
@@ -28,29 +30,33 @@ namespace ChakraL
         return ret;
     }
     
-    std::string_view SemanticNode_DescriptionEntry::className() const {
-        return "DescriptionEntry";
+    // === *** Description *** ===
+    
+    std::string_view SemanticNode_Description::className() const {
+        return "Description";
     }
     
-    void SemanticNode_DescriptionEntry::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "DescriptionEntry {" << std::endl; 
+    void SemanticNode_Description::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "Description {" << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
-    std::vector<const SemanticNode*> SemanticNode_DescriptionEntry::getSubNodes() const {
+    std::vector<const SemanticNode*> SemanticNode_Description::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
         };
         ret.reserve(ret.size() + 0);
         return ret;
     }
     
-    std::string_view SemanticNode_TraitAssertion::className() const {
-        return "TraitAssertion";
+    // === *** Requirement *** ===
+    
+    std::string_view SemanticNode_Requirement::className() const {
+        return "Requirement";
     }
     
-    void SemanticNode_TraitAssertion::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "TraitAssertion {" << std::endl; 
+    void SemanticNode_Requirement::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "Requirement {" << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "cond: "; 
         if (cond) cond->print(out, tabs+1, tabstr); else out << "null";
@@ -59,13 +65,62 @@ namespace ChakraL
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
-    std::vector<const SemanticNode*> SemanticNode_TraitAssertion::getSubNodes() const {
+    std::vector<const SemanticNode*> SemanticNode_Requirement::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
             cond.get(),
         };
         ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** Inclusion *** ===
+    
+    std::string_view SemanticNode_Inclusion::className() const {
+        return "Inclusion";
+    }
+    
+    void SemanticNode_Inclusion::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "Inclusion {" << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
+        if (value) value->print(out, tabs+1, tabstr); else out << "null";
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_Inclusion::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+            value.get(),
+        };
+        ret.reserve(ret.size() + 0);
+        return ret;
+    }
+    
+    // === *** TraitSpecifier *** ===
+    
+    std::string_view SemanticNode_TraitSpecifier::className() const {
+        return "TraitSpecifier";
+    }
+    
+    void SemanticNode_TraitSpecifier::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "TraitSpecifier {" << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "token: "; 
+        out << WTokenNames[(int)token.type] << ":" << token.line << ":" << token.character << " - " << token.str;
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_TraitSpecifier::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+        };
+        ret.reserve(ret.size() + 0);
+        return ret;
+    }
+    
+    // === *** Statement *** ===
     
     std::string_view SemanticNode_Statement::className() const {
         return "Statement";
@@ -89,6 +144,47 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** MemberDecl *** ===
+    
+    std::string_view SemanticNode_MemberDecl::className() const {
+        return "MemberDecl";
+    }
+    
+    void SemanticNode_MemberDecl::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "MemberDecl {" << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "member: "; 
+        if (member) member->print(out, tabs+1, tabstr); else out << "null";
+        out << std::endl; 
+        
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "valueSpecs: [" << std::endl;
+        for (auto& ptr : valueSpecs) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
+        if (value) value->print(out, tabs+1, tabstr); else out << "null";
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "trait: "; 
+        if (trait) trait->print(out, tabs+1, tabstr); else out << "null";
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_MemberDecl::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+            member.get(),
+            value.get(),
+            trait.get(),
+        };
+        ret.reserve(ret.size() + valueSpecs.size() + 0);
+        for (const auto& ptr : valueSpecs) {ret.push_back(ptr.get());}
+        return ret;
+    }
+    
+    // === *** Definition *** ===
+    
     std::string_view SemanticNode_Definition::className() const {
         return "Definition";
     }
@@ -100,12 +196,8 @@ namespace ChakraL
         out << WTokenNames[(int)id.type] << ":" << id.line << ":" << id.character << " - " << id.str;
         out << std::endl; 
         
-        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "val: "; 
-        if (val) val->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
-        
-        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "block: "; 
-        if (block) block->print(out, tabs+1, tabstr); else out << "null";
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
+        if (value) value->print(out, tabs+1, tabstr); else out << "null";
         out << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
@@ -113,19 +205,20 @@ namespace ChakraL
     
     std::vector<const SemanticNode*> SemanticNode_Definition::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
-            val.get(),
-            block.get(),
+            value.get(),
         };
         ret.reserve(ret.size() + 0);
         return ret;
     }
     
-    std::string_view SemanticNode_AssignmentEqual::className() const {
-        return "AssignmentEqual";
+    // === *** Change *** ===
+    
+    std::string_view SemanticNode_Change::className() const {
+        return "Change";
     }
     
-    void SemanticNode_AssignmentEqual::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "AssignmentEqual {" << std::endl; 
+    void SemanticNode_Change::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "Change {" << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "left: "; 
         if (left) left->print(out, tabs+1, tabstr); else out << "null";
@@ -142,7 +235,7 @@ namespace ChakraL
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
-    std::vector<const SemanticNode*> SemanticNode_AssignmentEqual::getSubNodes() const {
+    std::vector<const SemanticNode*> SemanticNode_Change::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
             left.get(),
             op.get(),
@@ -151,6 +244,8 @@ namespace ChakraL
         ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** IfStat *** ===
     
     std::string_view SemanticNode_IfStat::className() const {
         return "IfStat";
@@ -184,6 +279,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** LoopStat *** ===
+    
     std::string_view SemanticNode_LoopStat::className() const {
         return "LoopStat";
     }
@@ -211,6 +308,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** LoopStatPart *** ===
+    
     std::string_view SemanticNode_LoopStatPart::className() const {
         return "LoopStatPart";
     }
@@ -227,6 +326,8 @@ namespace ChakraL
         ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** TimesLoopStatPart *** ===
     
     std::string_view SemanticNode_TimesLoopStatPart::className() const {
         return "TimesLoopStatPart";
@@ -249,6 +350,8 @@ namespace ChakraL
         ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** ForLoopStatPart *** ===
     
     std::string_view SemanticNode_ForLoopStatPart::className() const {
         return "ForLoopStatPart";
@@ -276,6 +379,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** WhileLoopStatPart *** ===
+    
     std::string_view SemanticNode_WhileLoopStatPart::className() const {
         return "WhileLoopStatPart";
     }
@@ -298,6 +403,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** JumpStat *** ===
+    
     std::string_view SemanticNode_JumpStat::className() const {
         return "JumpStat";
     }
@@ -315,12 +422,18 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** WithStat *** ===
+    
     std::string_view SemanticNode_WithStat::className() const {
         return "WithStat";
     }
     
     void SemanticNode_WithStat::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
         out << "WithStat {" << std::endl; 
+        
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "funcs: [" << std::endl;
+        for (auto& tok : funcs) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "entries: [" << std::endl;
         for (auto& ptr : entries) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
@@ -341,6 +454,8 @@ namespace ChakraL
         for (const auto& ptr : entries) {ret.push_back(ptr.get());}
         return ret;
     }
+    
+    // === *** BreakStat *** ===
     
     std::string_view SemanticNode_BreakStat::className() const {
         return "BreakStat";
@@ -363,6 +478,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** ContinueStat *** ===
+    
     std::string_view SemanticNode_ContinueStat::className() const {
         return "ContinueStat";
     }
@@ -383,6 +500,8 @@ namespace ChakraL
         ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** ReturnStat *** ===
     
     std::string_view SemanticNode_ReturnStat::className() const {
         return "ReturnStat";
@@ -406,6 +525,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** YieldStat *** ===
+    
     std::string_view SemanticNode_YieldStat::className() const {
         return "YieldStat";
     }
@@ -428,6 +549,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** Expression *** ===
+    
     std::string_view SemanticNode_Expression::className() const {
         return "Expression";
     }
@@ -444,6 +567,8 @@ namespace ChakraL
         ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** ExprBinaryL2R *** ===
     
     std::string_view SemanticNode_ExprBinaryL2R::className() const {
         return "ExprBinaryL2R";
@@ -471,6 +596,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** ExprLUnary *** ===
+    
     std::string_view SemanticNode_ExprLUnary::className() const {
         return "ExprLUnary";
     }
@@ -497,6 +624,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** ExprRUnary *** ===
+    
     std::string_view SemanticNode_ExprRUnary::className() const {
         return "ExprRUnary";
     }
@@ -504,24 +633,55 @@ namespace ChakraL
     void SemanticNode_ExprRUnary::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
         out << "ExprRUnary {" << std::endl; 
         
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
-        for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
-        
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operators: [" << std::endl;
-        for (auto& tok : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
-        
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
     std::vector<const SemanticNode*> SemanticNode_ExprRUnary::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
         };
-        ret.reserve(ret.size() + operands.size() + 0);
-        for (const auto& ptr : operands) {ret.push_back(ptr.get());}
+        ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** TightExpr *** ===
+    
+    std::string_view SemanticNode_TightExpr::className() const {
+        return "TightExpr";
+    }
+    
+    void SemanticNode_TightExpr::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "TightExpr {" << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_TightExpr::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+        };
+        ret.reserve(ret.size() + 0);
+        return ret;
+    }
+    
+    // === *** LogicalExpr *** ===
+    
+    std::string_view SemanticNode_LogicalExpr::className() const {
+        return "LogicalExpr";
+    }
+    
+    void SemanticNode_LogicalExpr::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "LogicalExpr {" << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_LogicalExpr::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+        };
+        ret.reserve(ret.size() + 0);
+        return ret;
+    }
+    
+    // === *** ExprPrefixFunction *** ===
     
     std::string_view SemanticNode_ExprPrefixFunction::className() const {
         return "ExprPrefixFunction";
@@ -545,31 +705,7 @@ namespace ChakraL
         return ret;
     }
     
-    std::string_view SemanticNode_assignmentCheck::className() const {
-        return "assignmentCheck";
-    }
-    
-    void SemanticNode_assignmentCheck::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "assignmentCheck {" << std::endl; 
-        
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
-        for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
-        
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operators: [" << std::endl;
-        for (auto& tok : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
-        
-        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
-    }
-    
-    std::vector<const SemanticNode*> SemanticNode_assignmentCheck::getSubNodes() const {
-        std::vector<const SemanticNode*> ret {
-        };
-        ret.reserve(ret.size() + operands.size() + 0);
-        for (const auto& ptr : operands) {ret.push_back(ptr.get());}
-        return ret;
-    }
+    // === *** RangeLiteral *** ===
     
     std::string_view SemanticNode_RangeLiteral::className() const {
         return "RangeLiteral";
@@ -583,7 +719,7 @@ namespace ChakraL
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operators: [" << std::endl;
-        for (auto& tok : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }
+        for (auto& ptr : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
@@ -592,10 +728,13 @@ namespace ChakraL
     std::vector<const SemanticNode*> SemanticNode_RangeLiteral::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
         };
-        ret.reserve(ret.size() + operands.size() + 0);
+        ret.reserve(ret.size() + operands.size() + operators.size() + 0);
         for (const auto& ptr : operands) {ret.push_back(ptr.get());}
+        for (const auto& ptr : operators) {ret.push_back(ptr.get());}
         return ret;
     }
+    
+    // === *** Identifier *** ===
     
     std::string_view SemanticNode_Identifier::className() const {
         return "Identifier";
@@ -608,15 +747,31 @@ namespace ChakraL
         out << WTokenNames[(int)name.type] << ":" << name.line << ":" << name.character << " - " << name.str;
         out << std::endl; 
         
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "unary_op: "; 
+        if (unary_op) unary_op->print(out, tabs+1, tabstr); else out << "null";
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "binary_op: "; 
+        if (binary_op) binary_op->print(out, tabs+1, tabstr); else out << "null";
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "suf: "; 
+        out << WTokenNames[(int)suf.type] << ":" << suf.line << ":" << suf.character << " - " << suf.str;
+        out << std::endl; 
+        
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
     std::vector<const SemanticNode*> SemanticNode_Identifier::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
+            unary_op.get(),
+            binary_op.get(),
         };
         ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** Literal *** ===
     
     std::string_view SemanticNode_Literal::className() const {
         return "Literal";
@@ -634,6 +789,8 @@ namespace ChakraL
         ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** FunctionLiteral *** ===
     
     std::string_view SemanticNode_FunctionLiteral::className() const {
         return "FunctionLiteral";
@@ -662,6 +819,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** CoroutineLiteral *** ===
+    
     std::string_view SemanticNode_CoroutineLiteral::className() const {
         return "CoroutineLiteral";
     }
@@ -689,12 +848,14 @@ namespace ChakraL
         return ret;
     }
     
-    std::string_view SemanticNode_ContextBlockLiteral::className() const {
-        return "ContextBlockLiteral";
+    // === *** ContextExpressionLiteral *** ===
+    
+    std::string_view SemanticNode_ContextExpressionLiteral::className() const {
+        return "ContextExpressionLiteral";
     }
     
-    void SemanticNode_ContextBlockLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ContextBlockLiteral {" << std::endl; 
+    void SemanticNode_ContextExpressionLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "ContextExpressionLiteral {" << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "items: [" << std::endl;
         for (auto& ptr : items) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
@@ -703,13 +864,15 @@ namespace ChakraL
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
-    std::vector<const SemanticNode*> SemanticNode_ContextBlockLiteral::getSubNodes() const {
+    std::vector<const SemanticNode*> SemanticNode_ContextExpressionLiteral::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
         };
         ret.reserve(ret.size() + items.size() + 0);
         for (const auto& ptr : items) {ret.push_back(ptr.get());}
         return ret;
     }
+    
+    // === *** ValueLiteral *** ===
     
     std::string_view SemanticNode_ValueLiteral::className() const {
         return "ValueLiteral";
@@ -736,6 +899,35 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** ModuleReference *** ===
+    
+    std::string_view SemanticNode_ModuleReference::className() const {
+        return "ModuleReference";
+    }
+    
+    void SemanticNode_ModuleReference::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "ModuleReference {" << std::endl; 
+        
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "modulepath: [" << std::endl;
+        for (auto& tok : modulepath) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "version: "; 
+        out << WTokenNames[(int)version.type] << ":" << version.line << ":" << version.character << " - " << version.str;
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_ModuleReference::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+        };
+        ret.reserve(ret.size() + 0);
+        return ret;
+    }
+    
+    // === *** ListLiteral *** ===
+    
     std::string_view SemanticNode_ListLiteral::className() const {
         return "ListLiteral";
     }
@@ -757,6 +949,8 @@ namespace ChakraL
         for (const auto& ptr : items) {ret.push_back(ptr.get());}
         return ret;
     }
+    
+    // === *** DictLiteral *** ===
     
     std::string_view SemanticNode_DictLiteral::className() const {
         return "DictLiteral";
@@ -780,6 +974,8 @@ namespace ChakraL
         return ret;
     }
     
+    // === *** SetLiteral *** ===
+    
     std::string_view SemanticNode_SetLiteral::className() const {
         return "SetLiteral";
     }
@@ -801,6 +997,81 @@ namespace ChakraL
         for (const auto& ptr : items) {ret.push_back(ptr.get());}
         return ret;
     }
+    
+    // === *** UnaryOperator *** ===
+    
+    std::string_view SemanticNode_UnaryOperator::className() const {
+        return "UnaryOperator";
+    }
+    
+    void SemanticNode_UnaryOperator::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "UnaryOperator {" << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "op: "; 
+        out << WTokenNames[(int)op.type] << ":" << op.line << ":" << op.character << " - " << op.str;
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_UnaryOperator::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+        };
+        ret.reserve(ret.size() + 0);
+        return ret;
+    }
+    
+    // === *** BinaryOperator *** ===
+    
+    std::string_view SemanticNode_BinaryOperator::className() const {
+        return "BinaryOperator";
+    }
+    
+    void SemanticNode_BinaryOperator::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "BinaryOperator {" << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "op: "; 
+        out << WTokenNames[(int)op.type] << ":" << op.line << ":" << op.character << " - " << op.str;
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_BinaryOperator::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+        };
+        ret.reserve(ret.size() + 0);
+        return ret;
+    }
+    
+    // === *** RangeOperator *** ===
+    
+    std::string_view SemanticNode_RangeOperator::className() const {
+        return "RangeOperator";
+    }
+    
+    void SemanticNode_RangeOperator::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "RangeOperator {" << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "left: "; 
+        out << WTokenNames[(int)left.type] << ":" << left.line << ":" << left.character << " - " << left.str;
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "right: "; 
+        out << WTokenNames[(int)right.type] << ":" << right.line << ":" << right.character << " - " << right.str;
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_RangeOperator::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+        };
+        ret.reserve(ret.size() + 0);
+        return ret;
+    }
+    
+    // === *** DictEntry *** ===
     
     std::string_view SemanticNode_DictEntry::className() const {
         return "DictEntry";
@@ -829,36 +1100,59 @@ namespace ChakraL
         return ret;
     }
     
-    std::string_view SemanticNode_MemberDecl::className() const {
-        return "MemberDecl";
+    // === *** ExpressionOrBlock *** ===
+    
+    std::string_view SemanticNode_ExpressionOrBlock::className() const {
+        return "ExpressionOrBlock";
     }
     
-    void SemanticNode_MemberDecl::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "MemberDecl {" << std::endl; 
+    void SemanticNode_ExpressionOrBlock::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "ExpressionOrBlock {" << std::endl; 
         
-        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "member: "; 
-        out << WTokenNames[(int)member.type] << ":" << member.line << ":" << member.character << " - " << member.str;
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "expr: "; 
+        if (expr) expr->print(out, tabs+1, tabstr); else out << "null";
         out << std::endl; 
         
-        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "trait: "; 
-        if (trait) trait->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
-        
-        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
-        if (value) value->print(out, tabs+1, tabstr); else out << "null";
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "block: "; 
+        if (block) block->print(out, tabs+1, tabstr); else out << "null";
         out << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
-    std::vector<const SemanticNode*> SemanticNode_MemberDecl::getSubNodes() const {
+    std::vector<const SemanticNode*> SemanticNode_ExpressionOrBlock::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
-            trait.get(),
-            value.get(),
+            expr.get(),
+            block.get(),
         };
         ret.reserve(ret.size() + 0);
         return ret;
     }
+    
+    // === *** ValueSpecifier *** ===
+    
+    std::string_view SemanticNode_ValueSpecifier::className() const {
+        return "ValueSpecifier";
+    }
+    
+    void SemanticNode_ValueSpecifier::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "ValueSpecifier {" << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "token: "; 
+        out << WTokenNames[(int)token.type] << ":" << token.line << ":" << token.character << " - " << token.str;
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
+    }
+    
+    std::vector<const SemanticNode*> SemanticNode_ValueSpecifier::getSubNodes() const {
+        std::vector<const SemanticNode*> ret {
+        };
+        ret.reserve(ret.size() + 0);
+        return ret;
+    }
+    
+    // === *** WithStatEntry *** ===
     
     std::string_view SemanticNode_WithStatEntry::className() const {
         return "WithStatEntry";
@@ -871,8 +1165,12 @@ namespace ChakraL
         out << WTokenNames[(int)id.type] << ":" << id.line << ":" << id.character << " - " << id.str;
         out << std::endl; 
         
-        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "val: "; 
-        if (val) val->print(out, tabs+1, tabstr); else out << "null";
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
+        if (value) value->print(out, tabs+1, tabstr); else out << "null";
+        out << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "anonValue: "; 
+        if (anonValue) anonValue->print(out, tabs+1, tabstr); else out << "null";
         out << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
@@ -880,18 +1178,21 @@ namespace ChakraL
     
     std::vector<const SemanticNode*> SemanticNode_WithStatEntry::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
-            val.get(),
+            value.get(),
+            anonValue.get(),
         };
         ret.reserve(ret.size() + 0);
         return ret;
     }
     
-    std::string_view SemanticNode_AssignmentEqualOperator::className() const {
-        return "AssignmentEqualOperator";
+    // === *** ChangeOperator *** ===
+    
+    std::string_view SemanticNode_ChangeOperator::className() const {
+        return "ChangeOperator";
     }
     
-    void SemanticNode_AssignmentEqualOperator::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "AssignmentEqualOperator {" << std::endl; 
+    void SemanticNode_ChangeOperator::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
+        out << "ChangeOperator {" << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "op: "; 
         out << WTokenNames[(int)op.type] << ":" << op.line << ":" << op.character << " - " << op.str;
@@ -900,7 +1201,7 @@ namespace ChakraL
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
-    std::vector<const SemanticNode*> SemanticNode_AssignmentEqualOperator::getSubNodes() const {
+    std::vector<const SemanticNode*> SemanticNode_ChangeOperator::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
         };
         ret.reserve(ret.size() + 0);
