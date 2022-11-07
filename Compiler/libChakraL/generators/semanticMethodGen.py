@@ -206,28 +206,29 @@ def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filen
         # PRINT method
         meth = semNode.methods[PRINT_METHOD_DECL]
         code = ""
-        code += f"{TAB}{TAB}" + fr'out << "{className} {{" << std::endl; ' + "\n"
+        code += f"{TAB}{TAB}" + fr'out << "{{" << std::endl; ' + "\n"
+        code += f"{TAB}{TAB}" + fr'for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"{className}\"," << std::endl; ' + "\n"
         code += f"{TAB}{TAB}\n"
         for memName, mem in semNode.publicMembers.items():
             if mem.type.startswith("Ptr<SemanticNode_"):
                 code += f"{TAB}{TAB}" + fr'for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "{mem.name}: "; ' + "\n"
                 code += f"{TAB}{TAB}" + fr'if ({mem.name}) {mem.name}->print(out, tabs+1, tabstr); else out << "null";' + "\n"
-                code += f"{TAB}{TAB}" + fr'out << std::endl; ' + "\n"
+                code += f"{TAB}{TAB}" + fr'out << "," << std::endl; ' + "\n"
                 code += f"{TAB}{TAB}\n"
             elif mem.type.startswith("std::list<Ptr<SemanticNode_"):
                 code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "{mem.name}: [" << std::endl;' + "\n"
                 code += f"{TAB}{TAB}" + fr'for (auto& ptr : {mem.name}) {{for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }}' + "\n"
-                code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "]" << std::endl;' + "\n"
+                code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "]," << std::endl;' + "\n"
                 code += f"{TAB}{TAB}\n"
             elif mem.type.startswith("Token"):
                 code += f"{TAB}{TAB}" + fr'for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "{mem.name}: "; ' + "\n"
-                code += f"{TAB}{TAB}" + fr'out << WTokenNames[(int){mem.name}.type] << ":" << {mem.name}.line << ":" << {mem.name}.character << " - " << {mem.name}.str;' + "\n"
-                code += f"{TAB}{TAB}" + fr'out << std::endl; ' + "\n"
+                code += f"{TAB}{TAB}" + fr'out<< "\"" << {mem.name}.fullname() << "\"";' + "\n"
+                code += f"{TAB}{TAB}" + fr'out << "," << std::endl; ' + "\n"
                 code += f"{TAB}{TAB}\n"
             elif mem.type.startswith("std::list<Token"):
                 code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "{mem.name}: [" << std::endl;' + "\n"
-                code += f"{TAB}{TAB}" + fr'for (auto& tok : {mem.name}) {{for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }}' + "\n"
-                code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "]" << std::endl;' + "\n"
+                code += f"{TAB}{TAB}" + fr'for (auto& tok : {mem.name}) {{for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << "\"" << tok.fullname() << "\"," << std::endl; }}' + "\n"
+                code += f"{TAB}{TAB}" + fr'{{for (size_t i = 0; i<tabs+1; i++) out << tabstr;}} out << "]," << std::endl;' + "\n"
                 code += f"{TAB}{TAB}\n"
             
         code += f"{TAB}{TAB}" + fr'for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}}"; ' + "\n"
