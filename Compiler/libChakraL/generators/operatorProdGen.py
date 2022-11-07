@@ -103,18 +103,20 @@ def outputOperatorProductions(filenameIn: str, filenameOut: str):
 					raise FormatError("Expected < or >", location)
 				
 				if optype == 'BINARY':
-					if assoc == '>':
+					if assoc == '--':
 						template = "operands::{prev} ( {op} operands::{prev} )+"
-					else:
-						template = "operands::{prev} ( {op} operands::{prev} )+"
+					elif assoc == '>':
+						template = "left:{cur} {op} right:{prev}"
+					else:#if assoc == '<':
+						template = "left:{prev} {op} right:{cur}"
 				elif optype == 'RUNARY':
 					if assoc != '>':
 						raise FormatError("RUNARY can't be <", location)
-					template = "operands::{prev} {op}+"
+					template = "operand:{cur} {op}"
 				elif optype == 'LUNARY':
 					if assoc != '<':
 						raise FormatError("LUNARY can't be >", location)
-					template = "{op}+ operands::{prev}"
+					template = "{op} operand:{cur}"
 				else:
 					raise FormatError("Expected BINARY or RUNARY or LUNARY", location)
 			else:

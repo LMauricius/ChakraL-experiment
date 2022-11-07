@@ -600,22 +600,27 @@ namespace ChakraL
         out << "{" << std::endl; 
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ExprBinaryL2R\"," << std::endl; 
         
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
-        for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "left: "; 
+        if (left) left->print(out, tabs+1, tabstr); else out << "null";
+        out << "," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operators: [" << std::endl;
         for (auto& tok : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << "\"" << tok.fullname() << "\"," << std::endl; }
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "right: "; 
+        if (right) right->print(out, tabs+1, tabstr); else out << "null";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
     std::vector<const SemanticNode*> SemanticNode_ExprBinaryL2R::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
+            left.get(),
+            right.get(),
         };
-        ret.reserve(ret.size() + operands.size() + 0);
-        for (const auto& ptr : operands) {ret.push_back(ptr.get());}
+        ret.reserve(ret.size() + 0);
         return ret;
     }
     
@@ -633,18 +638,18 @@ namespace ChakraL
         for (auto& tok : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << "\"" << tok.fullname() << "\"," << std::endl; }
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
-        for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "operand: "; 
+        if (operand) operand->print(out, tabs+1, tabstr); else out << "null";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
     std::vector<const SemanticNode*> SemanticNode_ExprLUnary::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
+            operand.get(),
         };
-        ret.reserve(ret.size() + operands.size() + 0);
-        for (const auto& ptr : operands) {ret.push_back(ptr.get());}
+        ret.reserve(ret.size() + 0);
         return ret;
     }
     
@@ -718,18 +723,23 @@ namespace ChakraL
         out << "{" << std::endl; 
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ExprPrefixFunction\"," << std::endl; 
         
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
-        for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "left: "; 
+        if (left) left->print(out, tabs+1, tabstr); else out << "null";
+        out << "," << std::endl; 
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "right: "; 
+        if (right) right->print(out, tabs+1, tabstr); else out << "null";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
     std::vector<const SemanticNode*> SemanticNode_ExprPrefixFunction::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
+            left.get(),
+            right.get(),
         };
-        ret.reserve(ret.size() + operands.size() + 0);
-        for (const auto& ptr : operands) {ret.push_back(ptr.get());}
+        ret.reserve(ret.size() + 0);
         return ret;
     }
     
@@ -743,22 +753,27 @@ namespace ChakraL
         out << "{" << std::endl; 
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"RangeLiteral\"," << std::endl; 
         
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
-        for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "left: "; 
+        if (left) left->print(out, tabs+1, tabstr); else out << "null";
+        out << "," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operators: [" << std::endl;
         for (auto& ptr : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
+        
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "right: "; 
+        if (right) right->print(out, tabs+1, tabstr); else out << "null";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
     std::vector<const SemanticNode*> SemanticNode_RangeLiteral::getSubNodes() const {
         std::vector<const SemanticNode*> ret {
+            left.get(),
+            right.get(),
         };
-        ret.reserve(ret.size() + operands.size() + operators.size() + 0);
-        for (const auto& ptr : operands) {ret.push_back(ptr.get());}
+        ret.reserve(ret.size() + operators.size() + 0);
         for (const auto& ptr : operators) {ret.push_back(ptr.get());}
         return ret;
     }
