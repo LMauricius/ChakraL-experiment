@@ -13,11 +13,12 @@ namespace ChakraL
     }
     
     void SemanticNode_ContextBlock::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ContextBlock {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ContextBlock\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "descs: [" << std::endl;
         for (auto& ptr : descs) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -37,7 +38,8 @@ namespace ChakraL
     }
     
     void SemanticNode_Description::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "Description {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"Description\"," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -56,11 +58,12 @@ namespace ChakraL
     }
     
     void SemanticNode_Requirement::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "Requirement {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"Requirement\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "cond: "; 
         if (cond) cond->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -80,11 +83,12 @@ namespace ChakraL
     }
     
     void SemanticNode_Inclusion::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "Inclusion {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"Inclusion\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
         if (value) value->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -104,11 +108,12 @@ namespace ChakraL
     }
     
     void SemanticNode_TraitSpecifier::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "TraitSpecifier {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"TraitSpecifier\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "token: "; 
-        out << WTokenNames[(int)token.type] << ":" << token.line << ":" << token.character << " - " << token.str;
-        out << std::endl; 
+        out<< "\"" << token.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -127,11 +132,12 @@ namespace ChakraL
     }
     
     void SemanticNode_Statement::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "Statement {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"Statement\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "exec: "; 
         if (exec) exec->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -151,23 +157,24 @@ namespace ChakraL
     }
     
     void SemanticNode_MemberDecl::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "MemberDecl {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"MemberDecl\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "member: "; 
         if (member) member->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "valueSpecs: [" << std::endl;
         for (auto& ptr : valueSpecs) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
         if (value) value->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "trait: "; 
         if (trait) trait->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -190,15 +197,16 @@ namespace ChakraL
     }
     
     void SemanticNode_Definition::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "Definition {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"Definition\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "id: "; 
-        out << WTokenNames[(int)id.type] << ":" << id.line << ":" << id.character << " - " << id.str;
-        out << std::endl; 
+        out<< "\"" << id.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
         if (value) value->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -218,19 +226,20 @@ namespace ChakraL
     }
     
     void SemanticNode_Change::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "Change {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"Change\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "left: "; 
         if (left) left->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "op: "; 
         if (op) op->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "rights: "; 
         if (rights) rights->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -252,19 +261,20 @@ namespace ChakraL
     }
     
     void SemanticNode_IfStat::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "IfStat {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"IfStat\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "cond: "; 
         if (cond) cond->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "exec: "; 
         if (exec) exec->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "alt: "; 
         if (alt) alt->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -286,15 +296,16 @@ namespace ChakraL
     }
     
     void SemanticNode_LoopStat::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "LoopStat {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"LoopStat\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "parts: [" << std::endl;
         for (auto& ptr : parts) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "block: "; 
         if (block) block->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -315,7 +326,8 @@ namespace ChakraL
     }
     
     void SemanticNode_LoopStatPart::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "LoopStatPart {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"LoopStatPart\"," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -334,11 +346,12 @@ namespace ChakraL
     }
     
     void SemanticNode_TimesLoopStatPart::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "TimesLoopStatPart {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"TimesLoopStatPart\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "count: "; 
         if (count) count->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -358,15 +371,16 @@ namespace ChakraL
     }
     
     void SemanticNode_ForLoopStatPart::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ForLoopStatPart {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ForLoopStatPart\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "id: "; 
-        out << WTokenNames[(int)id.type] << ":" << id.line << ":" << id.character << " - " << id.str;
-        out << std::endl; 
+        out<< "\"" << id.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "iterable: "; 
         if (iterable) iterable->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -386,11 +400,12 @@ namespace ChakraL
     }
     
     void SemanticNode_WhileLoopStatPart::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "WhileLoopStatPart {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"WhileLoopStatPart\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "cond: "; 
         if (cond) cond->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -410,7 +425,8 @@ namespace ChakraL
     }
     
     void SemanticNode_JumpStat::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "JumpStat {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"JumpStat\"," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -429,19 +445,20 @@ namespace ChakraL
     }
     
     void SemanticNode_WithStat::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "WithStat {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"WithStat\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "funcs: [" << std::endl;
-        for (auto& tok : funcs) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        for (auto& tok : funcs) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << "\"" << tok.fullname() << "\"," << std::endl; }
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "entries: [" << std::endl;
         for (auto& ptr : entries) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "block: "; 
         if (block) block->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -462,11 +479,12 @@ namespace ChakraL
     }
     
     void SemanticNode_BreakStat::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "BreakStat {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"BreakStat\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "id: "; 
-        out << WTokenNames[(int)id.type] << ":" << id.line << ":" << id.character << " - " << id.str;
-        out << std::endl; 
+        out<< "\"" << id.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -485,11 +503,12 @@ namespace ChakraL
     }
     
     void SemanticNode_ContinueStat::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ContinueStat {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ContinueStat\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "id: "; 
-        out << WTokenNames[(int)id.type] << ":" << id.line << ":" << id.character << " - " << id.str;
-        out << std::endl; 
+        out<< "\"" << id.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -508,11 +527,12 @@ namespace ChakraL
     }
     
     void SemanticNode_ReturnStat::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ReturnStat {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ReturnStat\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "val: "; 
         if (val) val->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -532,11 +552,12 @@ namespace ChakraL
     }
     
     void SemanticNode_YieldStat::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "YieldStat {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"YieldStat\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "val: "; 
         if (val) val->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -556,7 +577,8 @@ namespace ChakraL
     }
     
     void SemanticNode_Expression::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "Expression {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"Expression\"," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -575,15 +597,16 @@ namespace ChakraL
     }
     
     void SemanticNode_ExprBinaryL2R::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ExprBinaryL2R {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ExprBinaryL2R\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
         for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operators: [" << std::endl;
-        for (auto& tok : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        for (auto& tok : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << "\"" << tok.fullname() << "\"," << std::endl; }
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -603,15 +626,16 @@ namespace ChakraL
     }
     
     void SemanticNode_ExprLUnary::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ExprLUnary {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ExprLUnary\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operators: [" << std::endl;
-        for (auto& tok : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        for (auto& tok : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << "\"" << tok.fullname() << "\"," << std::endl; }
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
         for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -631,7 +655,8 @@ namespace ChakraL
     }
     
     void SemanticNode_ExprRUnary::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ExprRUnary {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ExprRUnary\"," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -650,7 +675,8 @@ namespace ChakraL
     }
     
     void SemanticNode_TightExpr::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "TightExpr {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"TightExpr\"," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -669,7 +695,8 @@ namespace ChakraL
     }
     
     void SemanticNode_LogicalExpr::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "LogicalExpr {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"LogicalExpr\"," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -688,11 +715,12 @@ namespace ChakraL
     }
     
     void SemanticNode_ExprPrefixFunction::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ExprPrefixFunction {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ExprPrefixFunction\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
         for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -712,15 +740,16 @@ namespace ChakraL
     }
     
     void SemanticNode_RangeLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "RangeLiteral {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"RangeLiteral\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
         for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operators: [" << std::endl;
         for (auto& ptr : operators) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -741,23 +770,24 @@ namespace ChakraL
     }
     
     void SemanticNode_Identifier::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "Identifier {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"Identifier\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "name: "; 
-        out << WTokenNames[(int)name.type] << ":" << name.line << ":" << name.character << " - " << name.str;
-        out << std::endl; 
+        out<< "\"" << name.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "unary_op: "; 
         if (unary_op) unary_op->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "binary_op: "; 
         if (binary_op) binary_op->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "suf: "; 
-        out << WTokenNames[(int)suf.type] << ":" << suf.line << ":" << suf.character << " - " << suf.str;
-        out << std::endl; 
+        out<< "\"" << suf.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -778,7 +808,8 @@ namespace ChakraL
     }
     
     void SemanticNode_Literal::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "Literal {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"Literal\"," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -797,15 +828,16 @@ namespace ChakraL
     }
     
     void SemanticNode_FunctionLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "FunctionLiteral {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"FunctionLiteral\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "param: "; 
         if (param) param->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "block: "; 
         if (block) block->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -826,15 +858,16 @@ namespace ChakraL
     }
     
     void SemanticNode_CoroutineLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "CoroutineLiteral {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"CoroutineLiteral\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "param: "; 
         if (param) param->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "block: "; 
         if (block) block->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -855,11 +888,12 @@ namespace ChakraL
     }
     
     void SemanticNode_ContextExpressionLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ContextExpressionLiteral {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ContextExpressionLiteral\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "items: [" << std::endl;
         for (auto& ptr : items) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -879,15 +913,16 @@ namespace ChakraL
     }
     
     void SemanticNode_ValueLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ValueLiteral {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ValueLiteral\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "val: "; 
-        out << WTokenNames[(int)val.type] << ":" << val.line << ":" << val.character << " - " << val.str;
-        out << std::endl; 
+        out<< "\"" << val.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "suf: "; 
-        out << WTokenNames[(int)suf.type] << ":" << suf.line << ":" << suf.character << " - " << suf.str;
-        out << std::endl; 
+        out<< "\"" << suf.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -906,15 +941,16 @@ namespace ChakraL
     }
     
     void SemanticNode_ModuleReference::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ModuleReference {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ModuleReference\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "modulepath: [" << std::endl;
-        for (auto& tok : modulepath) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << WTokenNames[(int)tok.type] << ":" << tok.line << ":" << tok.character << " - " << tok.str << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        for (auto& tok : modulepath) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; out << "\"" << tok.fullname() << "\"," << std::endl; }
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "version: "; 
-        out << WTokenNames[(int)version.type] << ":" << version.line << ":" << version.character << " - " << version.str;
-        out << std::endl; 
+        out<< "\"" << version.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -933,11 +969,12 @@ namespace ChakraL
     }
     
     void SemanticNode_ListLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ListLiteral {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ListLiteral\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "items: [" << std::endl;
         for (auto& ptr : items) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -957,11 +994,12 @@ namespace ChakraL
     }
     
     void SemanticNode_DictLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "DictLiteral {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"DictLiteral\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "items: [" << std::endl;
         for (auto& ptr : items) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -981,11 +1019,12 @@ namespace ChakraL
     }
     
     void SemanticNode_SetLiteral::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "SetLiteral {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"SetLiteral\"," << std::endl; 
         
         {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "items: [" << std::endl;
         for (auto& ptr : items) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
-        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]" << std::endl;
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -1005,11 +1044,12 @@ namespace ChakraL
     }
     
     void SemanticNode_UnaryOperator::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "UnaryOperator {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"UnaryOperator\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "op: "; 
-        out << WTokenNames[(int)op.type] << ":" << op.line << ":" << op.character << " - " << op.str;
-        out << std::endl; 
+        out<< "\"" << op.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -1028,11 +1068,12 @@ namespace ChakraL
     }
     
     void SemanticNode_BinaryOperator::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "BinaryOperator {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"BinaryOperator\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "op: "; 
-        out << WTokenNames[(int)op.type] << ":" << op.line << ":" << op.character << " - " << op.str;
-        out << std::endl; 
+        out<< "\"" << op.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -1051,15 +1092,16 @@ namespace ChakraL
     }
     
     void SemanticNode_RangeOperator::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "RangeOperator {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"RangeOperator\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "left: "; 
-        out << WTokenNames[(int)left.type] << ":" << left.line << ":" << left.character << " - " << left.str;
-        out << std::endl; 
+        out<< "\"" << left.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "right: "; 
-        out << WTokenNames[(int)right.type] << ":" << right.line << ":" << right.character << " - " << right.str;
-        out << std::endl; 
+        out<< "\"" << right.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -1078,15 +1120,16 @@ namespace ChakraL
     }
     
     void SemanticNode_DictEntry::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "DictEntry {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"DictEntry\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "key: "; 
         if (key) key->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
         if (value) value->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -1107,15 +1150,16 @@ namespace ChakraL
     }
     
     void SemanticNode_ExpressionOrBlock::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ExpressionOrBlock {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ExpressionOrBlock\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "expr: "; 
         if (expr) expr->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "block: "; 
         if (block) block->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -1136,11 +1180,12 @@ namespace ChakraL
     }
     
     void SemanticNode_ValueSpecifier::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ValueSpecifier {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ValueSpecifier\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "token: "; 
-        out << WTokenNames[(int)token.type] << ":" << token.line << ":" << token.character << " - " << token.str;
-        out << std::endl; 
+        out<< "\"" << token.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -1159,19 +1204,20 @@ namespace ChakraL
     }
     
     void SemanticNode_WithStatEntry::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "WithStatEntry {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"WithStatEntry\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "id: "; 
-        out << WTokenNames[(int)id.type] << ":" << id.line << ":" << id.character << " - " << id.str;
-        out << std::endl; 
+        out<< "\"" << id.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "value: "; 
         if (value) value->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "anonValue: "; 
         if (anonValue) anonValue->print(out, tabs+1, tabstr); else out << "null";
-        out << std::endl; 
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
@@ -1192,11 +1238,12 @@ namespace ChakraL
     }
     
     void SemanticNode_ChangeOperator::print(std::wostream& out, size_t tabs, const std::wstring& tabstr) const {
-        out << "ChangeOperator {" << std::endl; 
+        out << "{" << std::endl; 
+        for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "NODE_TYPE: \"ChangeOperator\"," << std::endl; 
         
         for (size_t i = 0; i<tabs+1; i++) out << tabstr; out << "op: "; 
-        out << WTokenNames[(int)op.type] << ":" << op.line << ":" << op.character << " - " << op.str;
-        out << std::endl; 
+        out<< "\"" << op.fullname() << "\"";
+        out << "," << std::endl; 
         
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
