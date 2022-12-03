@@ -68,6 +68,12 @@
                 </li>
             </ul>
             </li>
+            <li><a href="value_qualifiers.html">3&nbspValue qualifiers</a>
+            <ul>
+                <li><a href="ownership.html">1&nbspOwnership</a>
+                </li>
+            </ul>
+            </li>
         </ul>
         </li>
         <li>4&nbspStandard library
@@ -81,10 +87,10 @@
 <h2 id="purpose">Purpose</h2>
 <p>The trait system is useful in several ways. It allows the programmer to limit themself and prevent errors caused by improper use of data. It simultaneously tells the compiler how we are going to use the data, which allows it to optimize the machine code for that specific usage, causing the resulting program to run faster. As the trait system is quite <em>explicit</em> (without necessarily being <em>verbose</em>), this also allows other programmers who read our code to know what we intended to do with the data.</p>
 <h2 id="satisfying-the-trait">Satisfying the trait</h2>
-<p>If the context <code>c</code> satisfies the trait <code>t</code> we say that <code class="sourceCode chakral">c <span class="kw">is</span> t</code>. That satisfaction depends on <code>c</code> and <code>t</code>’s descriptions and specifiers. How the descriptions and specifiers are satisfied is described below.</p>
+<p>If the context <code>c</code> satisfies the trait <code>t</code> we say that <code class="sourceCode chakral">c <span class="kw">is</span> t</code>. That satisfaction depends on <code>c</code> and <code>t</code>’s descriptions and qualifiers. How the descriptions and qualifiers are satisfied is described below.</p>
 <h2 id="descriptions">Descriptions</h2>
 <h3 id="member-declaration">Member declaration</h3>
-<p>The context <code>c</code> can satisfy the trait <code>t</code> with a member <code>m</code> of required trait <code>MT</code> only if <code>c</code> also has a member <code>m</code> that satisfies <code>t</code>‘s member’s required trait <code>MT</code>. Unless a <code>final</code> trait specifier (see down below) is involved, the members values’ data doesn’t matter.</p>
+<p>The context <code>c</code> can satisfy the trait <code>t</code> with a member <code>m</code> of required trait <code>MT</code> only if <code>c</code> also has a member <code>m</code> that satisfies <code>t</code>‘s member’s required trait <code>MT</code>. Unless a <code>final</code> trait qualifier (see down below) is involved, the members values’ data doesn’t matter.</p>
 <div class="sourceCode" id="cb1" data-caption="Example of a member declaration"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1">ExampleTrait <span class="kw">def</span>:</a>
 <a class="sourceLine" id="cb1-2" title="2">    member: int32 <span class="op">=</span> <span class="dv">5</span></a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="cf">ok</span></a>
@@ -127,9 +133,9 @@
 <a class="sourceLine" id="cb3-14" title="14">    write <span class="kw">whether</span> (x <span class="op">=</span> <span class="op">-</span><span class="dv">2</span>, y <span class="op">=</span> <span class="dv">2</span>) <span class="kw">is</span> ExampleTrait <span class="co">**prints &#39;true&#39;</span></a>
 <a class="sourceLine" id="cb3-15" title="15">    write <span class="kw">whether</span> (x <span class="op">=</span> <span class="op">-</span><span class="dv">2</span>) <span class="kw">is</span> ExampleTrait <span class="co">**prints &#39;false&#39;</span></a>
 <a class="sourceLine" id="cb3-16" title="16"><span class="cf">ok</span></a></code></pre></div>
-<h2 id="trait-specifiers">Trait specifiers</h2>
-<p>Trait specifiers change how the satisfaction is interpreted in addition to the descriptions. They can be used as descriptions or like prefix functions.</p>
-<div class="sourceCode" id="cb4" data-caption="Example of a final trait specifier"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb4-1" title="1"><span class="co">** like description of a block context:</span></a>
+<h2 id="trait-qualifiers">Trait qualifiers</h2>
+<p>Trait qualifiers change how the satisfaction is interpreted in addition to the descriptions. They can be used as descriptions or like prefix functions.</p>
+<div class="sourceCode" id="cb4" data-caption="Example of a final trait qualifier"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb4-1" title="1"><span class="co">** like description of a block context:</span></a>
 <a class="sourceLine" id="cb4-2" title="2">A <span class="kw">def</span>:</a>
 <a class="sourceLine" id="cb4-3" title="3">    <span class="kw">final</span></a>
 <a class="sourceLine" id="cb4-4" title="4">    a <span class="op">=</span> <span class="dv">1</span></a>
@@ -139,9 +145,9 @@
 <a class="sourceLine" id="cb4-8" title="8"></a>
 <a class="sourceLine" id="cb4-9" title="9"><span class="co">** like a prefix function:</span></a>
 <a class="sourceLine" id="cb4-10" title="10">C <span class="kw">def</span> <span class="kw">final</span> (c <span class="op">=</span> <span class="dv">3</span>)</a></code></pre></div>
-<h3 id="final-specifier">final specifier</h3>
-<p>If the trait <code>t</code> has a <code class="sourceCode chakral"><span class="kw">final</span></code> specifier, then it will only be satisfied if <code>c</code> is either equal to <code>t</code> or hasn’t been changed since being created as a copy of <code>t</code>. If a final trait <code>t</code> is used as a required trait of value <code>v</code>, <code>v</code> cannot be changed, just like if <code>v</code> was a constant value. Unlike constant values, a final value cannot be overriden by another value. Using a final value in an operation that could change or override it is forbidden, even if <code>v</code>’s data wouldn’t be changed by the operation (i.e. <code>v</code> would still satisfy its required trait <em>after</em> the operation).</p>
-<p>A final trait <code>t</code> can be used as a required trait for value <code>v</code> only if <code>v</code> is a constant value. Note that <code class="sourceCode chakral"><span class="kw">final</span></code> is a trait specifier while <code class="sourceCode chakral"><span class="kw">const</span></code> is a value specifier.</p>
+<h3 id="final-qualifier">final qualifier</h3>
+<p>If the trait <code>t</code> has a <code class="sourceCode chakral"><span class="kw">final</span></code> qualifier, then it will only be satisfied if <code>c</code> is either equal to <code>t</code> or hasn’t been changed since being created as a copy of <code>t</code>. If a final trait <code>t</code> is used as a required trait of value <code>v</code>, <code>v</code> cannot be changed, just like if <code>v</code> was a constant value. Unlike constant values, a final value cannot be overriden by another value. Using a final value in an operation that could change or override it is forbidden, even if <code>v</code>’s data wouldn’t be changed by the operation (i.e. <code>v</code> would still satisfy its required trait <em>after</em> the operation).</p>
+<p>A final trait <code>t</code> can be used as a required trait for value <code>v</code> only if <code>v</code> is a constant value. Note that <code class="sourceCode chakral"><span class="kw">final</span></code> is a trait qualifier while <code class="sourceCode chakral"><span class="kw">const</span></code> is a value qualifier.</p>
 <div class="sourceCode" id="cb5" data-caption="Example of the difference between final and non-final traits"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1"><span class="co">** A context is Killable if it has a Real value health and Integer value lives</span></a>
 <a class="sourceLine" id="cb5-2" title="2"><span class="co">** (no matter those values&#39; data)</span></a>
 <a class="sourceLine" id="cb5-3" title="3">Killable <span class="kw">def</span>:</a>
@@ -213,8 +219,8 @@
 <a class="sourceLine" id="cb7-13" title="13">number b <span class="op">=</span> <span class="dv">100</span> <span class="co">**ERROR - can&#39;t change final value</span></a>
 <a class="sourceLine" id="cb7-14" title="14">c <span class="op">=</span> a <span class="op">&amp;</span> (number: <span class="kw">const</span> <span class="op">=</span> <span class="dv">100</span>) <span class="co">**OK - can override const value</span></a>
 <a class="sourceLine" id="cb7-15" title="15">d <span class="op">=</span> b <span class="op">&amp;</span> (<span class="kw">final</span>, number <span class="op">=</span> <span class="dv">100</span>) <span class="co">**ERROR - can&#39;t override final value</span></a></code></pre></div>
-<h3 id="explicit-specifier">explicit specifier</h3>
-<p>If the trait <code>t</code> has an <code class="sourceCode chakral"><span class="kw">explicit</span></code> specifier, then it will only be satisfied if <code>c</code> was created as a copy of <code>t</code>. This requires the code that creates the context to epxlicitly want us to use <code>c</code> as <code>t</code>. If a value’s trait is manually specified to be <code>t</code>, and we try to assign it a context <code>c2</code> that is not <code>t</code>, <code>c2</code> will be <em>cast</em> (reinterpreted, if possible) to <code>t</code>.</p>
+<h3 id="explicit-qualifier">explicit qualifier</h3>
+<p>If the trait <code>t</code> has an <code class="sourceCode chakral"><span class="kw">explicit</span></code> qualifier, then it will only be satisfied if <code>c</code> was created as a copy of <code>t</code>. This requires the code that creates the context to epxlicitly want us to use <code>c</code> as <code>t</code>. If a value’s trait is manually specified to be <code>t</code>, and we try to assign it a context <code>c2</code> that is not <code>t</code>, <code>c2</code> will be <em>cast</em> (reinterpreted, if possible) to <code>t</code>.</p>
 <div class="sourceCode" id="cb8" data-caption="Example of the difference between explicit and non-explicit traits"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb8-1" title="1">Player <span class="kw">def</span>:</a>
 <a class="sourceLine" id="cb8-2" title="2">    <span class="kw">explicit</span></a>
 <a class="sourceLine" id="cb8-3" title="3">    lives <span class="op">=</span> <span class="dv">3</span></a>

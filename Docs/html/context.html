@@ -68,6 +68,12 @@
                 </li>
             </ul>
             </li>
+            <li><a href="value_qualifiers.html">3&nbspValue qualifiers</a>
+            <ul>
+                <li><a href="ownership.html">1&nbspOwnership</a>
+                </li>
+            </ul>
+            </li>
         </ul>
         </li>
         <li>4&nbspStandard library
@@ -107,9 +113,8 @@ DESCRIPTION3
 Example of requirement (the <code>lives</code> never reach zero): <code class="sourceCode chakral">?? lives <span class="op">&gt;</span> <span class="dv">0</span></code><br />
 Example of composition (the context ‘includes’ the description of a <code>Movable</code> context): <code class="sourceCode chakral"><span class="op">!</span> Movable</code></p>
 <h3 id="member-declaration">Member declaration</h3>
-<pre data-caption="Usage (reference variable)"><code>MEMBER_NAME : REQUIRED_TRAIT VALUE_SPECIFIERS = STARTING_VALUE </code></pre>
-<pre data-caption="Usage (poiter variable)"><code>MEMBER_NAME : REQUIRED_TRAIT VALUE_SPECIFIERS &lt;- STARTING_VALUE </code></pre>
-<p>If the required trait is ommited, it will be automatically inferred from the required trait of the starting value. If neither the required trait nor any value specifiers are written, the colon can be ommited too. Value specifiers are <code>const</code>, <code>mutable</code>, <code>volatile</code>, <code>virtual</code>.</p>
+<pre data-caption="Usage"><code>MEMBER_NAME : REQUIRED_TRAIT VALUE_QUALIFIERS = STARTING_VALUE </code></pre>
+<p>If the required trait is ommited, it will be automatically inferred from the required trait of the starting value. If neither the required trait nor any value qualifiers are written, the colon can be ommited too. Value qualifiers are <code>const</code>, <code>mutable</code>, <code>own</code>, <code>ref</code>, <code>volatile</code>, <code>virtual</code>.</p>
 <h2 id="similar-ideas-in-other-languages">Similar ideas in other languages</h2>
 <p>primitive data (integers or real numbers), complex objects, literal values, code blocks</p>
 

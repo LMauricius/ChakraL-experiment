@@ -1,0 +1,176 @@
+
+<!doctype html>
+<html>
+    <head>
+        <title>value qualifiers</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="syntax_style.css">
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <div class="sidebar">
+                <div class="tableofcontents">
+                    <p class="tableofcontents_title">Contents</p>
+                            <li><a href="introduction.html">1&nbspIntroduction</a>
+        <ul>
+            <li><a href="how_to_read_the_documentation.html">1&nbspHow to read the documentation</a>
+            </li>
+            <li><a href="language_goals.html">2&nbspLanguage goals</a>
+            </li>
+            <li><a href="file_format.html">3&nbspFile format</a>
+            </li>
+            <li><a href="module_system.html">4&nbspModule system</a>
+            </li>
+        </ul>
+        </li>
+        <li>2&nbspBasic concepts
+        <ul>
+            <li><a href="context.html">1&nbspContext</a>
+            </li>
+            <li><a href="value.html">2&nbspValue</a>
+            </li>
+            <li><a href="trait_system.html">3&nbspTrait system</a>
+            </li>
+        </ul>
+        </li>
+        <li>3&nbspLanguage features
+        <ul>
+            <li>1&nbspStatements
+            <ul>
+                <li><a href="using_statement.html">1&nbspusing statement</a>
+                </li>
+                <li><a href="if_statement.html">2&nbspif statement</a>
+                </li>
+                <li><a href="with_statement.html">3&nbspwith statement</a>
+                </li>
+            </ul>
+            </li>
+            <li><a href="expressions.html">2&nbspExpressions</a>
+            <ul>
+                <li><a href="module_expression.html">1&nbspmodule expression</a>
+                </li>
+                <li><a href="operators.html">2&nbspOperators</a>
+                <ul>
+                    <li><a href="math_operators.html">1&nbspMath operators</a>
+                    </li>
+                    <li><a href="comparison_operators.html">2&nbspComparison operators</a>
+                    </li>
+                    <li><a href="logical_operators.html">3&nbspLogical operators</a>
+                    </li>
+                    <li><a href="operator_new.html">4&nbspOperator new</a>
+                    </li>
+                    <li><a href="operator_as.html">5&nbspOperator as</a>
+                    </li>
+                    <li><a href="context_operators.html">6&nbspContext operators</a>
+                    </li>
+                </ul>
+                </li>
+            </ul>
+            </li>
+            <li><b>3 Value qualifiers</b>
+            <ul>
+                <li><a href="ownership.html">1&nbspOwnership</a>
+                </li>
+            </ul>
+            </li>
+        </ul>
+        </li>
+        <li>4&nbspStandard library
+        </li>
+
+                </div>
+            </div>
+            <div class="main">
+                <div class="pagecontent">
+                    <h1 id="value-qualifiers">Value qualifiers</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Value qualifiers modify the way values can be accessed and used. Some prevent the user from changing the data when it’s not desirable, while others allow the user to share a data context in multiple parts of the program.</p>
+<h2 id="usage">Usage</h2>
+<p>The value qualifiers are written after the required trait of a member declaration. The required trait can still be ommited and automatically inferred, as value qualifiers are a separate concept from the required trait.</p>
+<pre data-caption="Usage"><code>MEMBER_NAME : REQUIRED_TRAIT VALUE_QUALIFIERS = STARTING_VALUE </code></pre>
+<div class="sourceCode" id="cb2" data-caption="Example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console std:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    maxNumEntries: Int32 <span class="kw">const</span> <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    write <span class="st">&quot;Enter how many numbers to add:&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    numEntries: Int32 <span class="kw">const</span> <span class="op">=</span> Read Int32</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>    <span class="cf">if</span> numEntries <span class="op">&gt;</span> maxNumEntries:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>        write(stream <span class="op">=</span> errConsole std, <span class="st">&quot;Can&#39;t add more than &quot;</span><span class="op">+</span>Str(maxNumEntries)<span class="op">+</span><span class="st">&quot; entries!&quot;</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>        sum: Float64 <span class="kw">mutable</span> <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>        <span class="cf">repeat</span> numEntries <span class="cf">times</span>:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>            write <span class="st">&quot;Enter a number:&quot;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>            a <span class="op">=</span> read Float64</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>            sum <span class="op">+=</span> a</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>        <span class="cf">ok</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>        write <span class="st">&quot;The sum is &quot;</span> <span class="op">+</span> Str(sum) <span class="op">+</span> <span class="st">&quot;!&quot;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>    <span class="cf">ok</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
+<h2 id="supported-qualifiers">Supported qualifiers</h2>
+<p>Below is a table of all properties that qualifiers modify, along with the qualifier keywords and default settings.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>States</th>
+<th>Qualifier keywords</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="ownership.html">Ownership</a>.</td>
+<td>owner, reference</td>
+<td><code>own</code> <code>ref</code></td>
+<td>owner (<code>own</code>)</td>
+</tr>
+<tr class="even">
+<td><a href="mutability.html">Mutability</a></td>
+<td>constant, mutable</td>
+<td><code>const</code> <code>mut</code></td>
+<td>TODO ???</td>
+</tr>
+<tr class="odd">
+<td><a href="volatility.html">Volatility</a></td>
+<td>volatile, non volatile</td>
+<td><code>volatile</code></td>
+<td>non volatile</td>
+</tr>
+<tr class="even">
+<td><a href="virtuality.html">Virtuality</a></td>
+<td>virtual, non virtual</td>
+<td><code>virtual</code></td>
+<td>non virtual</td>
+</tr>
+<tr class="odd">
+<td><a href="static.html">Static</a></td>
+<td>static, non static</td>
+<td><code>static</code></td>
+<td>non static</td>
+</tr>
+<tr class="even">
+<td><a href="origin.html">Origin</a></td>
+<td>wide, specialized</td>
+<td><code>from ...</code></td>
+<td>wide</td>
+</tr>
+<tr class="odd">
+<td><a href="target.html">Target</a></td>
+<td>local, leaving</td>
+<td><code>leav to ...</code></td>
+<td>local</td>
+</tr>
+</tbody>
+</table>
+<p>More details can be found on each property’s chapter.</p>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

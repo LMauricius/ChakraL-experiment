@@ -68,6 +68,12 @@
                 </li>
             </ul>
             </li>
+            <li><a href="value_qualifiers.html">3&nbspValue qualifiers</a>
+            <ul>
+                <li><a href="ownership.html">1&nbspOwnership</a>
+                </li>
+            </ul>
+            </li>
         </ul>
         </li>
         <li>4&nbspStandard library
@@ -81,7 +87,7 @@
 <h2 id="context-combination-operator">Context combination (&amp;) operator</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1">C <span class="op">=</span> A <span class="op">&amp;</span> B</a></code></pre></div>
 <p>Combines two operand contexts <code>A</code> and <code>B</code> into one result context <code>C</code>. <code>C</code> will have all descriptions of <code>A</code> and <code>B</code>.</p>
-<p>If a member of the same name is found in both operands <code>A</code> and <code>B</code>, the result context <code>C</code> will have one member of that name with the required type of the left operand <code>A</code> and the starting assigned data of the right operand <code>B</code>. In that case, <code>B</code>‘s member value must satisfy the required trait of <code>A</code>’s member value and <code>B</code>’s member value’s access specifiers must be the same as’ <code>A</code>’s member value’s access specifiers. In such a situation we say that <code>A</code>’s member value was overriden by <code>B</code>’s.</p>
+<p>If a member of the same name is found in both operands <code>A</code> and <code>B</code>, the result context <code>C</code> will have one member of that name with the required type of the left operand <code>A</code> and the starting assigned data of the right operand <code>B</code>. In that case, <code>B</code>‘s member value must satisfy the required trait of <code>A</code>’s member value and <code>B</code>’s member value’s access qualifiers must be the same as’ <code>A</code>’s member value’s access qualifiers. In such a situation we say that <code>A</code>’s member value was overriden by <code>B</code>’s.</p>
 <div class="sourceCode" id="cb2" data-caption="Example of combination"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb2-1" title="1">A <span class="kw">def</span>:</a>
 <a class="sourceLine" id="cb2-2" title="2">    a <span class="op">=</span> <span class="dv">1</span></a>
 <a class="sourceLine" id="cb2-3" title="3">    b <span class="op">=</span> <span class="dv">2</span></a>
@@ -131,8 +137,8 @@
 <a class="sourceLine" id="cb4-19" title="19">    write <span class="kw">whether</span> c <span class="kw">is</span> NonZero <span class="co">**prints &#39;true&#39;</span></a>
 <a class="sourceLine" id="cb4-20" title="20">    write <span class="kw">whether</span> c <span class="kw">is</span> NonZero32 <span class="co">**prints &#39;true&#39;</span></a>
 <a class="sourceLine" id="cb4-21" title="21"><span class="cf">ok</span></a></code></pre></div>
-<p>The <a href="trait_system.html">trait specifiers</a> of the operands <code>A</code> and <code>B</code> do not carry over into the combined context, but they do apply on the operands as parts of the result context <code>c</code>.</p>
-<div class="sourceCode" id="cb5" data-caption="Example of the final specifier in a combined trait"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1">A <span class="kw">def</span>:</a>
+<p>The <a href="trait_system.html">trait qualifiers</a> of the operands <code>A</code> and <code>B</code> do not carry over into the combined context, but they do apply on the operands as parts of the result context <code>c</code>.</p>
+<div class="sourceCode" id="cb5" data-caption="Example of the final qualifier in a combined trait"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1">A <span class="kw">def</span>:</a>
 <a class="sourceLine" id="cb5-2" title="2">    x <span class="op">=</span> <span class="dv">0</span></a>
 <a class="sourceLine" id="cb5-3" title="3"><span class="cf">ok</span></a>
 <a class="sourceLine" id="cb5-4" title="4">B <span class="kw">def</span>:</a>
@@ -165,7 +171,7 @@
 <a class="sourceLine" id="cb7-13" title="13">    <span class="cf">if</span> c <span class="kw">is</span> XY: <span class="co">**yes</span></a>
 <a class="sourceLine" id="cb7-14" title="14">        <span class="kw">using</span> c <span class="kw">as</span> XY <span class="co">**cast from XY|YZ to XY</span></a>
 <a class="sourceLine" id="cb7-15" title="15">        write x c <span class="co">**prints &#39;4&#39;</span></a></code></pre></div>
-<p>The copy (<code class="sourceCode chakral"><span class="kw">new</span></code>) operator isn’t automatically defined for a selection since there is not universal default for which operands should be included in the copy. It is however a <code class="sourceCode chakral">virtual</code> context, so it can be assigned to values that have a virtual specifier.</p>
+<p>The copy (<code class="sourceCode chakral"><span class="kw">new</span></code>) operator isn’t automatically defined for a selection since there is not universal default for which operands should be included in the copy. It is however a <code class="sourceCode chakral">virtual</code> context, so it can be assigned to values that have a virtual qualifier.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb8-1" title="1">c <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">|</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**ERROR: cannot copy a selection into variable &#39;c&#39;</span></a>
 <a class="sourceLine" id="cb8-2" title="2">d: virtual <span class="kw">const</span> <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">|</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**OK</span></a></code></pre></div>
 <h2 id="context-choice-operator">Context choice (&lt;&gt;) operator</h2>
@@ -181,7 +187,7 @@
 <a class="sourceLine" id="cb10-8" title="8">    <span class="cf">if</span> c <span class="kw">is</span> Real: <span class="co">**yes</span></a>
 <a class="sourceLine" id="cb10-9" title="9">        <span class="kw">using</span> c <span class="kw">as</span> Real <span class="co">**cast from Real&lt;&gt;String to Real</span></a>
 <a class="sourceLine" id="cb10-10" title="10">        write c <span class="co">**prints &#39;5.3&#39;</span></a></code></pre></div>
-<p>The copy (<code class="sourceCode chakral"><span class="kw">new</span></code>) operator isn’t automatically defined for a choice since there is not universal default for which operand should be chosen for the copy. It is however a <code class="sourceCode chakral">virtual</code> context, so it can be assigned to values that have a virtual specifier.</p>
+<p>The copy (<code class="sourceCode chakral"><span class="kw">new</span></code>) operator isn’t automatically defined for a choice since there is not universal default for which operand should be chosen for the copy. It is however a <code class="sourceCode chakral">virtual</code> context, so it can be assigned to values that have a virtual qualifier.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb11-1" title="1">c <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">&lt;&gt;</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**ERROR: cannot copy a selection into variable &#39;c&#39;</span></a>
 <a class="sourceLine" id="cb11-2" title="2">d: virtual <span class="kw">const</span> <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">&lt;&gt;</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**OK</span></a></code></pre></div>
 <p>The choice operator is useful for creating optional values, i.e. values that can be assigned to None.</p>
