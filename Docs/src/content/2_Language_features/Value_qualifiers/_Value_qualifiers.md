@@ -18,7 +18,10 @@ read, write with stream = console std:
     numEntries: Int32 const = Read Int32
 
     if numEntries > maxNumEntries:
-        write(stream = errConsole std, "Can't add more than "+Str(maxNumEntries)+" entries!")
+        write(
+            stream = errConsole std,
+            "Can't add more than "+Str(maxNumEntries)+" entries!"
+        )
     else:
         sum: Float64 mutable = 0.0
 

@@ -104,58 +104,61 @@
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a>    write a <span class="co">**prints &#39;50&#39;</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
-<p>As <em>owner</em> is the default value qualifier, the <code class="sourceCode chakral">own</code> qualifier can be skipped.</p>
-<div class="sourceCode" id="cb2" data-caption="Ownership reassignment example (without manual qualifiers)"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console stl:</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    a <span class="op">=</span> <span class="dv">30</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    write a <span class="co">**prints &#39;30&#39;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    b <span class="op">=</span> a</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>    write b <span class="co">**prints &#39;30&#39;</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>    <span class="co">**ERROR: using an unitialized value</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>    <span class="co">**(Uncomment the line below to see the error)</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>    <span class="co">**write a</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>    a <span class="op">=</span> <span class="dv">50</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>    <span class="co">**OK: &#39;a&#39; has been assigned with new data</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>    write a <span class="co">**prints &#39;50&#39;</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
+<p>As <em>owner</em> is the default value qualifier, the <code class="sourceCode chakral">own</code> qualifier can be ommited.</p>
+<div class="sourceCode" id="cb2" data-caption="Default qualifiers example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>a: own <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>b <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co">**&#39;a&#39; and &#39;b&#39; have the same qualifiers</span></span></code></pre></div>
+<div class="sourceCode" id="cb3" data-caption="Ownership reassignment example (without manual qualifiers)"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console stl:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    a <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    write a <span class="co">**prints &#39;30&#39;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    b <span class="op">=</span> a</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>    write b <span class="co">**prints &#39;30&#39;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>    <span class="co">**ERROR: using an unitialized value</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>    <span class="co">**(Uncomment the line below to see the error)</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>    <span class="co">**write a</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>    a <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>    <span class="co">**OK: &#39;a&#39; has been assigned with new data</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>    write a <span class="co">**prints &#39;50&#39;</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
 <p>If the new owner value has a shorter lifespan than the old one, it will take the ownership only <em>temporarily</em>. Such temporary ownership is called <em>borrowing</em>. The data is borrowed until its new value’s lifespan ends, and then its ownership gets returned to the first old owner who is still alive.</p>
-<div class="sourceCode" id="cb3" data-caption="Ownership borrowing example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console stl:</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    <span class="co">**The program reads a starting integer.</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    <span class="co">**If the starting integer is positive, then it continues reading integers</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    <span class="co">**until &#39;0&#39; is entered. It sums all integers and prints the sum after each</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>    <span class="co">**number is entered. After &#39;0&#39; is entered, it prints the starting number.</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>    <span class="co">**start of &#39;starting&#39; variable&#39;s lifespan</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    starting: own <span class="op">=</span> read Integer</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>    write starting</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>    <span class="cf">if</span> starting <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>        <span class="co">**start of &#39;sum&#39; variable&#39;s lifespan</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>        sum: own <span class="op">=</span> starting <span class="co">**takes ownership from &#39;starting&#39;</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>        a: own <span class="op">=</span> read Integer</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>        <span class="cf">while</span> a <span class="op">!=</span> <span class="dv">0</span>:</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>            sum <span class="op">+=</span> a <span class="co">**adds entered number to the sum</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>            print sum</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>            a <span class="op">=</span> read Integer <span class="co">**reads next number</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>        <span class="cf">ok</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a>        <span class="co">**ERROR: using an unitialized value (&#39;sum&#39; could still own the data)</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a>        <span class="co">**(Uncomment the line below to see the error)</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a>        <span class="co">**write starting</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true"></a>        <span class="co">**end of &#39;sum&#39; variable&#39;s lifespan</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true"></a>    <span class="cf">ok</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true"></a></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true"></a>    <span class="co">**OK: &#39;starting&#39; has its ownership returned</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true"></a>    write starting</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true"></a>    <span class="co">**end of &#39;starting&#39; variable&#39;s lifespan</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
+<div class="sourceCode" id="cb4" data-caption="Ownership borrowing example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console stl:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    <span class="co">**The program reads a starting integer.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    <span class="co">**If the starting integer is positive, then it continues reading integers</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="co">**until &#39;0&#39; is entered. It sums all integers and prints the sum after each</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>    <span class="co">**number is entered. After &#39;0&#39; is entered, it prints the starting number.</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>    <span class="co">**start of &#39;starting&#39; variable&#39;s lifespan</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>    starting <span class="op">=</span> read Integer</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>    write starting</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    <span class="cf">if</span> starting <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>        <span class="co">**start of &#39;sum&#39; variable&#39;s lifespan</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>        sum <span class="op">=</span> starting <span class="co">**takes ownership from &#39;starting&#39;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>        a <span class="op">=</span> read Integer</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>        <span class="cf">while</span> a <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>            sum <span class="op">+=</span> a <span class="co">**adds entered number to the sum</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>            print sum</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>            a <span class="op">=</span> read Integer <span class="co">**reads next number</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>        <span class="cf">ok</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>        <span class="co">**ERROR: using an unitialized value (&#39;sum&#39; could still own the data)</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>        <span class="co">**(Uncomment the line below to see the error)</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a>        <span class="co">**write starting</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a>        <span class="co">**end of &#39;sum&#39; variable&#39;s lifespan</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a>    <span class="cf">ok</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>    <span class="co">**OK: &#39;starting&#39; has its ownership returned</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a>    write starting</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a>    <span class="co">**end of &#39;starting&#39; variable&#39;s lifespan</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
 
                 </div>
             </div>

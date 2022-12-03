@@ -24,7 +24,13 @@ read, write with stream = console stl:
 ok  
 ```
 
-As *owner* is the default value qualifier, the `own`{.chakral} qualifier can be skipped.
+As *owner* is the default value qualifier, the `own`{.chakral} qualifier can be ommited.
+
+```{.chakral caption="Default qualifiers example"}
+a: own = 30
+b = 30
+**'a' and 'b' have the same qualifiers
+```
 
 ```{.chakral caption="Ownership reassignment example (without manual qualifiers)"}
 read, write with stream = console stl:
