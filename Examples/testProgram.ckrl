@@ -44,14 +44,14 @@ lst = List
 ** argument 'struct' will be 'lst' for all 'push' calls in the block below
 ** specifically, (struct: lst) will be unionized with other arguments
 
-*-with container = lst:
+push with container = lst:
     ** The only remaining argument is 'value', (value = 5)
     ** Final argument for 'push' will be (struct = lst) && (value = 5) = (struct = lst, value = 5)
     push 5
     push 4
     push 6
     push 9
-ok-*
+ok
 m = Matrix(rows = 3, columns = 3) 
 ** NulMatrix(y, x) returns 0 for any x, y
 m = NulMatrix** Only mutable values are equalized during an '=' operation, so m will have all the properties of a Matrix(3, 3) except all fields will be 0

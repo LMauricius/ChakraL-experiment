@@ -141,13 +141,13 @@ CoroutineLiteral = param:ContextExpressionLiteral COROUTINE_EXPR (block:ContextL
 ### *** Statements *** ###
 ###
 
-Statement 	= .:Change
+Statement 	= .:WithStat
+			= .:Change
 			= .:Definition
 			= .:MemberDecl
 			= .:IfStat
 			= .:LoopStat
 			= .:JumpStat
-			= .:WithStat
 			-> Statement ::
 
 ExpressionOrBlock 	= expr:Expression
