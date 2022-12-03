@@ -60,13 +60,14 @@ def getIterationSnippets(parser: Parser, subpart : ProductionPart, part : Produc
     if subpart.type == ProductionType.SubProd:
         initializerCodeStr = f"testInd = (ind < tokenNum? check_{subpart.idName}(tokenNum, tokens, data, ind, commands) : FAIL_IND)"
         checkerCodeStr = "testInd != FAIL_IND"
-        executorCodeStr.append(f"commands.emplace_back(new CommBranch(&(data.at(ind).commands[ProductionInd::{subpart.idName}].back())));")
         executorCodeStr.append("ind = testInd;")
     # Node
     elif subpart.type == ProductionType.Node:
         initializerCodeStr = f"testInd = (ind < tokenNum? check_{subpart.symbol}(tokenNum, tokens, data, ind) : FAIL_IND)"
         checkerCodeStr = "testInd != FAIL_IND"
 
+        
+        executorCodeStr.append(f"if (data.at(ind).commands[ProductionInd::{subpart.symbol}].size() == 0) throw std::runtime_error(\"Using a nonexistant command list\");")
         if parser.productions[part.prodName].outSemNodeName != FALTHRU_OUTPUT_PRODUCTION_STR and subpart.variable != FALTHRU_VARIABLE_STR:
             if subpart.variable != "":
                 if subpart.variableIsList:
@@ -139,7 +140,7 @@ def writeRecursiveParserCPP(parser: Parser, filename: str, headerfile: str, extr
     TB();TB();LN("enum class ProductionInd : uint16_t {")
     for part in parser.productionParts:
         if part.type == ProductionType.SubProd:
-            #if part.isMainPart:
+            if part.isMainPart:
                 TB();TB();TB();LN(f"{part.idName},")
     TB();TB();LN("};")
     TB();TB();LN("")
