@@ -78,7 +78,7 @@ def outputOperatorProductions(filenameIn: str, filenameOut: str):
 					prevNodeName = None
 					semNodeName = None
 				LN(l[1:].strip())
-			elif l[0] == '<' or l[0] == '>':
+			elif l[0] == '<' or l[0] == '>' or l[0] == '-':
 
 				if nodeName is not None:
 					writeProductions()
@@ -97,13 +97,13 @@ def outputOperatorProductions(filenameIn: str, filenameOut: str):
 					semNodeName = None
 					semNodenames[nodeName] = nodeName
 
-				if assoc == '<' or assoc == '>':
+				if assoc == '<' or assoc == '>' or assoc == '-':
 					pass
 				else:
-					raise FormatError("Expected < or >", location)
+					raise FormatError("Expected < or > or -", location)
 				
 				if optype == 'BINARY':
-					if assoc == '--':
+					if assoc == '-':
 						template = "operands::{prev} ( {op} operands::{prev} )+"
 					elif assoc == '>':
 						template = "left:{cur} {op} right:{prev}"

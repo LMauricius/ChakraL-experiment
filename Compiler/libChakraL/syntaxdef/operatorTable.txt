@@ -1,5 +1,8 @@
 # operator groups (expressions/node productions) are defined like this:
-# associativity('<' | '>') type('BINARY' | 'LUNARY' | 'RUNARY') nodeName [semNodeName]
+# associativity('<' | '>' | '--') type('BINARY' | 'LUNARY' | 'RUNARY') nodeName [semNodeName]
+#   '<' Left associative
+#   '>' Right associative
+#   '-' No associativity - flat list
 # if the semantic node name is not specified, it will be set to the parse node name
 #
 # operators in a group are defined after the group, each in its own line, like this:
@@ -57,7 +60,7 @@ RangeOperator
 : Expression = .:RangeLiteral
 
 
-> BINARY ExprComparison ExprBinaryL2R
+- BINARY ExprComparison ExprBinaryL2R
 '<'
 '>'
 '<='
@@ -81,11 +84,3 @@ OR
 :               -> Expression ::
 : Expression = WHETHER .:LogicalExpr
 : Expression = .:TightExpr
-
-
-
-
-
-
-# old version:
-# associativity('<' | '>') type('BINARY' | 'LUNARY' | 'RUNARY') productionName token|regex
