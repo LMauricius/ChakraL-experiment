@@ -31,6 +31,16 @@ namespace ChakraL
         return ret;
     }
     
+    ContextPtr SemanticNode_ContextBlock::baseContext(ContextPtr parentContext) {
+        if (!mCached_baseContext.has_value()) {
+            mCached_baseContext = std::optional<ContextPtr>{get_baseContext(parentContext)};
+        }
+        return mCached_baseContext.value();
+    }
+    
+    ContextPtr SemanticNode_ContextBlock::get_baseContext(ContextPtr parentContext) {
+    }
+    
     // === *** Description *** ===
     
     std::string_view SemanticNode_Description::className() const {
@@ -590,6 +600,16 @@ namespace ChakraL
         return ret;
     }
     
+    Value SemanticNode_Expression::value(ContextPtr parentContext) {
+        if (!mCached_value.has_value()) {
+            mCached_value = std::optional<Value>{get_value(parentContext)};
+        }
+        return mCached_value.value();
+    }
+    
+    Value SemanticNode_Expression::get_value(ContextPtr parentContext) {
+    }
+    
     // === *** ExprBinaryL2R *** ===
     
     std::string_view SemanticNode_ExprBinaryL2R::className() const {
@@ -612,6 +632,10 @@ namespace ChakraL
         if (right) right->print(out, tabs+1, tabstr); else out << "null";
         out << "," << std::endl; 
         
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "operands: [" << std::endl;
+        for (auto& ptr : operands) {for (size_t i = 0; i<tabs+2; i++) out << tabstr; ptr->print(out, tabs+2, tabstr); out << "," << std::endl; }
+        {for (size_t i = 0; i<tabs+1; i++) out << tabstr;} out << "]," << std::endl;
+        
         for (size_t i = 0; i<tabs; i++) out << tabstr; out << "}"; 
     }
     
@@ -620,7 +644,8 @@ namespace ChakraL
             left.get(),
             right.get(),
         };
-        ret.reserve(ret.size() + 0);
+        ret.reserve(ret.size() + operands.size() + 0);
+        for (const auto& ptr : operands) {ret.push_back(ptr.get());}
         return ret;
     }
     

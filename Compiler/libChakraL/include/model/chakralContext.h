@@ -1,7 +1,6 @@
 #pragma once
 
 #include "chakralIdentifier.h"
-#include "chakralValue.h"
 #include "chakralRequirement.h"
 
 #include <vector>
@@ -9,6 +8,8 @@
 #include <memory>
 
 namespace ChakraL {
+
+    class Value;
 
     class Context;
     using ContextPtr = std::shared_ptr<Context>;// maybe turn to raw

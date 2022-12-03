@@ -1,5 +1,7 @@
 #pragma once
 
+#include "chakralContext.h"
+
 #include <optional>
 #include <memory.h>
 
