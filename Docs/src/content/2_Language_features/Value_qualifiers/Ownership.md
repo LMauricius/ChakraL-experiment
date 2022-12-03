@@ -24,6 +24,28 @@ read, write with stream = console stl:
 ok  
 ```
 
+As *owner* is the default value qualifier, the `own`{.chakral} qualifier can be skipped.
+
+```{.chakral caption="Ownership reassignment example (without manual qualifiers)"}
+read, write with stream = console stl:
+
+    a = 30
+    write a **prints '30'
+
+    b = a
+    write b **prints '30'
+
+    **ERROR: using an unitialized value
+    **(Uncomment the line below to see the error)
+    **write a
+
+    a = 50
+    **OK: 'a' has been assigned with new data
+    write a **prints '50'
+
+ok  
+```
+
 If the new owner value has a shorter lifespan than the old one, it will take the ownership only *temporarily*. Such temporary ownership is called *borrowing*. The data is borrowed until its new value's lifespan ends, and then its ownership gets returned to the first old owner who is still alive.
 
 ```{.chakral caption="Ownership borrowing example"}
@@ -34,14 +56,14 @@ read, write with stream = console stl:
     **number is entered. After '0' is entered, it prints the starting number.
 
     **start of 'starting' variable's lifespan
-    starting: own = read Integer
+    starting = read Integer
     write starting
 
     if starting > 0:
         **start of 'sum' variable's lifespan
-        sum: own = starting **takes ownership from 'starting'
+        sum = starting **takes ownership from 'starting'
 
-        a: own = read Integer
+        a = read Integer
         while a != 0:
             sum += a **adds entered number to the sum
             print sum
