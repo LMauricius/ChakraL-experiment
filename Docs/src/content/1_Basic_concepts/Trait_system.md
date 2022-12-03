@@ -4,12 +4,12 @@
 The trait system is useful in several ways. It allows the programmer to limit themself and prevent errors caused by improper use of data. It simultaneously tells the compiler how we are going to use the data, which allows it to optimize the machine code for that specific usage, causing the resulting program to run faster. As the trait system is quite *explicit* (without necessarily being *verbose*), this also allows other programmers who read our code to know what we intended to do with the data.
 
 ## Satisfying the trait
-If the context `c` satisfies the trait `t` we say that `c is t`{.chakral}. That satisfaction depends on `c` and `t`'s descriptions and specifiers. How the descriptions and specifiers are satisfied is described below.
+If the context `c` satisfies the trait `t` we say that `c is t`{.chakral}. That satisfaction depends on `c` and `t`'s descriptions and qualifiers. How the descriptions and qualifiers are satisfied is described below.
 
 ## Descriptions
 
 ### Member declaration
-The context `c` can satisfy the trait `t` with a member `m` of required trait `MT` only if `c` also has a member `m` that satisfies `t`'s member's required trait `MT`. Unless a `final` trait specifier (see down below) is involved, the members values' data doesn't matter.
+The context `c` can satisfy the trait `t` with a member `m` of required trait `MT` only if `c` also has a member `m` that satisfies `t`'s member's required trait `MT`. Unless a `final` trait qualifier (see down below) is involved, the members values' data doesn't matter.
 
 ```{.chakral caption="Example of a member declaration"}
 ExampleTrait def:
@@ -65,10 +65,10 @@ ok
 ```
 
 
-## Trait specifiers
-Trait specifiers change how the satisfaction is interpreted in addition to the descriptions. They can be used as descriptions or like prefix functions.
+## Trait qualifiers
+Trait qualifiers change how the satisfaction is interpreted in addition to the descriptions. They can be used as descriptions or like prefix functions.
 
-```{.chakral caption="Example of a final trait specifier"}
+```{.chakral caption="Example of a final trait qualifier"}
 ** like description of a block context:
 A def:
     final
@@ -81,10 +81,10 @@ B def (final, b = 2)
 C def final (c = 3)
 ```
 
-### final specifier
-If the trait `t` has a `final`{.chakral} specifier, then it will only be satisfied if `c` is either equal to `t` or hasn't been changed since being created as a copy of `t`. If a final trait `t` is used as a required trait of value `v`, `v` cannot be changed, just like if `v` was a constant value. Unlike constant values, a final value cannot be overriden by another value. Using a final value in an operation that could change or override it is forbidden, even if `v`'s data wouldn't be changed by the operation (i.e. `v` would still satisfy its required trait *after* the operation).
+### final qualifier
+If the trait `t` has a `final`{.chakral} qualifier, then it will only be satisfied if `c` is either equal to `t` or hasn't been changed since being created as a copy of `t`. If a final trait `t` is used as a required trait of value `v`, `v` cannot be changed, just like if `v` was a constant value. Unlike constant values, a final value cannot be overriden by another value. Using a final value in an operation that could change or override it is forbidden, even if `v`'s data wouldn't be changed by the operation (i.e. `v` would still satisfy its required trait *after* the operation).
 
-A final trait `t` can be used as a required trait for value `v` only if `v` is a constant value. Note that `final`{.chakral} is a trait specifier while `const`{.chakral} is a value specifier.
+A final trait `t` can be used as a required trait for value `v` only if `v` is a constant value. Note that `final`{.chakral} is a trait qualifier while `const`{.chakral} is a value qualifier.
 
 ```{.chakral caption="Example of the difference between final and non-final traits"}
 ** A context is Killable if it has a Real value health and Integer value lives
@@ -166,8 +166,8 @@ c = a & (number: const = 100) **OK - can override const value
 d = b & (final, number = 100) **ERROR - can't override final value
 ```
 
-### explicit specifier
-If the trait `t` has an `explicit`{.chakral} specifier, then it will only be satisfied if `c` was created as a copy of `t`. This requires the code that creates the context to epxlicitly want us to use `c` as `t`. If a value's trait is manually specified to be `t`, and we try to assign it a context `c2` that is not `t`, `c2` will be *cast* (reinterpreted, if possible) to `t`.
+### explicit qualifier
+If the trait `t` has an `explicit`{.chakral} qualifier, then it will only be satisfied if `c` was created as a copy of `t`. This requires the code that creates the context to epxlicitly want us to use `c` as `t`. If a value's trait is manually specified to be `t`, and we try to assign it a context `c2` that is not `t`, `c2` will be *cast* (reinterpreted, if possible) to `t`.
 
 ```{.chakral caption="Example of the difference between explicit and non-explicit traits"}
 Player def:

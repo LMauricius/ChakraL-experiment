@@ -8,7 +8,7 @@ C = A & B
 
 Combines two operand contexts `A` and `B` into one result context `C`. `C` will have all descriptions of `A` and `B`. 
 
-If a member of the same name is found in both operands `A` and `B`, the result context `C` will have one member of that name with the required type of the left operand `A` and the starting assigned data of the right operand `B`. In that case, `B`'s member value must satisfy the required trait of `A`'s member value and `B`'s member value's access specifiers must be the same as' `A`'s member value's access specifiers. In such a situation we say that `A`'s member value was overriden by `B`'s.
+If a member of the same name is found in both operands `A` and `B`, the result context `C` will have one member of that name with the required type of the left operand `A` and the starting assigned data of the right operand `B`. In that case, `B`'s member value must satisfy the required trait of `A`'s member value and `B`'s member value's access qualifiers must be the same as' `A`'s member value's access qualifiers. In such a situation we say that `A`'s member value was overriden by `B`'s.
 
 ```{.chakral caption="Example of combination"}
 A def:
@@ -70,9 +70,9 @@ with output=console:
 ok
 ```
 
-The [trait specifiers](trait_system.html) of the operands `A` and `B` do not carry over into the combined context, but they do apply on the operands as parts of the result context `c`.
+The [trait qualifiers](trait_system.html) of the operands `A` and `B` do not carry over into the combined context, but they do apply on the operands as parts of the result context `c`.
 
-```{.chakral caption="Example of the final specifier in a combined trait"}
+```{.chakral caption="Example of the final qualifier in a combined trait"}
 A def:
     x = 0
 ok
@@ -114,7 +114,7 @@ with output=console:
         write x c **prints '4'
 ```
 
-The copy (`new`{.chakral}) operator isn't automatically defined for a selection since there is not universal default for which operands should be included in the copy. It is however a `virtual`{.chakral} context, so it can be assigned to values that have a virtual specifier.
+The copy (`new`{.chakral}) operator isn't automatically defined for a selection since there is not universal default for which operands should be included in the copy. It is however a `virtual`{.chakral} context, so it can be assigned to values that have a virtual qualifier.
 ```{.chakral}
 c = (x=1) | (y=2) **ERROR: cannot copy a selection into variable 'c'
 d: virtual const = (x=1) | (y=2) **OK
@@ -139,7 +139,7 @@ with output=console:
         write c **prints '5.3'
 ```
 
-The copy (`new`{.chakral}) operator isn't automatically defined for a choice since there is not universal default for which operand should be chosen for the copy. It is however a `virtual`{.chakral} context, so it can be assigned to values that have a virtual specifier.
+The copy (`new`{.chakral}) operator isn't automatically defined for a choice since there is not universal default for which operand should be chosen for the copy. It is however a `virtual`{.chakral} context, so it can be assigned to values that have a virtual qualifier.
 ```{.chakral}
 c = (x=1) <> (y=2) **ERROR: cannot copy a selection into variable 'c'
 d: virtual const = (x=1) <> (y=2) **OK
