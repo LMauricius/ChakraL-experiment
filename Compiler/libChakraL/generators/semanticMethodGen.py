@@ -41,6 +41,7 @@ class SemanticNode:
         self.protectedMembers : OrderedDict[str, Member] = OrderedDict()
         self.publicMembers : OrderedDict[str, Member] = OrderedDict()
         self.methods : OrderedDict[str, Member] = OrderedDict()
+        self.cachingMethodIDs : OrderedDict[str, str] = OrderedDict()
 
         mem = Member(NAME_METHOD_DECL, "std::string_view")
         self.publicMembers[mem.name] = mem
@@ -76,27 +77,40 @@ def loadSemanticNodes(filename: str):
                 if mark == "parent":
                     curNode.parentNode = memberDef
                     curNode.parentClassName = "SemanticNode_" + memberDef
-                elif mark == "fpub":
-                    newM = Member.fromDefinition(memberDef, location)
-                    curNode.publicMembers.setdefault(newM.name, newM)
-                    curNode.methods.setdefault(newM.name, newM)
-                elif mark == "fprot":
-                    newM = Member.fromDefinition(memberDef, location)
-                    curNode.protectedMembers.setdefault(newM.name, newM)
-                    curNode.methods.setdefault(newM.name, newM)
-                elif mark == "fpriv":
-                    newM = Member.fromDefinition(memberDef, location)
-                    curNode.privateMembers.setdefault(newM.name, newM)
-                    curNode.methods.setdefault(newM.name, newM)
-                elif mark == "vpub":
-                    newM = Member.fromDefinition(memberDef, location)
-                    curNode.publicMembers.setdefault(newM.name, newM)
-                elif mark == "vprot":
-                    newM = Member.fromDefinition(memberDef, location)
-                    curNode.protectedMembers.setdefault(newM.name, newM)
-                elif mark == "vpriv":
-                    newM = Member.fromDefinition(memberDef, location)
-                    curNode.privateMembers.setdefault(newM.name, newM)
+                elif (mark[0] == "f" or mark[0] == "v" or mark[0] == "c") and (mark[1:] == "pub" or mark[1:] == "prot" or mark[1:] == "priv"):
+
+                    # select the member list depending on access modifier
+                    selMemberList: OrderedDict[str, Member] | None = None
+                    if mark[1:] == "pub":
+                        selMemberList = curNode.publicMembers
+                    elif mark[1:] == "prot":
+                        selMemberList = curNode.protectedMembers
+                    elif mark[1:] == "priv":
+                        selMemberList = curNode.privateMembers
+
+                    # add member depending on kind
+                    if mark[0] == "f":
+                        newM = Member.fromDefinition(memberDef, location)
+                        selMemberList.setdefault(newM.name, newM)
+                        curNode.methods.setdefault(newM.name, newM)
+                    elif mark[0] == "v":
+                        newM = Member.fromDefinition(memberDef, location)
+                        selMemberList.setdefault(newM.name, newM)
+                    elif mark[0] == "c":
+                        newM = Member.fromDefinition(memberDef, location)
+                        newFuncMem = Member(newM.name, newM.type, "")
+                        cachingID = newM.name[0:newM.name.find("(")].strip()
+                        print("CACHE: "+cachingID)
+                        newCacheMem = Member("mCached_"+cachingID, f"std::optional<{newM.type}>", f"std::optional<{newM.type}>{{{newM.val}}}")
+                        newGetterMem = Member("get_"+newM.name, newM.type, "")
+
+                        selMemberList.setdefault(newFuncMem.name, newFuncMem)
+                        curNode.methods.setdefault(newFuncMem.name, newFuncMem)
+                        curNode.cachingMethodIDs.setdefault(newFuncMem.name, cachingID)
+
+                        curNode.privateMembers.setdefault(newCacheMem.name, newCacheMem)
+                        curNode.privateMembers.setdefault(newGetterMem.name, newGetterMem)
+                        curNode.methods.setdefault(newGetterMem.name, newGetterMem)
                 else:
                     raise FormatError(f"Unknown node mark '{mark}'", location)
 
@@ -162,6 +176,31 @@ def writeSemanticNodesMethodsH(semNodes: OrderedDict[str, SemanticNode], filenam
             TB();LN("")
         LN("}")
 
+def extractTypeArgList(params: str)->List[Tuple[str, str]]:
+    argList = [("", "")]
+
+    parCount = 0
+    subInd = 0
+    for c in params:
+        if c == "(" or c == "[" or c == "{" or c == "<":
+            parCount += 1
+        elif c == ")" or c == "]" or c == "}" or c == ">":
+            parCount -= 1
+
+        if c == "," and parCount == 0:
+            argList += [("", "")]
+            subInd = 0
+        elif c == " " and parCount == 0 and argList[-1][subInd] != "":
+            subInd += 1
+        else:
+            if subInd == 0:
+                argList[-1] = (argList[-1][0] + c, argList[-1][1])
+            elif subInd == 1:
+                argList[-1] = (argList[-1][0], argList[-1][1] + c)
+
+    return argList
+        
+
 def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filename: str, headerfile: str, extraheaderfiles: list[str]):
     definitions: dict[str, str] = {}
     definitionsPerClass: dict[str, dict[str, str]] = {}
@@ -198,6 +237,24 @@ def writeSemanticNodesMethodsCPP(semNodes: OrderedDict[str, SemanticNode], filen
                 definitions.pop(curDefName)
             else:
                 definitionsPerClass[className][curDefName] = ""
+
+        # Caching methods
+        for methName, cacheID in semNode.cachingMethodIDs.items():
+            funcMem = semNode.methods[methName]
+            cacheMem = semNode.privateMembers["mCached_"+cacheID]
+            getterMem = semNode.privateMembers["get_"+funcMem.name]
+            params = methName[methName.find("(")+1:methName.rfind(")")]
+            args = ", ".join([argname for t, argname in extractTypeArgList(params)])
+            print("ARGUMENTS: "+str(extractTypeArgList(params)))
+
+            meth = funcMem
+            code = ""
+            code += f"{TAB}{TAB}" + fr'if (!mCached_{cacheID}.has_value()) {{' + "\n"
+            code += f"{TAB}{TAB}{TAB}" + fr'mCached_{cacheID} = std::optional<{funcMem.type}>{{get_{cacheID}({args})}};' + "\n"
+            code += f"{TAB}{TAB}" + fr'}}' + "\n"
+            code += f"{TAB}{TAB}" + fr'return mCached_{cacheID}.value();' + "\n"
+
+            definitionsPerClass[className][f"{meth.type} SemanticNode_{className}::{meth.name}"] = code
         
         # NAME method
         meth = semNode.methods[NAME_METHOD_DECL]

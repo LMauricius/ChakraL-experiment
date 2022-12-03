@@ -1,6 +1,18 @@
+# fpub, fprot, fpriv - member functions
+#   fpub <FUNCTION_NAME>(<PARAMETERS>) -> <RETURN_TYPE>
+# vpub, vprot, vpriv - member variables
+#   vpub <VARIABLE_NAME> -> <TYPE>
+# cpub, cprot, cpriv - cached member variables (functions + variables)
+#   cpub <FUNCTION_NAME>(<PARAMETERS>) -> <RETURN_TYPE>
+#   Creates (and defines) function <FUNCTION_NAME>, variable mCached_<FUNCTION_NAME>,
+#   and function (custom defined) get_<FUNCTION_NAME>
+
+
 # *** CONTEXT ***
 
 @ContextBlock
+    cpub baseContext(ContextPtr parentContext) -> ContextPtr
+
     #fpub getTraits(ContextPtr parentContext) -> ContextPtr
     #fpub getDefinedContext(ContextPtr parentContext) -> ContextPtr
 
@@ -75,6 +87,8 @@
 
 @Expression
     parent Statement
+
+    cpub value(ContextPtr parentContext) -> Value
 
 @ExprBinaryL2R
     parent Expression
