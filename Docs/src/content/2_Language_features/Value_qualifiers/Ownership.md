@@ -137,7 +137,7 @@ If data is borrowed of an owner value that has possible references, all possible
 A *constant* is a special kind of owner value. It is also a 'main' value of its data, but it's ownership cannot be taken after being assigned with data, and it doesn't take ownership from a value during its assignment. Instead, assigning it with data of another *non-const* value implicitly creates a copy of it, just as assigning its data to another *owner* value. References can be assigned with constant value's data.
 
 ```{.chakral caption="Constant example"}
-globalSettings: const = Config(Open.File."settings.json", Json ConfigFileType)
+globalSettings: const = Config(Opened.File."settings.json", Json ConfigFileType)
 appSettings: const = globalSettings
 currentSettings: ref = appSettings
 
