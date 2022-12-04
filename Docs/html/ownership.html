@@ -84,7 +84,7 @@
             <div class="main">
                 <div class="pagecontent">
                     <h1 id="ownership">Ownership</h1>
-<p>While the data context can have many references, it can only have a single owner value. It is modified by the <code>own</code> and <code>ref</code> keywords</p>
+<p>Data can have a single owner value, but many references. The ownership property of a value is modified by the <code>own</code>, <code>ref</code> and <code>const</code> keywords.</p>
 <h2 id="owner">Owner</h2>
 <p>The owner can be seen as a ‘main’ variable of some data. When data is assigned to an owner value, the new owner <em>takes</em> the ownership from the old one. That makes the old value <em>uninitialized</em>, which means it can’t be used in an expression until it gets assigned with new data.</p>
 <div class="sourceCode" id="cb1" data-caption="Ownership reassignment example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console stl:</span>
@@ -137,28 +137,63 @@
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>    write starting</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    <span class="cf">if</span> starting <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>        <span class="co">**start of &#39;sum&#39; variable&#39;s lifespan</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>        sum <span class="op">=</span> starting <span class="co">**takes ownership from &#39;starting&#39;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>        <span class="co">**start of &#39;a&#39; variable&#39;s lifespan</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>        a <span class="op">=</span> starting <span class="co">**takes ownership from &#39;starting&#39;</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>        a <span class="op">=</span> read Integer</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>        <span class="cf">while</span> a <span class="op">!=</span> <span class="dv">0</span>:</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>            sum <span class="op">+=</span> a <span class="co">**adds entered number to the sum</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>            print sum</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>            a <span class="op">=</span> read Integer <span class="co">**reads next number</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>        <span class="cf">ok</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>        <span class="co">**ERROR: using an unitialized value (&#39;sum&#39; could still own the data)</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>        <span class="co">**(Uncomment the line below to see the error)</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a>        <span class="co">**write starting</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a>        <span class="co">**end of &#39;sum&#39; variable&#39;s lifespan</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a>    <span class="cf">ok</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>    <span class="co">**OK: &#39;starting&#39; has its ownership returned</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a>    write starting</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a>    <span class="co">**end of &#39;starting&#39; variable&#39;s lifespan</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>        sum: <span class="kw">mutable</span> <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>        <span class="cf">while</span> a <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>            sum <span class="op">+=</span> a <span class="co">**adds entered number to the sum</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>            print sum</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>            a <span class="op">=</span> read Integer <span class="co">**reads next number</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a>        <span class="cf">ok</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>        <span class="co">**ERROR: using an unitialized value (&#39;a&#39; could still own the data)</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a>        <span class="co">**(Uncomment the line below to see the error)</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a>        <span class="co">**write starting</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a>        <span class="co">**end of &#39;a&#39; variable&#39;s lifespan</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a>    <span class="cf">ok</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a>    <span class="co">**OK: &#39;starting&#39; has its ownership returned</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a>    write starting</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a>    <span class="co">**end of &#39;starting&#39; variable&#39;s lifespan</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
+<p>Assigning a constant or a static value (such as a definition) to an owner value implicitly creates a copy of it instead of changing its ownership.</p>
+<div class="sourceCode" id="cb5" data-caption="Constant example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console stl:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    PI <span class="kw">def</span> <span class="fl">3.141592</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    p <span class="op">=</span> PI</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    write p <span class="co">**&#39;p&#39; can be used</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    write PI <span class="co">**&#39;PI&#39; can still be used </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
+<h2 id="reference">Reference</h2>
+<p>References can be used to access data without taking its ownership.</p>
+<div class="sourceCode" id="cb6" data-caption="Reference example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console stl:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    a <span class="op">=</span> read Integer</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    b <span class="op">=</span> read Integer</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    greater: ref</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>    <span class="cf">if</span> a <span class="op">&gt;</span> b:</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>        greater <span class="op">=</span> a</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>        greater <span class="op">=</span> b</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>    <span class="cf">ok</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>    <span class="co">**&#39;greater&#39; is assigned to the data of either &#39;a&#39; or &#39;b&#39;,</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>    <span class="co">**but &#39;a&#39; and &#39;b&#39; can still be used as they retain their ownership</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>    write Str(greater)<span class="op">+</span><span class="st">&quot; is greater between &quot;</span><span class="op">+</span>Str(a)<span class="op">+</span><span class="st">&quot; and &quot;</span><span class="op">+</span>Str(b)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
+<p>The references cannot be directly mutated. If the reference isn’t mutable, you have to create a copy of it and assign it to a mutable owner value to use the data in a mutable way. If the reference is mutable, it can be borrowed by a mutable owner value.</p>
+<p>If data is borrowed of an owner value that has possible references, all possible references to it will be uninitialized along with it during the borrowing process. If a reference’s data is borrowed, any possible original owner of reference’s data will be unitialized during the borrowing process, along with all other possible references to them.</p>
+<h2 id="constant">Constant</h2>
+<p>A <em>constant</em> is a special kind of owner value. It is also a ‘main’ value of its data, but it’s ownership cannot be taken after being assigned with data, and it doesn’t take ownership from a value during its assignment. Instead, assigning it with data of another <em>non-const</em> value implicitly creates a copy of it, just as assigning its data to another <em>owner</em> value.</p>
 
                 </div>
             </div>

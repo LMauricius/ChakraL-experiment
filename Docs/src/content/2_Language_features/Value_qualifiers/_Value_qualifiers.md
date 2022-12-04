@@ -42,12 +42,12 @@ Below is a table of all properties that qualifiers modify, along with the qualif
 
 | Property  | States | Qualifier keywords | Default |
 | --------- | ------ | ------------------ | ------- |
-| [Ownership](ownership.html). | owner, reference | `own` `ref` | owner (`own`) |
-| [Mutability](mutability.html) | constant, mutable | `const` `mut` | TODO ??? |
+| [Ownership](ownership.html). | owner, reference, constant | `own` `ref` `const` | owner (`own`) |
+| [Data mutability](mutability.html) | mutable, immutable | `mutable` | immutable |
 | [Volatility](volatility.html) | volatile, non volatile | `volatile` | non volatile |
 | [Virtuality](virtuality.html) | virtual, non virtual | `virtual` | non virtual |
 | [Static](static.html) | static, non static | `static` | non static |
-| [Origin](origin.html) | wide, specialized | `from ...` | wide |
-| [Target](target.html) | local, leaving | `leav to ...` | local |
+| [Origin](origin.html) | unspecialized, specialized | `from ...` | unspecialized |
+| [Leaving target](target.html) | not leaving, leaving | `leav to ...` | not leaving |
 
 More details can be found on each property's chapter.

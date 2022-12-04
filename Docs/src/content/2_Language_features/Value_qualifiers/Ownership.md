@@ -1,5 +1,5 @@
 # Ownership
-While the data context can have many references, it can only have a single owner value. It is modified by the `own` and `ref` keywords
+Data can have a single owner value, but many references. The ownership property of a value is modified by the `own`, `ref` and `const` keywords.
 
 ## Owner
 The owner can be seen as a 'main' variable of some data. When data is assigned to an owner value, the new owner *takes* the ownership from the old one. That makes the old value *uninitialized*, which means it can't be used in an expression until it gets assigned with new data.
@@ -66,21 +66,22 @@ read, write with stream = console stl:
     write starting
 
     if starting > 0:
-        **start of 'sum' variable's lifespan
-        sum = starting **takes ownership from 'starting'
+        **start of 'a' variable's lifespan
+        a = starting **takes ownership from 'starting'
 
-        a = read Integer
+        sum: mutable = 0
+
         while a != 0:
             sum += a **adds entered number to the sum
             print sum
             a = read Integer **reads next number
         ok
 
-        **ERROR: using an unitialized value ('sum' could still own the data)
+        **ERROR: using an unitialized value ('a' could still own the data)
         **(Uncomment the line below to see the error)
         **write starting
 
-        **end of 'sum' variable's lifespan
+        **end of 'a' variable's lifespan
     ok
 
     **OK: 'starting' has its ownership returned
@@ -89,3 +90,48 @@ read, write with stream = console stl:
     **end of 'starting' variable's lifespan
 ok  
 ```
+
+Assigning a constant or a static value (such as a definition) to an owner value implicitly creates a copy of it instead of changing its ownership.
+
+```{.chakral caption="Constant example"}
+read, write with stream = console stl:
+
+    PI def 3.141592
+
+    p = PI
+
+    write p **'p' can be used
+    write PI **'PI' can still be used 
+
+ok  
+```
+
+## Reference
+References can be used to access data without taking its ownership. 
+
+```{.chakral caption="Reference example"}
+read, write with stream = console stl:
+
+    a = read Integer
+    b = read Integer
+    greater: ref
+
+    if a > b:
+        greater = a
+    else:
+        greater = b
+    ok
+
+    **'greater' is assigned to the data of either 'a' or 'b',
+    **but 'a' and 'b' can still be used as they retain their ownership
+    write Str(greater)+" is greater between "+Str(a)+" and "+Str(b)
+
+ok  
+```
+
+The references cannot be directly mutated. If the reference isn't mutable, you have to create a copy of it and assign it to a mutable owner value to use the data in a mutable way. If the reference is mutable, it can be borrowed by a mutable owner value.
+
+If data is borrowed of an owner value that has possible references, all possible references to it will be uninitialized along with it during the borrowing process. If a reference's data is borrowed, any possible original owner of reference's data will be unitialized during the borrowing process, along with all other possible references to them.
+
+## Constant
+A *constant* is a special kind of owner value. It is also a 'main' value of its data, but it's ownership cannot be taken after being assigned with data, and it doesn't take ownership from a value during its assignment. Instead, assigning it with data of another *non-const* value implicitly creates a copy of it, just as assigning its data to another *owner* value.
