@@ -61,6 +61,7 @@ div.sourceCode::before {
     content: attr(data-caption);
     display: block;
 	background-color: #c0ecf0;
+	border-bottom: 1pt solid #aaa;
     font-family: monospace;
 	font-weight: bold;
 	padding-left: 1.25em;
