@@ -161,7 +161,7 @@
 <span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a>    <span class="co">**end of &#39;starting&#39; variable&#39;s lifespan</span></span>
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a><span class="cf">ok</span>  </span></code></pre></div>
 <p>Assigning a constant or a static value (such as a definition) to an owner value implicitly creates a copy of it instead of changing its ownership.</p>
-<div class="sourceCode" id="cb5" data-caption="Constant example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console stl:</span>
+<div class="sourceCode" id="cb5" data-caption="Constant copy example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>read, write <span class="cf">with</span> stream <span class="op">=</span> console stl:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    PI <span class="kw">def</span> <span class="fl">3.141592</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
@@ -193,7 +193,13 @@
 <p>The references cannot be directly mutated. If the reference isn’t mutable, you have to create a copy of it and assign it to a mutable owner value to use the data in a mutable way. If the reference is mutable, it can be borrowed by a mutable owner value.</p>
 <p>If data is borrowed of an owner value that has possible references, all possible references to it will be uninitialized along with it during the borrowing process. If a reference’s data is borrowed, any possible original owner of reference’s data will be unitialized during the borrowing process, along with all other possible references to them.</p>
 <h2 id="constant">Constant</h2>
-<p>A <em>constant</em> is a special kind of owner value. It is also a ‘main’ value of its data, but it’s ownership cannot be taken after being assigned with data, and it doesn’t take ownership from a value during its assignment. Instead, assigning it with data of another <em>non-const</em> value implicitly creates a copy of it, just as assigning its data to another <em>owner</em> value.</p>
+<p>A <em>constant</em> is a special kind of owner value. It is also a ‘main’ value of its data, but it’s ownership cannot be taken after being assigned with data, and it doesn’t take ownership from a value during its assignment. Instead, assigning it with data of another <em>non-const</em> value implicitly creates a copy of it, just as assigning its data to another <em>owner</em> value. References can be assigned with constant value’s data.</p>
+<div class="sourceCode" id="cb7" data-caption="Constant example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>globalSettings: <span class="kw">const</span> <span class="op">=</span> Config(Open.File.<span class="st">&quot;settings.json&quot;</span>, Json ConfigFileType)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>appSettings: <span class="kw">const</span> <span class="op">=</span> globalSettings</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>currentSettings: ref <span class="op">=</span> appSettings</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="co">**&#39;globalSettings&#39; and &#39;appSettings&#39; are both initialized and valid</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="co">**&#39;currentSettings&#39; is assigned with &#39;appSettings&#39;&#39;s data</span></span></code></pre></div>
 
                 </div>
             </div>

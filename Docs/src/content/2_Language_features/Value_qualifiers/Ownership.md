@@ -93,7 +93,7 @@ ok
 
 Assigning a constant or a static value (such as a definition) to an owner value implicitly creates a copy of it instead of changing its ownership.
 
-```{.chakral caption="Constant example"}
+```{.chakral caption="Constant copy example"}
 read, write with stream = console stl:
 
     PI def 3.141592
@@ -134,4 +134,13 @@ The references cannot be directly mutated. If the reference isn't mutable, you h
 If data is borrowed of an owner value that has possible references, all possible references to it will be uninitialized along with it during the borrowing process. If a reference's data is borrowed, any possible original owner of reference's data will be unitialized during the borrowing process, along with all other possible references to them.
 
 ## Constant
-A *constant* is a special kind of owner value. It is also a 'main' value of its data, but it's ownership cannot be taken after being assigned with data, and it doesn't take ownership from a value during its assignment. Instead, assigning it with data of another *non-const* value implicitly creates a copy of it, just as assigning its data to another *owner* value.
+A *constant* is a special kind of owner value. It is also a 'main' value of its data, but it's ownership cannot be taken after being assigned with data, and it doesn't take ownership from a value during its assignment. Instead, assigning it with data of another *non-const* value implicitly creates a copy of it, just as assigning its data to another *owner* value. References can be assigned with constant value's data.
+
+```{.chakral caption="Constant example"}
+globalSettings: const = Config(Open.File."settings.json", Json ConfigFileType)
+appSettings: const = globalSettings
+currentSettings: ref = appSettings
+
+**'globalSettings' and 'appSettings' are both initialized and valid
+**'currentSettings' is assigned with 'appSettings''s data
+```
