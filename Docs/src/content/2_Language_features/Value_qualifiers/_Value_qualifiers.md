@@ -42,7 +42,7 @@ Below is a table of all properties that qualifiers modify, along with the qualif
 
 | Property  | States | Qualifier keywords | Default |
 | --------- | ------ | ------------------ | ------- |
-| [Ownership](ownership.html). | owner, reference, constant | `own` `ref` `const` | owner (`own`) |
+| [Ownership](ownership.html) | owner, reference, constant | `own`, `ref`, `const` | owner (`own`) |
 | [Data mutability](mutability.html) | mutable, immutable | `mutable` | immutable |
 | [Volatility](volatility.html) | volatile, non volatile | `volatile` | non volatile |
 | [Virtuality](virtuality.html) | virtual, non virtual | `virtual` | non virtual |
