@@ -72,6 +72,8 @@
             <ul>
                 <li><b>1 Ownership</b>
                 </li>
+                <li><a href="mutability.html">2&nbspMutability</a>
+                </li>
             </ul>
             </li>
         </ul>
@@ -194,7 +196,7 @@
 <p>If data is borrowed of an owner value that has possible references, all possible references to it will be uninitialized along with it during the borrowing process. If a reference’s data is borrowed, any possible original owner of reference’s data will be unitialized during the borrowing process, along with all other possible references to them.</p>
 <h2 id="constant">Constant</h2>
 <p>A <em>constant</em> is a special kind of owner value. It is also a ‘main’ value of its data, but it’s ownership cannot be taken after being assigned with data, and it doesn’t take ownership from a value during its assignment. Instead, assigning it with data of another <em>non-const</em> value implicitly creates a copy of it, just as assigning its data to another <em>owner</em> value. References can be assigned with constant value’s data.</p>
-<div class="sourceCode" id="cb7" data-caption="Constant example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>globalSettings: <span class="kw">const</span> <span class="op">=</span> Config(Open.File.<span class="st">&quot;settings.json&quot;</span>, Json ConfigFileType)</span>
+<div class="sourceCode" id="cb7" data-caption="Constant example"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>globalSettings: <span class="kw">const</span> <span class="op">=</span> Config(Opened.File.<span class="st">&quot;settings.json&quot;</span>, Json ConfigFileType)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>appSettings: <span class="kw">const</span> <span class="op">=</span> globalSettings</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>currentSettings: ref <span class="op">=</span> appSettings</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a></span>

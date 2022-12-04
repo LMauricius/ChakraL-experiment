@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>module expression</title>
+        <title>mutability</title>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="syntax_style.css">
     </head>
@@ -48,7 +48,7 @@
             </li>
             <li><a href="expressions.html">2&nbspExpressions</a>
             <ul>
-                <li><b>1 module expression</b>
+                <li><a href="module_expression.html">1&nbspmodule expression</a>
                 </li>
                 <li><a href="operators.html">2&nbspOperators</a>
                 <ul>
@@ -72,7 +72,7 @@
             <ul>
                 <li><a href="ownership.html">1&nbspOwnership</a>
                 </li>
-                <li><a href="mutability.html">2&nbspMutability</a>
+                <li><b>2 Mutability</b>
                 </li>
             </ul>
             </li>
@@ -85,23 +85,8 @@
             </div>
             <div class="main">
                 <div class="pagecontent">
-                    <h1 id="module-expression">module expression</h1>
-<h2 id="description">Description</h2>
-<p>The <code>module</code> keyword is used to retrieve the whole context of a module. We can use it to access values from other modules. The module can be installed in the global module path, or be a sub-module of the module which the code is part of.</p>
-<h2 id="basic-usage">Basic usage</h2>
-<p>The <code>module</code> keyword is most commonly used along with the <code>using</code> keyword described in the chapter <a href="using_keyword.html">using keyword</a>.</p>
-<p>Write: <code>module MODULE_NAME</code></p>
-<p>Expression <code>module MODULE_NAME</code> is a prefix expression, so to use it in a more complex expression, you have to surround it with parentheses.</p>
-<p>Example: <code>module MyMath</code><br />
-Complex example: <code>sin (module MyMath)</code><br />
-More useful example:</p>
-<pre><code>mySineFunc def sin(module MyMath)
-amp = mySineFunc 30°</code></pre>
-<p>Harder to read but conscise example: <code>amp = (sin(module MyMath)) 30°</code></p>
-<h2 id="submodules-usage">Submodules usage</h2>
-<p>You can also retrieve the submodules with the keyword.</p>
-<p>Write: <code>module MODULE_NAME.SUBMODULE_NAME1.SUBMODULE_NAME2.&lt;...&gt;</code></p>
-<p>Example: <code>module MyEngine.Physics</code></p>
+                    <h1 id="mutability">Mutability</h1>
+<p>Data mutability refers to whether data assigned to a value can itself be mutated, instead of reassigning the value with a different data. Several actions are considered data mutations: * Reassigning its member values with data * Passing data to a mutable value * Mutating any of its member values.</p>
 
                 </div>
             </div>
