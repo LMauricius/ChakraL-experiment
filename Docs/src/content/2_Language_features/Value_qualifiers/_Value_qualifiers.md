@@ -43,11 +43,14 @@ Below is a table of all properties that qualifiers modify, along with the qualif
 | Property  | States | Qualifier keywords | Default |
 | --------- | ------ | ------------------ | ------- |
 | [Ownership](ownership.html) | owner, reference, constant | `own`, `ref`, `const` | owner (`own`) |
-| [Data mutability](mutability.html) | mutable, immutable | `mutable` | immutable |
-| [Volatility](volatility.html) | volatile, non volatile | `volatile` | non volatile |
-| [Virtuality](virtuality.html) | virtual, non virtual | `virtual` | non virtual |
-| [Static](static.html) | static, non static | `static` | non static |
-| [Origin](origin.html) | unspecialized, specialized | `from ...` | unspecialized |
-| [Leaving target](target.html) | not leaving, leaving | `leav to ...` | not leaving |
+| [Data mutability](mutability.html) | volatile, mutable, immutable, virtual | `volatile`, `immutable`, `mutable`, `virtual` | immutable |
+| [Evaluation time](evaluation_time.html) | static, runtime | `static` | runtime |
+| [Scope](scope.html) | broad, niche | `from (...)` | broad |
+| [Target](target.html) | local, leaving | `leaving to (...)` | local |
 
 More details can be found on each property's chapter.
+
+A value with explicitly declared default qualifiers would be:  
+```{.chakral}
+x: immutable own = 1
+```

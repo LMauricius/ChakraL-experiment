@@ -119,6 +119,12 @@
 <h2 id="supported-qualifiers">Supported qualifiers</h2>
 <p>Below is a table of all properties that qualifiers modify, along with the qualifier keywords and default settings.</p>
 <table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 15%" />
+<col style="width: 45%" />
+<col style="width: 17%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Property</th>
@@ -136,43 +142,33 @@
 </tr>
 <tr class="even">
 <td><a href="mutability.html">Data mutability</a></td>
-<td>mutable, immutable</td>
-<td><code>mutable</code></td>
+<td>volatile, mutable, immutable, virtual</td>
+<td><code>volatile</code>, <code>immutable</code>, <code>mutable</code>, <code>virtual</code></td>
 <td>immutable</td>
 </tr>
 <tr class="odd">
-<td><a href="volatility.html">Volatility</a></td>
-<td>volatile, non volatile</td>
-<td><code>volatile</code></td>
-<td>non volatile</td>
-</tr>
-<tr class="even">
-<td><a href="virtuality.html">Virtuality</a></td>
-<td>virtual, non virtual</td>
-<td><code>virtual</code></td>
-<td>non virtual</td>
-</tr>
-<tr class="odd">
-<td><a href="static.html">Static</a></td>
-<td>static, non static</td>
+<td><a href="evaluation_time.html">Evaluation time</a></td>
+<td>static, runtime</td>
 <td><code>static</code></td>
-<td>non static</td>
+<td>runtime</td>
 </tr>
 <tr class="even">
-<td><a href="origin.html">Origin</a></td>
-<td>unspecialized, specialized</td>
-<td><code>from ...</code></td>
-<td>unspecialized</td>
+<td><a href="scope.html">Scope</a></td>
+<td>broad, niche</td>
+<td><code>from (...)</code></td>
+<td>broad</td>
 </tr>
 <tr class="odd">
-<td><a href="target.html">Leaving target</a></td>
-<td>not leaving, leaving</td>
-<td><code>leav to ...</code></td>
-<td>not leaving</td>
+<td><a href="target.html">Target</a></td>
+<td>local, leaving</td>
+<td><code>leaving to (...)</code></td>
+<td>local</td>
 </tr>
 </tbody>
 </table>
 <p>More details can be found on each property’s chapter.</p>
+<p>A value with explicitly declared default qualifiers would be:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>x: immutable own <span class="op">=</span> <span class="dv">1</span></span></code></pre></div>
 
                 </div>
             </div>
