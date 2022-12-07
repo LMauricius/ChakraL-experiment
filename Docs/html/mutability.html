@@ -86,7 +86,13 @@
             <div class="main">
                 <div class="pagecontent">
                     <h1 id="mutability">Mutability</h1>
-<p>Data mutability refers to whether data assigned to a value can itself be mutated, instead of reassigning the value with a different data. Several actions are considered data mutations: * Reassigning its member values with data * Passing data to a mutable value * Mutating any of its member values.</p>
+<p>Data mutability refers to whether data assigned to a value can itself be mutated, instead of reassigning the value with a different data. Several actions are considered data mutations:</p>
+<ul>
+<li>Reassigning its member values with new data</li>
+<li>Borrowing its data to another mutable value</li>
+<li>Mutating any of its member values.</li>
+</ul>
+<p>Reassigning a value itself is <strong>not</strong> considered a mutation of its data.</p>
 
                 </div>
             </div>
