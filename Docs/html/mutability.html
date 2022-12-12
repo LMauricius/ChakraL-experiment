@@ -93,14 +93,14 @@
 <li>Mutating any of its member values.</li>
 </ul>
 <p>Reassigning a value itself is <strong>not</strong> considered a mutation of its data.</p>
-<h1 id="mutable">Mutable</h1>
+<h2 id="mutable">Mutable</h2>
 <p>Mutable data is allowed to be mutated, although only by its owner. Mutations are useful when you want to change only a part of the data, or when you want to change borrowed data before returning its ownership. Such values’ data can be borrowed by values qualified as either <code>mutable</code>, <code>volatile</code> or <code>immutable</code>.</p>
 <p>Mutable data values are treated differently when used as function parameter members. Each parameter member that is qualified as <code>mutable</code> requires the function to have an equivalent <code>mutable</code> member of its return value. If the function’s return value trait is ommited, the automatically inferred return value trait will have all neccesary <code>mutable</code> members automatically added. If the function only has its <code>mutable</code> parameters as the return trait, the <code class="sourceCode chakral"><span class="cf">return</span></code> statement can be used without a value and <code>mutable</code> parameter members will be automatically added to it. In such case, the <code class="sourceCode chakral"><span class="cf">return</span></code> statement can also be ommited at the end of a function.</p>
-<h1 id="immutable">Immutable</h1>
+<h2 id="immutable">Immutable</h2>
 <p>Immutable data is, as the name implies, forbidden from being mutated. Such values’ data can be borrowed only by other values qualified as <code>immutable</code>. This is the default for all values.</p>
-<h1 id="volatile">Volatile</h1>
+<h2 id="volatile">Volatile</h2>
 <p>Volatile data refers to unstable values, that can be changed in non-obvious ways. It can be mutated, even if its owner’s context is qualified as immutable. This is useful for data that depends on system processes, and data that is shared between multiple threads. Such values’ data can be borrowed by values qualified as either <code>mutable</code>, <code>volatile</code> or <code>immutable</code>.</p>
-<h1 id="virtual">Virtual</h1>
+<h2 id="virtual">Virtual</h2>
 <p>Virtual data is different from other data because it can only be referenced or borrowed by other values qualified as <code>virtual</code>. Virtual data can be incomplete, as its members can be uninitialized. If data is virtual, it cannot be copied.</p>
 <p>As most functions take non-<code>virtual</code> data as arguments, <code>virtual</code> data is usually only useful as a ‘prototype’ that can be used to construct non-<code>virtual</code> data. This is done by <em>combining</em> some data with the <code>virtual</code> data, and ensuring the combined data <em>completes</em> each other (otherwise the result would have more initialized members than the original <code>virtual</code> data, but still be incomplete i.e. still <code>virtual</code>).</p>
 <p>Most often, <code>virtual</code> data is used as trait. Traits can be used to test data (using the <code>is</code> operator), limit values (using required traits), as <em>prototypes</em> (to construct non-<code>virtual</code> data by operator <code>&amp;</code>), or for casting to a new object (using the cast operator <code>.</code>).</p>
