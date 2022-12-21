@@ -81,7 +81,8 @@ add_custom_command(
 		--extraparserheaders ${CMAKE_CURRENT_SOURCE_DIR}/include/chakralParserPrereq${ParserTypeSuffix}.h ${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralSemanticNodesAutogen.h
 		--outsemanticnodesh ${CMAKE_CURRENT_SOURCE_DIR}/autoinclude/chakralSemanticNodesAutogen.h
 		--outsemanticnodescpp ${CMAKE_CURRENT_SOURCE_DIR}/autosrc/chakralSemanticNodesHybridgen.cpp
-		--extrasemanticnodesheaders ${CMAKE_CURRENT_SOURCE_DIR}/include/chakralParserPrereq${ParserTypeSuffix}.h ${CMAKE_CURRENT_SOURCE_DIR}/include/chakralModel.h
+		--extrasemanticinclheaders ${CMAKE_CURRENT_SOURCE_DIR}/include/chakralParserPrereq${ParserTypeSuffix}.h ${CMAKE_CURRENT_SOURCE_DIR}/include/chakralSemanticsPrereq.h
+		--extrasemanticimplheaders ${CMAKE_CURRENT_SOURCE_DIR}/include/chakralServer.h
 		--parsertype ${ParserType}
 	DEPENDS
 		${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/unicodeREMacrosAutogen.txt

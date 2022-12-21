@@ -26,7 +26,8 @@ def main():
     # --outparsercpp <cpp file> ... Parser c++ file to write to
     # --outsemanticnodescpp <cpp file> ... C++ file to write semantic node processor methods to
     # --extraparserheaders <file1> <file2> ... Header files to be included with the parser header file
-    # --extrasemanticnodesheaders <file1> <file2> ... Header files to be included with the semantic node processor methods header file
+    # --extrasemanticinclheaders <file1> <file2> ... Header files to be included with the semantic node processor methods header file
+    # --extrasemanticimplheaders <file1> <file2> ... Header files to be included with the semantic node processor methods cpp file
 
     argMap: dict[str, list[str]] = {}
     curArg = ""
@@ -172,12 +173,12 @@ def main():
         if "--outsemanticnodesh" in argMap:
             startTime = time.time()
             argget("--insemanticnodes", "--inparser")
-            writeSemanticNodesMethodsH(semNodes, argget("--outsemanticnodesh"), argget("--inlexerh", "--outlexerh"), argsgetopt("--extrasemanticnodesheaders"))
+            writeSemanticNodesMethodsH(semNodes, argget("--outsemanticnodesh"), argget("--inlexerh", "--outlexerh"), argsgetopt("--extrasemanticinclheaders"))
             print("Generated parser process definitions source file in " + str(time.time()-startTime) + "s: " + argget("--outsemanticnodesh"))
         if "--outsemanticnodescpp" in argMap:
             startTime = time.time()
             argget("--insemanticnodes", "--inparser")
-            writeSemanticNodesMethodsCPP(semNodes, argget("--outsemanticnodescpp"), argget("--insemanticnodesh", "--outsemanticnodesh"), [])
+            writeSemanticNodesMethodsCPP(semNodes, argget("--outsemanticnodescpp"), argget("--insemanticnodesh", "--outsemanticnodesh"), argsgetopt("--extrasemanticimplheaders"))
             print("Generated parser process definitions source file in " + str(time.time()-startTime) + "s: " + argget("--outsemanticnodescpp"))
     except ArgumentError as e:
         print("ERROR: " + e.message)
