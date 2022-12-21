@@ -35,12 +35,14 @@ SUBNODES_METHOD_DECL = "getSubNodes() const"
 
 class SemanticNode:
     def __init__(self) -> None:
-        self.parentNode : str = "SemanticNode"
+        self.parentNodeName : str = "SemanticNode"
         self.parentClassName : str = "SemanticNode"
         self.privateMembers : OrderedDict[str, Member] = OrderedDict()
         self.protectedMembers : OrderedDict[str, Member] = OrderedDict()
         self.publicMembers : OrderedDict[str, Member] = OrderedDict()
         self.methods : OrderedDict[str, Member] = OrderedDict()
+        self.interfaceMethodNames : set[str] = set()
+        self.implementedMethodNames : set[str] = set()
         self.cachingMethodIDs : OrderedDict[str, str] = OrderedDict()
 
         mem = Member(NAME_METHOD_DECL, "std::string_view")
@@ -52,6 +54,8 @@ class SemanticNode:
         mem = Member(SUBNODES_METHOD_DECL, "std::vector<const SemanticNode*>")
         self.publicMembers[mem.name] = mem
         self.methods[mem.name] = mem
+
+        self.location: Location = Location()
 
 def loadSemanticNodes(filename: str):
     print("Loading semantic nodes ", filename)
@@ -69,38 +73,58 @@ def loadSemanticNodes(filename: str):
             if l[0] == "@":
                 curNodeName = l[1:]
                 curNode = semNodes.setdefault(curNodeName, SemanticNode())
+                curNode.location = location
             else:
                 spaceInd = l.find(" ")
                 mark = l[0:spaceInd].strip()
                 memberDef = l[spaceInd:].strip()
                 
                 if mark == "parent":
-                    curNode.parentNode = memberDef
+                    curNode.parentNodeName = memberDef
                     curNode.parentClassName = "SemanticNode_" + memberDef
-                elif (mark[0] == "f" or mark[0] == "v" or mark[0] == "c") and (mark[1:] == "pub" or mark[1:] == "prot" or mark[1:] == "priv"):
+
+                    curNode.interfaceMethodNames.update(semNodes[memberDef].interfaceMethodNames)
+                    curNode.implementedMethodNames.update(semNodes[memberDef].implementedMethodNames)
+                elif mark == "pub" or mark == "prot" or mark == "priv":
+                    isInterface = False
 
                     # select the member list depending on access modifier
                     selMemberList: OrderedDict[str, Member] | None = None
-                    if mark[1:] == "pub":
+                    if mark == "pub":
                         selMemberList = curNode.publicMembers
-                    elif mark[1:] == "prot":
+                    elif mark == "prot":
                         selMemberList = curNode.protectedMembers
-                    elif mark[1:] == "priv":
+                    elif mark == "priv":
                         selMemberList = curNode.privateMembers
+                    
+                    # check the rest
+                    spaceInd = memberDef.find(" ")
+                    mark = memberDef[0:spaceInd].strip()
+                    memberDef = memberDef[spaceInd:].strip()
+                    
+                    if mark == "interface":
+                        isInterface = True
+
+                        # check the rest
+                        spaceInd = memberDef.find(" ")
+                        mark = memberDef[0:spaceInd].strip()
+                        memberDef = memberDef[spaceInd:].strip()
 
                     # add member depending on kind
-                    if mark[0] == "f":
+                    if mark == "fn":
                         newM = Member.fromDefinition(memberDef, location)
                         selMemberList.setdefault(newM.name, newM)
                         curNode.methods.setdefault(newM.name, newM)
-                    elif mark[0] == "v":
+                        curNode.implementedMethodNames.add(newM.name)
+                        if isInterface:
+                            curNode.interfaceMethodNames.add(newM.name)
+                    elif mark == "var":
                         newM = Member.fromDefinition(memberDef, location)
                         selMemberList.setdefault(newM.name, newM)
-                    elif mark[0] == "c":
+                    elif mark == "cached":
                         newM = Member.fromDefinition(memberDef, location)
                         newFuncMem = Member(newM.name, newM.type, "")
                         cachingID = newM.name[0:newM.name.find("(")].strip()
-                        print("CACHE: "+cachingID)
                         newCacheMem = Member("mCached_"+cachingID, f"std::optional<{newM.type}>", f"std::optional<{newM.type}>{{{newM.val}}}")
                         newGetterMem = Member("get_"+newM.name, newM.type, "")
 
@@ -111,12 +135,31 @@ def loadSemanticNodes(filename: str):
                         curNode.privateMembers.setdefault(newCacheMem.name, newCacheMem)
                         curNode.privateMembers.setdefault(newGetterMem.name, newGetterMem)
                         curNode.methods.setdefault(newGetterMem.name, newGetterMem)
+
+                        curNode.implementedMethodNames.add(newGetterMem.name)
+                        if isInterface:
+                            curNode.interfaceMethodNames.add(newGetterMem.name)
                 else:
                     raise FormatError(f"Unknown node mark '{mark}'", location)
 
             l, location = next(lines, ("", Location()))
 
+        # Check if everything was defined correctly
+
+        # check interface implementations
+        for name, node in semNodes.items():
+            if node.parentNodeName in semNodes:
+                for req in semNodes[node.parentNodeName].interfaceMethodNames:
+                    if not req in node.implementedMethodNames:
+                        raise SemanticError(
+                            f"Node {name} has not implemented required member {req} of interface {node.parentNodeName}!",
+                            node.location
+                        )
+
     except FormatError as e:
+        print("ERROR " + str(e.location) + ": " + e.message)
+        sys.exit(1)
+    except SemanticError as e:
         print("ERROR " + str(e.location) + ": " + e.message)
         sys.exit(1)
     except StopIteration:
@@ -139,6 +182,7 @@ def writeSemanticNodesMethodsH(semNodes: OrderedDict[str, SemanticNode], filenam
         LN("")
         for hf in extraheaderfiles+[lexerHeaderfile]:
             LN(f'#include "{os.path.relpath(hf, start=os.path.dirname(filename))}"')
+        LN(f'#include <optional>')
         
         #LN('#include <vector>')
         #LN('#include <string_view>')
@@ -167,10 +211,16 @@ def writeSemanticNodesMethodsH(semNodes: OrderedDict[str, SemanticNode], filenam
                 if len(members) > 0:
                     TB();LN(f"{visMark}:")
                     for mem in members:
+                        prefix = ""
+                        specifier = ""
+                        if mem.name in semNode.interfaceMethodNames and mem.name not in semNodes[semNode.parentNodeName].interfaceMethodNames:
+                            prefix += "virtual "
+                        if mem.name in semNode.interfaceMethodNames and semNode.parentNodeName in semNodes and mem.name in semNodes[semNode.parentNodeName].interfaceMethodNames:
+                            specifier += " override"
                         if len(mem.val) > 0:
-                            TB();TB();LN(f"{mem.type} {mem.name} = {mem.val};")
+                            TB();TB();LN(f"{prefix}{mem.type} {mem.name}{specifier} = {mem.val};")
                         else:
-                            TB();TB();LN(f"{mem.type} {mem.name};")
+                            TB();TB();LN(f"{prefix}{mem.type} {mem.name}{specifier};")
 
             TB();LN(f"}};")
             TB();LN("")
@@ -359,5 +409,5 @@ def semNodeExtends(child:str, parent:str, semNodes: OrderedDict[str, SemanticNod
     while cur in semNodes:
         if cur == parent:
             return True
-        cur = semNodes[cur].parentNode
+        cur = semNodes[cur].parentNodeName
     return False

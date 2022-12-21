@@ -1,23 +1,47 @@
-# fpub, fprot, fpriv - member functions
-#   fpub <FUNCTION_NAME>(<PARAMETERS>) -> <RETURN_TYPE>
-# vpub, vprot, vpriv - member variables
-#   vpub <VARIABLE_NAME> -> <TYPE>
-# cpub, cprot, cpriv - cached member variables (functions + variables)
-#   cpub <FUNCTION_NAME>(<PARAMETERS>) -> <RETURN_TYPE>
-#   Creates (and defines) function <FUNCTION_NAME>, variable mCached_<FUNCTION_NAME>,
-#   and function (custom defined) get_<FUNCTION_NAME>
+# @<SEM_NODE_NAME> - starts the definition of a semantic node's class
+#   It is followed by multiple definition lines
+# Each definition line starts with one or more 'marks'
+#   Marks are followed by an argument - in mark-dependant format
+# Supported marks:
+#   parent - parent class, SemanticNode by default
+#       parent <SEMANTIC_NODE_NAME>
+#
+#       The SEMANTIC_NODE_NAME must be the name of a node, not its 
+#       internal class
+#
+#   pub, prot, priv - member declaration
+#       pub|prot|priv [interface] fn|var|cached <DEFINITION>
+#
+#   interface (sub mark) - a virtual member, to be defined by a derived node class
+#       pub|prot|priv interface fn|var|cached <DEFINITION>
+#
+#       if a function or property keyword has "interface" before it, 
+#       it will be used as an interface, i.e. it will declare a virtual func
+#
+#   fn (submark) - member functions
+#       pub|prot|priv [interface] fn <FUNCTION_NAME>(<PARAMETERS>) -> <RETURN_TYPE>
+#
+#   var (submark) - member variables
+#       pub|prot|priv [interface] var <VARIABLE_NAME> -> <TYPE>
+#
+#   cached (submark) - cached member variables (functions + variables)
+#       pub|prot|priv [interface] cached <FUNCTION_NAME>(<PARAMETERS>) -> <RETURN_TYPE>
+#
+#       Creates (and defines) function <FUNCTION_NAME>, variable mCached_<FUNCTION_NAME>,
+#       and function (custom defined)  get_<FUNCTION_NAME>
 
 
 # *** CONTEXT ***
 
 @ContextBlock
-    cpub baseContext(ContextPtr parentContext) -> ContextPtr
+    pub cached baseContext(Server& server, Scope& scope) -> ContextPtr
 
-    #fpub getTraits(ContextPtr parentContext) -> ContextPtr
-    #fpub getDefinedContext(ContextPtr parentContext) -> ContextPtr
-
-    #vprot savedTraits -> ContextPtr = nullptr
-    #vprot savedContext -> ContextPtr = nullptr
+    pub fn outputInternalCDeclaration(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCDefinition(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    
+    pub fn outputCInclude(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputCPPInclude(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @Description
 
@@ -36,20 +60,50 @@
 @Statement
     parent Description
 
+    pub interface fn outputInternalCDeclaration(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub interface fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub interface fn outputInternalCDefinition(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @MemberDecl
     parent Statement
+
+    pub fn outputInternalCDeclaration(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCDefinition(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @Definition
     parent Statement
 
+    pub cached nameHash(Server& server, Scope& scope) -> uint64_t
+    pub cached hintName(Server& server, Scope& scope) -> std::string
+    pub cached shortName(Server& server, Scope& scope) -> std::string
+    pub cached longName(Server& server, Scope& scope) -> std::string
+    pub cached uniqueName(Server& server, Scope& scope) -> std::string
+
+    pub fn outputInternalCDeclaration(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCDefinition(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @Change
     parent Statement
+
+    pub fn outputInternalCDeclaration(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCDefinition(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @IfStat
     parent Statement
 
+    pub fn outputInternalCDeclaration(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCDefinition(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @LoopStat
     parent Statement
+
+    pub fn outputInternalCDeclaration(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCDefinition(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @LoopStatPart
 
@@ -66,8 +120,14 @@
 @JumpStat
     parent Statement
 
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCDefinition(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @WithStat
     parent Statement
+
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCDefinition(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @BreakStat
     parent JumpStat
@@ -88,31 +148,60 @@
 @Expression
     parent Statement
 
-    cpub value(ContextPtr parentContext) -> Value
+    pub cached value(Server& server, Scope& scope) -> Value
+    pub interface cached idName() -> Identifier
+
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @ExprBinaryL2R
     parent Expression
 
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @ExprLUnary
     parent Expression
+
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @ExprRUnary
     parent Expression
 
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @TightExpr
     parent Expression
+
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @LogicalExpr
     parent Expression
 
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @ExprPrefixFunction
     parent Expression
+
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @RangeLiteral
     parent Expression
 
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @Identifier
     parent Expression
+
+    pub cached idName() -> Identifier
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 
 # *** LITERALS ***
@@ -123,23 +212,47 @@
 @FunctionLiteral
     parent Literal
 
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @CoroutineLiteral
     parent Literal
+
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @ContextExpressionLiteral
     parent Literal
 
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @ValueLiteral
     parent Literal
+
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @ModuleReference
     parent Literal
 
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @ListLiteral
     parent Literal
+
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
 
 @DictLiteral
     parent Literal
 
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
+
 @SetLiteral
     parent Literal
+
+    pub fn outputInternalCGlobals(Server& server, Scope& scope, std::ostringstream& ss) -> void
+    pub fn outputInternalCExpression(Server& server, Scope& scope, std::ostringstream& ss) -> void
