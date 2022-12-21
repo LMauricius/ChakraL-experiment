@@ -1,4 +1,5 @@
 // create a CMake build task and put this in it
+// it enables generator errors to appear in VSCode's problem list
 			
 			"problemMatcher": [
                 {
