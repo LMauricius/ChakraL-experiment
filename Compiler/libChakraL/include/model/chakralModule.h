@@ -1,6 +1,5 @@
 #pragma once
 
-#include "chakralBlock.h"
 #include "chakralSourceFile.h"
 
 namespace ChakraL {

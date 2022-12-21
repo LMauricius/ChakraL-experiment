@@ -1,11 +1,11 @@
 #pragma once
 
-#include "chakralBlock.h"
+#include "chakralScope.h"
 
 namespace ChakraL {
 
     class SourceFile {
     public:
-        Block content;
+        Scope content;
     };
 }

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "chakralContext.h"
-#include "chakralBlock.h"
+#include "chakralScope.h"
 
 namespace ChakraL {
 
     class Mapping : public Context {
     public:
-        Block code;
+        Scope code;
     };
 }

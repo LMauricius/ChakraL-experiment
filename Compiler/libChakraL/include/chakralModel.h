@@ -4,8 +4,7 @@
 Includes headers describing the deeper semantic model of ChakraL.
 */
 
-#include "model/chakralBlock.h"
-#include "model/chakralBlock.h"
+#include "model/chakralScope.h"
 #include "model/chakralContext.h"
 #include "model/chakralIdentifier.h"
 #include "model/chakralMapping.h"
