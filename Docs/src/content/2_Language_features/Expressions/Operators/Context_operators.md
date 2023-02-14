@@ -8,7 +8,7 @@ C = A & B
 
 Combines two operand contexts `A` and `B` into one result context `C`. `C` will have all descriptions of `A` and `B`. 
 
-If a member of the same name is found in both operands `A` and `B`, the result context `C` will have one member of that name with the required type of the left operand `A` and the starting assigned data of the right operand `B`. In that case, `B`'s member value must satisfy the required trait of `A`'s member value and `B`'s member value's access qualifiers must be the same as' `A`'s member value's access qualifiers. In such a situation we say that `A`'s member value was overriden by `B`'s.
+If a member of the same name is found in both operands `A` and `B`, the result context `C` will have one member of that name with the required trait of the left operand `A` and the data of the right operand `B`. In that case, `B`'s member value must satisfy the required trait of `A`'s member value and `B`'s member value's access qualifiers must be the same as' `A`'s member value's access qualifiers. In such a situation we say that `A`'s member value was overriden by `B`'s. If `A`'s member is hidden from the current scope, it cannot be overriden. Instead a new member will be created that happens to have the same name.
 
 ```{.chakral caption="Example of combination"}
 A def:
@@ -39,7 +39,7 @@ B def:
     c = 4
 ok
 
-C def A & B ** ERROR: String is not Integer for override of member 'b'
+C def A & B ** ERROR: Cannot override Integer member 'b' with a String context
 ```
 
 The copy (`new`{.chakral}) operator is automatically created for the combination if and only if the copy operator is defined for each of its operands.
@@ -147,5 +147,12 @@ d: virtual const = (x=1) <> (y=2) **OK
 
 The choice operator is useful for creating optional values, i.e. values that can be assigned to None.
 ```{.chakral}
-c: Integer<>Nil = 
+c: Integer<>Nil = Nil
 ```
+
+## Context overload (<+>) operator
+```{.chakral}
+C = A <+> B
+```
+
+Overloading is an act of storing multiple separate contexts into one. The `<+>` operator makes an overloaded context `C` of two operand contexts `A` and `B`. Overloading is similar to combining contexts, except no members are overriden. Operands of the overloaded context are called overloads. The context `A` must not be satisfying the trait `B`. Each overload has its own members, and to retrieve a single overload `A` you have to cast the overloaded context into `A`'s type. Each overload retains its own value qualifiers.
