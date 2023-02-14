@@ -38,11 +38,13 @@
         <ul>
             <li>1&nbspStatements
             <ul>
-                <li><a href="using_statement.html">1&nbspusing statement</a>
+                <li><a href="assignment_and_definition.html">1&nbspAssignment and definition</a>
                 </li>
-                <li><a href="if_statement.html">2&nbspif statement</a>
+                <li><a href="using_statement.html">2&nbspusing statement</a>
                 </li>
-                <li><a href="with_statement.html">3&nbspwith statement</a>
+                <li><a href="if_statement.html">3&nbspif statement</a>
+                </li>
+                <li><a href="with_statement.html">4&nbspwith statement</a>
                 </li>
             </ul>
             </li>
@@ -87,113 +89,116 @@
                 <div class="pagecontent">
                     <h1 id="context-operators">Context operators</h1>
 <h2 id="context-combination-operator">Context combination (&amp;) operator</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb1-1" title="1">C <span class="op">=</span> A <span class="op">&amp;</span> B</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>C <span class="op">=</span> A <span class="op">&amp;</span> B</span></code></pre></div>
 <p>Combines two operand contexts <code>A</code> and <code>B</code> into one result context <code>C</code>. <code>C</code> will have all descriptions of <code>A</code> and <code>B</code>.</p>
-<p>If a member of the same name is found in both operands <code>A</code> and <code>B</code>, the result context <code>C</code> will have one member of that name with the required type of the left operand <code>A</code> and the starting assigned data of the right operand <code>B</code>. In that case, <code>B</code>‘s member value must satisfy the required trait of <code>A</code>’s member value and <code>B</code>’s member value’s access qualifiers must be the same as’ <code>A</code>’s member value’s access qualifiers. In such a situation we say that <code>A</code>’s member value was overriden by <code>B</code>’s.</p>
-<div class="sourceCode" id="cb2" data-caption="Example of combination"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb2-1" title="1">A <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb2-2" title="2">    a <span class="op">=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb2-3" title="3">    b <span class="op">=</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb2-5" title="5"></a>
-<a class="sourceLine" id="cb2-6" title="6">B <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb2-7" title="7">    b <span class="op">=</span> <span class="dv">3</span></a>
-<a class="sourceLine" id="cb2-8" title="8">    c <span class="op">=</span> <span class="dv">4</span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb2-10" title="10"></a>
-<a class="sourceLine" id="cb2-11" title="11">C <span class="kw">def</span> A <span class="op">&amp;</span> B</a>
-<a class="sourceLine" id="cb2-12" title="12"></a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="cf">with</span> output<span class="op">=</span>console:</a>
-<a class="sourceLine" id="cb2-14" title="14">    write C <span class="co">**prints &#39;(a = 1, b = 3, c = 4)&#39;</span></a>
-<a class="sourceLine" id="cb2-15" title="15"><span class="cf">ok</span></a></code></pre></div>
-<div class="sourceCode" id="cb3" data-caption="Example of wrong data"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb3-1" title="1">A <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb3-2" title="2">    a <span class="op">=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb3-3" title="3">    b <span class="op">=</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb3-5" title="5"></a>
-<a class="sourceLine" id="cb3-6" title="6">B <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb3-7" title="7">    b <span class="op">=</span> <span class="st">&quot;Hello&quot;</span></a>
-<a class="sourceLine" id="cb3-8" title="8">    c <span class="op">=</span> <span class="dv">4</span></a>
-<a class="sourceLine" id="cb3-9" title="9"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb3-10" title="10"></a>
-<a class="sourceLine" id="cb3-11" title="11">C <span class="kw">def</span> A <span class="op">&amp;</span> B <span class="co">** ERROR: String is not Integer for override of member &#39;b&#39;</span></a></code></pre></div>
+<p>If a member of the same name is found in both operands <code>A</code> and <code>B</code>, the result context <code>C</code> will have one member of that name with the required trait of the left operand <code>A</code> and the data of the right operand <code>B</code>. In that case, <code>B</code>‘s member value must satisfy the required trait of <code>A</code>’s member value and <code>B</code>’s member value’s access qualifiers must be the same as’ <code>A</code>’s member value’s access qualifiers. In such a situation we say that <code>A</code>’s member value was overriden by <code>B</code>’s. If <code>A</code>’s member is hidden from the current scope, it cannot be overriden. Instead a new member will be created that happens to have the same name.</p>
+<div class="sourceCode" id="cb2" data-caption="Example of combination"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>A <span class="kw">def</span>:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    a <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    b <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="cf">ok</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>B <span class="kw">def</span>:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>    b <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>    c <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="cf">ok</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>C <span class="kw">def</span> A <span class="op">&amp;</span> B</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="cf">with</span> output<span class="op">=</span>console:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>    write C <span class="co">**prints &#39;(a = 1, b = 3, c = 4)&#39;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="cf">ok</span></span></code></pre></div>
+<div class="sourceCode" id="cb3" data-caption="Example of wrong data"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>A <span class="kw">def</span>:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    a <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    b <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="cf">ok</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>B <span class="kw">def</span>:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>    b <span class="op">=</span> <span class="st">&quot;Hello&quot;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    c <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="cf">ok</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>C <span class="kw">def</span> A <span class="op">&amp;</span> B <span class="co">** ERROR: Cannot override Integer member &#39;b&#39; with a String context</span></span></code></pre></div>
 <p>The copy (<code class="sourceCode chakral"><span class="kw">new</span></code>) operator is automatically created for the combination if and only if the copy operator is defined for each of its operands.</p>
 <p>A context <code>d</code> satisfies the combination result trait <code>C</code> if and only if it satisfies all the operand contexts that are part of <code>C</code>.</p>
-<div class="sourceCode" id="cb4" data-caption="Example of a combined trait"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb4-1" title="1">NonZero <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb4-2" title="2">    ? <span class="va">context</span> <span class="op">!=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb4-4" title="4"></a>
-<a class="sourceLine" id="cb4-5" title="5">NonZero32 <span class="kw">def</span> int32 <span class="op">&amp;</span> NonZero</a>
-<a class="sourceLine" id="cb4-6" title="6"></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="cf">with</span> output<span class="op">=</span>console:</a>
-<a class="sourceLine" id="cb4-8" title="8">    a: int32 <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb4-9" title="9">    b: float64 <span class="op">=</span> <span class="fl">3.0</span></a>
-<a class="sourceLine" id="cb4-10" title="10">    c: int32 <span class="op">=</span> <span class="dv">3</span></a>
-<a class="sourceLine" id="cb4-11" title="11"></a>
-<a class="sourceLine" id="cb4-12" title="12">    write <span class="kw">whether</span> a <span class="kw">is</span> int32 <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb4-13" title="13">    write <span class="kw">whether</span> a <span class="kw">is</span> NonZero <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb4-14" title="14">    write <span class="kw">whether</span> a <span class="kw">is</span> NonZero32 <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb4-15" title="15">    write <span class="kw">whether</span> b <span class="kw">is</span> int32 <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb4-16" title="16">    write <span class="kw">whether</span> b <span class="kw">is</span> NonZero <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb4-17" title="17">    write <span class="kw">whether</span> b <span class="kw">is</span> NonZero32 <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb4-18" title="18">    write <span class="kw">whether</span> c <span class="kw">is</span> int32 <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb4-19" title="19">    write <span class="kw">whether</span> c <span class="kw">is</span> NonZero <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb4-20" title="20">    write <span class="kw">whether</span> c <span class="kw">is</span> NonZero32 <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb4-21" title="21"><span class="cf">ok</span></a></code></pre></div>
+<div class="sourceCode" id="cb4" data-caption="Example of a combined trait"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>NonZero <span class="kw">def</span>:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    ? <span class="va">context</span> <span class="op">!=</span> <span class="dv">0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="cf">ok</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>NonZero32 <span class="kw">def</span> int32 <span class="op">&amp;</span> NonZero</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="cf">with</span> output<span class="op">=</span>console:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>    a: int32 <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>    b: float64 <span class="op">=</span> <span class="fl">3.0</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>    c: int32 <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>    write <span class="kw">whether</span> a <span class="kw">is</span> int32 <span class="co">**prints &#39;true&#39;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    write <span class="kw">whether</span> a <span class="kw">is</span> NonZero <span class="co">**prints &#39;false&#39;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>    write <span class="kw">whether</span> a <span class="kw">is</span> NonZero32 <span class="co">**prints &#39;false&#39;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>    write <span class="kw">whether</span> b <span class="kw">is</span> int32 <span class="co">**prints &#39;false&#39;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>    write <span class="kw">whether</span> b <span class="kw">is</span> NonZero <span class="co">**prints &#39;true&#39;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>    write <span class="kw">whether</span> b <span class="kw">is</span> NonZero32 <span class="co">**prints &#39;false&#39;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>    write <span class="kw">whether</span> c <span class="kw">is</span> int32 <span class="co">**prints &#39;true&#39;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>    write <span class="kw">whether</span> c <span class="kw">is</span> NonZero <span class="co">**prints &#39;true&#39;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>    write <span class="kw">whether</span> c <span class="kw">is</span> NonZero32 <span class="co">**prints &#39;true&#39;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a><span class="cf">ok</span></span></code></pre></div>
 <p>The <a href="trait_system.html">trait qualifiers</a> of the operands <code>A</code> and <code>B</code> do not carry over into the combined context, but they do apply on the operands as parts of the result context <code>c</code>.</p>
-<div class="sourceCode" id="cb5" data-caption="Example of the final qualifier in a combined trait"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb5-1" title="1">A <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb5-2" title="2">    x <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb5-4" title="4">B <span class="kw">def</span>:</a>
-<a class="sourceLine" id="cb5-5" title="5">    <span class="kw">final</span></a>
-<a class="sourceLine" id="cb5-6" title="6">    y <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="cf">ok</span></a>
-<a class="sourceLine" id="cb5-8" title="8">C <span class="kw">def</span> A <span class="op">&amp;</span> B</a>
-<a class="sourceLine" id="cb5-9" title="9"></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="cf">with</span> output<span class="op">=</span>console:</a>
-<a class="sourceLine" id="cb5-11" title="11">    d1 <span class="op">=</span> (x <span class="op">=</span> <span class="dv">0</span>, y <span class="op">=</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb5-12" title="12">    d2 <span class="op">=</span> (x <span class="op">=</span> <span class="dv">5</span>, y <span class="op">=</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb5-13" title="13">    write <span class="kw">whether</span> d1 <span class="kw">is</span> C <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb5-14" title="14">    write <span class="kw">whether</span> d2 <span class="kw">is</span> C <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb5-15" title="15"><span class="cf">ok</span></a></code></pre></div>
+<div class="sourceCode" id="cb5" data-caption="Example of the final qualifier in a combined trait"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>A <span class="kw">def</span>:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    x <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="cf">ok</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>B <span class="kw">def</span>:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    <span class="kw">final</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    y <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="cf">ok</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>C <span class="kw">def</span> A <span class="op">&amp;</span> B</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="cf">with</span> output<span class="op">=</span>console:</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>    d1 <span class="op">=</span> (x <span class="op">=</span> <span class="dv">0</span>, y <span class="op">=</span> <span class="dv">5</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>    d2 <span class="op">=</span> (x <span class="op">=</span> <span class="dv">5</span>, y <span class="op">=</span> <span class="dv">0</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>    write <span class="kw">whether</span> d1 <span class="kw">is</span> C <span class="co">**prints &#39;false&#39;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>    write <span class="kw">whether</span> d2 <span class="kw">is</span> C <span class="co">**prints &#39;true&#39;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="cf">ok</span></span></code></pre></div>
 <h2 id="context-selection-operator">Context selection (|) operator</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb6-1" title="1">C: virtual <span class="op">=</span> A <span class="op">|</span> B</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>C: virtual <span class="op">=</span> A <span class="op">|</span> B</span></code></pre></div>
 <p>Makes a trait selection between two operand contexts <code>A</code> and <code>B</code> as a result context <code>C</code>. <code>C</code> will have those descriptions that are part of both <code>A</code> and <code>B</code>. A context <code>d</code> satisfies the selection result trait <code>C</code> if and only if it satisfies at least one of the operands that are part of <code>C</code>. Because of that, <code>d</code> that is of trait <code>C</code> can be cast into at least one of its operands <code>A</code> or <code>B</code>. A selection is usually only useful as a required trait as it cannot be instantiated by default.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb7-1" title="1">XY <span class="kw">def</span> (x<span class="op">=</span><span class="dv">1</span>, y<span class="op">=</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb7-2" title="2">YZ <span class="kw">def</span> (y<span class="op">=</span><span class="dv">2</span>, z<span class="op">=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb7-3" title="3">c: XY <span class="op">|</span> YZ <span class="op">=</span> (x<span class="op">=</span><span class="dv">4</span>, y<span class="op">=</span><span class="dv">5</span>) <span class="co">**assigns an XY value</span></a>
-<a class="sourceLine" id="cb7-4" title="4"></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="cf">with</span> output<span class="op">=</span>console:</a>
-<a class="sourceLine" id="cb7-6" title="6">    write y c <span class="co">**prints &#39;5&#39;</span></a>
-<a class="sourceLine" id="cb7-7" title="7">    <span class="co">**write x c **would be ERROR: selection c doesn&#39;t always have the member x</span></a>
-<a class="sourceLine" id="cb7-8" title="8"></a>
-<a class="sourceLine" id="cb7-9" title="9">    write <span class="kw">whether</span> c <span class="kw">is</span> XY <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb7-10" title="10">    write <span class="kw">whether</span> c <span class="kw">is</span> YZ <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb7-11" title="11"></a>
-<a class="sourceLine" id="cb7-12" title="12">    <span class="co">** how to access &#39;x&#39;:</span></a>
-<a class="sourceLine" id="cb7-13" title="13">    <span class="cf">if</span> c <span class="kw">is</span> XY: <span class="co">**yes</span></a>
-<a class="sourceLine" id="cb7-14" title="14">        <span class="kw">using</span> c <span class="kw">as</span> XY <span class="co">**cast from XY|YZ to XY</span></a>
-<a class="sourceLine" id="cb7-15" title="15">        write x c <span class="co">**prints &#39;4&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>XY <span class="kw">def</span> (x<span class="op">=</span><span class="dv">1</span>, y<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>YZ <span class="kw">def</span> (y<span class="op">=</span><span class="dv">2</span>, z<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>c: XY <span class="op">|</span> YZ <span class="op">=</span> (x<span class="op">=</span><span class="dv">4</span>, y<span class="op">=</span><span class="dv">5</span>) <span class="co">**assigns an XY value</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="cf">with</span> output<span class="op">=</span>console:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    write y c <span class="co">**prints &#39;5&#39;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>    <span class="co">**write x c **would be ERROR: selection c doesn&#39;t always have the member x</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>    write <span class="kw">whether</span> c <span class="kw">is</span> XY <span class="co">**prints &#39;true&#39;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>    write <span class="kw">whether</span> c <span class="kw">is</span> YZ <span class="co">**prints &#39;false&#39;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>    <span class="co">** how to access &#39;x&#39;:</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>    <span class="cf">if</span> c <span class="kw">is</span> XY: <span class="co">**yes</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>        <span class="kw">using</span> c <span class="kw">as</span> XY <span class="co">**cast from XY|YZ to XY</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>        write x c <span class="co">**prints &#39;4&#39;</span></span></code></pre></div>
 <p>The copy (<code class="sourceCode chakral"><span class="kw">new</span></code>) operator isn’t automatically defined for a selection since there is not universal default for which operands should be included in the copy. It is however a <code class="sourceCode chakral">virtual</code> context, so it can be assigned to values that have a virtual qualifier.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb8-1" title="1">c <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">|</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**ERROR: cannot copy a selection into variable &#39;c&#39;</span></a>
-<a class="sourceLine" id="cb8-2" title="2">d: virtual <span class="kw">const</span> <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">|</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**OK</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>c <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">|</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**ERROR: cannot copy a selection into variable &#39;c&#39;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>d: virtual <span class="kw">const</span> <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">|</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**OK</span></span></code></pre></div>
 <h2 id="context-choice-operator">Context choice (&lt;&gt;) operator</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb9-1" title="1">C: virtual <span class="op">=</span> A <span class="op">&lt;&gt;</span> B</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>C: virtual <span class="op">=</span> A <span class="op">&lt;&gt;</span> B</span></code></pre></div>
 <p>Makes a trait choice (variant) between two operand contexts <code>A</code> and <code>B</code> as a result context <code>C</code>. <code>C</code> will have those descriptions that are part of both <code>A</code> and <code>B</code>. A context <code>d</code> satisfies the choice result trait <code>C</code> if and only if it satisfies exactly one of the operands that are part of <code>C</code>. Because of that, <code>d</code> that is of trait <code>C</code> can be cast into exactly one of its operands <code>A</code> or <code>B</code>. A choice is usually only useful as a required trait as it cannot be instantiated by default.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb10-1" title="1">c: Real <span class="op">&lt;&gt;</span> String <span class="op">=</span> <span class="fl">5.3</span> <span class="co">**assigns a Real value</span></a>
-<a class="sourceLine" id="cb10-2" title="2"></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="cf">with</span> output<span class="op">=</span>console:</a>
-<a class="sourceLine" id="cb10-4" title="4">    write <span class="kw">whether</span> c <span class="kw">is</span> Real <span class="co">**prints &#39;true&#39;</span></a>
-<a class="sourceLine" id="cb10-5" title="5">    write <span class="kw">whether</span> c <span class="kw">is</span> String <span class="co">**prints &#39;false&#39;</span></a>
-<a class="sourceLine" id="cb10-6" title="6"></a>
-<a class="sourceLine" id="cb10-7" title="7">    <span class="co">** how to access &#39;x&#39;:</span></a>
-<a class="sourceLine" id="cb10-8" title="8">    <span class="cf">if</span> c <span class="kw">is</span> Real: <span class="co">**yes</span></a>
-<a class="sourceLine" id="cb10-9" title="9">        <span class="kw">using</span> c <span class="kw">as</span> Real <span class="co">**cast from Real&lt;&gt;String to Real</span></a>
-<a class="sourceLine" id="cb10-10" title="10">        write c <span class="co">**prints &#39;5.3&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>c: Real <span class="op">&lt;&gt;</span> String <span class="op">=</span> <span class="fl">5.3</span> <span class="co">**assigns a Real value</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="cf">with</span> output<span class="op">=</span>console:</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    write <span class="kw">whether</span> c <span class="kw">is</span> Real <span class="co">**prints &#39;true&#39;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    write <span class="kw">whether</span> c <span class="kw">is</span> String <span class="co">**prints &#39;false&#39;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>    <span class="co">** how to access &#39;x&#39;:</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>    <span class="cf">if</span> c <span class="kw">is</span> Real: <span class="co">**yes</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>        <span class="kw">using</span> c <span class="kw">as</span> Real <span class="co">**cast from Real&lt;&gt;String to Real</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>        write c <span class="co">**prints &#39;5.3&#39;</span></span></code></pre></div>
 <p>The copy (<code class="sourceCode chakral"><span class="kw">new</span></code>) operator isn’t automatically defined for a choice since there is not universal default for which operand should be chosen for the copy. It is however a <code class="sourceCode chakral">virtual</code> context, so it can be assigned to values that have a virtual qualifier.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb11-1" title="1">c <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">&lt;&gt;</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**ERROR: cannot copy a selection into variable &#39;c&#39;</span></a>
-<a class="sourceLine" id="cb11-2" title="2">d: virtual <span class="kw">const</span> <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">&lt;&gt;</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**OK</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>c <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">&lt;&gt;</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**ERROR: cannot copy a selection into variable &#39;c&#39;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>d: virtual <span class="kw">const</span> <span class="op">=</span> (x<span class="op">=</span><span class="dv">1</span>) <span class="op">&lt;&gt;</span> (y<span class="op">=</span><span class="dv">2</span>) <span class="co">**OK</span></span></code></pre></div>
 <p>The choice operator is useful for creating optional values, i.e. values that can be assigned to None.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode chakral"><code class="sourceCode chakral"><a class="sourceLine" id="cb12-1" title="1">c: Integer<span class="op">&lt;&gt;</span><span class="va">Nil</span> <span class="op">=</span> </a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>c: Integer<span class="op">&lt;&gt;</span><span class="va">Nil</span> <span class="op">=</span> <span class="va">Nil</span></span></code></pre></div>
+<h2 id="context-overload-operator">Context overload (&lt;+&gt;) operator</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode chakral"><code class="sourceCode chakral"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a>C <span class="op">=</span> A <span class="op">&lt;+&gt;</span> B</span></code></pre></div>
+<p>Overloading is an act of storing multiple separate contexts into one. The <code>&lt;+&gt;</code> operator makes an overloaded context <code>C</code> of two operand contexts <code>A</code> and <code>B</code>. Overloading is similar to combining contexts, except no members are overriden. Operands of the overloaded context are called overloads. The context <code>A</code> must not be satisfying the trait <code>B</code>. Each overload has its own members, and to retrieve a single overload <code>A</code> you have to cast the overloaded context into <code>A</code>’s type. Each overload retains its own value qualifiers.</p>
 
                 </div>
             </div>
