@@ -6,6 +6,6 @@ namespace ChakraL {
 
     class Identifier {
     public:
-        std::string name;
+        std::wstring name;
     };
 }
