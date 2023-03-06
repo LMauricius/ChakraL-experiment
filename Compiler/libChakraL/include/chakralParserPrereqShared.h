@@ -5,7 +5,7 @@
 #include <map>
 #include <set>
 #include <memory>
-#include "../autoinclude/chakralLexerAutogen.h"
+#include "chakralLexer.h"
 
 namespace ChakraL {
 
