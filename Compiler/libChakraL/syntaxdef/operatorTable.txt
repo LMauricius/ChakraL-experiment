@@ -32,8 +32,23 @@
 < BINARY ExprPrefixFunction ExprPrefixFunction
 ''
 
+< BINARY ExprCasted ExprBinaryL2R
+CAST
+
 < LUNARY ExprCopy ExprLUnary
 NEW
+
+> BINARY ExprCombination ExprBinaryL2R
+CONTEXT_AND
+
+> BINARY ExprSelection ExprBinaryL2R
+CONTEXT_OR
+
+> BINARY ExprChoice ExprBinaryL2R
+CONTEXT_XOR
+
+> BINARY ExprOverload ExprBinaryL2R
+CONTEXT_OVERLOAD
 
 > BINARY ExprExponent ExprBinaryL2R
 '^'
