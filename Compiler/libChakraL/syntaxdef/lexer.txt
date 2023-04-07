@@ -393,6 +393,10 @@
     {
         out CONTEXT_XOR
     }
+    = <+>
+    {
+        out CONTEXT_OVERLOAD
+    }
     = @
     {
         out CAST
