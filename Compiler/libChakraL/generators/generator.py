@@ -7,6 +7,7 @@ from semanticMethodGen import *
 from parserGenCustom import *
 from parserGenRecursive import *
 from operatorProdGen import *
+from syntaxDocGen import outputSyntaxDoc
 import time
 
 class ArgumentError(Exception):
@@ -28,6 +29,8 @@ def main():
     # --extraparserheaders <file1> <file2> ... Header files to be included with the parser header file
     # --extrasemanticinclheaders <file1> <file2> ... Header files to be included with the semantic node processor methods header file
     # --extrasemanticimplheaders <file1> <file2> ... Header files to be included with the semantic node processor methods cpp file
+    # --outsyntaxdoc <file prefix> ... Syntax documentation files to write to
+    # --syntaxdocexpand [keywords] [productions] [options] [subproductions] ... which parts to expand
 
     argMap: dict[str, list[str]] = {}
     curArg = ""
@@ -113,7 +116,7 @@ def main():
             print("Generated operator productions file in " + str(time.time()-startTime) + "s: " + argget("--outoperators"))
         if "--inlexer" in argMap:
             startTime = time.time()
-            lex = loadLexer(argget("--inlexer"), regexmacros)
+            lexer = loadLexer(argget("--inlexer"), regexmacros)
             print("Loaded lexer in " + str(time.time()-startTime) + "s: " + argget("--inlexer"))
         if "--insemanticnodes" in argMap:
             startTime = time.time()
@@ -129,9 +132,9 @@ def main():
         if "--inparser" in argMap:
             startTime = time.time()
             argget("--inlexer")
-            pars = loadParser(lex, argget("--inparser"), semNodes)
+            parser = loadParser(lexer, argget("--inparser"), semNodes)
 
-            semNodes = pars.semNodes
+            semNodes = parser.semNodes
             '''for name, node in pars.semNodes.items():
                 semNodes.setdefault(name, SemanticNode())
                 semNodes[name].methods.update(node.methods)
@@ -145,12 +148,12 @@ def main():
         if "--outlexerh" in argMap:
             startTime = time.time()
             argget("--inlexer")
-            writeLexerH(lex, argget("--outlexerh"))
+            writeLexerH(lexer, argget("--outlexerh"))
             print("Generated lexer header file in " + str(time.time()-startTime) + "s: " + argget("--outlexerh"))
         if "--outlexercpp" in argMap:
             startTime = time.time()
             argget("--inlexer")
-            writeLexerCPP(lex, argget("--outlexercpp"), argget("--inlexerh", "--outlexerh"), ("--useSingleDFA" in argMap))
+            writeLexerCPP(lexer, argget("--outlexercpp"), argget("--inlexerh", "--outlexerh"), ("--useSingleDFA" in argMap))
             print("Generated lexer source file in " + str(time.time()-startTime) + "s: " + argget("--outlexercpp"))
         if "--outparserh" in argMap:
             startTime = time.time()
@@ -159,7 +162,7 @@ def main():
             writeFuncH = parserTypeHeaderGens[parsertype]
 
             argget("--inparser")
-            writeFuncH(pars, argget("--outparserh"), argget("--inlexerh", "--outlexerh"), argsgetopt("--extraparserheaders"))
+            writeFuncH(parser, argget("--outparserh"), argget("--inlexerh", "--outlexerh"), argsgetopt("--extraparserheaders"))
             print("Generated parser header file in " + str(time.time()-startTime) + "s: " + argget("--outparserh"))
         if "--outparsercpp" in argMap:
             startTime = time.time()
@@ -168,7 +171,7 @@ def main():
             writeFuncCPP = parserTypeCPPGens[parsertype]
 
             argget("--inparser")
-            writeFuncCPP(pars, argget("--outparsercpp"), argget("--inparserh", "--outparserh"), [])
+            writeFuncCPP(parser, argget("--outparsercpp"), argget("--inparserh", "--outparserh"), [])
             print("Generated parser source file in " + str(time.time()-startTime) + "s: " + argget("--outparsercpp"))
         if "--outsemanticnodesh" in argMap:
             startTime = time.time()
@@ -180,6 +183,13 @@ def main():
             argget("--insemanticnodes", "--inparser")
             writeSemanticNodesMethodsCPP(semNodes, argget("--outsemanticnodescpp"), argget("--insemanticnodesh", "--outsemanticnodesh"), argsgetopt("--extrasemanticimplheaders"))
             print("Generated parser process definitions source file in " + str(time.time()-startTime) + "s: " + argget("--outsemanticnodescpp"))
+
+        if "--outsyntaxdoc" in argMap:
+            startTime = time.time()
+            argget("--inparser")
+            outputSyntaxDoc(argget("--outsyntaxdoc"), lexer, parser, argsgetopt("--syntaxdocexpand"))
+            print("Generated syntax documentation in " + str(time.time()-startTime) + "s: " + argget("--outsyntaxdoc"))
+
     except ArgumentError as e:
         print("ERROR: " + e.message)
         return 1

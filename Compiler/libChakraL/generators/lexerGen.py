@@ -18,9 +18,9 @@ class Lexer:
     def __init__(self, macros: dict[str, str]):
         self.macros: dict[str, str] = macros
         self.regexNames: dict[str, str] = {}
-        self.exactStringNames: dict[str, str] = {}
-        self.stringTokenPairs: list[Tuple[str, str]] = []
-        self.exactStrTokenPairs: list[Tuple[str, str]] = []
+        self.keywordsPerTokenType: dict[str, str] = {}
+        self.regexPerTokenType: dict[str, str] = {}
+        self.keywordTokenTypePairs: list[Tuple[str, str]] = []
         self.tokenTypes: list[str] = ["END_OF_STR"]
         self.states: list[str] = []
         self.starting = ""
@@ -96,12 +96,12 @@ def loadLexer(filename: str, macros: dict[str, str] ):
                     isExact = False
                 else:# if l[0] == '='
                     # exact string
-                    exactString = unescapeString(l[2:])
-                    regex = exactString
+                    keyword = unescapeString(l[2:])
+                    regex = keyword
                     special_chars_map = {
                         i: '\\' + chr(i) for i in b'()[]{}?*+-|^$\\.~ \t\n\r\v\f'
                     }
-                    regex = exactString.translate(special_chars_map).replace('=', '[=]')
+                    regex = keyword.translate(special_chars_map).replace('=', '[=]')
                     isExact = True
 
                 if not regex in lexer.regexNames:
@@ -128,7 +128,8 @@ def loadLexer(filename: str, macros: dict[str, str] ):
                         if not spl[1] in lexer.tokenTypes:
                             lexer.tokenTypes.append(spl[1])
                         if isExact:
-                            lexer.stringTokenPairs.append((exactString, spl[1]))
+                            lexer.keywordsPerTokenType[spl[1]] = keyword
+                            lexer.keywordTokenTypePairs.append((keyword, spl[1]))
 
                     l, location = next(lines, ("", Location()))
                     if len(l) == 0:

@@ -18,6 +18,7 @@ FALTHRU_VARIABLE_STR = "."
 LIST_VARIABLE_SUFFIX = ":"
 ERROR_HELPER_STR_ASSERTIVE = "!"
 ERROR_HELPER_STR_SYNC = "$"
+FORMAT_HELPER_STR = "ł"
 
 class RepeatType(Enum):
     Optional = 0
@@ -505,7 +506,7 @@ def parseParserFileParseNodeProduction(location: Location, lexer: Lexer, counter
                     qStr = unescapeString(symbolOrString[1 : -1])
 
                     symbol = ""
-                    for string, token in lexer.stringTokenPairs:
+                    for string, token in lexer.keywordTokenTypePairs:
                         if string == qStr:
                             symbol = token
                             break
