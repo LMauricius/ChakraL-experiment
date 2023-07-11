@@ -19,22 +19,23 @@ def maybeExpandProductionPart(part: ProductionPart, lexer: Lexer, parser: Parser
     expansion = ""
     suffix = ""
 
-    #print(part.symbol, skipsymbols, "//"+part.hint)
+    print(part.symbol, skipsymbols, "//"+part.hint)
 
-    if part.symbol in skipsymbols:
-        expansion = part.idName
-    elif part.type == ProductionType.Token:
+    if part.type == ProductionType.Token:
         if "keywords" in expand and part.symbol in lexer.keywordsPerTokenType.keys():
             expansion = lexer.keywordsPerTokenType[part.symbol]
         else:
             expansion = part.symbol
     elif part.type == ProductionType.Node:
         if "productions" in expand:
-            expansion = maybeExpandProductionPart(
-                parser.productions[part.symbol].mainPart,
-                lexer, parser, expand,
-                skipsymbols + [part.symbol]
-            )
+            if part.symbol in skipsymbols:
+                expansion = part.idName
+            else:
+                expansion = maybeExpandProductionPart(
+                    parser.productions[part.symbol].mainPart,
+                    lexer, parser, expand,
+                    skipsymbols + [part.symbol]
+                )
         else:
             expansion = part.symbol
     elif part.type == ProductionType.SubProd:

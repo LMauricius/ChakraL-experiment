@@ -70,6 +70,7 @@ add_custom_command(
 	COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generators/generator.py
 		--inregexmacro ${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/unicodeREMacrosAutogen.txt
 		--inlexer ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/lexer.txt
+		--insemanticnodes ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/semanticNodes.txt
 		--inparser ${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/parser.txt
 		--outsyntaxdoc ${CMAKE_CURRENT_SOURCE_DIR}/../syntaxdoc/
 		--syntaxdocexpand keywords productions options subproductions
@@ -80,6 +81,7 @@ add_custom_command(
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/syntaxDocGen.py
 		${CMAKE_CURRENT_SOURCE_DIR}/generators/parserGenShared.py
 		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/parser.txt
+		${CMAKE_CURRENT_SOURCE_DIR}/syntaxdef/semanticNodes.txt
 		${CMAKE_CURRENT_SOURCE_DIR}/autosyntaxdef/operatorProductionsAutogen.txt
 	COMMENT "Generating syntax documentation"
 )
