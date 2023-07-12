@@ -15,24 +15,22 @@ namespace ChakraL
 
     /**
      * @brief Text separated into lines for easier file editing work
-     *
      */
     class TextLines
     {
-        std::vector<std::wstring> mTextLines;
+        std::vector<std::wstring> mLineList;
 
     public:
         TextLines(std::wistream &in);
         TextLines(const std::wstring &str);
 
-        void replace(TextPosition begin, TextPosition end, const TextLines &lines);
+        void replace(TextPosition begin, TextPosition end, const TextLines &other);
 
-        inline const std::vector<std::wstring> &lines() const { return mTextLines; };
+        inline const std::vector<std::wstring> &lines() const { return mLineList; };
     };
 
     /**
      * @brief streambuf for reading from TextLines
-     *
      */
     class TextLinesStreambuf : public std::wstreambuf
     {
